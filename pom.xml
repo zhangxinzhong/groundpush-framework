@@ -7,7 +7,7 @@
         <module>groundpush-security-oauth</module>
         <module>groundpush-security-browser</module>
         <module>groundpush-security-core</module>
-        <module>groundpush-entity</module>
+        <module>groundpush-core</module>
         <module>groundpush-app</module>
         <module>groundpush-web</module>
     </modules>
