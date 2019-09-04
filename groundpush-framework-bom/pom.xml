@@ -11,6 +11,17 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
+        <thymeleaf-extras-springsecurity4.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity4.version>
+        <pagehelper-spring-boot-starter.version>1.2.5</pagehelper-spring-boot-starter.version>
+        <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
+        <spring-cloud-starter-oauth2.version>2.3.3.RELEASE</spring-cloud-starter-oauth2.version>
+        <spring-security-jwt.version>1.0.7.RELEASE</spring-security-jwt.version>
+        <aliyun-java-sdk-core.version>4.4.3</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-ecs.version>4.11.0</aliyun-java-sdk-ecs.version>
+        <aliyun-java-sdk-dypnsapi.version>1.0.3</aliyun-java-sdk-dypnsapi.version>
+        <commons-pool2.version>2.0</commons-pool2.version>
+        <spring-data-commons.version>2.1.10.RELEASE</spring-data-commons.version>
         <jackson-databind.version>2.9.9</jackson-databind.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -25,6 +36,83 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+
+            <!--mybatis -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!--mysql -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!--security-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-oauth2</artifactId>
+                <version>${spring-cloud-starter-oauth2.version}</version>
+            </dependency>
+
+            <!-- 在thymeleaf中扩展spring secutity （页面权限配置）-->
+            <dependency>
+                <groupId>org.thymeleaf.extras</groupId>
+                <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+                <version>${thymeleaf-extras-springsecurity4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-jwt</artifactId>
+                <version>${spring-security-jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+            </dependency>
+
+            <!-- redis 依赖-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <!--thymeleaf-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!--pageable -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring-data-commons.version}</version>
+            </dependency>
+
+            <!--rest doc-->
+            <dependency>
+                <groupId>com.spring4all</groupId>
+                <artifactId>swagger-spring-boot-starter</artifactId>
+                <version>${swagger-spring-boot-starter.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -113,6 +201,31 @@
                 <groupId>com.groundpush</groupId>
                 <artifactId>groundpush-security-oauth</artifactId>
                 <version>${groundpush-security-oauth.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <optional>true</optional>
+            </dependency>
+
+            <!-- aliyun sms  onechecklogin-->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun-java-sdk-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-ecs</artifactId>
+                <version>${aliyun-java-sdk-ecs.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-dypnsapi</artifactId>
+                <version>${aliyun-java-sdk-dypnsapi.version}</version>
             </dependency>
         </dependencies>
 
