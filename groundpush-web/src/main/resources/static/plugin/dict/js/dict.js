@@ -1,4 +1,4 @@
-layui.use('table', function () {
+layui.use(['table','form','layer'], function () {
     var table = layui.table;
     var form = layui.form;
     var layer = layui.layer;
@@ -75,8 +75,8 @@ layui.use('table', function () {
                 if(rep.code =='200'){
                     form.val("saveDictForm", {
                         "dictId": rep.data.dictId
-                        ,"name":rep.data.code
-                        ,"parentId":rep.data.name
+                        ,"code": rep.data.code
+                        ,"name":rep.data.name
                         ,"dictType": rep.data.dictType
                     })
                     eventListener.showSaveDictDialog();
@@ -97,7 +97,7 @@ layui.use('table', function () {
             });
         }
         ,delMenu: function(data){
-            Utils.getAjax("/dict/del",{menuId:data.menuId},function(rep) {
+            Utils.getAjax("/dict/del",{dictId:data.dictId},function(rep) {
                 if(rep.code =='200'){
                     eventListener.reloadMenuTable();
                     layer.msg("菜单删除成功");
