@@ -61,7 +61,7 @@ layui.use('table', function () {
         ,addDict:function(data) {
             Utils.postAjax("/dict/add",JSON.stringify(data.field),function(rep) {
                 if(rep.code =='200'){
-                    eventListener.hideAddMenuDialog();
+                    eventListener.hideSaveDictuDialog();
                     eventListener.reloadMenuTable();
                     layer.msg('菜单添加成功');
                 }
@@ -69,18 +69,17 @@ layui.use('table', function () {
                 layer.msg(rep.message);
             });
         }
-        ,detailMenu: function(data){
-            Utils.getAjax("/dict/detail",{menuId:data.menuId},function(rep) {
+        ,detailDict: function(data){
+            Utils.getAjax("/dict/detail",{dictId:data.dictId},function(rep) {
+                console.log(rep);
                 if(rep.code =='200'){
-                    form.val("editMenuFrom", {
-                        "menuId": rep.data.menuId
-                        ,"name":rep.data.name
-                        ,"parentId":rep.data.parentId
-                        ,"path": rep.data.path
-                        ,"seq": rep.data.seq
-                        ,"leaf": rep.data.leaf
+                    form.val("saveDictForm", {
+                        "dictId": rep.data.dictId
+                        ,"name":rep.data.code
+                        ,"parentId":rep.data.name
+                        ,"dictType": rep.data.dictType
                     })
-                    eventListener.showEditMenuDialog();
+                    eventListener.showSaveDictDialog();
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -120,7 +119,7 @@ layui.use('table', function () {
     table.on('tool(dict)', function (obj) {
         var data = obj.data;
         if (obj.event === 'edit') {
-            eventListener.detailMenu(data);
+            eventListener.detailDict(data);
         } else if (obj.event === 'del') {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();

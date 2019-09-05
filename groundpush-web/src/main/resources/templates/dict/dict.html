@@ -43,11 +43,12 @@
                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
             <div class="modal-body">
-                <form class="layui-form" action="" id="addMenuFrom">
+                <form class="layui-form" action="" id="saveDictForm">
+                    <input type="hidden" name="dictId" class="layui-input">
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典编码</label>
                         <div class="col-md-10">
-                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
+                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -59,7 +60,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典类型</label>
                         <div class=" col-md-10">
-                            <select name="path" lay-verify="required" class="layui-input">
+                            <select name="dictType" lay-verify="required" class="layui-input">
                                 <option value="0">树型结构</option>
                                 <option value="1">列表结构</option>
                             </select>
