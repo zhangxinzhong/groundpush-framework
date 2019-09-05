@@ -2,7 +2,6 @@ package com.groundpush.security.oauth.config;
 
 import com.groundpush.security.core.properties.OauthClientProperties;
 import com.groundpush.security.core.properties.SecurityProperties;
-import com.groundpush.security.oauth.TokenDetailsService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

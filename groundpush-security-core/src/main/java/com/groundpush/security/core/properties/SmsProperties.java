@@ -70,6 +70,11 @@ public class SmsProperties {
 
     private CodeProperties code = new CodeProperties();
 
+    /**
+     * 一键登录
+     */
+    private OclProperties ocl = new OclProperties();
+
 
     public String getValidateCodeParamName() {
         return validateCodeParamName;
@@ -173,5 +178,13 @@ public class SmsProperties {
 
     public void setAccessKeySecret(String accessKeySecret) {
         AccessKeySecret = accessKeySecret;
+    }
+
+    public OclProperties getOcl() {
+        return ocl;
+    }
+
+    public void setOcl(OclProperties ocl) {
+        this.ocl = ocl;
     }
 }

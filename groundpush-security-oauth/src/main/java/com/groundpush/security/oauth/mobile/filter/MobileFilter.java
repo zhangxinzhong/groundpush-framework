@@ -120,7 +120,7 @@ public class MobileFilter extends OncePerRequestFilter {
             if(mobileNo.length() != Integer.valueOf(11)){
                 throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
             }
-
+            request.setAttribute("mobileNo", mobileNo);
             customerRepository.createCustomer(mobileNo);
             log.info("客户通过一键登录进入应用，loginNo: {}", mobileNo);
         } else {

@@ -15,6 +15,7 @@
         <thymeleaf-extras-springsecurity4.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity4.version>
         <pagehelper-spring-boot-starter.version>1.2.5</pagehelper-spring-boot-starter.version>
         <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
+        <swagger-models.version>1.5.21</swagger-models.version>
         <spring-cloud-starter-oauth2.version>2.3.3.RELEASE</spring-cloud-starter-oauth2.version>
         <spring-security-jwt.version>1.0.7.RELEASE</spring-security-jwt.version>
         <aliyun-java-sdk-core.version>4.4.3</aliyun-java-sdk-core.version>
@@ -112,6 +113,19 @@
                 <groupId>com.spring4all</groupId>
                 <artifactId>swagger-spring-boot-starter</artifactId>
                 <version>${swagger-spring-boot-starter.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.swagger</groupId>
+                        <artifactId>swagger-models</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- 解决swagger  forinput string-->
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>${swagger-models.version}</version>
             </dependency>
 
             <dependency>

@@ -99,5 +99,20 @@ public class Constants {
      */
     public static final String  IS_OK="OK";
 
+    /**
+     * 任务状态（0-已发布）
+     */
+    public static final Integer TASK_STATUS_1 = 0;
+
+    /**
+     * 任务状态（1-已保存未发布）
+     */
+    public static final Integer TASK_STATUS_2 = 1;
+
+    /**
+     * 任务状态（2-已过期）
+     */
+    public static final Integer TASK_STATUS_3 = 2;
+
 
 }

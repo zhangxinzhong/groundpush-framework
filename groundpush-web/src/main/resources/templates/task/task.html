@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录--XXX管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/task/js/task.js"
+            th:src="@{/common/common.js}"></script>
+</head>
+<style>
+
+</style>
+<body>
+<div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" onclick="addTask()">
+        新增任务
+    </button>
+    <table class="table table-bordered" style="margin-top: 10px" id="loadTaskData">
+        <tr>
+            <th style="text-align: center;vertical-align: middle;">封面图片</th>
+            <th style="text-align: center;vertical-align: middle;">任务标题</th>
+            <th style="text-align: center;vertical-align: middle;">任务公分</th>
+            <th style="text-align: center;vertical-align: middle;">所属公司</th>
+            <th style="text-align: center;vertical-align: middle;">每日推广任务总数</th>
+            <th style="text-align: center;vertical-align: middle;">单人每日可做任务数</th>
+            <th style="text-align: center;vertical-align: middle;">完成人分成比</th>
+            <th style="text-align: center;vertical-align: middle;">推广人分成比</th>
+            <th style="text-align: center;vertical-align: middle;">推广领导分成比</th>
+            <th style="text-align: center;vertical-align: middle;">发布类型</th>
+            <th style="text-align: center;vertical-align: middle;">操作</th>
+        </tr>
+        <tr>
+            <td style="text-align: center;vertical-align: middle;">
+                <img style="width: 100px;height: 50px" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
+            </td>
+            <td style="text-align: center;vertical-align: middle;">任务标题1</td>
+            <td style="text-align: center;vertical-align: middle;">10公分</td>
+            <td style="text-align: center;vertical-align: middle;">京东1</td>
+            <td style="text-align: center;vertical-align: middle;">1000</td>
+            <td style="text-align: center;vertical-align: middle;">100</td>
+            <td style="text-align: center;vertical-align: middle;">10%</td>
+            <td style="text-align: center;vertical-align: middle;">20%</td>
+            <td style="text-align: center;vertical-align: middle;">30%</td>
+            <td style="text-align: center;vertical-align: middle;">发布中</td>
+            <td style="text-align: center;vertical-align: middle;">
+                <button class="layui-btn" onclick="seeTask()">查看任务</button>
+                <button class="layui-btn" onclick="delTask()">删除任务</button>
+                <button class="layui-btn" onclick="delTask()">发布任务</button>
+            </td>
+        </tr>
+    </table>
+    <nav aria-label="Page navigation" style="margin-top:-31px ;">
+        <ul class="pagination">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true"><</span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!--模态框部分-->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" style="width: 95%" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">新增任务</h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <form id="submitTask" method="post">
+                        <input type="hidden" name="taskId" id="thisTaskId">
+                        <input type="hidden" id="nowPage" value="1">
+                        <input type="hidden" id="pageSize" value="20">
+                        <input type="hidden" id="totalPageNum">
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">封面图：</label>
+                            <div class="btn col-lg-2" style="text-align: center">
+                                <img style="margin-left: -10px"
+                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
+                                <br><label>上传封面图片</label>
+                            </div>
+                            <input type="hidden" name="imgUri" id="imgUri"
+                                   value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">标&emsp;题：</label>
+                            <input class="form-control col-lg-10" name="title" id="title"
+                                   style="width:80%;display:inline"
+                                   type="text">
+                        </div>
+                        <div class="row panel-heading" id="labelDiv">
+                            <input type="hidden" name="labelIds" id="labelIds">
+                            <label class="btn col-lg-1">标&emsp;签：</label>
+                            <select class="selectpicker form-control" multiple id="selectLabelIds" name="selectLabelIds"
+                                    style="width:80%;display:inline"
+                                    data-title="点击选择标签（可多选）" data-width="80%" data-live-search="true"
+                                    data-live-search-placeholder="搜索" data-actions-box="true">
+                                <option value="1">标签1</option>
+                                <option value="2">标签2</option>
+                                <option value="3">标签3</option>
+                                <option value="4">标签4</option>
+                                <option value="5">标签5</option>
+                                <option value="6">标签6</option>
+                                <option value="7">标签7</option>
+                            </select>
+                        </div>
+
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">公&emsp;司：</label>
+                            <select class="form-control col-lg-3" name="source" id="source"
+                                    style="width:21%;display:inline">
+                                <option value="00100">标签1</option>
+                                <option value="00101">标签2</option>
+                            </select>
+                            <select class="selectpicker form-control col-lg-3" id="shengfen" multiple
+                                    style="width:21%;display:inline"
+                                    data-title="点击选择省份（可多选）" data-width="21%" data-live-search="true"
+                                    data-live-search-placeholder="搜索" data-actions-box="true">
+                                <option>标签1</option>
+                                <option>标签2</option>
+                                <option>标签3</option>
+                                <option>标签4</option>
+                                <option>标签5</option>
+                            </select>
+                            <select class="selectpicker form-control col-lg-3" name="location" id="location" multiple
+                                    style="width:21%;display:inline"
+                                    data-title="点击选择城市（可多选）" data-width="21%" data-live-search="true"
+                                    data-live-search-placeholder="搜索" data-actions-box="true">
+                                <option>标签1</option>
+                                <option>标签2</option>
+                                <option>标签3</option>
+                                <option>标签4</option>
+                                <option>标签5</option>
+                                <option>标签6</option>
+                            </select>
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">单笔佣金：</label>
+                            <input class="form-control col-lg-1" name="amount" id="amount"
+                                   style="width:80%;display:inline" type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">/元</span>
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">推广总数：</label>
+                            <input class="form-control col-lg-1" name="spreadTotal" id="spreadTotal"
+                                   style="width:80%;display:inline" type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">/天</span>
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">可做任务：</label>
+                            <input class="form-control col-lg-1" name="handlerNum" id="handlerNum"
+                                   style="width:80%;display:inline"
+                                   type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">/人/天</span>
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">审核天数：</label>
+                            <input class="form-control col-lg-1" name="auditDuration" id="auditDuration"
+                                   style="width:80%;display:inline" type="number">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">任务耗时：</label>
+                            <input class="form-control col-lg-1" name="expendTime" id="expendTime"
+                                   style="width:80%;display:inline"
+                                   type="number">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">综合通过率：</label>
+                            <input class="form-control col-lg-1" name="completeOdds" id="completeOdds"
+                                   style="width:80%;display:inline" type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">%</span>
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">完成人分成：</label>
+                            <input class="form-control col-lg-1" name="ownerRatio" id="ownerRatio"
+                                   style="width:80%;display:inline"
+                                   type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">%</span>
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">推广人分成：</label>
+                            <input class="form-control col-lg-1" name="spreadRatio" id="spreadRatio"
+                                   style="width:80%;display:inline" type="number">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">团队领导分成：</label>
+                            <input class="form-control col-lg-1" name="leaderRatio" id="leaderRatio"
+                                   style="width:80%;display:inline" type="number">
+                        </div>
+                        <hr>
+                        <div class="row" id="allTaskDiv">
+                            <div class="col-lg-6" id="MyTask" style="border-right:1px solid #000">
+                                <label style="margin-left: 20px;" class="btn panel-heading row">我的任务编辑</label>
+                                <div style="margin-left: 20px;" class="row">
+                                    <label class="btn col-lg-2">任务模块：</label>
+                                    <a class="btn btn-primary col-lg-2" onclick="addTaskText('MyTask')">添加文本</a>
+                                    <a class="btn btn-primary col-lg-2" onclick="addTaskImage('MyTask')">添加图片</a>
+                                    <a class="btn btn-primary col-lg-2" onclick="addTaskUrl('MyTask')">添加URL</a>
+                                    <hr>
+                                    <div id="MyTaskContentDiv"></div>
+                                </div>
+                                <hr>
+                                <div style="margin-left: 20px;" class="row">
+                                    <label class="btn col-lg-2">说明模块：</label>
+                                    <a class="btn btn-primary col-lg-2" onclick="addExplainText('MyTask')">添加内容</a>
+                                    <a class="btn btn-primary col-lg-2" onclick="addExplainImage('MyTask')">添加图片</a>
+                                    <hr>
+                                    <div id="MyExplainContentDiv"></div>
+                                </div>
+                                <hr>
+                                <div style="margin-left: 20px;" class="row">
+                                    <label class="btn col-lg-2">结果模块：</label>
+                                    <a class="btn btn-primary col-lg-2" onclick="addResultText('MyTask')">添加文本</a>
+                                    <a class="btn btn-primary col-lg-2" onclick="addResultImage('MyTask')">添加图片</a>
+                                    <hr>
+                                    <div id="MyResultContentDiv"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" id="GeneralizeTask">
+                                <label style="margin-left: 20px;" class="btn panel-heading row">推广任务编辑</label>
+                                <div style="margin-left: 20px;" class="row">
+                                    <label class="btn col-lg-2">任务模块：</label>
+                                    <a class="btn btn-primary col-lg-2" onclick="addTaskText('GeneralizeTask')">添加文本</a>
+                                    <a class="btn btn-primary col-lg-2"
+                                       onclick="addTaskImage('GeneralizeTask')">添加图片</a>
+                                    <a class="btn btn-primary col-lg-2" onclick="addTaskUrl('GeneralizeTask')">添加URL</a>
+                                    <hr>
+                                    <div id="GeneralizeTaskContentDiv">
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div style="margin-left: 20px;" class="row">
+                                    <label class="btn col-lg-2">说明模块：</label>
+                                    <a class="btn btn-primary col-lg-2"
+                                       onclick="addExplainText('GeneralizeTask')">添加内容</a>
+                                    <a class="btn btn-primary col-lg-2"
+                                       onclick="addExplainImage('GeneralizeTask')">添加图片</a>
+                                    <hr>
+                                    <div id="GeneralizeExplainContentDiv"></div>
+                                </div>
+                                <hr>
+                                <div style="margin-left: 20px;" class="row">
+                                    <label class="btn col-lg-2">结果模块：</label>
+                                    <a class="btn btn-primary col-lg-2"
+                                       onclick="addResultText('GeneralizeTask')">添加文本</a>
+                                    <a class="btn btn-primary col-lg-2"
+                                       onclick="addResultImage('GeneralizeTask')">添加图片</a>
+                                    <hr>
+                                    <div id="GeneralizeResultContentDiv"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="taskAttributes" id="taskAttributes">
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="toSubmit(0)">保存任务</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script>
+    //加载列表信息
+    function loadTaskData() {
+        var jsondata = {
+            "nowPage": $("#nowPage").val(),
+            "pageSize": $("#pageSize").val()
+        };
+        $.ajax({
+            url: "/task/getTaskPageList",
+            async: false,
+            type: "POST",
+            dataType: 'json',
+            data: jsondata,
+            success: function (data) {
+                var code = data.code;
+                var dataList = data.data.rows;
+                console.log(data);
+                if (code == "200") {
+                    //加载分页项
+                    compoundPage(data.data);
+                    //加载页面列表
+                    var tableHtml = '<tr>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">封面图片</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">任务标题</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">单笔佣金</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">所属公司</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">每日推广任务总数</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">单人每日可做任务数</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">完成人分成比</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">推广人分成比</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">推广领导分成比</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">发布类型</th>\n' +
+                        '            <th style="text-align: center;vertical-align: middle;">操作</th>\n' +
+                        '        </tr>';
+                    for (var i in dataList) {
+                        var status = dataList[i].status;
+                        var statusName;
+                        if (status == 0) {
+                            statusName = "已发布";
+                        } else if (status == 1) {
+                            statusName = "未发布";
+                        } else if (status == 2) {
+                            statusName = "已过期";
+                        }
+                        tableHtml += '<tr>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">\n' +
+                            '                <img style="width: 100px;height: 50px" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">\n' +
+                            '            </td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].title + '</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].amount + '元</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].source + '</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].spreadTotal + '</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].handlerNum + '</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].ownerRatio + '%</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].spreadRatio + '%</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].leaderRatio + '%</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">' + statusName + '</td>\n' +
+                            '            <td style="text-align: center;vertical-align: middle;">\n' +
+                            '                <button class="layui-btn" onclick="seeTask(' + dataList[i].taskId + ')">查看任务</button>\n' +
+                            '                <button class="layui-btn" onclick="delTask(' + dataList[i].taskId + ')">删除任务</button>\n' +
+                            '                <button class="layui-btn" onclick="sendTask(' + dataList[i].taskId + ')">发布任务</button>\n' +
+                            '            </td>\n' +
+                            '        </tr>';
+                    }
+                    $("#loadTaskData").html(tableHtml);
+                }
+            }
+        })
+    }
+
+    //组表单json串
+    var DataDeal = {
+        //将从form中通过$('#refer').serialize()获取的值转成json
+        formToJson: function (data) {
+            data = data.replace(/&/g, "\",\"");
+            data = data.replace(/=/g, "\":\"");
+            data = "{\"" + data + "\"}";
+            return data;
+        }
+    };
+
+    //跳转不同任务
+    function selectType(object) {
+        $(".selectType").each(function (index, oneType) {
+            var type = $(oneType);
+            //css样式
+            type.removeClass("active");
+        })
+        //跳转连接
+        var obj = $(object);
+        obj.addClass("active");
+        var type = obj.attr("type");
+        if (type == "1") {
+            $("#iframeContent").attr("src", "../task/taskMy");
+        } else {
+            $("#iframeContent").attr("src", "../task/taskMy");
+        }
+    }
+
+    //提交任务
+    function toSubmit(type) {
+        //妈嘞个蛋蛋滴组串串
+        var params = [];
+        $("#allTaskDiv .labelRowDiv").each(function (index, object) {
+            var obj = {}
+            var seq = $(object).find(".seq");
+            obj["seq"] = seq.val();
+            var name = $(object).find(".name");
+            obj["name"] = name.val();
+            var content = $(object).find(".content");
+            obj["content"] = content.val();
+            var type = $(object).find(".type");
+            obj["type"] = type.val();
+            var labelType = $(object).find(".labelType");
+            obj["labelType"] = labelType.val();
+            var rowType = $(object).find(".rowType");
+            obj["rowType"] = rowType.val();
+            var createUri = $(object).find(".createUri");
+            if (createUri.is(':checked')) {
+                obj["createUri"] = 1;
+            } else {
+                obj["createUri"] = 0;
+            }
+            params.push(obj);
+        })
+        var jsonParamsData = JSON.stringify(params);
+        $("#taskAttributes").val(jsonParamsData);
+        //获取标签内容
+        var selectLabelIds = $('#selectLabelIds').selectpicker('val');
+        $("#labelIds").val(selectLabelIds);
+        //获取表单内容项转成JSON
+        var dataCollect = $('#submitTask').serialize();
+        dataCollect = decodeURIComponent(dataCollect, true);//防止中文乱码
+        var jsondata = DataDeal.formToJson(dataCollect);//转化为json
+        jsondata = jsondata.replace('"[', '[');
+        jsondata = jsondata.replace(']"', ']');
+        console.log("-------------------------------------------")
+        console.log(jsondata);
+        console.log("---------------------------------------------")
+
+        //提交校验
+        var verifyResult = verify(jsondata);
+        if (!verifyResult)
+            return;
+        //如果校验通过则提交表单
+        $.ajax({
+            url: "/task/save",
+            async: false,
+            type: "POST",
+            contentType: 'application/json',
+            dataType: 'json',
+            data: jsondata,
+            success: function (data) {
+                loadTaskData();
+                $("#myModal").modal('hide');
+            }
+        });
+    }
+
+    //查看任务
+    function seeTask(taskId) {
+        //清空表单
+        clearForm();
+        //获取任务详情信息
+        $.ajax({
+                url: "/task/getTask/" + taskId,
+                async: false,
+                type: "GET",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var code = data.code;
+                    if (code == "200") {
+                        //基础数据
+                        var dataMsg = data.data;
+                        $("#thisTaskId").val(dataMsg.taskId);
+                        $("#title").val(dataMsg.title);
+                        $("#source").val(dataMsg.source);
+                        $("#location").val(dataMsg.location);
+                        $("#spreadTotal").val(dataMsg.spreadTotal);
+                        $("#amount").val(dataMsg.amount);
+                        $("#handlerNum").val(dataMsg.handlerNum);
+                        $("#auditDuration").val(dataMsg.auditDuration);
+                        $("#expendTime").val(dataMsg.expendTime);
+                        $("#completeOdds").val(dataMsg.completeOdds);
+                        $("#ownerRatio").val(dataMsg.ownerRatio);
+                        $("#spreadRatio").val(dataMsg.spreadRatio);
+                        $("#leaderRatio").val(dataMsg.leaderRatio);
+                        //子表数据
+                        var taskAttributes = dataMsg.taskAttributes;
+                        for (var i in taskAttributes) {
+                            //key
+                            var name = taskAttributes[i].name;
+                            //val
+                            var content = taskAttributes[i].content;
+                            //序号
+                            var seq = taskAttributes[i].seq;
+                            //是否生成URL
+                            var createUri = taskAttributes[i].createUri;
+                            //页面
+                            var ziHtml;
+                            //任务类型
+                            var type = taskAttributes[i].type;
+                            //标签类型
+                            var labelType = taskAttributes[i].labelType;
+                            //行级类型
+                            var rowType = taskAttributes[i].rowType;
+                            //行类型
+                            if (rowType == 1) {
+                                if (labelType == 2) {
+                                    ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
+                                        '                <input type="number" value="' + seq + '" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
+                                        '                <label class="btn btn col-lg-1">--</label>\n' +
+                                        '                <input type="text" value="' + name + '" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入标题">\n' +
+                                        '                <label class="btn btn col-lg-1">:</label>\n' +
+                                        '                <textarea class="content col-lg-5" name="content" id="textContent"\n' +
+                                        '                          style="margin-top: 10px;font-family: mFont;height:150px;width: 80%">' + content + '</textarea>\n' +
+                                        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>\n' +
+                                        '<input type="hidden" class="rowType" name="rowType" value="1">';
+                                } else {
+                                    ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
+                                        '<input type="number" value="' + seq + '" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
+                                        '                <label class="btn btn col-lg-1">--</label>' +
+                                        '                <input type="text" value="' + name + '" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入文本标题">\n' +
+                                        '                <label class="btn btn col-lg-1">:</label>\n' +
+                                        '                <input type="text" value="' + content + '" name="content" class="content form-control col-lg-5" style="width:33%;display:inline" placeholder="输入文本内容">\n' +
+                                        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
+                                        '<input type="hidden" class="rowType" name="rowType" value="1">';
+                                }
+                            } else if (rowType == 2) {
+                                ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
+                                    '<input type="number" name="seq" value="' + seq + '" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
+                                    '                <label class="btn btn col-lg-1">--</label>' +
+                                    '                <input type="text" value="' + name + '" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入图片标题">\n' +
+                                    '                <label class="btn btn col-lg-1">:</label>\n' +
+                                    '                <img class="my-img form-control col-lg-3" src="' + content + '" id="imgDJZS" style="width:33%; height: 100px;display:inline" onerror="excptionUrl(this)" />' +
+                                    '                <input type="hidden" value="' + content + '" class="content" name="content"/>' +
+                                    '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
+                                    '<input type="hidden" class="rowType" name="rowType" value="1">';
+                            } else if (rowType == 3) {
+                                ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
+                                    '<input type="number" name="seq" value="' + seq + '" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
+                                    '                <label class="btn btn col-lg-1">--</label>' +
+                                    '                <input type="text" name="name" value="' + name + '" class="name form-control col-lg-3" style="width:20%;display:inline"\n' +
+                                    '                       placeholder="输入URL标题">\n' +
+                                    '                <label class="btn btn col-lg-1">:</label>\n' +
+                                    '                <input type="text" value="' + content + '" name="content" class="content form-control col-lg-5" style="width:25%;display:inline"\n' +
+                                    '                       placeholder="输入URL内容">\n';
+                                if (createUri == 0) {
+                                    ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+                                } else {
+                                    ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" checked name="createUri" class="createUri">生成</label>\n';
+                                }
+                                ziHtml += '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
+                                    '<input type="hidden" class="rowType" name="rowType" value="1">';
+                            }
+                            //标签类型
+                            if (labelType == 1) {
+                                ziHtml += '<input type="hidden" class="labelType" name="labelType" value="1">';
+                            } else if (labelType == 2) {
+                                ziHtml += '<input type="hidden" class="labelType" name="labelType" value="2">';
+                            } else if (labelType == 3) {
+                                ziHtml += '<input type="hidden" class="labelType" name="labelType" value="3">';
+                            }
+                            //任务类型
+                            if (type == 1) {
+                                ziHtml += '<input type="hidden" class="type" name="type" value="1">';
+                                //开始放页面
+                                if (labelType == 1) {
+                                    $("#MyTaskContentDiv").append(ziHtml);
+                                } else if (labelType == 2) {
+                                    $("#MyExplainContentDiv").append(ziHtml);
+                                } else if (labelType == 3) {
+                                    $("#MyResultContentDiv").append(ziHtml);
+                                }
+                            } else if (type == 2) {
+                                ziHtml += '<input type="hidden" class="type" name="type" value="2">';
+                                //开始放页面
+                                if (labelType == 1) {
+                                    $("#GeneralizeTaskContentDiv").append(ziHtml);
+                                } else if (labelType == 2) {
+                                    $("#GeneralizeExplainContentDiv").append(ziHtml);
+                                } else if (labelType == 3) {
+                                    $("#GeneralizeResultContentDiv").append(ziHtml);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        var $modal = $('#myModal');
+        $modal.modal();
+    }
+
+    //添加任务
+    function addTask() {
+        //清空表单
+        clearForm()
+        //显示输入项
+        var $modal = $('#myModal');
+        $modal.modal();
+    }
+
+    //过期任务
+    function delTask(taskId) {
+        var data = {
+            "taskId": taskId,
+            "status": 2
+        }
+        $.ajax({
+            url: "/task/updateTaskStatus",
+            async: false,
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (data) {
+                loadTaskData();
+                $("#myModal").modal('hide');
+            }
+        });
+        loadTaskData();
+    }
+
+    //发布任务
+    function sendTask(taskId) {
+        var data = {
+            "taskId": taskId,
+            "status": 0
+        }
+        $.ajax({
+            url: "/task/updateTaskStatus",
+            async: false,
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (data) {
+                loadTaskData();
+                $("#myModal").modal('hide');
+            }
+        });
+        loadTaskData();
+    }
+
+    //清空表单
+    function clearForm() {
+        $("#thisTaskId").val("");
+        document.getElementById("submitTask").reset();
+        $("#MyTaskContentDiv").html("");
+        $("#MyExplainContentDiv").html("");
+        $("#MyResultContentDiv").html("");
+        $("#GeneralizeTaskContentDiv").html("");
+        $("#GeneralizeExplainContentDiv").html("");
+        $("#GeneralizeResultContentDiv").html("");
+    }
+
+    //提交之前的检验
+    function verify(jsondata) {
+        var dataObj = eval("(" + jsondata + ")");
+        //封面图片
+        var imgUri = dataObj.imgUri;
+        if (imgUri.length == 0) {
+            alert("封面图片不可为空！");
+            return false;
+        }
+        //任务标题
+        var title = dataObj.title;
+        if (title.length == 0) {
+            alert("任务标题不可为空！");
+            return false;
+        }
+        //标签项
+        var labelIds = dataObj.labelIds;
+        if (labelIds.length == 0) {
+            alert("标签项不可为空！");
+            return false;
+        }
+        //公司项
+        var source = dataObj.source;
+        if (source.length == 0) {
+            alert("公司项不可为空！");
+            return false;
+        }
+        //公司项
+        var amount = dataObj.amount;
+        if (amount.length == 0) {
+            alert("单笔佣金不可为空！");
+            return false;
+        }
+        //推广总数
+        var spreadTotal = dataObj.spreadTotal;
+        if (spreadTotal.length == 0) {
+            alert("推广总数不可为空！");
+            return false;
+        }
+        //可做任务数
+        var handlerNum = dataObj.handlerNum;
+        if (handlerNum.length == 0) {
+            alert("可做任务数不可为空！");
+            return false;
+        }
+        //审核天数
+        var auditDuration = dataObj.auditDuration;
+        if (auditDuration.length == 0) {
+            alert("审核天数不可为空！");
+            return false;
+        }
+        //任务耗时
+        var expendTime = dataObj.expendTime;
+        if (expendTime.length == 0) {
+            alert("任务耗时不可为空！");
+            return false;
+        }
+        //综合通过率
+        var completeOdds = dataObj.completeOdds;
+        if (completeOdds.length == 0) {
+            alert("综合通过率不可为空！");
+            return false;
+        }
+        //完成人分成
+        var ownerRatio = dataObj.ownerRatio;
+        if (ownerRatio.length == 0) {
+            alert("完成人分成不可为空！");
+            return false;
+        }
+        //推广人分成
+        var spreadRatio = dataObj.spreadRatio;
+        if (spreadRatio.length == 0) {
+            alert("推广人分成不可为空！");
+            return false;
+        }
+        //领导人分成
+        var leaderRatio = dataObj.leaderRatio;
+        if (leaderRatio.length == 0) {
+            alert("团队领导人分成不可为空！");
+            return false;
+        }
+        //验证子项
+        //领导人分成
+        var taskAttributes = dataObj.taskAttributes;
+        for (var one in taskAttributes) {
+            var msg;
+            var type = taskAttributes[one].type;
+            if (type == 1) {
+                msg = "我的任务编辑-";
+            } else {
+                msg = "推广任务编辑-";
+            }
+            var labelType = taskAttributes[one].labelType;
+            if (labelType == 1) {
+                msg += "任务模块-";
+            } else if (labelType == 2) {
+                msg += "说明模块-";
+            } else if (labelType == 3) {
+                msg += "结果模块-";
+            }
+            var rowType = taskAttributes[one].rowType;
+            if (rowType == 1) {
+                msg += "文本项不可为空";
+            } else if (rowType == 2) {
+                msg += "图片项不可为空";
+            } else if (rowType == 3) {
+                msg += "URL项不可为空";
+            }
+            //序号
+            var seq = taskAttributes[one].seq;
+            //key
+            var name = taskAttributes[one].name;
+            //value
+            var content = taskAttributes[one].content;
+            if (seq.length == 0 || name.length == 0 || content.length == 0) {
+                alert(msg);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //组分页
+    function compoundPage(data) {
+        //当前页数
+        var nowPage = data.nowPage;
+        $("#nowPage").val(nowPage);
+        //页面条数
+        var pageSize = data.pageSize;
+        $("#pageSize").val(pageSize);
+        //总页数
+        var total = data.total;
+        var residueCount = total % pageSize;
+        var totalPageNum = 0;
+        if (residueCount == 0) {
+            totalPageNum = total / pageSize;
+        } else {
+            totalPageNum = parseInt(total / pageSize) + 1;
+        }
+        $("#totalPageNum").val(totalPageNum);
+        var html = "";
+        html += '<li><a href="#" onclick=doAppointPage("1")>首页</a></li>'
+            + '<li><a href="#" onclick=doUpPage("' + nowPage + '","' + totalPageNum + '")>上翻</a></li>';
+        //组中间页数
+        //之间的差值
+        var begin = nowPage;
+        var errand = totalPageNum - nowPage;
+        if (errand < 3) {
+            errand = 3 - errand;
+            begin = nowPage - errand < 1 ? 1 : nowPage - errand;
+        }
+        var end = nowPage + 3 > totalPageNum ? totalPageNum : nowPage + 3;
+        for (begin; begin <= end; begin++) {
+            if (nowPage == begin) {
+                html += '<li class="active"><a href="#" onclick=doAppointPage("' + begin + '")>' + begin + '</a></li>';
+            } else {
+                html += '<li><a href="#" onclick=doAppointPage("' + begin + '")>' + begin + '</a></li>';
+            }
+        }
+        //组尾页面
+        html += '<li><a href="#" onclick=doNextPage("' + nowPage + '","' + totalPageNum + '")>下翻</a></li>'
+            + '<li><a href="#" onclick=doAppointPage("' + totalPageNum + '")>尾页</a></li>';
+        //填充页面
+        $(".pagination").html(html);
+    }
+
+    //上翻
+    function doUpPage(nowPage, totalPageNum) {
+        nowPage = nowPage - 1 < 1 ? 1 : nowPage - 1;
+        $("#nowPage").val(nowPage);
+        loadTaskData();
+    }
+
+    //下翻
+    function doNextPage(nowPage, totalPageNum) {
+        nowPage = parseInt(nowPage + 1) > totalPageNum ? totalPageNum : parseInt(nowPage + 1);
+        $("#nowPage").val(nowPage);
+        loadTaskData();
+    }
+
+    //跳转指定页面
+    function doAppointPage(nowPage) {
+        $("#nowPage").val(nowPage);
+        loadTaskData();
+    }
+</script>
+</html>

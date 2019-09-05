@@ -8,6 +8,7 @@ import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.service.TaskService;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;

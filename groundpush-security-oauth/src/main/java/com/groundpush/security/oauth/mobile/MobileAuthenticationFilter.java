@@ -2,6 +2,7 @@ package com.groundpush.security.oauth.mobile;
 
 import com.groundpush.security.core.common.SecurityConstants;
 import com.groundpush.security.core.properties.SecurityProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -49,11 +50,16 @@ public class MobileAuthenticationFilter extends AbstractAuthenticationProcessing
 
     /**
      * 获取手机号
+     *
      * @param request
      * @return
      */
     protected String obtainMobile(HttpServletRequest request) {
-        return request.getParameter(this.mobileParameter);
+        String requestParm = request.getParameter(this.mobileParameter);
+        if (StringUtils.isBlank(requestParm)) {
+            requestParm = (String) request.getAttribute(this.mobileParameter);
+        }
+        return requestParm;
     }
 
     protected void setDetails(HttpServletRequest request, MobileAuthenticationToken authRequest) {

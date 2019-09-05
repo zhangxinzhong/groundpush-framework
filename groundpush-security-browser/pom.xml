@@ -11,5 +11,11 @@
 
     <artifactId>groundpush-security-browser</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.groundpush</groupId>
+            <artifactId>groundpush-security-core</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

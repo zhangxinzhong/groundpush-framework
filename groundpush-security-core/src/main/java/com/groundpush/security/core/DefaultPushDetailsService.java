@@ -1,4 +1,4 @@
-package com.groundpush.security.oauth;
+package com.groundpush.security.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @ConditionalOnMissingBean(UserDetailsService.class)
-public class TokenDetailsService implements  UserDetailsService {
+public class DefaultPushDetailsService implements  UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("-- exec TokenUserDetailService loadUserByUsername", username);
+        log.info("-- exec GroundPushDetailsService loadUserByUsername", username);
             return new User("ketty", "$2a$10$25I8lR37bCKOsHjMwoX7/u/0H/Eyy6u81tlYOY2mZwSREaH5mc5eW", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMI"));
     }
 

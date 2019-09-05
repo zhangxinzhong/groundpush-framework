@@ -40,7 +40,7 @@ public class ValidateController {
     private SendSms sendSms;
 
     @Resource
-    private ValidateCodeRepository redisValidateCodeRepository;
+    private ValidateCodeRepository validateCodeRepository;
 
     /**
      * 获取验证码
@@ -52,7 +52,7 @@ public class ValidateController {
     @RequestMapping(value = "/codeImage")
     public void getValidationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ImageCode imageCode = (ImageCode) imageValidateCodeGenerator.generate(new ServletWebRequest(request, response));
-        request.getSession().setAttribute(Constants.SESSION_KEY_IMAGE_CODE, imageCode);
+        validateCodeRepository.save(new ServletWebRequest(request, response), imageCode, ValidateCodeType.IMAGE);
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
 
     }
@@ -67,13 +67,13 @@ public class ValidateController {
     @RequestMapping(value = "/codeSms")
     public JsonResp getSmsValidationCode(@Valid @RequestParam @NotBlank(message = "设备类型不可为空") String deviceId, @RequestParam @NotBlank(message = "设备类型不可为空") String mobileNo, ServletWebRequest request) {
         try {
-            ValidateCode validateCode = redisValidateCodeRepository.get(request, ValidateCodeType.SMS);
+            ValidateCode validateCode = validateCodeRepository.get(request, ValidateCodeType.SMS);
             if (validateCode != null) {
                 return JsonResp.failure(ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorMessage());
             }
             ValidateCode smsCode = smsValidateCodeGenerator.generate(request);
             sendSms.sendSms(smsCode.getCode(), mobileNo);
-            redisValidateCodeRepository.save(request, smsCode, ValidateCodeType.SMS);
+            validateCodeRepository.save(request, smsCode, ValidateCodeType.SMS);
             return JsonResp.success();
         } catch (ValidationException e) {
             log.error(e.getMessage(), e);

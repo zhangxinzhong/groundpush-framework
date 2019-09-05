@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录--XXX管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="/plugin/dict/css/dict.css"/>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/dict/js/dict.js"
+            th:src="@{/common/common.js}"></script>
+
+</head>
+<body>
+<!--新增菜单-->
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn" data-method="showSaveDictDialog" data-custom-event="dict" id="addMenu">新增菜单</button>
+</div>
+
+<!-- dict table -->
+<table class="layui-hide" id="dict" lay-filter="dict"></table>
+
+<!-- dict tobar-->
+<script type="text/html" id="toolbarMenu">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">新增字典项</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑字典项</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">删除字典项</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<!-- 模态框 -->
+<div class="modal fade bs-example-modal-lg" id="saveDictDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="addMenuFrom">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典编码</label>
+                        <div class="col-md-10">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典名称</label>
+                        <div class="col-md-10">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入字典名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典类型</label>
+                        <div class=" col-md-10">
+                            <select name="path" lay-verify="required" class="layui-input">
+                                <option value="0">树型结构</option>
+                                <option value="1">列表结构</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="addDict">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

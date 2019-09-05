@@ -3,6 +3,7 @@ package com.groundpush.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.View;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author: zhangxinzhong
  * @date: 2019-08-26 上午11:40
  */
+@ApiModel(value = "任务信息")
 @Data
 @Builder
 @NoArgsConstructor
