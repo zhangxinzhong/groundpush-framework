@@ -21,7 +21,7 @@ public class DefaultPushDetailsService implements  UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("-- exec GroundPushDetailsService loadUserByUsername", username);
+        log.info("-- exec DefaultPushDetailsService loadUserByUsername", username);
             return new User("ketty", "$2a$10$25I8lR37bCKOsHjMwoX7/u/0H/Eyy6u81tlYOY2mZwSREaH5mc5eW", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMI"));
     }
 

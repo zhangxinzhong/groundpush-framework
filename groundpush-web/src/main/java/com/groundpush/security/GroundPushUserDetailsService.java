@@ -41,7 +41,7 @@ public class GroundPushUserDetailsService implements  UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("-- exec loadUserByUsername", username);
+        log.info("-- exec GroundPushUserDetailsService loadUserByUsername", username);
         Optional<LoginUserInfo> optionalLoginUserInfo = userService.getLoginUserInfo(username);
         if (optionalLoginUserInfo.isPresent()) {
             LoginUserInfo loginUserInfo = optionalLoginUserInfo.get();
