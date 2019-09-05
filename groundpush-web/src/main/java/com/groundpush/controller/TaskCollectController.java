@@ -1,9 +1,9 @@
 package com.groundpush.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.groundpush.condition.TaskCollectQueryCondition;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.common.View;
+import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import com.groundpush.service.TaskCollectService;

@@ -1,7 +1,7 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.condition.OrderQueryCondition;
+import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.service.OrderService;
 import io.swagger.annotations.ApiOperation;

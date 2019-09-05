@@ -1,10 +1,10 @@
 package com.groundpush.service.impl;
 
-import com.groundpush.condition.CustomerAccountQueryCondition;
+import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.mapper.CustomerAccountMapper;
 import com.groundpush.core.model.CustomerAccount;
+import com.groundpush.mapper.CustomerAccountMapper;
 import com.groundpush.service.CustomerAccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,13 +1,14 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.groundpush.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.mapper.TaskCollectMapper;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
+import com.groundpush.mapper.TaskCollectMapper;
 import com.groundpush.service.CustomerService;
 import com.groundpush.service.TaskCollectService;
 import com.groundpush.service.TaskService;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -68,7 +68,7 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     }
 
     @Override
-    public List<Task> queryTaskCollect(TaskCollectQueryCondition taskCollectQueryCondition, Pageable pageable) {
+    public Page<Task> queryTaskCollect(TaskCollectQueryCondition taskCollectQueryCondition, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
         return taskCollectMapper.queryTaskCollect(taskCollectQueryCondition);
     }

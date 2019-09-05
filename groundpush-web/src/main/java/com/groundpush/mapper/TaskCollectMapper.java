@@ -1,6 +1,6 @@
 package com.groundpush.mapper;
 
-import com.groundpush.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import org.apache.ibatis.annotations.Delete;

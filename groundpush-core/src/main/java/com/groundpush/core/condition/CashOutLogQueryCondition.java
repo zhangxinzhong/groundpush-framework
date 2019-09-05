@@ -1,4 +1,4 @@
-package com.groundpush.condition;
+package com.groundpush.core.condition;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,18 +11,18 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * @description: 客户
+ * @description:提现记录查询条件
  * @author: zhangxinzhong
- * @date: 2019-08-28 下午12:56
+ * @date: 2019-08-29 下午12:04
  */
-@ApiModel(value = "客户查询条件")
+@ApiModel(value = "客户提现记录查询条件")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerQueryCondition implements Serializable {
+public class CashOutLogQueryCondition implements Serializable {
 
-    @ApiModelProperty(value = "客户编号")
-    @NotNull
+    @ApiModelProperty(value = "客户编号不可为空")
+    @NotNull(message = "客户编号不可为空")
     private Integer customerId;
 }

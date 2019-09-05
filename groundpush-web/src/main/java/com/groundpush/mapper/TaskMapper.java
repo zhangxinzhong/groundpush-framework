@@ -1,7 +1,7 @@
 package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
-import com.groundpush.condition.TaskQueryCondition;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;

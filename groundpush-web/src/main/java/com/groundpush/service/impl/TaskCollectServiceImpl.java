@@ -1,7 +1,7 @@
 package com.groundpush.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.groundpush.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;

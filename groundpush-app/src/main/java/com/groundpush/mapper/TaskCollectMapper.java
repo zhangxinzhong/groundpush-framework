@@ -1,13 +1,12 @@
 package com.groundpush.mapper;
 
-import com.groundpush.condition.TaskCollectQueryCondition;
+import com.github.pagehelper.Page;
+import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 /**
  * @description:收藏任务mapper
@@ -36,5 +35,5 @@ public interface TaskCollectMapper {
      * @return
      */
     @Select(" select t.* from t_task t inner join t_task_collect tc on tc.task_id=t.task_id where tc.customer_id=#{customerId} ")
-    List<Task> queryTaskCollect(TaskCollectQueryCondition taskCollectQueryCondition);
+    Page<Task> queryTaskCollect(TaskCollectQueryCondition taskCollectQueryCondition);
 }

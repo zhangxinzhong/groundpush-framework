@@ -2,7 +2,7 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.groundpush.condition.TaskQueryCondition;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskLabel;

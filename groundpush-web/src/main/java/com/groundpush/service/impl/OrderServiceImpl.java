@@ -1,7 +1,7 @@
 package com.groundpush.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.groundpush.condition.OrderQueryCondition;
+import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderTaskCustomer;
 import com.groundpush.core.utils.Constants;

@@ -1,6 +1,6 @@
 package com.groundpush.service;
 
-import com.groundpush.condition.CustomerAccountQueryCondition;
+import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.model.CustomerAccount;
 
 import java.util.List;

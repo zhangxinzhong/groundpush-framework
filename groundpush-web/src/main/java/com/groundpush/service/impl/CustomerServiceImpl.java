@@ -1,8 +1,8 @@
 package com.groundpush.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.groundpush.condition.CustomerAccountQueryCondition;
-import com.groundpush.condition.CustomerQueryCondition;
+import com.groundpush.core.condition.CustomerAccountQueryCondition;
+import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.model.Order;

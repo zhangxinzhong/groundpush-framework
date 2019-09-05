@@ -2,7 +2,7 @@ package com.groundpush.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.condition.CustomerQueryCondition;
+import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.model.Customer;
 import com.groundpush.service.CustomerService;

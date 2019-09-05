@@ -1,4 +1,4 @@
-package com.groundpush.condition;
+package com.groundpush.core.condition;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,23 +7,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * @description:
  * @author: zhangxinzhong
- * @date: 2019-08-27 上午10:03
+ * @date: 2019-08-28 下午2:29
  */
-@ApiModel(value = "任务收藏条件")
+@ApiModel(value = "客户账户查询条件")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskCollectQueryCondition implements Serializable {
+public class CustomerAccountQueryCondition implements Serializable {
 
-    @NotNull(message = "客户编号不可以为空")
     @ApiModelProperty(value = "客户编号")
     private Integer customerId;
 
+    @ApiModelProperty(value = "登录类型 : 1=手机号密码 2=微信 3=支付宝")
+    private Integer type;
 }

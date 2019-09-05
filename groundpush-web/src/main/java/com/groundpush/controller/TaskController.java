@@ -2,8 +2,8 @@ package com.groundpush.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
-import com.groundpush.condition.TaskQueryCondition;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;

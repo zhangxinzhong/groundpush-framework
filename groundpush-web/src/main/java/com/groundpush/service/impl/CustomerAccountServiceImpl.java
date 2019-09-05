@@ -1,6 +1,6 @@
 package com.groundpush.service.impl;
 
-import com.groundpush.condition.CustomerAccountQueryCondition;
+import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.exception.BusinessException;
 import com.groundpush.exception.ExceptionEnum;

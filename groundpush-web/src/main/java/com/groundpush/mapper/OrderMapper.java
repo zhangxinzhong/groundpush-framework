@@ -1,6 +1,6 @@
 package com.groundpush.mapper;
 
-import com.groundpush.condition.OrderQueryCondition;
+import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
 import org.apache.ibatis.annotations.*;
 

@@ -1,8 +1,8 @@
 package com.groundpush.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.groundpush.condition.CustomerQueryCondition;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.exception.BusinessException;
 import com.groundpush.service.CustomerService;
@@ -60,7 +60,7 @@ public class CustomerController {
 
     @ApiOperation(value = "邀请列表")
     @GetMapping
-    public JsonResp queryCustomer(@Valid CustomerQueryCondition customerQueryCondition,@PageableDefault(page = 1,size =20) Pageable pageable){
+    public JsonResp queryCustomer(@Valid CustomerQueryCondition customerQueryCondition, @PageableDefault(page = 1,size =20) Pageable pageable){
 
         try{
             List<Customer> customers = customerService.queryCustomer(customerQueryCondition,pageable);

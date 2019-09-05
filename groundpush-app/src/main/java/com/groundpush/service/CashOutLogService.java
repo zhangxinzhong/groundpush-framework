@@ -1,6 +1,6 @@
 package com.groundpush.service;
 
-import com.groundpush.condition.CashOutLogQueryCondition;
+import com.groundpush.core.condition.CashOutLogQueryCondition;
 import com.groundpush.core.model.CashOutLog;
 import org.springframework.data.domain.Pageable;
 

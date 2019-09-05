@@ -3,7 +3,8 @@ package com.groundpush.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.common.View;
-import com.groundpush.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskCollectQueryCondition;
+import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import com.groundpush.service.TaskCollectService;
@@ -11,11 +12,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @description:任务收藏
@@ -66,10 +67,9 @@ public class TaskCollectController {
     @ApiOperation("收藏任务列表")
     @JsonView(Task.DetailTaskView.class)
     @GetMapping
-    public JsonResp queryTaskCollect(@Valid TaskCollectQueryCondition taskCollectQueryCondition, Pageable pageable){
+    public JsonResp queryTaskCollect(@Valid TaskCollectQueryCondition taskCollectQueryCondition, @PageableDefault(page = 0,size =20) Pageable pageable){
         try{
-            List<Task> tasks = taskCollectService.queryTaskCollect(taskCollectQueryCondition,pageable);
-            return JsonResp.success(tasks);
+            return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskCollectQueryCondition,pageable)));
         }catch (Exception e) {
             log.error(e.toString(), e);
             return  JsonResp.failure();

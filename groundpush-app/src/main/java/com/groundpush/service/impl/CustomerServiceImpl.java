@@ -1,20 +1,20 @@
 package com.groundpush.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.groundpush.condition.CustomerAccountQueryCondition;
-import com.groundpush.condition.CustomerQueryCondition;
+import com.groundpush.core.condition.CustomerAccountQueryCondition;
+import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
-import com.groundpush.mapper.CustomerMapper;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.utils.UniqueCode;
+import com.groundpush.mapper.CustomerMapper;
 import com.groundpush.security.oauth.mobile.repository.CustomerRepository;
 import com.groundpush.service.CustomerAccountService;
 import com.groundpush.service.CustomerService;
 import com.groundpush.service.OrderService;
-import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.vo.CustomerVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
