@@ -1,5 +1,9 @@
 package com.groundpush.security.oauth.mobile.repository;
 
+import com.groundpush.core.model.Customer;
+
+import java.util.Optional;
+
 /**
  * @description: 一键登录时创建客户
  * @author: zhangxinzhong
@@ -12,6 +16,6 @@ public interface CustomerRepository {
      * @param mobile
      * @return
      */
-    void createCustomer(String mobile);
+    Optional<Customer> queryOrCreateCustomer(String mobile);
 
 }

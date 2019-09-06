@@ -124,14 +124,15 @@ public class CustomerServiceImpl implements CustomerService, CustomerRepository 
     }
 
     @Override
-    public void createCustomer(String mobile) {
+    public Optional<Customer> queryOrCreateCustomer(String mobile) {
         Optional<Customer> optionalCustomer = customerMapper.queryCustomerByLoginNo(mobile);
         if (!optionalCustomer.isPresent()) {
-            Customer customer = Customer.builder()
-                    .loginNo(mobile)
-                    .build();
+            Customer customer = Customer.builder().loginNo(mobile).build();
             createCustomer(customer);
+            return Optional.of(customer);
         }
+
+        return optionalCustomer;
     }
 
     private String generateNickName() {

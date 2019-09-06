@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("com.groundpush.mapper")
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableSwagger2Doc
 public class GroundPushWebApplication {
 
     public static void main(String[] args) {

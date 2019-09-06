@@ -2,6 +2,8 @@ package com.groundpush.security.oauth.mobile.filter;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
+import com.groundpush.core.model.Customer;
 import com.groundpush.core.utils.AesUtils;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.security.core.common.SecurityConstants;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @description: 验证码过滤器
@@ -111,18 +114,22 @@ public class MobileFilter extends OncePerRequestFilter {
                 throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
             }
 
-            if(jsonResp.getData() == null){
+            if (jsonResp.getData() == null) {
                 throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
             }
 
             mobileNo = (String) jsonResp.getData();
 
-            if(mobileNo.length() != Integer.valueOf(11)){
+            if (mobileNo.length() != Integer.valueOf(11)) {
                 throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
             }
             request.setAttribute("mobileNo", mobileNo);
-            customerRepository.createCustomer(mobileNo);
-            log.info("客户通过一键登录进入应用，loginNo: {}", mobileNo);
+
+            Optional<Customer> optionalCustomer = customerRepository.queryOrCreateCustomer(mobileNo);
+            if (!optionalCustomer.isPresent()) {
+                throw new SystemException(ExceptionEnum.EXCEPTION.getErrorMessage());
+            }
+            log.info("客户通过一键登录进入应用，loginNo: {}", optionalCustomer);
         } else {
             log.info("未知的登录方式，validateCode：{} , valiCode:{} ,accessToken:{} ,mobileNo:{},deviceId:{}", validateCode, valiCode, accessToken, mobileNo, deviceId);
             throw new ValidateCodeException(ExceptionEnum.EXCEPTION_UNKNOWN_LOGIN_TYPE.getErrorMessage());
