@@ -10,6 +10,7 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
 import com.groundpush.security.core.exception.ValidateCodeException;
 import com.groundpush.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -64,10 +65,10 @@ public class SendSms {
             log.info("验证码发送完成,当前时间：{} 。 响应：{}", LocalDateTime.now(), response.getData());
         } catch (ServerException e) {
             log.error(e.getMessage(), e);
-            throw new ValidateCodeException(e.getMessage());
+            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         } catch (ClientException e) {
             log.error(e.getMessage(), e);
-            throw new ValidateCodeException(e.getMessage());
+            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         }
     }
 }

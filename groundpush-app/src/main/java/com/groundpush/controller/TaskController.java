@@ -45,20 +45,7 @@ public class TaskController {
             return JsonResp.success(new PageResult(tasks));
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
-        }
-    }
-
-    @PostMapping
-    @ApiOperation("新建任务")
-    @ResponseBody
-    public JsonResp CreateTask(@RequestBody Task task) {
-        try {
-            taskService.createSingleTask(task);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -73,7 +60,7 @@ public class TaskController {
             return JsonResp.success(optionalTask.isPresent() ? optionalTask.get() : null);
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 }

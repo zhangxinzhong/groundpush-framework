@@ -82,7 +82,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw e;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new SystemException(ExceptionEnum.CREATE_CUSTOMER_ERROR.getErrorCode(), ExceptionEnum.CREATE_CUSTOMER_ERROR.getErrorMessage());
+            throw new SystemException(ExceptionEnum.EXCEPTION.getErrorMessage());
         }
     }
 

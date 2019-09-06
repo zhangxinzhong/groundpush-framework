@@ -1,6 +1,7 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.service.CustomerAccountService;
 import io.swagger.annotations.ApiModel;
@@ -29,13 +30,13 @@ public class CustomerAccountController {
 
     @ApiOperation(value = "修改手机号、绑定微信支付宝")
     @PutMapping
-    public JsonResp updateCustomerAccount(@RequestBody CustomerAccount customerAccount){
-        try{
+    public JsonResp updateCustomerAccount(@RequestBody CustomerAccount customerAccount) {
+        try {
             customerAccountService.updateCustomerAccount(customerAccount);
             return JsonResp.success();
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-            return JsonResp.failure(e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw e;
         }
 
     }

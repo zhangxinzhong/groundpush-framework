@@ -50,7 +50,7 @@ public class TaskController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -62,7 +62,7 @@ public class TaskController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -81,7 +81,7 @@ public class TaskController {
             return JsonResp.success(new PageResult(tasks));
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -94,7 +94,7 @@ public class TaskController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -115,7 +115,7 @@ public class TaskController {
             return JsonResp.success(optionalTask.isPresent() ? task : null);
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 }

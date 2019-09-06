@@ -58,6 +58,10 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         ImageCode imageCode = (ImageCode) sessionValidateCodeRepository.get(new ServletWebRequest(request, response), ValidateCodeType.IMAGE);
         String valiCode = request.getParameter("imageCode");
 
+        if(imageCode == null){
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
+        }
+
         //验证码不为空
         if(StringUtils.isBlank(imageCode.getCode()) || StringUtils.isBlank(valiCode)){
             throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());

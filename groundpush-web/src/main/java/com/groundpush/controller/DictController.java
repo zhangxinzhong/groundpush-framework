@@ -53,7 +53,7 @@ public class DictController {
     }
 
     /**
-     * 保存字典表信息
+     * 添加字典表信息
      *
      * @param dict
      * @return
@@ -66,9 +66,8 @@ public class DictController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
-
     }
 
     /**
@@ -85,7 +84,7 @@ public class DictController {
             return JsonResp.success(dict.get());
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure();
+            throw e;
         }
     }
 
@@ -97,7 +96,7 @@ public class DictController {
      */
     @RequestMapping("/del")
     @ResponseBody
-    public JsonResp deleteDict(Integer dictId) {
+    public JsonResp deleteMenu(Integer dictId) {
         try {
             if (dictId != null) {
                 dictService.deleteDict(dictId);
@@ -105,6 +104,7 @@ public class DictController {
             }
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
         return JsonResp.failure();
     }

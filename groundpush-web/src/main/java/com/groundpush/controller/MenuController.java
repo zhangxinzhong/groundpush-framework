@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,9 +56,8 @@ public class MenuController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
-
     }
 
     @RequestMapping("/detail")
@@ -67,7 +68,7 @@ public class MenuController {
             return JsonResp.success(menu.get());
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure();
+            throw e;
         }
     }
 
@@ -80,23 +81,20 @@ public class MenuController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
     }
 
     @RequestMapping("/del")
     @ResponseBody
-    public JsonResp deleteMenu(Integer menuId) {
+    public JsonResp deleteMenu(@Valid @NotNull Integer menuId) {
         try {
-            if (menuId != null) {
-                menuService.deleteMenu(menuId);
-                return JsonResp.success();
-            }
+            menuService.deleteMenu(menuId);
+            return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
-
     }
 
 
