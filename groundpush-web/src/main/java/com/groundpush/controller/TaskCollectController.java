@@ -45,7 +45,7 @@ public class TaskCollectController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -58,7 +58,7 @@ public class TaskCollectController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -72,7 +72,7 @@ public class TaskCollectController {
             return JsonResp.success(tasks);
         }catch (Exception e) {
             log.error(e.toString(), e);
-            return  JsonResp.failure();
+            throw e;
         }
     }
 

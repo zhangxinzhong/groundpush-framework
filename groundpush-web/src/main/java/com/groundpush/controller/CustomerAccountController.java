@@ -35,7 +35,7 @@ public class CustomerAccountController {
             return JsonResp.success();
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
 
     }

@@ -1,5 +1,7 @@
 package com.groundpush.controller;
 
+import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
@@ -38,14 +41,14 @@ public class LoginController {
             out.print("<script>alert('session 失效，请重新登录！'); window.location.href='/'; </script>");
             out.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new SystemException(ExceptionEnum.EXCEPTION.getErrorMessage());
         } finally {
             IOUtils.closeQuietly(out);
         }
 
 
     }
-
 
 
 }

@@ -10,6 +10,8 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.google.gson.Gson;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.security.core.exception.ValidateCodeException;
 import com.groundpush.security.core.properties.SecurityProperties;
@@ -47,11 +49,11 @@ public class OneClickLoginProcessor {
             }
         } catch (ServerException e) {
             log.error(e.toString(), e);
-            throw new ValidateCodeException(e.getMessage());
+            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
 
         } catch (ClientException e) {
             log.error("ErrCode: {}  ErrMsg: {} RequestId: {}", e.getErrCode(), e.getErrCode(), e.getRequestId());
-            throw new ValidateCodeException(e.getMessage());
+            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         }
 
         return JsonResp.failure();

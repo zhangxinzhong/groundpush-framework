@@ -66,9 +66,8 @@ public class DictController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
-
     }
 
     /**
@@ -85,7 +84,7 @@ public class DictController {
             return JsonResp.success(dict.get());
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure();
+            throw e;
         }
     }
 
@@ -102,9 +101,8 @@ public class DictController {
             dictService.updateDict(dict);
             return JsonResp.success();
         } catch (Exception e) {
-            log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
     }
 
     /**
@@ -123,6 +121,7 @@ public class DictController {
             }
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
         return JsonResp.failure();
     }

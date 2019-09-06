@@ -39,8 +39,8 @@ public class DictDetailController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
 
     }
 
@@ -58,7 +58,7 @@ public class DictDetailController {
             return JsonResp.success(dictDetail.get());
         } catch (Exception e) {
             log.error(e.toString(), e);
-            return JsonResp.failure();
+            throw e;
         }
     }
 
@@ -76,8 +76,8 @@ public class DictDetailController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
-        return JsonResp.failure();
     }
 
     /**
@@ -96,6 +96,7 @@ public class DictDetailController {
             }
         } catch (Exception e) {
             log.error(e.toString(), e);
+            throw e;
         }
         return JsonResp.failure();
     }

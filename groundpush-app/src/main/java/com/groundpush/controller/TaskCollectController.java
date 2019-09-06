@@ -46,7 +46,7 @@ public class TaskCollectController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -59,7 +59,7 @@ public class TaskCollectController {
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return JsonResp.failure(e.getMessage());
+            throw e;
         }
     }
 
@@ -67,12 +67,12 @@ public class TaskCollectController {
     @ApiOperation("收藏任务列表")
     @JsonView(Task.DetailTaskView.class)
     @GetMapping
-    public JsonResp queryTaskCollect(@Valid TaskCollectQueryCondition taskCollectQueryCondition, @PageableDefault(page = 0,size =20) Pageable pageable){
-        try{
-            return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskCollectQueryCondition,pageable)));
-        }catch (Exception e) {
+    public JsonResp queryTaskCollect(@Valid TaskCollectQueryCondition taskCollectQueryCondition, @PageableDefault(page = 0, size = 20) Pageable pageable) {
+        try {
+            return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskCollectQueryCondition, pageable)));
+        } catch (Exception e) {
             log.error(e.toString(), e);
-            return  JsonResp.failure();
+            throw e;
         }
     }
 

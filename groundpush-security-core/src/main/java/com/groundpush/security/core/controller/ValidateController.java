@@ -1,7 +1,9 @@
 package com.groundpush.security.core.controller;
+import	java.time.LocalDateTime;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
 import com.groundpush.security.core.validatecode.*;
 import com.groundpush.core.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +32,9 @@ import java.io.IOException;
 @RequestMapping("/validate")
 public class ValidateController {
 
-    @Resource
-    private ValidateCodeGenerator imageValidateCodeGenerator;
 
     @Resource
-    private ValidateCodeGenerator smsValidateCodeGenerator;
+    private ValidateCodeGenerator validateCodeGenerator;
 
     @Resource
     private SendSms sendSms;
@@ -51,7 +51,7 @@ public class ValidateController {
     @ResponseBody
     @RequestMapping(value = "/codeImage")
     public void getValidationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ImageCode imageCode = (ImageCode) imageValidateCodeGenerator.generate(new ServletWebRequest(request, response));
+        ImageCode imageCode = (ImageCode) validateCodeGenerator.generate(new ServletWebRequest(request, response));
         validateCodeRepository.save(new ServletWebRequest(request, response), imageCode, ValidateCodeType.IMAGE);
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
 
@@ -69,13 +69,15 @@ public class ValidateController {
         try {
             ValidateCode validateCode = validateCodeRepository.get(request, ValidateCodeType.SMS);
             if (validateCode != null) {
-                return JsonResp.failure(ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorMessage());
+                if(validateCode.getExpireTime().isAfter(LocalDateTime.now())){
+                    return JsonResp.failure(ExceptionEnum.VALIDATE_CODE_UNEXPIRED.getErrorMessage());
+                }
             }
-            ValidateCode smsCode = smsValidateCodeGenerator.generate(request);
+            ValidateCode smsCode = validateCodeGenerator.generate(request);
             sendSms.sendSms(smsCode.getCode(), mobileNo);
             validateCodeRepository.save(request, smsCode, ValidateCodeType.SMS);
             return JsonResp.success();
-        } catch (ValidationException e) {
+        } catch (SystemException e) {
             log.error(e.getMessage(), e);
             throw e;
         }
