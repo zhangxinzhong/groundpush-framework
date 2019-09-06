@@ -17,14 +17,14 @@
 <body>
 <!--新增菜单-->
 <div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-method="showSaveDictDialog" data-custom-event="dict" id="addMenu">新增菜单</button>
+    <button class="layui-btn" data-method="showSaveDictDialog" data-custom-event="dict" id="addDict">新增菜单</button>
 </div>
 
 <!-- dict table -->
 <table class="layui-hide" id="dict" lay-filter="dict"></table>
 
 <!-- dict tobar-->
-<script type="text/html" id="toolbarMenu">
+<script type="text/html" id="toolbarDict">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">新增字典项</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑字典项</a>
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="addDict">提交</button>
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="saveDict">提交</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </form>

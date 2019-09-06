@@ -26,7 +26,7 @@ layui.use(['table','form','layer'], function () {
                     , {field: 'code', title: '字典编码', width: 300}
                     , {field: 'name', title: '字典名称', width: 300}
                     , {field: 'dictType', title: '字典类型', width: 500}
-                    , {field: '', title: '操作', width: 380,toolbar: "#toolbarMenu"}
+                    , {field: '', title: '操作', width: 380,toolbar: "#toolbarDict"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE
@@ -47,7 +47,7 @@ layui.use(['table','form','layer'], function () {
                     }
                 }
             });
-        }, reloadMenuTable:function() {
+        }, reloadDictTable:function() {
             table.reload('dict', {
                 where: {
                     page: 1
@@ -58,11 +58,11 @@ layui.use(['table','form','layer'], function () {
                 }
             });
         }
-        ,addDict:function(data) {
-            Utils.postAjax("/dict/add",JSON.stringify(data.field),function(rep) {
+        ,saveDict:function(data) {
+            Utils.postAjax("/dict/save",JSON.stringify(data.field),function(rep) {
                 if(rep.code =='200'){
                     eventListener.hideSaveDictuDialog();
-                    eventListener.reloadMenuTable();
+                    eventListener.reloadDictTable();
                     layer.msg('菜单添加成功');
                 }
             },function (rep) {
@@ -85,21 +85,10 @@ layui.use(['table','form','layer'], function () {
                 layer.msg(rep.message);
             });
         }
-        ,editMenu: function(data){
-            Utils.postAjax("/dict/edit",JSON.stringify(data.field),function(rep) {
-                if(rep.code =='200'){
-                    eventListener.hideSaveDictuDialog();
-                    eventListener.reloadMenuTable();
-                    layer.msg('菜单修改成功');
-                }
-            },function (rep) {
-                layer.msg(rep.message);
-            });
-        }
-        ,delMenu: function(data){
+        ,delDict: function(data){
             Utils.getAjax("/dict/del",{dictId:data.dictId},function(rep) {
                 if(rep.code =='200'){
-                    eventListener.reloadMenuTable();
+                    eventListener.reloadDictTable();
                     layer.msg("菜单删除成功");
                 }
             },function (rep) {
@@ -123,22 +112,15 @@ layui.use(['table','form','layer'], function () {
         } else if (obj.event === 'del') {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
-                eventListener.delMenu(data);
+                eventListener.delDict(data);
                 layer.close(index);
             });
         }
     });
 
-    //新增菜单
-    form.on('submit(addDict)',function (data) {
-        eventListener.addDict(data);
-        //屏蔽表单提交
-        return false;
-    });
-
-    //修改菜单
-    form.on('submit(editMenu)',function (data) {
-        eventListener.editMenu(data);
+    //保存菜单
+    form.on('submit(saveDict)',function (data) {
+        eventListener.saveDict(data);
         //屏蔽表单提交
         return false;
     });
