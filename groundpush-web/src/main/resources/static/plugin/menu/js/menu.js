@@ -50,7 +50,7 @@ layui.use('table', function () {
         }, reloadMenuTable:function() {
             table.reload('menu', {
                 where: {
-                    page: 1
+                    curr: 1
                     ,limit: Global.PAGE_SISE
                 }
                 ,page: {
