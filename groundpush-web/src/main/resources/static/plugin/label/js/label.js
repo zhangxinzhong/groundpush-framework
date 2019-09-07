@@ -6,7 +6,7 @@ layui.use('table', function () {
     //自定义验证规则
     form.verify({
         labelName: function (value) {
-            if (value != null || value != undefined) {
+            if (value == null || value == undefined) {
                 return '标签名称不能为空';
             }
             if (value.length > 50) {
@@ -14,7 +14,7 @@ layui.use('table', function () {
              }
         },
         remark: function(value){
-            if (value != null || value != undefined) {
+            if (value == null || value == undefined) {
                   return '标签说明不能为空';
             }
             if (value.length > 500) {
@@ -34,7 +34,7 @@ layui.use('table', function () {
                 , totalRow: true
                 , cols: [[
                     {field: 'labelId', title: 'ID', width: 100, sort: true}
-                    , {field: 'labelName', title: '菜单名称', width: 200}
+                    , {field: 'labelName', title: '标签名称', width: 200}
                     , {field: 'type', title: '标签类型', width: 200,templet: function(d){return d.type != null && d.type == 1?"主要标签":"次要标签" }}
                     , {field: 'remark', title: '标签说明', width: 500}
                     , {field: 'createdBy', title: '创建人', width: 180}
@@ -147,7 +147,7 @@ layui.use('table', function () {
         }
     });
 
-    //新增菜单
+    //新增标签
     form.on('submit(addLabel)',function (data) {
         var type = data.field.type;
 
@@ -159,16 +159,13 @@ layui.use('table', function () {
         }
         //可用状态默认为1 即可用
         data.field.status = 1;
-
-
-
-
         eventListener.addLabel(data);
+        $("#addMenuFrom").reset();
         //屏蔽表单提交
         return false;
     });
 
-    //修改菜单
+    //修改标签
     form.on('submit(editLabel)',function (data) {
         eventListener.editLabel(data);
         //屏蔽表单提交

@@ -14,7 +14,7 @@ public interface LabelMapper {
     /**
      * 获取标签列表
      */
-    @Select(" select * from t_label where status = 1 order by  sort,created_time desc ")
+    @Select(" select * from t_label where status = 1 order by  sort desc,created_time desc ")
     Page<Label> getLabel();
 
 
@@ -61,7 +61,7 @@ public interface LabelMapper {
     void updateLabel(Label label);
 
     /**
-     * 通过code 查询菜单
+     * 通过labelId 查询标签
      *
      * @param labelId
      * @return

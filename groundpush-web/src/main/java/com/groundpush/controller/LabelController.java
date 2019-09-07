@@ -98,12 +98,12 @@ public class LabelController {
     }
 
 
-    @ApiOperation(value = "删除标签")
+    @ApiOperation(value = "查询某个标签")
     @RequestMapping(value = "/detailLabel", method = RequestMethod.GET)
     @ResponseBody
     public JsonResp detailLabel(Integer labelId) {
         try {
-            Optional<Label> label = labelService.quueryById(labelId);
+            Optional<Label> label = labelService.queryById(labelId);
             return JsonResp.success(label.get());
         } catch (Exception e) {
             log.error(e.toString(), e);

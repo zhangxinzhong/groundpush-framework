@@ -114,5 +114,15 @@ public class Constants {
      */
     public static final Integer TASK_STATUS_3 = 2;
 
+    /**
+     * 可用状态 表示可见
+     */
+    public static  final Integer STATUS_VAILD = 1;
+
+    /**
+     * 不可用状态 表示不可见
+     */
+    public static  final Integer STATUS_LOSE = 0;
+
 
 }

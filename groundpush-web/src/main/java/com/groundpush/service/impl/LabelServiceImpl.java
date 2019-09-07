@@ -33,7 +33,7 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public Optional<Label> quueryById(Integer labelId) {
+    public Optional<Label> queryById(Integer labelId) {
         Optional<Label>  optional = labelMapper.queryLabelById(labelId);
         return optional;
     }

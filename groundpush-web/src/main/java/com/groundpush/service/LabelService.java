@@ -15,7 +15,6 @@ public interface LabelService {
 
     /**
      * 分页查询所有标签
-     * @param label
      * @param page
      * @param limit
      * @return
@@ -38,7 +37,7 @@ public interface LabelService {
      * 获取某个标签内容
      * @param labelId
      */
-    Optional<Label> quueryById(Integer labelId);
+    Optional<Label> queryById(Integer labelId);
 
     /**
      * 删除某个对应id
