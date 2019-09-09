@@ -124,5 +124,13 @@ public class Constants {
      */
     public static  final Integer STATUS_LOSE = 0;
 
+    /**
+     * 标签类型 主要标签
+     */
+    public static  final Integer TYPE_ONE = 1;
 
+    /**
+     * 标签类型 次要标签
+     */
+    public static  final Integer TYPE_ZERO = 0;
 }

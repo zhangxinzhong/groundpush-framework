@@ -24,9 +24,14 @@ public interface TaskMapper {
      */
     @Select({
             "<script>",
-            " select * from t_task where 1=1  ",
-            " <if test='title != null'> and title like CONCAT('%',#{title},'%')  </if> ",
-            " <if test='type != null'> and type = #{type}  </if> ",
+            " select a.task_id,a.img_uri,c.label_name,a.status,a.source,a.type,a.amount,a.location, ",
+            " a.spread_total,a.handler_num,a.audit_duration,a.expend_time,a.complete_odds,",
+            " a.owner_ratio,a.spread_ratio,a.leader_ratio,a.expired_Time,a.created_by,a.created_time,",
+            " a.last_modified_by,a.last_modified_time ",
+            " (SELECT  GROUP_CONCAT(b.label_name) FROM t_label b LEFT JOIN t_task_label c on b.label_id = c.label_id where b.type = 0 and c.task_id = a.task_id) label_name",
+            " from t_task a  where 1=1  ",
+            " <if test='title != null'> and a.title like CONCAT('%',#{title},'%')  </if> ",
+            " <if test='type != null'> and a.type = #{type}  </if> ",
             " order by created_time desc ",
             "</script>"
     })

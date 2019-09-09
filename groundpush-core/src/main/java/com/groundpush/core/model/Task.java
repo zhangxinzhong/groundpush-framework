@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.View;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -185,4 +186,13 @@ public class Task implements Serializable {
     @NotNull(message ="任务编辑内容不可为空")
     @JsonView(SimpleTaskView.class)
     private List<TaskAttribute> taskAttributes;
+
+    /*
+     ************************* 添加次要标签 *****************************************
+     */
+    @ApiParam("次要标签 格式：label1,label2,label3")
+    @JsonView(SimpleTaskView.class)
+    private String labelName;
+
+
 }

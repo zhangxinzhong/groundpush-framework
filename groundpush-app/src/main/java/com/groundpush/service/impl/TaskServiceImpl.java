@@ -44,7 +44,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        return taskMapper.queryTaskAll(taskQueryCondition);
+        Page<Task>  pages = taskMapper.queryTaskAll(taskQueryCondition);
+        return pages;
     }
 
     @Transactional(rollbackFor = Exception.class)
