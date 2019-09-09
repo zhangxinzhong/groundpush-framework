@@ -55,13 +55,14 @@ public class TaskController {
     @GetMapping
     public JsonResp queryTask(TaskQueryCondition taskCondition, @PageableDefault(page = 1, size = 20) Pageable pageable) {
         try {
+            List<Label> list  = labelService.getLabelByType(Constants.TYPE_ONE);
             //todo customerid 不为空 且 类型为空收藏
             if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), String.valueOf(Constants.TASK_TYPE_1))) {
                 Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageable);
-                return JsonResp.success(new PageResult(taskCollect));
+                return JsonResp.success(new PageResultModel(taskCollect,list));
             }
             Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageable);
-            return JsonResp.success(new PageResult(tasks));
+            return JsonResp.success(new PageResultModel(tasks,list));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

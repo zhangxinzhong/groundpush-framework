@@ -31,20 +31,20 @@ public class Label {
     };
 
     @ApiParam(value = "标签id")
-    @JsonView(OutLabelView.class)
+    @JsonView({OutLabelView.class,Task.SimpleTaskView.class})
     private Integer labelId;
 
     @ApiParam(value = "标签名称")
-    @JsonView(OutLabelView.class)
+    @JsonView({OutLabelView.class,Task.SimpleTaskView.class})
     @NotNull(message="标签名称不可为空")
     private String labelName;
 
     @ApiParam(value = "创建时间")
-    @JsonView(OutLabelView.class)
+    @JsonView({OutLabelView.class,Task.SimpleTaskView.class})
     private Date createdTime;
 
     @ApiParam(value = "修改时间")
-    @JsonView(OutLabelView.class)
+    @JsonView({OutLabelView.class,Task.SimpleTaskView.class})
     private Date modifyTime;
 
     @ApiParam(value = "创建人")
@@ -56,7 +56,7 @@ public class Label {
     private Integer status;
 
     @ApiParam(value = "标签类型（0-次要标签，1-主要标签）")
-    @JsonView(OutLabelView.class)
+    @JsonView({OutLabelView.class,Task.SimpleTaskView.class})
     @NotNull(message="标签类型不可为空")
     private Integer type;
 
@@ -66,7 +66,7 @@ public class Label {
     private Integer sort;
 
     @ApiParam(value = "备注 标签说明")
-    @JsonView(OutLabelView.class)
+    @JsonView({OutLabelView.class,Task.SimpleTaskView.class})
     @NotNull(message="标签说明不可为空")
     private String remark;
 }
