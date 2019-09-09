@@ -58,11 +58,11 @@ public class DictController {
      * @param dict
      * @return
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/save")
     @ResponseBody
-    public JsonResp addMenu(@RequestBody Dict dict) {
+    public JsonResp addDict(@RequestBody Dict dict) {
         try {
-            dictService.insertDict(dict);
+            dictService.saveDict(dict);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -78,29 +78,12 @@ public class DictController {
      */
     @RequestMapping("/detail")
     @ResponseBody
-    public JsonResp detailMenu(Integer dictId) {
+    public JsonResp detailDict(Integer dictId) {
         try {
             Optional<Dict> dict = dictService.getById(dictId);
             return JsonResp.success(dict.get());
         } catch (Exception e) {
             log.error(e.toString(), e);
-            throw e;
-        }
-    }
-
-    /**
-     * 更新字典项信息
-     *
-     * @param dict
-     * @return
-     */
-    @RequestMapping("/edit")
-    @ResponseBody
-    public JsonResp updateMenu(@RequestBody Dict dict) {
-        try {
-            dictService.updateDict(dict);
-            return JsonResp.success();
-        } catch (Exception e) {
             throw e;
         }
     }

@@ -1,11 +1,13 @@
 package com.groundpush.service.impl;
 
+import com.groundpush.core.model.Label;
 import com.groundpush.core.model.TaskLabel;
 import com.groundpush.mapper.TaskLabelMapper;
 import com.groundpush.service.TaskLabelService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,5 +42,11 @@ public class TaskLabelServiceImpl implements TaskLabelService {
             taskLabelResult = taskLabelMapper.updateTaskLabel(taskLabel) > 0 ? true : false;
         }
         return taskLabelResult;
+    }
+
+    @Override
+    public List<TaskLabel> getTaskLabelByLabelId(Label label) {
+        List<TaskLabel> listTask = taskLabelMapper.getTaskLabelByLabelId(label);
+        return listTask;
     }
 }

@@ -114,9 +114,28 @@ public class Constants {
      */
     public static final Integer TASK_STATUS_3 = 2;
 
+    /**
+     * 可用状态 表示可见
+     */
+    public static  final Integer STATUS_VAILD = 1;
+
+    /**
+     * 不可用状态 表示不可见
+     */
+    public static  final Integer STATUS_LOSE = 0;
 
     /**
      * 任务收藏
      */
     public static final Integer TASK_TYPE_1 = 1;
+
+    /**
+     * 标签类型 主要标签
+     */
+    public static  final Integer TYPE_ONE = 1;
+
+    /**
+     * 标签类型 次要标签
+     */
+    public static  final Integer TYPE_ZERO = 0;
 }

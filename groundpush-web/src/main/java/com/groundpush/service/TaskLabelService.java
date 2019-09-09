@@ -1,7 +1,9 @@
 package com.groundpush.service;
 
+import com.groundpush.core.model.Label;
 import com.groundpush.core.model.TaskLabel;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,4 +35,13 @@ public interface TaskLabelService {
      * @return
      */
     Boolean save(TaskLabel taskLabel);
+
+
+    /**
+     * 返回标签相关的任务
+     *
+     * @param label
+     * @return
+     */
+    List<TaskLabel> getTaskLabelByLabelId(Label label);
 }

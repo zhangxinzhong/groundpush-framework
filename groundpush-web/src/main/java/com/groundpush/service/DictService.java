@@ -47,4 +47,11 @@ public interface DictService {
      * @return
      */
     public Page<Dict> getDictList(Integer nowPage, Integer pageSize);
+
+    /**
+     * 保存字典项
+     * @param dict
+     * @return
+     */
+    public Boolean saveDict(Dict dict);
 }

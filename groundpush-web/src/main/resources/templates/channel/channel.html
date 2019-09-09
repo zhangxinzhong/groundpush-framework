@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录--XXX管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="/plugin/channel/css/channel.css"/>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/channel/js/channel.js"
+            th:src="@{/common/common.js}"></script>
+
+</head>
+<body>
+<!--新增渠道-->
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn" data-method="showAddChannelDialog" data-custom-event="Channel" id="addChannel">新增渠道</button>
+</div>
+
+<!-- menu table -->
+<table class="layui-hide" id="channel" lay-filter="channel"></table>
+
+<!-- menu tobar-->
+<script type="text/html" id="toolbarChannel">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<!-- 新增渠道模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="addChannelDialog" tabindex="-1" role="dialog" aria-labelledby="myModalChannel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addChannelModalChannel">新增渠道</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="addMenuFrom">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>公司名称</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="companyName" lay-verify="companyName" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>联系人</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="linkName" lay-verify="linkName" autocomplete="off" placeholder="请输入联系人" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>联系电话</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="phone" lay-verify="phone" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>公司地址</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="address" lay-verify="address" autocomplete="off" placeholder="请输入公司地址" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="addChannel">提交</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 新增渠道模态框 end -->
+
+<!-- 编辑渠道模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="editChannelDialog" tabindex="-1" role="dialog" aria-labelledby="myModalChannel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="editMenuModalChannel">编辑渠道</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="editChannelFrom" lay-filter="editChannelFrom">
+
+                                    <input hidden type="text" name="channelId" class="layui-input">
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>公司名称</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="companyName" lay-verify="companyName" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>联系人</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="linkName" lay-verify="linkName" autocomplete="off" placeholder="请输入联系人" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>联系电话</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="phone" lay-verify="phone" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>公司地址</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="address" lay-verify="address" autocomplete="off" placeholder="请输入公司地址" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="editChannel">更新</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 编辑渠道模态框 end -->
+
+</body>
+</html>
