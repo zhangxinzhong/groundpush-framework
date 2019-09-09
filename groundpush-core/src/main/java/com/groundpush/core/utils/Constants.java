@@ -53,22 +53,22 @@ public class Constants {
     /**
      * 订单审核状态（已通过）
      */
-    public static final Integer ORDER_STATUS_SUCCESS = 0;
+    public static final Integer ORDER_STATUS_SUCCESS = 1;
 
     /**
      * 订单审核状态 待审核
      */
-    public static final Integer ORDER_STATUS_EFFECT_REVIEW = 1;
+    public static final Integer ORDER_STATUS_EFFECT_REVIEW = 2;
 
     /**
      * 订单审核状态 审核中
      */
-    public static final Integer ORDER_STATUS_REVIEW = 2;
+    public static final Integer ORDER_STATUS_REVIEW = 3;
 
     /**
      * 订单审核状态 审核失败
      */
-    public static final Integer ORDER_STATUS_REVIEW_FAIL = 3;
+    public static final Integer ORDER_STATUS_REVIEW_FAIL = 4;
 
     /**
      * 验证码
