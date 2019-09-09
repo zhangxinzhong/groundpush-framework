@@ -78,6 +78,12 @@ public class TaskAttribute implements Serializable {
     @NotNull(message = "序号不可为空")
     private Integer seq;
 
+    /**
+     * 是否生成URL
+     */
+    @JsonView(Task.DetailTaskView.class)
+    private Integer createUri;
+
     @JsonView(Task.DetailTaskView.class)
     private Integer createdBy;
 
