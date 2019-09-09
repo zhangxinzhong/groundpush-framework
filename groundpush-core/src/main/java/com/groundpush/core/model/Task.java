@@ -195,4 +195,11 @@ public class Task implements Serializable {
     private String labelName;
 
 
+    /*
+     ************************* 任务是否存在订单 *****************************************
+     */
+    @ApiParam("任务是否存在订单 false为否 true为是")
+    @JsonView(SimpleTaskView.class)
+    private Boolean hasOrder;
+
 }
