@@ -51,12 +51,12 @@ layui.use('table', function () {
                 , cols: [[
                       {field: 'channelId', title: 'ID', width: 100, sort: true}
                     , {field: 'companyName', title: '公司名称', width: 200}
-                    , {field: '', title: '公司产品', width: 200,templet:function(d){ return d.title!=null && d.title != undefined ? d.companyName+"-"+ d.title:""; }}
-                    , {field: 'linkName', title: '联系人', width: 200}
-                    , {field: 'phone', title: '联系电话', width: 500}
-                    , {field: 'address', title: '公司地址', width: 180}
-                    , {field: 'createdTime', title: '创建时间', width: 200,templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                    , {field: '', title: '操作', width: 300,toolbar: "#toolbarChannel"}
+                    , {field: '', title: '公司产品', width: 250,templet:function(d){ return d.title!=null && d.title != undefined ? d.companyName+"-"+ d.title:""; }}
+                    , {field: 'linkName', title: '联系人', width: 210}
+                    , {field: 'phone', title: '联系电话', width: 200}
+                    , {field: 'address', title: '公司地址', width: 400}
+                    , {field: 'createdTime', title: '创建时间', width: 170,templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    , {field: '', title: '操作', width: 150,toolbar: "#toolbarChannel"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE

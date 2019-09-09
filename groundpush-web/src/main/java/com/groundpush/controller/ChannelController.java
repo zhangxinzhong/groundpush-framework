@@ -1,5 +1,6 @@
 package com.groundpush.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.Channel;
@@ -37,6 +38,7 @@ public class ChannelController {
     @ApiOperation(value = "获取所有渠道列表")
     @RequestMapping(value = "/getChannelPage", method = RequestMethod.GET)
     @ResponseBody
+    @JsonView(Channel.OutChannelView.class)
     public JsonResp getChannelPage(Integer page, Integer limit) {
         try {
             Page<Channel> pageLabel  = channelService.queryAll(page,limit);
@@ -92,6 +94,7 @@ public class ChannelController {
     @ApiOperation(value = "查询某个标签")
     @RequestMapping(value = "/detailChannel", method = RequestMethod.GET)
     @ResponseBody
+    @JsonView(Channel.AllChannelView.class)
     public JsonResp detailChannel(Integer channelId) {
         try {
             Optional<Channel> label = channelService.queryById(channelId);
