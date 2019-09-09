@@ -6,10 +6,13 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
+import com.groundpush.core.utils.Constants;
+import com.groundpush.service.TaskCollectService;
 import com.groundpush.service.TaskService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,9 @@ public class TaskController {
     @Resource
     private TaskService taskService;
 
+    @Resource
+    private TaskCollectService taskCollectService;
+
     /**
      * 分页查询任务
      */
@@ -41,6 +47,11 @@ public class TaskController {
     @GetMapping
     public JsonResp queryTask(TaskQueryCondition taskCondition, @PageableDefault(page = 1, size = 20) Pageable pageable) {
         try {
+            //todo customerid 不为空 且 类型为空收藏
+            if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), String.valueOf(Constants.TASK_TYPE_1))) {
+                Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageable);
+                return JsonResp.success(new PageResult(taskCollect));
+            }
             Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageable);
             return JsonResp.success(new PageResult(tasks));
         } catch (Exception e) {

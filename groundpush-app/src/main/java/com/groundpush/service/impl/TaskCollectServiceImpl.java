@@ -3,6 +3,7 @@ package com.groundpush.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.Customer;
@@ -68,9 +69,9 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     }
 
     @Override
-    public Page<Task> queryTaskCollect(TaskCollectQueryCondition taskCollectQueryCondition, Pageable pageable) {
+    public Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
-        return taskCollectMapper.queryTaskCollect(taskCollectQueryCondition);
+        return taskCollectMapper.queryTaskCollect(taskQueryCondition);
     }
 
 }

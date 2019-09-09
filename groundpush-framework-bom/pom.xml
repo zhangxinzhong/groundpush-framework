@@ -34,9 +34,33 @@
         <groundpush-security-browser.version>0.0.1-SNAPSHOT</groundpush-security-browser.version>
         <groundpush-security-core.version>0.0.1-SNAPSHOT</groundpush-security-core.version>
         <groundpush-security-oauth.version>0.0.1-SNAPSHOT</groundpush-security-oauth.version>
+        <groundpush-pay.version>0.0.1-SNAPSHOT</groundpush-pay.version>
+        <alipay-sdk-java.version>4.6.0.ALL</alipay-sdk-java.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <optional>true</optional>
+            </dependency>
 
             <!--mybatis -->
             <dependency>
@@ -58,6 +82,7 @@
                 <artifactId>spring-boot-starter-security</artifactId>
             </dependency>
 
+            <!-- oauth2-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-oauth2</artifactId>
@@ -71,12 +96,14 @@
                 <version>${thymeleaf-extras-springsecurity4.version}</version>
             </dependency>
 
+            <!-- jwt-->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-jwt</artifactId>
                 <version>${spring-security-jwt.version}</version>
             </dependency>
 
+            <!-- redis-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -95,6 +122,7 @@
                 <artifactId>spring-boot-starter-thymeleaf</artifactId>
             </dependency>
 
+            <!-- 分页-->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
@@ -128,6 +156,7 @@
                 <version>${swagger-models.version}</version>
             </dependency>
 
+            <!-- json-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
@@ -138,18 +167,6 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-devtools</artifactId>
-                <optional>true</optional>
             </dependency>
 
             <dependency>
@@ -218,6 +235,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.groundpush</groupId>
+                <artifactId>groundpush-pay</artifactId>
+                <version>${groundpush-pay.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
                 <optional>true</optional>
@@ -240,6 +263,13 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-dypnsapi</artifactId>
                 <version>${aliyun-java-sdk-dypnsapi.version}</version>
+            </dependency>
+
+            <!-- alipay-->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay-sdk-java.version}</version>
             </dependency>
         </dependencies>
 

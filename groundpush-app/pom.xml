@@ -23,6 +23,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.groundpush</groupId>
+            <artifactId>groundpush-pay</artifactId>
+        </dependency>
+
 
 
     </dependencies>

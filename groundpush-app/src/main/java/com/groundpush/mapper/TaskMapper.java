@@ -24,10 +24,18 @@ public interface TaskMapper {
      */
     @Select({
             "<script>",
-            " select * from t_task where 1=1  ",
-            " <if test='title != null'> and title like CONCAT('%',#{title},'%')  </if> ",
-            " <if test='type != null'> and type = #{type}  </if> ",
-            " order by created_time desc ",
+            " ( select * from t_task t1 where 1=1  ",
+            " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
+            " <if test='type != null'> and t1.type in (#{type})  </if> ",
+            " <if test='sort != null'> order by #{sort}  </if> ",
+            ")",
+            " <if test='location != null'> union ( select * from t_task t2 where 1=1 ",
+            " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
+            " <if test='type != null'> and t2.type in( #{type})  </if> ",
+            " and location = #{location} ",
+            " <if test='sort != null'> order by #{sort} </if> ",
+            ")",
+            "  </if> ",
             "</script>"
     })
     Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition);
@@ -39,7 +47,7 @@ public interface TaskMapper {
      * @return
      */
     @Insert(" insert into t_task(title, img_uri, amount, source, type, location, spread_total, handler_num, audit_duration, expend_time, complete_odds, owner_ratio, spread_ratio, leader_ratio, created_by, created_time ) values (#{title},#{imgUri},#{amount},#{source},#{type},#{location},#{spreadTotal},#{handlerNum},#{auditDuration},#{expendTime},#{completeOdds},#{ownerRatio},#{spreadRatio},#{leaderRatio},#{createdBy},current_timestamp) ")
-    @Options(useGeneratedKeys = true,keyProperty = "taskId")
+    @Options(useGeneratedKeys = true, keyProperty = "taskId")
     Integer createSingleTask(Task task);
 
     /**

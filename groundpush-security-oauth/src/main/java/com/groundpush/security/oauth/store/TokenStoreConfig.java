@@ -27,28 +27,26 @@ public class TokenStoreConfig {
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
 
-
-
     @Bean
-    @ConditionalOnProperty(prefix ="",name="storeType",havingValue = "redis")
+    @ConditionalOnProperty(prefix = "groundpush.security.oauth", name = "storeType", havingValue = "redis", matchIfMissing = true)
     public TokenStore redisTokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }
 
     @Configuration
-    @ConditionalOnProperty(prefix ="",name="storeType",havingValue = "jwt",matchIfMissing = true)
-    public static class JwtTokenConfig{
+    @ConditionalOnProperty(prefix = "groundpush.security.oauth", name = "storeType", havingValue = "jwt")
+    public static class JwtTokenConfig {
 
         @Resource
         private SecurityProperties securityProperties;
 
         @Bean
-        public TokenStore jwtTokenStore(){
+        public TokenStore jwtTokenStore() {
             return new JwtTokenStore(jwtAccessTokenConverter());
         }
 
         @Bean
-        public JwtAccessTokenConverter jwtAccessTokenConverter(){
+        public JwtAccessTokenConverter jwtAccessTokenConverter() {
             JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
             //设置令牌签名
             accessTokenConverter.setSigningKey(securityProperties.getOauth().getSigningKey());
@@ -57,11 +55,12 @@ public class TokenStoreConfig {
 
         /**
          * 设置默认，若容器中没有则使用
+         *
          * @return
          */
         @Bean
-        @ConditionalOnMissingBean(name="jwtTokenEnhancer")
-        public TokenEnhancer jwtTokenEnhancer(){
+        @ConditionalOnMissingBean(name = "jwtTokenEnhancer")
+        public TokenEnhancer jwtTokenEnhancer() {
             return new GroundPushJwtTokenEnhancer();
         }
     }
