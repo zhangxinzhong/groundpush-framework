@@ -14,7 +14,7 @@ public interface ChannelMapper {
     /**
      * 获取渠道列表
      */
-    @Select(" select a.channel_id,a.company_name,b.title,a.created_time,a.modfiy_time,a.status,a.link_name,a.phone,a.address,a.remark,a.created_by from t_channel a left join t_task b on a.channel_id = b.source where a.status = 1 order by  a.created_time desc ")
+    @Select(" select a.channel_id,a.company_name,b.title,a.created_time,a.modify_time,a.status,a.link_name,a.phone,a.address,a.remark,a.created_by from t_channel a left join t_task b on a.channel_id = b.source where a.status = 1 order by  a.created_time desc ")
     Page<Channel> getChannels();
 
 
