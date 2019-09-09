@@ -55,6 +55,7 @@ public class TaskController {
     @GetMapping
     public JsonResp queryTask(TaskQueryCondition taskCondition, @PageableDefault(page = 1, size = 20) Pageable pageable) {
         try {
+            //todo 将任务类型list合并到任务list接口中
             List<Label> list  = labelService.getLabelByType(Constants.TYPE_ONE);
             //todo customerid 不为空 且 类型为空收藏
             if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), String.valueOf(Constants.TASK_TYPE_1))) {
@@ -78,6 +79,7 @@ public class TaskController {
             //获取任务数据
             Optional<Task> optionalTask = taskService.getTask(id);
             Task task = optionalTask.isPresent() ? optionalTask.get() : null;
+            //todo 添加任务中是否有订单判断
             List<OrderTaskCustomer> list  = orderTaskCustomerService.findOrderByTaskId(task.getTaskId());
             task.setHasOrder(list!=null && list.size() > 0?true:false);
             return JsonResp.success(task);
