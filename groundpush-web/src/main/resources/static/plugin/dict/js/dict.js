@@ -95,6 +95,22 @@ layui.use(['table','form','layer'], function () {
                 layer.msg(rep.message);
             });
         }
+        ,editDictDetail:function (data) {
+            Utils.getAjax("/dict/detail",{dictId:data.dictId},function(rep) {
+                console.log(rep);
+                if(rep.code =='200'){
+                    form.val("saveDictForm", {
+                        "dictId": rep.data.dictId
+                        ,"code": rep.data.code
+                        ,"name":rep.data.name
+                        ,"dictType": rep.data.dictType
+                    })
+                    eventListener.showSaveDictDialog();
+                }
+            },function (rep) {
+                layer.msg(rep.message);
+            });
+        }
         ,showSaveDictDialog: function(){
             $('#saveDictDialog').modal('show');
         }
@@ -115,6 +131,10 @@ layui.use(['table','form','layer'], function () {
                 eventListener.delDict(data);
                 layer.close(index);
             });
+        }
+        //编辑子项
+        if (obj.event === 'editDictDetail') {
+            eventListener.editDictDetail(data);
         }
     });
 
