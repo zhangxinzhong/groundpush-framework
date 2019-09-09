@@ -28,7 +28,7 @@ layui.use('table', function () {
                  if (value.length > 20) {
                      return '联系电话最大不可超过20个字符';
                  }
-              }
+              },
         address: function(value){
                 if (value == null || value == undefined) {
                      return '公司地址不能为空';
@@ -36,7 +36,7 @@ layui.use('table', function () {
                  if (value.length > 200) {
                      return '公司地址最大不可超过200个字符';
                  }
-              }
+            }
      });
 
     //触发事件
@@ -51,7 +51,7 @@ layui.use('table', function () {
                 , cols: [[
                       {field: 'channelId', title: 'ID', width: 100, sort: true}
                     , {field: 'companyName', title: '公司名称', width: 200}
-                    , {field: 'companyProduct', title: '公司产品', width: 200}
+                    , {field: '', title: '公司产品', width: 200,templet:function(d){ return d.title!=null && d.title != undefined ? d.companyName+"-"+ d.title:""; }}
                     , {field: 'linkName', title: '联系人', width: 200}
                     , {field: 'phone', title: '联系电话', width: 500}
                     , {field: 'address', title: '公司地址', width: 180}
@@ -103,9 +103,11 @@ layui.use('table', function () {
                 if(rep.code =='200'){
                     form.val("editChannelFrom", {
                         "channelId": rep.data.channelId
-                        ,"channelName":rep.data.channelName
-                        ,"type":rep.data.type
-                        ,"remark": rep.data.remark
+                        ,"companyName":rep.data.companyName
+                        ,"linkName":rep.data.linkName
+                        ,"phone":rep.data.phone
+                        ,"address":rep.data.address
+
                     })
                     eventListener.showEditChannelDialog();
                 }
@@ -166,21 +168,16 @@ layui.use('table', function () {
 
     //新增渠道
     form.on('submit(addChannel)',function (data) {
-        var type = data.field.type;
 
-        //次要 主要 渠道设置排序
-        if(type == 0){
-           data.field.sort = 1;
-        }else{
-           data.field.sort = 2;
-        }
+        layui.form.render();
         //可用状态默认为1 即可用
         data.field.status = 1;
 
 
-
-
         eventListener.addChannel(data);
+
+
+
         //屏蔽表单提交
         return false;
     });
