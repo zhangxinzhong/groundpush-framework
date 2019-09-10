@@ -42,85 +42,81 @@ function initImgForGroup() {
 
 // 处理访问不到的图片给个默认图
 function excptionUrl(obj) {
-    alert(1231);
     var obj = $(obj);
     obj.attr("src", 'http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png');
 }
 
 //添加任务模块文本
-function addTaskText(type) {
-    var html = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
+function addTaskText(object) {
+    var obj = $(object);
+    var type = obj.attr("typeMsg");
+    var labelIndex = obj.parent().attr("labelIndex");
+    var html = '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelIndex + '" class="row labelRowDiv">\n' +
         '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <label class="btn btn col-lg-1">--</label>' +
-        '                <input type="text" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入文本标题">\n' +
-        '                <label class="btn btn col-lg-1">:</label>\n' +
-        '                <input type="text" name="content" class="content form-control col-lg-5" style="width:33%;display:inline" placeholder="输入文本内容">\n' +
-        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>';
+        '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+        '                <option value="1">标题</option>' +
+        '                <option value="2">内容</option>' +
+        '                <option value="3">URL</option>' +
+        '                <option value="6">下载APP</option>' +
+        '                <option value="4">扫描二维码</option>' +
+        '                <option value="5">保存二维码</option>' +
+        '                </select>' +
+        '                <span class="valueDiv">' +
+        '                <input type="text" name="content" class="content form-control col-lg-5" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
+        '                </span>' +
+        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
+        '                <input type="hidden" class="labelType" name="labelType" value="' + labelIndex + '">';
+    //判断是哪边的
     if (type == "GeneralizeTask") {
         html += '<input type="hidden" class="type" name="type" value="2">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="1">' +
-            '<input type="hidden" class="rowType" name="rowType" value="1">' +
             '            </div>';
-        $("#GeneralizeTaskContentDiv").append(html);
     } else {
         html += '<input type="hidden" class="type" name="type" value="1">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="1">' +
-            '<input type="hidden" class="rowType" name="rowType" value="1">' +
             '            </div>';
-        $("#MyTaskContentDiv").append(html);
     }
+    obj.parent().after(html);
+}
+
+//切换当前类型
+function updateRowType(object) {
+    var obj = $(object);
+    var selectValue = obj.val();
+    //需要加载的对象
+    var html = "";
+    if (selectValue == "2") {
+        html = '<textarea class="content form-control col-lg-5" name="content" id="textContent"\n' +
+            'style="font-family: mFont;height:150px;width: 55%;margin-left: 5px;"></textarea>\n';
+    } else if (selectValue == "3") {
+        html = '<input type="text" name="content" class="content form-control col-lg-5" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">'+
+            '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+    }else{
+        html = '<input type="text" name="content" class="content form-control col-lg-5" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">';
+    }
+    obj.parent().find(".valueDiv").html(html);
 }
 
 //添加任务模块图片
-function addTaskImage(type) {
-    var html = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
+function addTaskImage(object) {
+    var obj = $(object);
+    var type = obj.attr("typeMsg");
+    var labelIndex = obj.parent().attr("labelIndex");
+    var html = '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelIndex + '" class="row labelRowDiv">\n' +
         '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <label class="btn btn col-lg-1">--</label>' +
-        '                <input type="text" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入图片标题">\n' +
-        '                <label class="btn btn col-lg-1">:</label>\n' +
-        '                <img class="my-img form-control col-lg-5" id="imgDJZS" style="width:33%; height: 100px;display:inline" onerror="excptionUrl(this)" />' +
-        '                <input type="hidden" class="content" name="content"/>' +
-        '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>';
+        '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
+        '<option value="5">图片</option>' +
+        '</select>' +
+        '                <img class="my-img form-control col-lg-5" id="imgDJZS" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
+        '                <input type="hidden" class="content" name="content" value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" />' +
+        '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
+        '                <input type="hidden" class="labelType" name="labelType" value="' + labelIndex + '">';
     if (type == "GeneralizeTask") {
         html += '<input type="hidden" class="type" name="type" value="2">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="1">' +
-            '<input type="hidden" class="rowType" name="rowType" value="2">' +
             '            </div>';
-        $("#GeneralizeTaskContentDiv").append(html);
     } else {
         html += '<input type="hidden" class="type" name="type" value="1">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="1">' +
-            '<input type="hidden" class="rowType" name="rowType" value="2">' +
             '            </div>';
-        $("#MyTaskContentDiv").append(html);
     }
-}
-
-//添加任务模块URL
-function addTaskUrl(type) {
-    var html = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-        '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <label class="btn btn col-lg-1">--</label>' +
-        '                <input type="text" name="name" class="name form-control col-lg-3" style="width:20%;display:inline"\n' +
-        '                       placeholder="输入URL标题">\n' +
-        '                <label class="btn btn col-lg-1">:</label>\n' +
-        '                <input type="text" name="content" class="content form-control col-lg-4" style="width:25%;display:inline"\n' +
-        '                       placeholder="输入URL内容">\n' +
-        '                <label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n' +
-        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>';
-    if (type == "GeneralizeTask") {
-        html += '<input type="hidden" class="type" name="type" value="2">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="1">' +
-            '<input type="hidden" class="rowType" name="rowType" value="3">' +
-            '            </div>';
-        $("#GeneralizeTaskContentDiv").append(html);
-    } else {
-        html += '<input type="hidden" class="type" name="type" value="1">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="1">' +
-            '<input type="hidden" class="rowType" name="rowType" value="3">' +
-            '            </div>';
-        $("#MyTaskContentDiv").append(html);
-    }
+    obj.parent().after(html);
 }
 
 //删除单位
@@ -129,102 +125,66 @@ function romeve(object) {
     obj.parent().remove();
 }
 
-//添加说明模块文本
-function addExplainText(type) {
-    var html = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-        '                <input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <label class="btn btn col-lg-1">--</label>\n' +
-        '                <input type="text" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入标题">\n' +
-        '                <label class="btn btn col-lg-1">:</label>\n' +
-        '                <textarea class="content col-lg-5" name="content" id="textContent"\n' +
-        '                          style="margin-top: 10px;font-family: mFont;height:150px;width: 80%"></textarea>\n' +
-        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>\n';
+//添加阶段
+function addJieDuan(type) {
+    var labelRowSize = 0;
     if (type == "GeneralizeTask") {
-        html += '<input type="hidden" class="type" name="type" value="2">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="2">' +
-            '<input type="hidden" class="rowType" name="rowType" value="1">' +
-            '            </div>';
-        $("#GeneralizeExplainContentDiv").append(html);
+        labelRowSize = $("#GeneralizeTaskContentDiv .labelRow").size();
     } else {
-        html += '<input type="hidden" class="type" name="type" value="1">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="2">' +
-            '<input type="hidden" class="rowType" name="rowType" value="1">' +
-            '            </div>';
-        $("#MyExplainContentDiv").append(html);
+        labelRowSize = $("#MyTaskContentDiv .labelRow").size();
+    }
+    var labelRowIndex = 0;
+    if (labelRowSize == 0) {
+        labelRowIndex = 1;
+    } else {
+        labelRowIndex = labelRowSize + 1;
+    }
+
+    var html = "";
+    html += '<div labelIndex="' + labelRowIndex + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
+        '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + labelRowIndex + '阶段</a>\n' +
+        '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskText(this)">添加文本</a>\n' +
+        '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskImage(this)">添加图片</a>\n' +
+        '                                        <a style="margin-left: 5px;" class="btn btn-danger col-lg-2" onclick="delThisLabelRow(this)">删除该阶段</a>\n' +
+        '                                    </div>';
+    //判断是哪边的
+    if (type == "GeneralizeTask") {
+        $("#GeneralizeTaskContentDiv").append(html);
+    } else {
+        $("#MyTaskContentDiv").append(html);
     }
 }
 
-//添加说明模块图片
-function addExplainImage(type) {
-    var html = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-        '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <label class="btn btn col-lg-1">--</label>' +
-        '                <input type="text" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入图片标题">\n' +
-        '                <label class="btn btn col-lg-1">:</label>\n' +
-        '                <img class="my-img form-control col-lg-3" id="imgDJZS" style="width:33%; height: 100px;display:inline" onerror="excptionUrl(this)" />' +
-        '                <input type="hidden" class="content" name="content"/>' +
-        '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>';
-    if (type == "GeneralizeTask") {
-        html += '<input type="hidden" class="type" name="type" value="2">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="2">' +
-            '<input type="hidden" class="rowType" name="rowType" value="2">' +
-            '            </div>';
-        $("#GeneralizeExplainContentDiv").append(html);
-    } else {
-        html += '<input type="hidden" class="type" name="type" value="1">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="2">' +
-            '<input type="hidden" class="rowType" name="rowType" value="2">' +
-            '            </div>';
-        $("#MyExplainContentDiv").append(html);
-    }
+//删除当前阶段-和当前阶段所有属的内容
+function delThisLabelRow(object) {
+    var obj = $(object);
+    var labelIndex = obj.parent().attr("labelIndex");
+    //删除子项
+    obj.parent().parent().find(".labelRowDiv").each(function (index, onLabelRow) {
+        var onLabelIndex = $(onLabelRow).attr("onLabelIndex");
+        if (onLabelIndex == labelIndex) {
+            $(onLabelRow).remove();
+        }
+    })
+    //删除当前
+    obj.parent().remove();
+    //调用默认排序
+    defuletSort()
 }
 
-
-//添加结果模块图片
-function addResultImage(type) {
-    var html = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-        '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <label class="btn btn col-lg-1">--</label>' +
-        '                <input type="text" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入图片标题">\n' +
-        '                <label class="btn btn col-lg-1">:</label>\n' +
-        '                <img class="my-img form-control col-lg-3" id="imgDJZS" style="width:33%; height: 100px;display:inline" onerror="excptionUrl(this)" />' +
-        '                <input type="hidden" class="content" name="content"/>' +
-        '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>';
-    if (type == "GeneralizeTask") {
-        html += '<input type="hidden" class="type" name="type" value="2">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="3">' +
-            '<input type="hidden" class="rowType" name="rowType" value="2">' +
-            '            </div>';
-        $("#GeneralizeResultContentDiv").append(html);
-    } else {
-        html += '<input type="hidden" class="type" name="type" value="1">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="3">' +
-            '<input type="hidden" class="rowType" name="rowType" value="2">' +
-            '            </div>';
-        $("#MyResultContentDiv").append(html);
-    }
-}
-
-//添加结果模块文本
-function addResultText(type) {
-    var html = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-        '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <label class="btn btn col-lg-1">--</label>' +
-        '                <input type="text" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入文本标题">\n' +
-        '                <label class="btn btn col-lg-1">:</label>\n' +
-        '                <input type="text" name="content" class="content form-control col-lg-5" style="width:33%;display:inline" placeholder="输入文本内容">\n' +
-        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>';
-    if (type == "GeneralizeTask") {
-        html += '<input type="hidden" class="type" name="type" value="2">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="3">' +
-            '<input type="hidden" class="rowType" name="rowType" value="1">' +
-            '            </div>';
-        $("#GeneralizeResultContentDiv").append(html);
-    } else {
-        html += '<input type="hidden" class="type" name="type" value="1">\n' +
-            '<input type="hidden" class="labelType" name="labelType" value="3">' +
-            '<input type="hidden" class="rowType" name="rowType" value="1">' +
-            '            </div>';
-        $("#MyResultContentDiv").append(html);
-    }
+//刷新底部默认排序
+function defuletSort() {
+    $("#MyTaskContentDiv .labelRow").each(function (index, object) {
+        var num = parseInt(index + 1);
+        //遍历子项
+        var labelIndex = $(object).attr("labelIndex");
+        $("#MyTaskContentDiv .labelRowDiv").each(function (keyIndex, value) {
+            var onLabelIndex = $(value).attr("onLabelIndex");
+            if (onLabelIndex == labelIndex) {
+                $(value).attr("onLabelIndex", num);
+            }
+        })
+        $(object).attr("labelIndex", num);
+        $(object).find(".stageIndex").html("第" + num + "阶段");
+    })
 }

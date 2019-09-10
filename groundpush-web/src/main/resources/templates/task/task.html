@@ -208,72 +208,32 @@
                             <input class="form-control col-lg-1" name="leaderRatio" id="leaderRatio"
                                    style="width:80%;display:inline" type="number">
                         </div>
-                        <hr>
-                        <div class="row" id="allTaskDiv">
-                            <div class="col-lg-6" id="MyTask" style="border-right:1px solid #000">
-                                <label style="margin-left: 20px;" class="btn panel-heading row">我的任务编辑</label>
-                                <div style="margin-left: 20px;" class="row">
-                                    <label class="btn col-lg-2">任务模块：</label>
-                                    <a class="btn btn-primary col-lg-2" onclick="addTaskText('MyTask')">添加文本</a>
-                                    <a class="btn btn-primary col-lg-2" onclick="addTaskImage('MyTask')">添加图片</a>
-                                    <a class="btn btn-primary col-lg-2" onclick="addTaskUrl('MyTask')">添加URL</a>
-                                    <hr>
-                                    <div id="MyTaskContentDiv"></div>
-                                </div>
-                                <hr>
-                                <div style="margin-left: 20px;" class="row">
-                                    <label class="btn col-lg-2">说明模块：</label>
-                                    <a class="btn btn-primary col-lg-2" onclick="addExplainText('MyTask')">添加内容</a>
-                                    <a class="btn btn-primary col-lg-2" onclick="addExplainImage('MyTask')">添加图片</a>
-                                    <hr>
-                                    <div id="MyExplainContentDiv"></div>
-                                </div>
-                                <hr>
-                                <div style="margin-left: 20px;" class="row">
-                                    <label class="btn col-lg-2">结果模块：</label>
-                                    <a class="btn btn-primary col-lg-2" onclick="addResultText('MyTask')">添加文本</a>
-                                    <a class="btn btn-primary col-lg-2" onclick="addResultImage('MyTask')">添加图片</a>
-                                    <hr>
-                                    <div id="MyResultContentDiv"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6" id="GeneralizeTask">
-                                <label style="margin-left: 20px;" class="btn panel-heading row">推广任务编辑</label>
-                                <div style="margin-left: 20px;" class="row">
-                                    <label class="btn col-lg-2">任务模块：</label>
-                                    <a class="btn btn-primary col-lg-2" onclick="addTaskText('GeneralizeTask')">添加文本</a>
-                                    <a class="btn btn-primary col-lg-2"
-                                       onclick="addTaskImage('GeneralizeTask')">添加图片</a>
-                                    <a class="btn btn-primary col-lg-2" onclick="addTaskUrl('GeneralizeTask')">添加URL</a>
-                                    <hr>
-                                    <div id="GeneralizeTaskContentDiv">
 
-                                    </div>
-                                </div>
-                                <hr>
-                                <div style="margin-left: 20px;" class="row">
-                                    <label class="btn col-lg-2">说明模块：</label>
-                                    <a class="btn btn-primary col-lg-2"
-                                       onclick="addExplainText('GeneralizeTask')">添加内容</a>
-                                    <a class="btn btn-primary col-lg-2"
-                                       onclick="addExplainImage('GeneralizeTask')">添加图片</a>
-                                    <hr>
-                                    <div id="GeneralizeExplainContentDiv"></div>
-                                </div>
-                                <hr>
-                                <div style="margin-left: 20px;" class="row">
-                                    <label class="btn col-lg-2">结果模块：</label>
-                                    <a class="btn btn-primary col-lg-2"
-                                       onclick="addResultText('GeneralizeTask')">添加文本</a>
-                                    <a class="btn btn-primary col-lg-2"
-                                       onclick="addResultImage('GeneralizeTask')">添加图片</a>
-                                    <hr>
-                                    <div id="GeneralizeResultContentDiv"></div>
-                                </div>
-                            </div>
-                        </div>
                         <input type="hidden" name="taskAttributes" id="taskAttributes">
                     </form>
+
+                    <div class="row" id="allTaskDiv" style="margin-top: 15px">
+                        <div class="col-lg-6" id="MyTask" style="border-right:1px solid #000">
+                            <div style="margin-left: 20px;" class="row">
+                                <a class="btn btn-primary col-lg-2">我的任务编辑</a>
+                                <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
+                                   onclick="addJieDuan('MyTask')">添加阶段</a>
+                            </div>
+                            <div id="MyTaskContentDiv">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="GeneralizeTask">
+                            <div style="margin-left: 20px;" class="row">
+                                <a class="btn btn-primary col-lg-2">推广任务编辑</a>
+                                <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
+                                   onclick="addJieDuan('GeneralizeTask')">添加阶段</a>
+                            </div>
+                            <div id="GeneralizeTaskContentDiv">
+
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -759,10 +719,10 @@
             var name = taskAttributes[one].name;
             //value
             var content = taskAttributes[one].content;
-            if (seq.length == 0 || name.length == 0 || content.length == 0) {
-                alert(msg);
-                return false;
-            }
+            /*if (seq.length == 0 || name.length == 0 || content.length == 0) {
+                //alert(msg);
+                //return false;
+            }*/
         }
         return true;
     }
