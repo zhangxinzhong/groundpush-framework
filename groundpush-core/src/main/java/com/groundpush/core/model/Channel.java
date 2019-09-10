@@ -1,8 +1,9 @@
 package com.groundpush.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiParam;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.groundpush.core.common.View;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,36 +22,52 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Channel {
 
-    @ApiParam(value = "渠道id")
+    public interface OutChannelView extends View {
+    };
+
+    public interface AllChannelView extends Channel.OutChannelView {
+    };
+
+    @ApiModelProperty(value = "渠道id")
+    @JsonView(OutChannelView.class)
     private Integer channelId;
 
-    @ApiParam(value = "标签名称")
+    @ApiModelProperty(value = "标签名称")
+    @JsonView(OutChannelView.class)
     private String companyName;
 
-    @ApiParam(value = "创建时间")
+    @ApiModelProperty(value = "创建时间")
+    @JsonView(OutChannelView.class)
     private Date createdTime;
 
-    @ApiParam(value = "修改时间")
+    @ApiModelProperty(value = "修改时间")
+    @JsonView(AllChannelView.class)
     private Date modifyTime;
 
-    @ApiParam(value = "创建人")
+    @ApiModelProperty(value = "创建人")
+    @JsonView(AllChannelView.class)
     private Integer createdBy;
 
-    @ApiParam(value = "当前状态 是否可用（0否，1是）")
+    @ApiModelProperty(value = "当前状态 是否可用（0否，1是）")
+    @JsonView(AllChannelView.class)
     private Integer status;
 
-    @ApiParam(value = "联系人")
+    @ApiModelProperty(value = "联系人")
+    @JsonView(OutChannelView.class)
     private String linkName;
 
-    @ApiParam(value = "联系电话")
+    @ApiModelProperty(value = "联系电话")
+    @JsonView(OutChannelView.class)
     private String phone;
 
-    @ApiParam(value = "公司地址")
+    @ApiModelProperty(value = "公司地址")
+    @JsonView(OutChannelView.class)
     private String address;
 
-    @ApiParam(value = "备注")
+    @ApiModelProperty(value = "备注")
+    @JsonView(OutChannelView.class)
     private String remark;
 
-    @ApiParam(value = "备注")
+    @ApiModelProperty(value = "备注")
     private String title;
 }

@@ -12,9 +12,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @description: 分页对象
- * @author: zhangxinzhong
- * @date: 2019-08-23 下午4:50
+ * @description: 用于任务列表 组合返回
+ * @author: hss
+ * @date: 2019-09-09
  */
 @Data
 @Builder
