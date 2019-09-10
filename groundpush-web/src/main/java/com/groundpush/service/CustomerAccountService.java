@@ -9,16 +9,10 @@ import com.groundpush.core.model.CustomerAccount;
  */
 public interface CustomerAccountService {
 
-    /**
-     * 通过客户编号查询客户账户
-     * @param customerId
-     * @return
-     */
-    CustomerAccount getCustomerAccount(Integer customerId);
 
     /**
-     * 创建客户账户表
-     * @param customerAccount
+     * 根据客户编号更新客户账户金额
+     * @param build
      */
-    void createCustomerAccount(CustomerAccount customerAccount);
+    void updateCustomerAccountAmountByCustomerId(CustomerAccount build);
 }

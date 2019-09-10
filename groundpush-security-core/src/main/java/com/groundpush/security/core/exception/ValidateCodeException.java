@@ -12,7 +12,7 @@ public class ValidateCodeException extends AuthenticationException {
 
     private String errorMessage;
 
-    public ValidateCodeException( String message) {
+    public ValidateCodeException(String message) {
         super(message);
         this.errorMessage = message;
     }

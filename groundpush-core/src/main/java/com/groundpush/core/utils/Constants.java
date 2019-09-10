@@ -143,4 +143,6 @@ public class Constants {
      * 标签类型 次要标签
      */
     public static  final Integer TYPE_ZERO = 0;
+
+    public static final String SESSION_LOGIN_USER_INFO = "session_login_user_info";
 }

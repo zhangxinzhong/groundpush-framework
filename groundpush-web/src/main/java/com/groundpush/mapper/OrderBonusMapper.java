@@ -1,6 +1,7 @@
 package com.groundpush.mapper;
 
 import com.groundpush.core.model.OrderBonus;
+import com.groundpush.vo.OrderPayVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
@@ -41,4 +42,12 @@ public interface OrderBonusMapper {
      */
     @Select(" select * from t_order_bonus where order_id= #{orderId} ")
     List<OrderBonus> queryOrderBonusByOrderId(Integer orderId);
+
+    /**
+     * 通过任务、订单创建时间、状态查询此任务下订单，用于计算分成
+     * @param orderPay
+     * @return
+     */
+    @Select(" select ob.* from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id inner join t_order_bonus ob on ob.order_id = o.order_id where otc.task_id=#{taskId} and o.created_time between ${startDateTime} and ${endDateTime}  and o.status=#{orderStatus} and o.settlement_status=#{orderStatus} ")
+    List<OrderBonus> queryOrderByTaskIdAndOrderCreateTimeAndStatus(OrderPayVo orderPay);
 }

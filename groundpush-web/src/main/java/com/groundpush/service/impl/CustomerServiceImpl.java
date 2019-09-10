@@ -1,24 +1,17 @@
 package com.groundpush.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
-import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.Customer;
+import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.model.CustomerLoginAccount;
-import com.groundpush.core.model.Order;
-import com.groundpush.core.utils.UniqueCode;
+import com.groundpush.mapper.CustomerAccountMapper;
+import com.groundpush.mapper.CustomerLoginAccountMapper;
 import com.groundpush.mapper.CustomerMapper;
 import com.groundpush.service.CustomerService;
-import com.groundpush.service.OrderService;
-import com.groundpush.vo.CustomerVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,10 +30,10 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMapper customerMapper;
 
     @Resource
-    private OrderService orderService;
+    private CustomerLoginAccountMapper customerLoginAccountMapper;
 
     @Resource
-    private UniqueCode uniqueCode;
+    private CustomerAccountMapper customerAccountMapper;
 
     @Override
     public Optional<Customer> getCustomer(Integer customerId) {
@@ -50,67 +43,10 @@ public class CustomerServiceImpl implements CustomerService {
         }
         //查询账户信息
         CustomerAccountQueryCondition customerAccountQueryCondition = CustomerAccountQueryCondition.builder().customerId(customerId).type(customer.get().getType()).build();
-        List<CustomerLoginAccount> optionalCustomerLoginAccounts = customerAccountService.queryCustomerAccount(customerAccountQueryCondition);
+        List<CustomerLoginAccount> optionalCustomerLoginAccounts = customerLoginAccountMapper.queryCustomerLoginAccount(customerAccountQueryCondition);
+        Optional<CustomerAccount> optionalCustomerAccount = customerAccountMapper.getCustomerAccount(customerId);
         customer.get().setCustomerLoginAccounts(optionalCustomerLoginAccounts);
-
+        customer.get().setCustomerAccounts(optionalCustomerAccount.isPresent() ? optionalCustomerAccount.get() : null);
         return customer;
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void updateCustomer(CustomerVo customerVo) {
-        try {
-            if (StringUtils.isNotBlank(customerVo.getInviteCode())) {
-                //若客户进行更改parentId 需验证客户是否存在订单 和父客户是否存在
-                Optional<Customer> parentCustomer = customerMapper.queryCustomerByInviteCode(customerVo.getInviteCode());
-                if (!parentCustomer.isPresent()) {
-                    throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorMessage());
-                }
-                List<Order> orders = orderService.queryOrderByCustomerId(customerVo.getCustomerId());
-                if (orders.size() > 0) {
-                    throw new BusinessException(ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorCode(), ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorMessage());
-                }
-                customerVo.setParentId(parentCustomer.get().getCustomerId());
-            }
-            customerMapper.updateCustomer(customerVo);
-        } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new SystemException(ExceptionEnum.EXCEPTION.getErrorMessage());
-        }
-    }
-
-    @Override
-    public List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        return customerMapper.queryCustomer(customerQueryCondition);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void createCustomer(Customer customer) {
-
-        try {
-            if (StringUtils.isBlank(customer.getInviteCode())) {
-                customer.setInviteCode(uniqueCode.getCode());
-            }
-            customerMapper.createCustomer(customer);
-            // 创建账号信息
-            CustomerLoginAccount customerLoginAccount = CustomerLoginAccount.builder().customerId(customer.getCustomerId()).type(customer.getType()).loginNo(customer.getLoginNo()).build();
-            customerAccountService.createCustomerAccount(customerLoginAccount);
-        } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new SystemException(ExceptionEnum.CREATE_CUSTOMER_ERROR.getErrorCode(), ExceptionEnum.CREATE_CUSTOMER_ERROR.getErrorMessage());
-        }
-    }
-
-    @Override
-    public Optional<Customer> queryCustomerByMobile(String loginNo) {
-        return customerMapper.queryCustomerByLoginNo(loginNo);
     }
 }

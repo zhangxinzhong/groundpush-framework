@@ -2,6 +2,7 @@ package com.groundpush.service.impl;
 
 import com.groundpush.core.model.*;
 import com.groundpush.mapper.*;
+import com.groundpush.security.core.repository.ObjectRepository;
 import com.groundpush.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService,ObjectRepository<LoginUserInfo> {
 
     @Resource
     private UserMapper userMapper;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
             User user = optionalUser.get();
             loginUserInfo.setUser(user);
             Optional<UserAccount> optionalUserAccount = userAccountMapper.getUserAccountByUserId(user.getUserId());
-            if(optionalUserAccount.isPresent()){
+            if (optionalUserAccount.isPresent()) {
                 loginUserInfo.setUserAccount(optionalUserAccount.get());
             }
             // 2. 查询用户关联角色
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
                     List<Integer> privilegeIds = optionalPrivileges.stream().filter(c -> c.getPrivilegeId() != null).map(privilege -> privilege.getPrivilegeId()).collect(Collectors.toList());
                     // 4. 查询权限关联uri
                     List<Uri> optionalUris = privilegeUriMapper.queryUriByPrivilegeId(privilegeIds);
-                    if(optionalUris != null && optionalUris.size() > 0){
+                    if (optionalUris != null && optionalUris.size() > 0) {
                         loginUserInfo.setUriList(optionalUris);
                     }
 
@@ -76,5 +77,8 @@ public class UserServiceImpl implements UserService {
         return Optional.empty();
     }
 
-
+    @Override
+    public Optional<LoginUserInfo> queryOrCreate(String id) {
+        return getLoginUserInfo(id);
+    }
 }

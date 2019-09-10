@@ -11,7 +11,7 @@ import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.CustomerMapper;
-import com.groundpush.security.oauth.mobile.repository.CustomerRepository;
+import com.groundpush.security.core.repository.ObjectRepository;
 import com.groundpush.service.CustomerAccountService;
 import com.groundpush.service.CustomerLoginAccountService;
 import com.groundpush.service.CustomerService;
@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class CustomerServiceImpl implements CustomerService, CustomerRepository {
+public class CustomerServiceImpl implements CustomerService,ObjectRepository<Customer> {
 
     @Resource
     private CustomerMapper customerMapper;
@@ -61,9 +61,9 @@ public class CustomerServiceImpl implements CustomerService, CustomerRepository 
         //查询账户信息
         CustomerAccountQueryCondition customerAccountQueryCondition = CustomerAccountQueryCondition.builder().customerId(customerId).type(customer.get().getType()).build();
         List<CustomerLoginAccount> optionalCustomerLoginAccounts = customerLoginAccountService.queryCustomerLoginAccount(customerAccountQueryCondition);
-        CustomerAccount customerAccount = customerAccountService.getCustomerAccount(customerId);
+        Optional<CustomerAccount> optionalCustomerAccount = customerAccountService.getCustomerAccount(customerId);
         customer.get().setCustomerLoginAccounts(optionalCustomerLoginAccounts);
-        customer.get().setCustomerAccounts(customerAccount);
+        customer.get().setCustomerAccounts(optionalCustomerAccount.isPresent() ? optionalCustomerAccount.get() : null);
 
         return customer;
     }
@@ -132,14 +132,13 @@ public class CustomerServiceImpl implements CustomerService, CustomerRepository 
     }
 
     @Override
-    public Optional<Customer> queryOrCreateCustomer(String mobile) {
+    public Optional<Customer> queryOrCreate(String mobile) {
         Optional<Customer> optionalCustomer = customerMapper.queryCustomerByLoginNo(mobile);
         if (!optionalCustomer.isPresent()) {
             Customer customer = Customer.builder().loginNo(mobile).build();
             createCustomer(customer);
             return Optional.of(customer);
         }
-
         return optionalCustomer;
     }
 

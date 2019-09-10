@@ -13,17 +13,6 @@ import java.util.List;
  */
 public interface OrderService {
 
-    /**
-     * 创建订单
-     * @param order
-     */
-    void createOrder(Order order);
-
-    /**
-     * 删除订单
-     * @param orderId
-     */
-    void deleteOrder(Integer orderId);
 
     /**
      * 分页查询订单
@@ -33,23 +22,5 @@ public interface OrderService {
      */
     List<Order> queryOrder(OrderQueryCondition order, Pageable pageable);
 
-    /**
-     * 修改订单唯一编码（申请售后）
-     * @param orderId
-     * @param uniqueCode
-     */
-    void updateOrderUniqueCode(Integer orderId, String uniqueCode);
 
-    /**
-     * 更新订单
-     * @param order
-     */
-    void updateOrder(Order order);
-
-    /**
-     * 查询订单通过客户id
-     * @param customerId
-     * @return
-     */
-    List<Order> queryOrderByCustomerId(Integer customerId);
 }
