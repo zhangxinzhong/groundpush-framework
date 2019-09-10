@@ -1,28 +1,24 @@
 package com.groundpush.service;
 
-import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.model.CustomerAccount;
 
-import java.util.List;
-
 /**
- * @description:客户账号
+ * @description: 客户账户
  * @author: zhangxinzhong
- * @date: 2019-08-28 下午2:09
+ * @date: 2019-09-10 下午1:13
  */
 public interface CustomerAccountService {
-    /**
-     * 更新客户账号信息
-     * @param customerAccount
-     */
-    void updateCustomerAccount(CustomerAccount customerAccount);
 
     /**
-     * 创建客户账号
+     * 通过客户编号查询客户账户
+     * @param customerId
+     * @return
+     */
+    CustomerAccount getCustomerAccount(Integer customerId);
+
+    /**
+     * 创建客户账户表
      * @param customerAccount
      */
     void createCustomerAccount(CustomerAccount customerAccount);
-
-
-    List<CustomerAccount> queryCustomerAccount(CustomerAccountQueryCondition customerAccountQueryCondition);
 }

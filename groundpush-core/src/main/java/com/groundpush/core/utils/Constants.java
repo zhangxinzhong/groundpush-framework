@@ -51,24 +51,29 @@ public class Constants {
     public static final BigDecimal PERCENTAGE_100 = BigDecimal.valueOf(100);
 
     /**
-     * 订单审核状态（已通过）
+     * 订单状态（已通过）
      */
     public static final Integer ORDER_STATUS_SUCCESS = 1;
 
     /**
-     * 订单审核状态 待审核
+     * 订单状态 待审核
      */
     public static final Integer ORDER_STATUS_EFFECT_REVIEW = 2;
 
     /**
-     * 订单审核状态 审核中
+     * 订单状态 审核中
      */
     public static final Integer ORDER_STATUS_REVIEW = 3;
 
     /**
-     * 订单审核状态 审核失败
+     * 订单状态 审核失败
      */
     public static final Integer ORDER_STATUS_REVIEW_FAIL = 4;
+
+    /**
+     * 订单状态 支付成功
+     */
+    public static final Integer ORDER_STATUS_PAY_SUCCESS = 5;
 
     /**
      * 验证码

@@ -7,11 +7,10 @@ import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.Customer;
-import com.groundpush.core.model.CustomerAccount;
+import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.CustomerMapper;
-import com.groundpush.service.CustomerAccountService;
 import com.groundpush.service.CustomerService;
 import com.groundpush.service.OrderService;
 import com.groundpush.vo.CustomerVo;
@@ -41,9 +40,6 @@ public class CustomerServiceImpl implements CustomerService {
     private OrderService orderService;
 
     @Resource
-    private CustomerAccountService customerAccountService;
-
-    @Resource
     private UniqueCode uniqueCode;
 
     @Override
@@ -54,8 +50,8 @@ public class CustomerServiceImpl implements CustomerService {
         }
         //查询账户信息
         CustomerAccountQueryCondition customerAccountQueryCondition = CustomerAccountQueryCondition.builder().customerId(customerId).type(customer.get().getType()).build();
-        List<CustomerAccount> optionalCustomerAccounts = customerAccountService.queryCustomerAccount(customerAccountQueryCondition);
-        customer.get().setCustomerAccounts(optionalCustomerAccounts);
+        List<CustomerLoginAccount> optionalCustomerLoginAccounts = customerAccountService.queryCustomerAccount(customerAccountQueryCondition);
+        customer.get().setCustomerLoginAccounts(optionalCustomerLoginAccounts);
 
         return customer;
     }
@@ -102,8 +98,8 @@ public class CustomerServiceImpl implements CustomerService {
             }
             customerMapper.createCustomer(customer);
             // 创建账号信息
-            CustomerAccount customerAccount = CustomerAccount.builder().customerId(customer.getCustomerId()).type(customer.getType()).loginNo(customer.getLoginNo()).build();
-            customerAccountService.createCustomerAccount(customerAccount);
+            CustomerLoginAccount customerLoginAccount = CustomerLoginAccount.builder().customerId(customer.getCustomerId()).type(customer.getType()).loginNo(customer.getLoginNo()).build();
+            customerAccountService.createCustomerAccount(customerLoginAccount);
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
             throw e;

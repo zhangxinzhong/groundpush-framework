@@ -5,14 +5,15 @@ import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerAccount;
+import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.CustomerMapper;
 import com.groundpush.security.oauth.mobile.repository.CustomerRepository;
 import com.groundpush.service.CustomerAccountService;
+import com.groundpush.service.CustomerLoginAccountService;
 import com.groundpush.service.CustomerService;
 import com.groundpush.service.OrderService;
 import com.groundpush.vo.CustomerVo;
@@ -43,6 +44,9 @@ public class CustomerServiceImpl implements CustomerService, CustomerRepository 
     private OrderService orderService;
 
     @Resource
+    private CustomerLoginAccountService customerLoginAccountService;
+
+    @Resource
     private CustomerAccountService customerAccountService;
 
     @Resource
@@ -56,8 +60,10 @@ public class CustomerServiceImpl implements CustomerService, CustomerRepository 
         }
         //查询账户信息
         CustomerAccountQueryCondition customerAccountQueryCondition = CustomerAccountQueryCondition.builder().customerId(customerId).type(customer.get().getType()).build();
-        List<CustomerAccount> optionalCustomerAccounts = customerAccountService.queryCustomerAccount(customerAccountQueryCondition);
-        customer.get().setCustomerAccounts(optionalCustomerAccounts);
+        List<CustomerLoginAccount> optionalCustomerLoginAccounts = customerLoginAccountService.queryCustomerLoginAccount(customerAccountQueryCondition);
+        CustomerAccount customerAccount = customerAccountService.getCustomerAccount(customerId);
+        customer.get().setCustomerLoginAccounts(optionalCustomerLoginAccounts);
+        customer.get().setCustomerAccounts(customerAccount);
 
         return customer;
     }
@@ -107,8 +113,10 @@ public class CustomerServiceImpl implements CustomerService, CustomerRepository 
             }
             customerMapper.createCustomer(customer);
             // 创建账号信息
-            CustomerAccount customerAccount = CustomerAccount.builder().customerId(customer.getCustomerId()).type(customer.getType()).loginNo(customer.getLoginNo()).build();
-            customerAccountService.createCustomerAccount(customerAccount);
+            CustomerLoginAccount customerLoginAccount = CustomerLoginAccount.builder().customerId(customer.getCustomerId()).type(customer.getType()).loginNo(customer.getLoginNo()).build();
+            customerLoginAccountService.createCustomerLoginAccount(customerLoginAccount);
+            // 创建账户信息
+            customerAccountService.createCustomerAccount(CustomerAccount.builder().customerId(customer.getCustomerId()).build());
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
             throw e;

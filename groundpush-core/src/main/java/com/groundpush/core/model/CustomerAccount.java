@@ -1,6 +1,5 @@
 package com.groundpush.core.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -9,60 +8,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 /**
  * @description:客户账户表
  * @author: zhangxinzhong
- * @date: 2019-08-28 下午12:01
+ * @date: 2019-09-10 下午12:03
  */
-@ApiModel(value = "客户账号")
+@ApiModel(value = "客户账户信息")
 @Slf4j
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerAccount implements Serializable {
+public class CustomerAccount {
 
-    @JsonView(Customer.DetailCustomerView.class)
-    @ApiModelProperty(value = "客户账号编号")
-    @NotNull
-    private Integer customerAccountId;
+    private Integer customerLoginAccountId;
 
-    @JsonView(Customer.DetailCustomerView.class)
+    /**
+     * 客户编号
+     */
     @ApiModelProperty(value = "客户编号")
     private Integer customerId;
 
     /**
-     * 账号
-     */
-    @JsonView(Customer.DetailCustomerView.class)
-    @ApiModelProperty(value = "账号")
-    private String loginNo;
-
-    /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    /**
      * 账号金额
      */
-    @JsonView(Customer.DetailCustomerView.class)
     @ApiModelProperty(value = "账号公分")
-    private Integer amount;
-
-    /**
-     * 登录类型：手机号、账号密码、微信、支付宝
-     */
-    @JsonView(Customer.DetailCustomerView.class)
-    @ApiModelProperty(value = "登录类型：手机号、账号密码、微信、支付宝")
-    private Integer type;
-
-    private LocalDateTime createdTime;
-
-    private LocalDateTime lastModifiedTime;
+    private BigDecimal amount;
 }
