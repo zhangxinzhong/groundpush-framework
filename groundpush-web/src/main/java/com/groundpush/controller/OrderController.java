@@ -31,43 +31,7 @@ public class OrderController {
     private OrderService orderService;
 
 
-    @ApiOperation(value = "创建订单")
-    @ResponseBody
-    @PostMapping
-    public JsonResp createOrder(@Valid @RequestBody Order order) {
-        try {
-            orderService.createOrder(order);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
 
-    @ApiOperation(value = "订单申诉")
-    @PutMapping("/{orderId:\\d+}")
-    public JsonResp updateOrder(@Valid @PathVariable Integer orderId, @NotBlank(message = "订单唯一标识不可为空") String uniqueCode) {
-        try {
-            //TODO 此接口需要在渠道建立后在进行补充
-            orderService.updateOrderUniqueCode(orderId, uniqueCode);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
-
-    @DeleteMapping
-    @ResponseBody
-    public JsonResp deleteOrder(@NotNull(message = "订单号不可为空") Integer orderId) {
-        try {
-            orderService.deleteOrder(orderId);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
 
     @ApiOperation(value = "查询订单")
     @GetMapping

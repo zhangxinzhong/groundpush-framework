@@ -1,7 +1,7 @@
 package com.groundpush.service;
 
 import com.groundpush.core.model.Customer;
-import com.groundpush.security.oauth.mobile.repository.CustomerRepository;
+import com.groundpush.security.core.repository.ObjectRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class MobileDetailsService implements UserDetailsService {
 
     @Resource
-    private CustomerRepository customerRepository;
+    private ObjectRepository customerRepository;
 
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -33,7 +33,7 @@ public class MobileDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String mobile) throws UsernameNotFoundException {
         log.info("-- exec [MobileDetailsService] loadUserByUsername", mobile);
-        Optional<Customer> optionalCustomer = customerRepository.queryOrCreateCustomer(mobile);
+        Optional<Customer> optionalCustomer = customerRepository.queryOrCreate(mobile);
         if (optionalCustomer.isPresent()) {
             log.info("login customer:{}", optionalCustomer.get());
             return new User(mobile, bCryptPasswordEncoder.encode(mobile), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMI"));

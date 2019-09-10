@@ -2,6 +2,7 @@ package com.groundpush.service;
 
 import com.groundpush.core.model.OrderBonus;
 import com.groundpush.vo.OrderBonusVo;
+import com.groundpush.vo.OrderPayVo;
 
 import java.util.List;
 
@@ -13,20 +14,8 @@ import java.util.List;
 public interface OrderBonusService {
 
     /**
-     * 创建订单分成
-     * @param orderBonus
+     * 支付订单分成
+     * @param orderPay
      */
-    void createSimpleOrderBonus(OrderBonus orderBonus);
-
-    /**
-     * 创建多天订单分成
-     * @param orderBonuses
-     */
-    void createOrderBonus(List<OrderBonus> orderBonuses);
-
-    /**
-     * 通过orderId、taskId、customerId 计算 分红
-     * @param orderBonusVo
-     */
-    void generateOrderBonus(OrderBonusVo orderBonusVo);
+    void orderBonusPay(OrderPayVo orderPay);
 }

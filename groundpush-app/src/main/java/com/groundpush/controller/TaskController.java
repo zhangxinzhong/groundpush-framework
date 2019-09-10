@@ -4,18 +4,25 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.TaskQueryCondition;
-import com.groundpush.core.model.PageResult;
-import com.groundpush.core.model.Task;
+import com.groundpush.core.model.*;
+import com.groundpush.core.utils.Constants;
+import com.groundpush.service.LabelService;
+import com.groundpush.service.OrderTaskCustomerService;
+import com.groundpush.service.TaskCollectService;
 import com.groundpush.service.TaskService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -31,18 +38,32 @@ public class TaskController {
 
     @Resource
     private TaskService taskService;
+    @Resource
+    private LabelService labelService;
+    @Resource
+    private TaskCollectService taskCollectService;
+    @Resource
+    private OrderTaskCustomerService  orderTaskCustomerService;
+
 
     /**
      * 分页查询任务
      */
     @ResponseBody
     @ApiOperation("任务查询服务")
-    @JsonView(Task.SimpleTaskView.class)
+    @JsonView({Task.SimpleTaskView.class})
     @GetMapping
     public JsonResp queryTask(TaskQueryCondition taskCondition, @PageableDefault(page = 1, size = 20) Pageable pageable) {
         try {
+            //todo 将任务类型list合并到任务list接口中
+            List<Label> list  = labelService.getLabelByType(Constants.TYPE_ONE);
+            //todo customerid 不为空 且 类型为空收藏
+            if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), String.valueOf(Constants.TASK_TYPE_1))) {
+                Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageable);
+                return JsonResp.success(new PageResultModel(taskCollect,list));
+            }
             Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageable);
-            return JsonResp.success(new PageResult(tasks));
+            return JsonResp.success(new PageResultModel(tasks,list));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
@@ -57,7 +78,11 @@ public class TaskController {
         try {
             //获取任务数据
             Optional<Task> optionalTask = taskService.getTask(id);
-            return JsonResp.success(optionalTask.isPresent() ? optionalTask.get() : null);
+            Task task = optionalTask.isPresent() ? optionalTask.get() : null;
+            //todo 添加任务中是否有订单判断
+            List<OrderTaskCustomer> list  = orderTaskCustomerService.findOrderByTaskId(task.getTaskId());
+            task.setHasOrder(list!=null && list.size() > 0?true:false);
+            return JsonResp.success(task);
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

@@ -44,7 +44,7 @@ public class GroundPushAuthorizationServerConfig extends AuthorizationServerConf
     @Autowired(required = false)
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
-    @Resource
+    @Autowired(required = false)
     private TokenEnhancer jwtTokenEnhancer;
 
     @Resource
@@ -52,7 +52,6 @@ public class GroundPushAuthorizationServerConfig extends AuthorizationServerConf
 
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -91,8 +90,12 @@ public class GroundPushAuthorizationServerConfig extends AuthorizationServerConf
         if (ArrayUtils.isNotEmpty(securityProperties.getOauth().getClients())) {
             for (OauthClientProperties client : securityProperties.getOauth().getClients()) {
                 //todo bCryptPasswordEncoder.encode(client.getClientSecret()) 去掉加密原因： 用户登录成功后比较时不相等，固在设置参数时去掉加密
-                builder.withClient(client.getClientId()).secret(client.getClientSecret()).accessTokenValiditySeconds(client.getAccessTokenValiditySeconds())
-                        .authorizedGrantTypes("authorization_code", "password", "refresh_token").scopes("all");
+                builder
+                        .withClient(client.getClientId())
+                        .secret(client.getClientSecret())
+                        .accessTokenValiditySeconds(client.getAccessTokenValiditySeconds())
+                        .authorizedGrantTypes("authorization_code", "password", "refresh_token")
+                        .scopes("all");
             }
         }
     }

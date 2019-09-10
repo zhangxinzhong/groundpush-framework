@@ -9,6 +9,8 @@ import com.groundpush.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +35,12 @@ public class MeController {
     private CustomerService customerService;
 
     @GetMapping
-    public JsonResp getCurrentUser(Principal principal) {
+    public JsonResp getCurrentUser(Authentication authentication) {
         try {
-            log.error("login Customer info：{}", principal);
-            String mobileNo = (String) ((OAuth2Authentication) principal).getPrincipal();
-            log.error("login Customer mobile：{}", principal);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            log.error("login Customer info：{}", userDetails);
+            String mobileNo = userDetails.getUsername();
+            log.error("login Customer mobile：{}", mobileNo);
             if (StringUtils.isBlank(mobileNo)) {
                 throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getClass().toString());
             }

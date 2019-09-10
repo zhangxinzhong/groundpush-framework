@@ -48,6 +48,8 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository {
         sb
                 .append("code:")
                 .append(request.getParameter(securityProperties.getSms().getDeviceParamName()))
+                .append("mobile:")
+                .append(request.getParameter(securityProperties.getSms().getMobileNoParamName()))
                 .append(":").append(validateCodeType);
         log.info("redis sms key :{}",sb.toString());
         return sb.toString();

@@ -223,16 +223,23 @@ CREATE TABLE `t_customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 客户账号表
-drop table if exists t_customer_account;
-CREATE TABLE `t_customer_account` (
-      `customer_account_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    drop table if exists t_customer_login_account;
+CREATE TABLE `t_customer_login_account` (
+      `customer_login_account_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
       `customer_id` int(11) NOT NULL,
       `login_no` varchar(64) DEFAULT NULL unique,
       `password` varchar(128) DEFAULT NULL,
-      `amount` int(11) DEFAULT 0,
       `type` tinyint(1) DEFAULT NULL,
       `created_time` datetime DEFAULT NULL,
       `last_modified_time` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 客户账户表
+    drop table if exists t_customer_account;
+CREATE TABLE `t_customer_account` (
+      `customer_account_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      `customer_id` int(11) NOT NULL,
+      `amount` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 drop table if exists t_cashout_log;

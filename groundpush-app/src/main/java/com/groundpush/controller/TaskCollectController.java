@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.common.View;
 import com.groundpush.core.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
@@ -67,9 +68,9 @@ public class TaskCollectController {
     @ApiOperation("收藏任务列表")
     @JsonView(Task.DetailTaskView.class)
     @GetMapping
-    public JsonResp queryTaskCollect(@Valid TaskCollectQueryCondition taskCollectQueryCondition, @PageableDefault(page = 0, size = 20) Pageable pageable) {
+    public JsonResp queryTaskCollect(@Valid TaskQueryCondition taskQueryCondition, @PageableDefault(page = 0, size = 20) Pageable pageable) {
         try {
-            return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskCollectQueryCondition, pageable)));
+            return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskQueryCondition, pageable)));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

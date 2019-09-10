@@ -78,6 +78,6 @@ public interface CustomerMapper {
      * @param loginNo
      * @return
      */
-    @Select(" select c.* from t_customer c inner join t_customer_account ca on ca.customer_id= c.customer_id where ca.login_no = #{loginNo} ")
+    @Select(" select c.* from t_customer c inner join t_customer_login_account cla on cla.customer_id= c.customer_id where cla.login_no = #{loginNo} ")
     Optional<Customer> queryCustomerByLoginNo(String loginNo);
 }

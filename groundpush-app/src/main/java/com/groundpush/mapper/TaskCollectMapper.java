@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import org.apache.ibatis.annotations.Delete;
@@ -31,9 +32,24 @@ public interface TaskCollectMapper {
 
     /**
      * 查询收藏任务
-     * @param taskCollectQueryCondition
+     * @param taskQueryCondition
      * @return
      */
-    @Select(" select t.* from t_task t inner join t_task_collect tc on tc.task_id=t.task_id where tc.customer_id=#{customerId} ")
-    Page<Task> queryTaskCollect(TaskCollectQueryCondition taskCollectQueryCondition);
+    @Select({
+            "<script>",
+            " ( select t1.* from t_task t1 inner join t_task_collect tc on tc.task_id=t1.task_id where tc.customer_id=#{customerId}  ",
+            " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
+            " <if test='type != null'> and t1.type in (#{type})  </if> ",
+            " <if test='sort != null'> order by #{sort}  </if> ",
+            ")",
+            " <if test='location != null'> union ( select t2.* from t_task t2 inner join t_task_collect tc on tc.task_id=t2.task_id where tc.customer_id=#{customerId} ",
+            " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
+            " <if test='type != null'> and t2.type in( #{type})  </if> ",
+            " and location = #{location} ",
+            " <if test='sort != null'> order by #{sort} </if> ",
+            ")",
+            "  </if> ",
+            "</script>"
+    })
+    Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition);
 }

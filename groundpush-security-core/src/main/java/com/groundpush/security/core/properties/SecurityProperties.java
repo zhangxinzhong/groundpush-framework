@@ -3,7 +3,7 @@ package com.groundpush.security.core.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @description:
+ * @description:权限
  * @author: zhangxinzhong
  * @date: 2019-09-03 下午1:52
  */

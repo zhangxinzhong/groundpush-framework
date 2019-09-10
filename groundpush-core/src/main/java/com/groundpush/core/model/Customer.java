@@ -97,8 +97,12 @@ public class Customer implements Serializable {
     @NotNull(message = "登录类型不可为空")
     private Integer type;
 
+    @ApiModelProperty(value = "客户账号信息")
+    @JsonView(DetailCustomerView.class)
+    private List<CustomerLoginAccount> customerLoginAccounts;
+
     @ApiModelProperty(value = "客户账户信息")
     @JsonView(DetailCustomerView.class)
-    private List<CustomerAccount> customerAccounts;
+    private CustomerAccount customerAccounts;
 
 }

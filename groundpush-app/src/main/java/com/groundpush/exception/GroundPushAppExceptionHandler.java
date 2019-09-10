@@ -1,5 +1,6 @@
-package com.groundpush.core.common;
+package com.groundpush.exception;
 
+import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Slf4j
 @ControllerAdvice
-public class GroundPushExceptionHandler {
+public class GroundPushAppExceptionHandler {
 
     /**
      * 处理业务异常
@@ -26,6 +27,7 @@ public class GroundPushExceptionHandler {
     @ResponseBody
     @ExceptionHandler(BusinessException.class)
     public JsonResp businessExcetion(BusinessException e) {
+        log.error(e.getMessage(),e);
         return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
@@ -38,8 +40,22 @@ public class GroundPushExceptionHandler {
     @ResponseBody
     @ExceptionHandler(SystemException.class)
     public JsonResp systemExcetion(SystemException e) {
+        log.error(e.getMessage(),e);
         return JsonResp.failure(e.getMessage());
     }
+
+    /**
+     * 处理支付异常
+     *
+     * @param e
+     * @return
+     */
+//    @ResponseBody
+//    @ExceptionHandler(PayException.class)
+//    public JsonResp payExcetion(PayException e) {
+//        log.error(e.getMessage(),e);
+//        return JsonResp.failure(e.getMessage());
+//    }
 
     /**
      * 处理异常
@@ -50,6 +66,7 @@ public class GroundPushExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public JsonResp excetion(Exception e) {
+        log.error(e.getMessage(),e);
         return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorMessage());
     }
 }

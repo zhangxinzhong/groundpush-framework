@@ -21,31 +21,4 @@ public interface CustomerService {
      * @return
      */
     Optional<Customer> getCustomer(Integer customerId);
-
-    /**
-     * 更新客户信息
-     * @param customerVo
-     */
-    void updateCustomer(CustomerVo customerVo);
-
-    /**
-     *  查询客户信息
-     * @param customerQueryCondition
-     * @param pageable
-     * @return
-     */
-    List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition, Pageable pageable);
-
-    /**
-     * 创建客户信息
-     * @param customer
-     */
-    void createCustomer(Customer customer);
-
-    /**
-     * 通过手机查询客户
-     * @param loginNo
-     * @return
-     */
-    Optional<Customer> queryCustomerByMobile(String loginNo);
 }

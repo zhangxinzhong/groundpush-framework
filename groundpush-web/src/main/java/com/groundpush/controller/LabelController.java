@@ -38,7 +38,9 @@ public class LabelController {
     }
 
 
+
     @ApiOperation(value = "获取所有标签列表")
+    @JsonView(Label.OutLabelView.class)
     @RequestMapping(value = "/getLabelPage", method = RequestMethod.GET)
     @ResponseBody
     public JsonResp getLabelPage(Integer page, Integer limit) {
@@ -100,6 +102,7 @@ public class LabelController {
 
     @ApiOperation(value = "查询某个标签")
     @RequestMapping(value = "/detailLabel", method = RequestMethod.GET)
+    @JsonView(Label.AllLabelView.class)
     @ResponseBody
     public JsonResp detailLabel(Integer labelId) {
         try {

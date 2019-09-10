@@ -2,6 +2,7 @@ package com.groundpush.service;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.TaskCollectQueryCondition;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,9 @@ public interface TaskCollectService {
 
     /**
      * 查询收藏任务
-     * @param taskCollectQueryCondition
+     * @param taskQueryCondition
      * @return
      */
-    Page<Task> queryTaskCollect(TaskCollectQueryCondition taskCollectQueryCondition, Pageable pageable);
+    Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Pageable pageable);
 
 }

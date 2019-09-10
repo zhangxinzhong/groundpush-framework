@@ -1,8 +1,8 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.core.model.CustomerAccount;
-import com.groundpush.service.CustomerAccountService;
+import com.groundpush.core.model.CustomerLoginAccount;
+import com.groundpush.service.CustomerLoginAccountService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -21,20 +21,20 @@ import javax.annotation.Resource;
 @ApiModel(value = "客户账号")
 @Slf4j
 @RestController
-@RequestMapping("/customerAccount")
-public class CustomerAccountController {
+@RequestMapping("/customerLoginAccount")
+public class CustomerLoginAccountController {
 
     @Resource
-    private CustomerAccountService customerAccountService;
+    private CustomerLoginAccountService customerLoginAccountService;
 
     @ApiOperation(value = "修改手机号、绑定微信支付宝")
     @PutMapping
-    public JsonResp updateCustomerAccount(@RequestBody CustomerAccount customerAccount){
-        try{
-            customerAccountService.updateCustomerAccount(customerAccount);
+    public JsonResp updateCustomerLoginAccount(@RequestBody CustomerLoginAccount customerLoginAccount) {
+        try {
+            customerLoginAccountService.updateCustomerLoginAccount(customerLoginAccount);
             return JsonResp.success();
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw e;
         }
 

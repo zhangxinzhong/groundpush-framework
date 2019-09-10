@@ -4,17 +4,16 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.Customer;
-import com.groundpush.core.utils.AesUtils;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.security.core.common.SecurityConstants;
 import com.groundpush.security.core.exception.ValidateCodeException;
 import com.groundpush.security.core.properties.SecurityProperties;
+import com.groundpush.security.core.repository.ObjectRepository;
 import com.groundpush.security.core.validatecode.ValidateCode;
 import com.groundpush.security.core.validatecode.ValidateCodeRepository;
 import com.groundpush.security.core.validatecode.ValidateCodeType;
 import com.groundpush.security.oauth.TokenAuthenticationFailHander;
 import com.groundpush.security.oauth.mobile.processor.OneClickLoginProcessor;
-import com.groundpush.security.oauth.mobile.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -49,7 +48,7 @@ public class MobileFilter extends OncePerRequestFilter {
     private ValidateCodeRepository validateCodeRepository;
 
     @Resource
-    private CustomerRepository customerRepository;
+    private ObjectRepository customerRepository;
 
     @Resource
     private OneClickLoginProcessor oneClickLoginProcessor;
@@ -69,7 +68,6 @@ public class MobileFilter extends OncePerRequestFilter {
     }
 
     private void validateCode(HttpServletRequest request, HttpServletResponse response) throws ValidateCodeException {
-        ValidateCode validateCode = validateCodeRepository.get(new ServletWebRequest(request, response), ValidateCodeType.SMS);
         //验证码
         String valiCode = request.getParameter(securityProperties.getSms().getValidateCodeParamName());
         //一键登录
@@ -81,6 +79,7 @@ public class MobileFilter extends OncePerRequestFilter {
 
         //验证码登录
         if (StringUtils.isNotBlank(valiCode) && StringUtils.isNotBlank(deviceId)) {
+            ValidateCode validateCode = validateCodeRepository.get(new ServletWebRequest(request, response), ValidateCodeType.SMS);
             if (validateCode == null) {
                 throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
             }
@@ -125,13 +124,13 @@ public class MobileFilter extends OncePerRequestFilter {
             }
             request.setAttribute("mobileNo", mobileNo);
 
-            Optional<Customer> optionalCustomer = customerRepository.queryOrCreateCustomer(mobileNo);
+            Optional<Customer> optionalCustomer = customerRepository.queryOrCreate(mobileNo);
             if (!optionalCustomer.isPresent()) {
                 throw new SystemException(ExceptionEnum.EXCEPTION.getErrorMessage());
             }
             log.info("客户通过一键登录进入应用，loginNo: {}", optionalCustomer);
         } else {
-            log.info("未知的登录方式，validateCode：{} , valiCode:{} ,accessToken:{} ,mobileNo:{},deviceId:{}", validateCode, valiCode, accessToken, mobileNo, deviceId);
+            log.info("未知的登录方式， valiCode:{} ,accessToken:{} ,mobileNo:{},deviceId:{}", valiCode, accessToken, mobileNo, deviceId);
             throw new ValidateCodeException(ExceptionEnum.EXCEPTION_UNKNOWN_LOGIN_TYPE.getErrorMessage());
         }
     }

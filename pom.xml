@@ -10,6 +10,7 @@
         <module>groundpush-core</module>
         <module>groundpush-app</module>
         <module>groundpush-web</module>
+        <module>groundpush-pay</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

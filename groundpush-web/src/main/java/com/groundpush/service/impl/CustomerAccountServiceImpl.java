@@ -1,23 +1,24 @@
 package com.groundpush.service.impl;
 
-import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.exception.BusinessException;
-import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.CustomerAccount;
+import com.groundpush.core.utils.MathUtil;
 import com.groundpush.mapper.CustomerAccountMapper;
 import com.groundpush.service.CustomerAccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 /**
- * @description:客户账号
+ * @description: 客户账户
  * @author: zhangxinzhong
- * @date: 2019-08-28 下午2:09
+ * @date: 2019-09-10 下午1:14
  */
+@Slf4j
 @Service
 public class CustomerAccountServiceImpl implements CustomerAccountService {
 
@@ -26,22 +27,18 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateCustomerAccount(CustomerAccount customerAccount) {
-        customerAccountMapper.updateCustomerAccount(customerAccount);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void createCustomerAccount(CustomerAccount customerAccount) {
-        Optional<CustomerAccount> account = customerAccountMapper.queryCustomerAccountByLoginNo(customerAccount.getLoginNo());
-        if(account.isPresent()){
-            throw new BusinessException(ExceptionEnum.CUSTOMER_ACCOUNT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_ACCOUNT_EXISTS.getErrorMessage());
+    public void updateCustomerAccountAmountByCustomerId(CustomerAccount build) {
+        try {
+            Optional<CustomerAccount> optionalCustomerAccount = customerAccountMapper.getCustomerAccount(build.getCustomerId());
+            if (optionalCustomerAccount.isPresent()) {
+                CustomerAccount customerAccount = optionalCustomerAccount.get();
+                BigDecimal accountAmount = MathUtil.add(customerAccount.getAmount(), build.getAmount());
+                build.setAmount(accountAmount);
+            }
+            customerAccountMapper.updateCustomerAccount(build);
+        } catch (Exception e) {
+            log.error(e.toString(),e);
+            throw e;
         }
-        customerAccountMapper.createCustomerAccount(customerAccount);
-    }
-
-    @Override
-    public List<CustomerAccount> queryCustomerAccount(CustomerAccountQueryCondition customerAccountQueryCondition) {
-        return customerAccountMapper.queryCustomerAccount(customerAccountQueryCondition);
     }
 }
