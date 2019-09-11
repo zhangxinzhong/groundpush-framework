@@ -75,6 +75,10 @@
         </ul>
     </nav>
 
+    <!--存放临时数据区-->
+    <div id="myTaskHtml"></div>
+    <div id="generalizeTaskHtml"></div>
+
     <!--模态框部分-->
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -439,109 +443,225 @@
                         $("#leaderRatio").val(dataMsg.leaderRatio);
                         //子表数据
                         var taskAttributes = dataMsg.taskAttributes;
+                        //定义两部分的页面值
+                        //我的任务页面
+                        var myTaskHtml = "";
+                        //推广任务页面
+                        var generalizeTaskHtml = "";
+                        //循环
                         for (var i in taskAttributes) {
-                            //key
-                            var name = taskAttributes[i].name;
-                            //val
-                            var content = taskAttributes[i].content;
-                            //序号
-                            var seq = taskAttributes[i].seq;
-                            //是否生成URL
-                            var createUri = taskAttributes[i].createUri;
-                            //页面
-                            var ziHtml;
-                            //任务类型
                             var type = taskAttributes[i].type;
-                            //标签类型
-                            var labelType = taskAttributes[i].labelType;
-                            //行级类型
-                            var rowType = taskAttributes[i].rowType;
-                            //行类型
-                            if (rowType == 1) {
-                                if (labelType == 2) {
-                                    ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-                                        '                <input type="number" value="' + seq + '" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-                                        '                <label class="btn btn col-lg-1">--</label>\n' +
-                                        '                <input type="text" value="' + name + '" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入标题">\n' +
-                                        '                <label class="btn btn col-lg-1">:</label>\n' +
-                                        '                <textarea class="content col-lg-5" name="content" id="textContent"\n' +
-                                        '                          style="margin-top: 10px;font-family: mFont;height:150px;width: 80%">' + content + '</textarea>\n' +
-                                        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>\n' +
-                                        '<input type="hidden" class="rowType" name="rowType" value="1">';
-                                } else {
-                                    ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-                                        '<input type="number" value="' + seq + '" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-                                        '                <label class="btn btn col-lg-1">--</label>' +
-                                        '                <input type="text" value="' + name + '" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入文本标题">\n' +
-                                        '                <label class="btn btn col-lg-1">:</label>\n' +
-                                        '                <input type="text" value="' + content + '" name="content" class="content form-control col-lg-5" style="width:33%;display:inline" placeholder="输入文本内容">\n' +
-                                        '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
-                                        '<input type="hidden" class="rowType" name="rowType" value="1">';
-                                }
-                            } else if (rowType == 2) {
-                                ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-                                    '<input type="number" name="seq" value="' + seq + '" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-                                    '                <label class="btn btn col-lg-1">--</label>' +
-                                    '                <input type="text" value="' + name + '" name="name" class="name form-control col-lg-3" style="width:20%;display:inline" placeholder="输入图片标题">\n' +
-                                    '                <label class="btn btn col-lg-1">:</label>\n' +
-                                    '                <img class="my-img form-control col-lg-3" src="' + content + '" id="imgDJZS" style="width:33%; height: 100px;display:inline" onerror="excptionUrl(this)" />' +
-                                    '                <input type="hidden" value="' + content + '" class="content" name="content"/>' +
-                                    '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
-                                    '<input type="hidden" class="rowType" name="rowType" value="1">';
-                            } else if (rowType == 3) {
-                                ziHtml = '<div style="margin-top: 16px; margin-left: 20px;" class="row labelRowDiv">\n' +
-                                    '<input type="number" name="seq" value="' + seq + '" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-                                    '                <label class="btn btn col-lg-1">--</label>' +
-                                    '                <input type="text" name="name" value="' + name + '" class="name form-control col-lg-3" style="width:20%;display:inline"\n' +
-                                    '                       placeholder="输入URL标题">\n' +
-                                    '                <label class="btn btn col-lg-1">:</label>\n' +
-                                    '                <input type="text" value="' + content + '" name="content" class="content form-control col-lg-5" style="width:25%;display:inline"\n' +
-                                    '                       placeholder="输入URL内容">\n';
-                                if (createUri == 0) {
-                                    ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
-                                } else {
-                                    ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" checked name="createUri" class="createUri">生成</label>\n';
-                                }
-                                ziHtml += '                <a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
-                                    '<input type="hidden" class="rowType" name="rowType" value="1">';
-                            }
-                            //标签类型
-                            if (labelType == 1) {
-                                ziHtml += '<input type="hidden" class="labelType" name="labelType" value="1">';
-                            } else if (labelType == 2) {
-                                ziHtml += '<input type="hidden" class="labelType" name="labelType" value="2">';
-                            } else if (labelType == 3) {
-                                ziHtml += '<input type="hidden" class="labelType" name="labelType" value="3">';
-                            }
-                            //任务类型
-                            if (type == 1) {
-                                ziHtml += '<input type="hidden" class="type" name="type" value="1">';
-                                //开始放页面
-                                if (labelType == 1) {
-                                    $("#MyTaskContentDiv").append(ziHtml);
-                                } else if (labelType == 2) {
-                                    $("#MyExplainContentDiv").append(ziHtml);
-                                } else if (labelType == 3) {
-                                    $("#MyResultContentDiv").append(ziHtml);
-                                }
-                            } else if (type == 2) {
-                                ziHtml += '<input type="hidden" class="type" name="type" value="2">';
-                                //开始放页面
-                                if (labelType == 1) {
-                                    $("#GeneralizeTaskContentDiv").append(ziHtml);
-                                } else if (labelType == 2) {
-                                    $("#GeneralizeExplainContentDiv").append(ziHtml);
-                                } else if (labelType == 3) {
-                                    $("#GeneralizeResultContentDiv").append(ziHtml);
-                                }
+                            //不同的行类型显示不同--先把所有的数据弄出来在说
+                            if (type == "1") {
+                                myTaskHtml += getZiTaskMsg(taskAttributes[i]);
+                            } else {
+                                generalizeTaskHtml += getZiTaskMsg(taskAttributes[i]);
                             }
                         }
+                        //把这两部分临时存起来已备后用。。。。我滴天啊。。。
+                        $("#myTaskHtml").html(myTaskHtml);
+                        $("#generalizeTaskHtml").html(generalizeTaskHtml);
+                        //在循环一次来确定阶段的信息-哎麻烦
+                        //我的任务编辑部分
+                        var MyTaskContentDivHtml = "";
+                        for (var i in taskAttributes) {
+                            var num = parseInt(i) + 1;
+                            //阶段标头内容
+                            var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
+                                '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskText(this)">添加文本</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskImage(this)">添加图片</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-danger col-lg-2" onclick="delThisLabelRow(this)">删除该阶段</a>\n' +
+                                '                                    </div>';
+                            //阶段内容
+                            var TaskMsgHtml = "";
+                            //所属阶段的内容
+                            console.log("查看返回的结果：" + $("#myTaskHtml").html());
+                            $("#myTaskHtml .labelRowDiv").each(function (dataIndex, dataMsg) {
+                                var onLabelIndex = $(dataMsg).attr("onLabelIndex");
+                                if (onLabelIndex == num) {
+                                    TaskMsgHtml += $(dataMsg).prop("outerHTML");
+                                }
+                            })
+                            if (TaskMsgHtml.length > 0) {
+                                MyTaskContentDivHtml += TaskLabelHtml + TaskMsgHtml;
+                            }
+                        }
+                        $("#MyTaskContentDiv").html(MyTaskContentDivHtml);
+                        //清除临时内容
+                        $("#myTaskHtml").html("");
+                        //推广任务编辑部分
+                        var GeneralizeTaskContentDivHtml = "";
+                        for (var i in taskAttributes) {
+                            var num = parseInt(i + 1);
+                            //阶段标头内容
+                            var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
+                                '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskText(this)">添加文本</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskImage(this)">添加图片</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-danger col-lg-2" onclick="delThisLabelRow(this)">删除该阶段</a>\n' +
+                                '                                    </div>';
+                            //阶段内容
+                            var TaskMsgHtml = "";
+                            //所属阶段的内容
+                            $("#generalizeTaskHtml .labelRowDiv").each(function (dataIndex, dataMsg) {
+                                var onLabelIndex = $(dataMsg).attr("onLabelIndex");
+                                if (onLabelIndex == num) {
+                                    TaskMsgHtml += dataMsg;
+                                }
+                            })
+                            if (TaskMsgHtml.length > 0) {
+                                MyTaskContentDivHtml += TaskLabelHtml + TaskMsgHtml;
+                            }
+                        }
+                        $("#GeneralizeTaskContentDiv").html(GeneralizeTaskContentDivHtml);
+                        //清除临时内容
+                        $("#generalizeTaskHtml").html("");
                     }
                 }
             }
         );
         var $modal = $('#myModal');
         $modal.modal();
+    }
+
+    //处理回显子表部分
+    function getZiTaskMsg(taskAttribute) {
+        //content
+        var content = taskAttribute.content;
+        //序号
+        var seq = taskAttribute.seq;
+        //是否生成URL
+        var createUri = taskAttribute.createUri;
+        //任务类型
+        var type = taskAttribute.type;
+        //阶段类型
+        var labelType = taskAttribute.labelType;
+        //行级类型
+        var rowType = taskAttribute.rowType;
+
+        //组页面了
+        var ziHtml = "";
+        if (rowType == 1) {
+            //标题
+            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
+                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '" >\n' +
+                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <option value="1" selected>标题</option>' +
+                '                <option value="2">内容</option>' +
+                '                <option value="3">URL</option>' +
+                '                <option value="4">下载APP</option>' +
+                '                <option value="5">扫描二维码</option>' +
+                '                <option value="6">保存二维码</option>' +
+                '                </select>' +
+                '                <span class="valueDiv">' +
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
+                '                </span>';
+        } else if (rowType == 2) {
+            //内容
+            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
+                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
+                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <option value="1" >标题</option>' +
+                '                <option value="2" selected>内容</option>' +
+                '                <option value="3">URL</option>' +
+                '                <option value="4">下载APP</option>' +
+                '                <option value="5">扫描二维码</option>' +
+                '                <option value="6">保存二维码</option>' +
+                '                </select>' +
+                '                <span class="valueDiv">' +
+                '                <textarea class="content form-control col-lg-5" name="content" id="textContent"\n' +
+                '                style="font-family: mFont;height:150px;width: 55%;margin-left: 5px;">' + content + '</textarea>\n' +
+                '                </span>';
+        } else if (rowType == 3) {
+            //URL
+            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
+                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
+                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <option value="1" >标题</option>' +
+                '                <option value="2" >内容</option>' +
+                '                <option value="3" selected>URL</option>' +
+                '                <option value="4">下载APP</option>' +
+                '                <option value="5">扫描二维码</option>' +
+                '                <option value="6">保存二维码</option>' +
+                '                </select>' +
+                '                <span class="valueDiv">' +
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">';
+            if (createUri == 0) {
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+                '</span>';
+            } else {
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri" checked>生成</label>\n';
+                '</span>';
+            }
+        } else if (rowType == 4) {
+            //下载APP
+            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
+                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
+                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <option value="1" >标题</option>' +
+                '                <option value="2">内容</option>' +
+                '                <option value="3">URL</option>' +
+                '                <option value="4" selected>下载APP</option>' +
+                '                <option value="5">扫描二维码</option>' +
+                '                <option value="6">保存二维码</option>' +
+                '                </select>' +
+                '                <span class="valueDiv">' +
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
+                '                </span>';
+        } else if (rowType == 5) {
+            //扫描二维码
+            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
+                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
+                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <option value="1" >标题</option>' +
+                '                <option value="2">内容</option>' +
+                '                <option value="3">URL</option>' +
+                '                <option value="4" >下载APP</option>' +
+                '                <option value="5" selected>扫描二维码</option>' +
+                '                <option value="6">保存二维码</option>' +
+                '                </select>' +
+                '                <span class="valueDiv">' +
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
+                '                </span>';
+        } else if (rowType == 6) {
+            //保存二维码
+            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
+                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
+                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <option value="1" >标题</option>' +
+                '                <option value="2">内容</option>' +
+                '                <option value="3">URL</option>' +
+                '                <option value="4" >下载APP</option>' +
+                '                <option value="5" >扫描二维码</option>' +
+                '                <option value="6" selected>保存二维码</option>' +
+                '                </select>' +
+                '                <span class="valueDiv">' +
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
+                '                </span>';
+        } else if (rowType == 7) {
+            //图片
+            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
+                '                <input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
+                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
+                '                <option value="7" selected>图片</option>' +
+                '                </select>' +
+                '                <img class="my-img form-control col-lg-5" id="imgDJZS" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
+                '                <input type="hidden" class="content" name="content" value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" />';
+        }
+        //组上
+        ziHtml += '<a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
+            '<input type="hidden" class="labelType" name="labelType" value="' + labelType + '">';
+
+        //任务类型
+        if (type == 1) {
+            ziHtml += '<input type="hidden" class="type" name="type" value="1">' +
+                '            </div>';
+        } else if (type == 2) {
+            ziHtml += '<input type="hidden" class="type" name="type" value="2">' +
+                '            </div>';
+        }
+        return ziHtml;
     }
 
     //添加任务

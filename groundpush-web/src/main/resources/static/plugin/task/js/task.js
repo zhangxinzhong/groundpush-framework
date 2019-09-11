@@ -57,9 +57,9 @@ function addTaskText(object) {
         '                <option value="1">标题</option>' +
         '                <option value="2">内容</option>' +
         '                <option value="3">URL</option>' +
-        '                <option value="6">下载APP</option>' +
-        '                <option value="4">扫描二维码</option>' +
-        '                <option value="5">保存二维码</option>' +
+        '                <option value="4">下载APP</option>' +
+        '                <option value="5">扫描二维码</option>' +
+        '                <option value="6">保存二维码</option>' +
         '                </select>' +
         '                <span class="valueDiv">' +
         '                <input type="text" name="content" class="content form-control col-lg-5" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
@@ -103,7 +103,7 @@ function addTaskImage(object) {
     var html = '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelIndex + '" class="row labelRowDiv">\n' +
         '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
         '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
-        '<option value="5">图片</option>' +
+        '<option value="7">图片</option>' +
         '</select>' +
         '                <img class="my-img form-control col-lg-5" id="imgDJZS" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
         '                <input type="hidden" class="content" name="content" value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" />' +
