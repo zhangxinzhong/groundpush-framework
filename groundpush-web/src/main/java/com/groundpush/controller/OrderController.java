@@ -1,8 +1,11 @@
 package com.groundpush.controller;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.PageResult;
 import com.groundpush.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +34,12 @@ public class OrderController {
     private OrderService orderService;
 
 
+    @ApiOperation(value = "跳转订单管理")
+    @GetMapping("toOrder")
+    public String toOrder(){
+        return "/order/order";
+    }
+
 
 
     @ApiOperation(value = "查询订单")
@@ -45,4 +54,31 @@ public class OrderController {
             throw e;
         }
     }
+
+    @ApiOperation(value = "查询订单（包含客户分成部分）")
+    @GetMapping("/queryOrderByKeys")
+    @ResponseBody
+    public JsonResp queryOrderByKeys(OrderListQueryCondition condition) {
+        try {
+            Page<Order> orders = orderService.queryOrderByKeys(condition);
+            return JsonResp.success(new PageResult(orders));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
+
+    @ApiOperation(value = "订单更新")
+    @PostMapping("/editOrder")
+    @ResponseBody
+    public JsonResp editOrder(@RequestBody Order order) {
+        try {
+            orderService.updateOrderData(order);
+            return JsonResp.success();
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
+
 }

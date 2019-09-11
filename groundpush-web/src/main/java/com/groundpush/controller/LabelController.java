@@ -7,6 +7,7 @@ import com.groundpush.core.common.View;
 import com.groundpush.core.model.Label;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.TaskLabel;
+import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.service.LabelService;
 import com.groundpush.service.TaskLabelService;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,9 @@ public class LabelController {
     @Resource
     private TaskLabelService taskLabelService;
 
+
+    @Resource
+    private SessionUtils sessionUtils;
 
     @RequestMapping("/toLabel")
     public String toLabel(Model model) {
@@ -59,7 +63,7 @@ public class LabelController {
     @ResponseBody
     public JsonResp addLabel(@RequestBody Label label) {
         try {
-
+            label.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
             labelService.createLabel(label);
             return JsonResp.success();
         } catch (Exception e) {

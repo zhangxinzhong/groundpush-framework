@@ -6,6 +6,7 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.Channel;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.service.ChannelService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,9 @@ public class ChannelController {
     @Resource
     private ChannelService channelService;
 
+
+    @Resource
+    private SessionUtils sessionUtils;
 
     @RequestMapping("/toChannel")
     public String toLabel(Model model) {
@@ -55,6 +59,7 @@ public class ChannelController {
     @ResponseBody
     public JsonResp addChannel(@RequestBody Channel channel) {
         try {
+            channel.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
             channelService.createChannel(channel);
             return JsonResp.success();
         } catch (Exception e) {

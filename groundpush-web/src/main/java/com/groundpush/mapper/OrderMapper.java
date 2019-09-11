@@ -1,7 +1,9 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.OrderList;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -103,4 +105,68 @@ public interface OrderMapper {
      */
     @Update(" update t_order set order_no=#{orderNo} where order_id=#{orderId} ")
     void updateOrderNoByOrderId(Order order);
+
+
+    @Update("  update  t_order b set b.status=#{status}  where  DATE_FORMAT(b.created_time,'%Y-%m-%d') = #{orderTime} AND b.order_id in (SELECT a.order_id FROM t_order_task_customer a where a.task_id = #{taskId})  ")
+    void updateOrderStatusByTaskIdAndTime(Integer status,String orderTime,Integer taskId);
+
+    @Select({
+            "<script>",
+            " select ",
+            " c.title, ",
+            " a.order_no, ",
+            " d.nick_name, ",
+            " e.customer_bonus,",
+            " e.bonus_type ",
+            " from ",
+            " t_order a ",
+            " left join t_order_task_customer b on b.order_id = a.order_id ",
+            " left join t_task c on b.task_id = c.task_id ",
+            " left join t_order_bonus e on b.order_id = e.order_id ",
+            " left join t_customer d on e.customer_id = d.customer_id",
+            " where b.task_id =#{taskId} and DATE_FORMAT(a.created_time,'%Y-%m-%d') = #{orderTime} ",
+            " <if test='flag == 2'> and a.settlement_status = 1 </if>",
+            " <if test='flag == 3'> and a.settlement_status &lt;&gt; 1 </if>",
+            "</script>"
+    })
+    Page<OrderList> queryOrderListByTaskIdAndOrderId(Integer taskId, String orderTime,Integer flag);
+
+
+    @Select({
+            "<script>",
+            " select ",
+            " a.order_id,",
+            " a.order_no, ",
+            " a.channel_uri,",
+            " a.created_time,",
+            " a.status,",
+            " a.settlement_amount,",
+            " a.settlement_status,",
+            " a.unique_code,",
+            " b.bonus_type,",
+            " b.customer_bonus,",
+            " c.nick_name",
+            "        from",
+            " t_order a",
+            " left join t_order_bonus b on a.order_id = b.order_id",
+            " left join t_customer c on b.customer_id = c.customer_id",
+            " <if test='key != null'> where  a.order_no like '%${key}%' or  c.nick_name like '%${key}%' </if>",
+            "</script>"
+    })
+    Page<Order> queryOrderByKeys(String key);
+
+
+    @Update({
+            "<script>",
+            " update t_order set  ",
+            " <if test='status != null'>  status =#{status},  </if> ",
+            " <if test='orderNo != null'>  order_no =#{orderNo},  </if> ",
+            " <if test='channelUri != null'>  channel_uri =#{channelUri},  </if> ",
+            " <if test='uniqueCode != null'>  unique_code =#{uniqueCode},  </if> ",
+            " <if test='lastModifiedBy != null'> and last_modified_by =#{lastModifiedBy},  </if> ",
+            " last_modified_time= current_timestamp where order_id=#{orderId} ",
+            "</script>"
+    })
+    void  updateOrderData(Order order);
+
 }
