@@ -1,7 +1,9 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.OrderList;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -103,4 +105,30 @@ public interface OrderMapper {
      */
     @Update(" update t_order set order_no=#{orderNo} where order_id=#{orderId} ")
     void updateOrderNoByOrderId(Order order);
+
+
+    @Update("  update  t_order b set b.status=#{status}  where  DATE_FORMAT(b.created_time,'%Y-%m-%d') = #{orderTime} AND b.order_id in (SELECT a.order_id FROM t_order_task_customer a where a.task_id = #{taskId})  ")
+    void updateOrderStatusByTaskIdAndTime(Integer status,String orderTime,Integer taskId);
+
+    @Select({
+            "<script>",
+            " select ",
+            " c.title, ",
+            " a.order_no, ",
+            " d.nick_name, ",
+            " e.customer_bonus,",
+            " e.bonus_type ",
+            " from ",
+            " t_order a ",
+            " left join t_order_task_customer b on b.order_id = a.order_id ",
+            " left join t_task c on b.task_id = c.task_id ",
+            " left join t_order_bonus e on b.order_id = e.order_id ",
+            " left join t_customer d on e.customer_id = d.customer_id",
+            " where b.task_id =#{taskId} and DATE_FORMAT(a.created_time,'%Y-%m-%d') = #{orderTime} ",
+            " <if test='flag == 2'> and a.settlement_status = 1 </if>",
+            " <if test='flag == 3'> and a.settlement_status &lt;&gt; 1 </if>",
+            "</script>"
+    })
+    Page<OrderList> queryOrderListByTaskIdAndOrderId(Integer taskId, String orderTime,Integer flag);
+
 }

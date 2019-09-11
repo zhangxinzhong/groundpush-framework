@@ -145,4 +145,18 @@ public class Constants {
     public static  final Integer TYPE_ZERO = 0;
 
     public static final String SESSION_LOGIN_USER_INFO = "session_login_user_info";
+
+
+    /**
+     * audit 审核通过
+     */
+    public static  final Integer AUDIT_ONE = 1;
+
+    /**
+     * audit 审核不通过
+     */
+    public static  final Integer AUDIT_TWO = 2;
+
+
+
 }
