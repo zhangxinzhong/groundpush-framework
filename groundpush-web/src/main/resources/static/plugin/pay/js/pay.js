@@ -93,7 +93,7 @@ layui.use('table', function () {
                                  , cols: [[
                                        {field: 'title', title: '任务名称', width: 200, sort: true}
                                      , {field: 'orderNo', title: '订单号', width: 200}
-                                     , {field: 'nickName', title: '客户名称', width: 200}
+                                     , {field: 'nickName', title: '客户', width: 200}
                                      , {field: 'customerBonus', title: '订单分成', width: 200}
                                      , {field: '', title: '订单分成类型', width: 200,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
 
@@ -155,11 +155,11 @@ layui.use('table', function () {
 
     //新增标签
     form.on('submit(addAudit)',function (data) {
-
+         layui.form.render();
         //可用状态默认为1 即可用
         data.field.status = 1;
         eventListener.addAuditLog(data);
-        layui.form.render();
+
         //屏蔽表单提交
         return false;
     });

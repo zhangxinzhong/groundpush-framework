@@ -131,4 +131,42 @@ public interface OrderMapper {
     })
     Page<OrderList> queryOrderListByTaskIdAndOrderId(Integer taskId, String orderTime,Integer flag);
 
+
+    @Select({
+            "<script>",
+            " select ",
+            " a.order_id,",
+            " a.order_no, ",
+            " a.channel_uri,",
+            " a.created_time,",
+            " a.status,",
+            " a.settlement_amount,",
+            " a.settlement_status,",
+            " a.unique_code,",
+            " b.bonus_type,",
+            " b.customer_bonus,",
+            " c.nick_name",
+            "        from",
+            " t_order a",
+            " left join t_order_bonus b on a.order_id = b.order_id",
+            " left join t_customer c on b.customer_id = c.customer_id",
+            " <if test='key != null'> where  a.order_no like '%${key}%' or  c.nick_name like '%${key}%' </if>",
+            "</script>"
+    })
+    Page<Order> queryOrderByKeys(String key);
+
+
+    @Update({
+            "<script>",
+            " update t_order set  ",
+            " <if test='status != null'>  status =#{status},  </if> ",
+            " <if test='orderNo != null'>  order_no =#{orderNo},  </if> ",
+            " <if test='channelUri != null'>  channel_uri =#{channelUri},  </if> ",
+            " <if test='uniqueCode != null'>  unique_code =#{uniqueCode},  </if> ",
+            " <if test='lastModifiedBy != null'> and last_modified_by =#{lastModifiedBy},  </if> ",
+            " last_modified_time= current_timestamp where order_id=#{orderId} ",
+            "</script>"
+    })
+    void  updateOrderData(Order order);
+
 }

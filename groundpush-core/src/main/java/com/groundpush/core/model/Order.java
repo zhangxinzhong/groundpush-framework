@@ -1,6 +1,7 @@
 package com.groundpush.core.model;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -78,5 +79,15 @@ public class Order implements Serializable {
      */
     @NotNull(message ="客户编号不可为空")
     private Integer customerId;
+
+
+    @ApiModelProperty("客户昵称")
+    private String nickName;
+
+    @ApiModelProperty("客户分成")
+    private BigDecimal customerBonus;
+
+    @ApiModelProperty("分成类型：完成人、推广人、团队领导")
+    private Integer bonusType;
 
 }

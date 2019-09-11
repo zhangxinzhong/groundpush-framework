@@ -39,6 +39,7 @@ public class OrderListQueryCondition implements Serializable {
     private Integer flag;
 
 
-
+    @ApiModelProperty(value = "用于全文搜索")
+    private String key;
 
 }

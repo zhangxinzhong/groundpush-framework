@@ -35,6 +35,8 @@ public class PayController {
     @Resource
     private SessionUtils sessionUtils;
 
+    @Resource
+    private AuditLogService auditLogService;
 
     @PostMapping
     public JsonResp pay(@Valid OrderPayVo orderPay) {
@@ -47,10 +49,7 @@ public class PayController {
     }
 
 
-
-    @Resource
-    private AuditLogService auditLogService;
-
+    @ApiOperation(value = "跳转支付管理")
     @RequestMapping("/toPay")
     public String toLabel(Model model) {
 

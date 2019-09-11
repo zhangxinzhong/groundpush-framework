@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录--XXX管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="/plugin/order/css/order.css"/>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/order/js/order.js"
+            th:src="@{/common/common.js}"></script>
+
+</head>
+<body>
+<!--新增标签-->
+<div class="orderNameTable">
+    搜索：
+    <div class="layui-inline">
+        <input class="layui-input" name="orderNameReload" id="orderNameReload" autocomplete="off" placeholder="请输入订单号或客户名"/>
+    </div>
+    <button class="layui-btn" data-method="reloadOrderTable">搜索</button>
+</div>
+
+<!-- label table -->
+<table class="layui-hide" id="order" lay-filter="order"></table>
+
+<!-- label tobar-->
+<script type="text/html" id="toolbarOrder">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+
+<!-- 编辑订单模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="editOrderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalOrder" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="editMenuModalLabel">编辑订单
+
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="orderModalform" lay-filter="orderModalform">
+
+                                    <input hidden type="text" name="orderId" class="layui-input">
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>订单状态</label>
+                                        <div class="col-md-10">
+                                            <input type="radio" name="status" value="1" title="已通过"  >
+                                            <input type="radio" name="status" value="2" title="待审核"  >
+                                            <input type="radio" name="status" value="3" title="审核中"  >
+                                            <input type="radio" name="status" value="4" title="审核不通过"  >
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="editOrder">更新</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 编辑订单模态框 end -->
+
+</body>
+</html>
