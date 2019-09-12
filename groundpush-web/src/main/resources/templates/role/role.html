@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录--XXX管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="/plugin/role/css/role.css"/>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/role/js/role.js"
+            th:src="@{/common/common.js}"></script>
+
+</head>
+<body>
+
+
+<!--新增角色-->
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn" data-method="showAddRoleDialog" data-custom-event="role" id="addRole">新增角色</button>
+</div>
+
+<!-- pay table -->
+<table class="layui-hide" id="role" lay-filter="role"></table>
+
+
+
+<!-- role tool-->
+<script type="text/html" id="toolRole">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script type="text/html" id="toolbarRole">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addUpm" id="addUpm">关联用户</button>
+    </div>
+</script>
+
+
+<!-- 新增角色模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="addRoleDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addRoleTitle">新增角色</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="addRoleForm">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色名称:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="name" lay-verify="name" autocomplete="off" maxlength="64" placeholder="请输入角色名称" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色code:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="code" lay-verify="code" autocomplete="off" maxlength="64" placeholder="请输入角色名称" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色状态:</label>
+                                        <div class="col-md-10">
+                                            <input type="radio" name="status" value="1" title="有效" checked >
+                                            <input type="radio" name="status" value="0" title="无效" >
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="addRole">提交</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 新增角色模态框 end -->
+
+
+
+
+<!-- 修改角色模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="updateRoleDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="updateRoleTitle">新增角色</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="updateRoleForm" lay-filter="updateRoleForm">
+
+                                    <input hidden type="text" name="roleId" class="layui-input">
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色名称:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="name" lay-verify="name" autocomplete="off" maxlength="60" placeholder="请输入角色名称" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色code:</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="code" lay-verify="code" autocomplete="off" maxlength="60" placeholder="请输入角色名称" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色状态:</label>
+                                        <div class="col-md-10">
+                                            <input type="radio" name="status" value="1" title="未生效"  >
+                                            <input type="radio" name="status" value="0" title="生效" checked>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="editRole">提交</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改角色模态框 end -->
+
+<!-- 用户、权限、菜单列表模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="viewUrmDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="viewUrmTitle">用户列表</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="viewOrderForm">
+                                    <!-- user/privilege/menu table -->
+                                    <table class="layui-hide" id="view" lay-filter="view"></table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 用户、权限、角色列表模态框 end -->
+
+<!-- 关联用户、权限、菜单列表模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="linkUpmDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="linkUpmTitle">用户列表</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="linkUpmForm">
+                                    <!-- user/privilege/menu table -->
+                                    <table class="layui-hide" id="link" lay-filter="view"></table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 关联用户、权限、角色列表模态框 end -->
+
+</body>
+</html>

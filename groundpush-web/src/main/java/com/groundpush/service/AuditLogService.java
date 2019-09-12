@@ -6,6 +6,7 @@ import com.groundpush.core.model.AuditLog;
 import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskOrderList;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public interface AuditLogService {
      * @param orderTime 订单创建时间 格式为YYYY-mm-dd
      * @return
      */
-    Boolean isAuditPass(Integer taskId,String orderTime);
+    Boolean isAuditPass(Integer taskId, Date orderTime);
 
 
     /**

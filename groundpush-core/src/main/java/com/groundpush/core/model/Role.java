@@ -2,6 +2,7 @@ package com.groundpush.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,4 +33,26 @@ public class Role implements Serializable {
     private Integer lastModifiedBy;
     @JsonIgnore
     private Date lastModifiedTime;
+
+    /**
+     * ************ 非数据库字段**************
+     */
+
+    @ApiModelProperty("创建人用户名")
+    private String createdName;
+
+    @ApiModelProperty("修改人用户名")
+    private String lastModifyedName;
+
+    @ApiModelProperty("关联用户数")
+    private Integer userNum;
+
+    @ApiModelProperty("权限数")
+    private Integer privilegeNum;
+
+    @ApiModelProperty("菜单数")
+    private Integer menuNum;
+
+
+
 }

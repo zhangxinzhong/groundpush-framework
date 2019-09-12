@@ -1,9 +1,55 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
+import com.groundpush.core.model.Role;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 /**
  * @description:
  * @author: zhangxinzhong
  * @date: 2019-08-19 下午4:57
  */
 public interface RoleMapper {
+
+    @Select({
+            "<script>",
+            " select ",
+            " a.role_id, a.name, a.code, a.status, ",
+            " (select count(1) from t_role_user_privilege_menu b where b.role_id = a.role_id and b.type = 1) user_num, ",
+            " (select count(1) from t_role_user_privilege_menu b where b.role_id = a.role_id and b.type = 2) privilege_num, ",
+            " (select count(1) from t_role_user_privilege_menu b where b.role_id = a.role_id and b.type = 3) menu_num, ",
+            " (select b. name from t_user b where b.user_id = a.created_by) created_name, ",
+            " a.created_time, (select b.name from t_user b where b.user_id = a.last_modified_by ) last_modifyed_name,",
+            " a.last_modified_time from t_role a",
+            "</script>"
+    })
+    Page<Role> queryAllRoles();
+
+    @Insert({
+            "<script>",
+            " insert into t_role ",
+            " (name,code,status,created_by,created_time) ",
+            " values (#{name},#{code},#{status},#{createdBy},current_timestamp)",
+            "</script>"
+    })
+    void addRole(Role role);
+
+    @Update({
+            "<script>",
+            " update t_role ",
+            " set last_modified_by = #{lastModifiedBy},last_modified_time = current_timestamp,",
+            " <if test='name != null'> name = #{name},</if>",
+            " <if test='code != null'> code = #{code},</if>",
+            " <if test='status != null'> status = #{status},</if>",
+            " where role_id = #{roleId}",
+            "</script>"
+    })
+    void updateRole(Role role);
+
+    @Delete(" delete from t_role where role_id = #{roleId} ")
+    void delRole(Role role);
+
 }

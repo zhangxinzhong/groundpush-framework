@@ -6,6 +6,8 @@ import com.groundpush.core.model.TaskOrderList;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -72,9 +74,9 @@ public interface AuditLogMapper {
    })
    void createAuditLog(AuditLog auditLog);
 
-   @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and order_time = #{orderTime} and audit_status = 1 ")
-   List<AuditLog> getAuditPassList(Integer taskId,String orderTime);
+   @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') and audit_status = 1 ")
+   List<AuditLog> getAuditPassList(Integer taskId,Date orderTime);
 
-   @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and order_time = #{orderTime} ")
-   List<AuditLog> getAuditListByTaskIdAndTime(Integer taskId,String orderTime);
+   @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ")
+   List<AuditLog> getAuditListByTaskIdAndTime(Integer taskId, Date orderTime);
 }

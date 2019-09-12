@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Slf4j
 @ControllerAdvice
-public class GroundPushWebExceptionHandler {
+public class    GroundPushWebExceptionHandler {
 
     /**
      * 处理业务异常

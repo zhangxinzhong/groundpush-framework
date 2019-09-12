@@ -1,5 +1,6 @@
 package com.groundpush.core.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -7,7 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -40,7 +43,9 @@ public class AuditLog {
     private Integer taskId;
 
     @ApiModelProperty("订单时间")
-    private String orderTime;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
+    private Date orderTime;
 
     @ApiModelProperty("审核状态（1：审核通过 2：审核不通过）")
     private Integer auditStatus;
@@ -54,6 +59,6 @@ public class AuditLog {
     @ApiModelProperty("备注")
     private String remark;
 
-    @ApiModelProperty("ke")
+    @ApiModelProperty("用户id")
     private Integer userId;
 }

@@ -20,7 +20,7 @@ layui.use('table', function () {
         initTable: function(){
             table.render({
                 elem: '#pay'
-                , url: '/pay/getTaskOrderlist'
+                , url: '/payManage/getTaskOrderlist'
                 , toolbar: true
                 , title: 'pay-data'
                 , totalRow: true
@@ -66,7 +66,7 @@ layui.use('table', function () {
             });
         }
         ,addAuditLog:function(data) {
-            Utils.postAjax("/pay/addAuditLog",JSON.stringify(data.field),function(rep) {
+            Utils.postAjax("/payManage/addAuditLog",JSON.stringify(data.field),function(rep) {
                 if(rep.code =='200'){
                     eventListener.hideAddAuditDialog();
                     eventListener.reloadLabelTable();
@@ -85,7 +85,7 @@ layui.use('table', function () {
         ,showViewOrderList:function(data) {
                  table.render({
                                  elem: '#view'
-                                 , url: '/pay/queryOrderList'
+                                 , url: '/payManage/queryOrderList'
                                  , toolbar: true
                                  , title: 'view-data'
                                  , totalRow: true
