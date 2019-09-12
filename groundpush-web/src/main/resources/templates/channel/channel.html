@@ -26,6 +26,7 @@
 <!-- menu tobar-->
 <script type="text/html" id="toolbarChannel">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="upData">上传数据</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -150,6 +151,56 @@
     </div>
 </div>
 <!-- 编辑渠道模态框 end -->
+
+
+<div id="upDataDialog" class="modal fade">
+    <div class="window-box modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="box-close">×</span>
+                    </button>
+                    <span>导入数据</span>
+                </div>
+            </div>
+            <div class="modal-body-max no-padding">
+                <div class="page-content">
+                    <div class="row layui-form" lay-filter="resInfo">
+                        <div class="col-xs-12" >
+                            <div class="layui-form-item form-head">
+<!--                                <div class="layui-inline">-->
+<!--                                    <label class="layui-form-label">渠道商</label>-->
+<!--                                    <div class="layui-input-inline">-->
+<!--                                        <select id="channelName" lay-filter="channelName"></select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">数据文件</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="upFileShow" disabled autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-input-inline upBtn layui-upload">
+                                        <button type="button" class="layui-btn layui-btn-sm" id="upFile">上传文件</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <legend>数据映射关系</legend>
+                            <div class="res-info">
+                                <table class="layui-table" id="mapping-tab"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer no-margin-top">
+                <button class="layui-btn layui-btn-sm task-btn" id="importBtn">导入</button>
+                <button type="button" class="btn btn-fn btn-delect" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>

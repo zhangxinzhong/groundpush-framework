@@ -2,7 +2,11 @@ package com.groundpush.service;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Channel;
+import io.swagger.models.auth.In;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 /**
@@ -43,4 +47,13 @@ public interface ChannelService {
      * @param channel
      */
     void  delById(Channel channel);
+
+    /**
+     * 添加渠道数据
+     * @param channelId
+     * @param fileName
+     * @param mapping
+     * @return
+     */
+    Integer addChannelData(Integer channelId, String fileName, String mapping, InputStream inputStream) throws IOException;
 }

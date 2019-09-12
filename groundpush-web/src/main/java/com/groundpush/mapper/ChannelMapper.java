@@ -2,6 +2,8 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Channel;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -64,4 +66,7 @@ public interface ChannelMapper {
      */
     @Select(" select * from t_channel where channel_id=#{channelId}")
     Optional<Channel> queryChannelById(Integer channelId);
+
+    @Insert("insert into t_channel_data(channel_id,file_name,mapping) values(#{channelId},#{fileName},#{mapping})")
+    Integer addChannelData(@Param("channelId") Integer channelId, @Param("fileName")String fileName, @Param("mapping")String mapping);
 }

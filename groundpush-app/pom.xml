@@ -27,9 +27,6 @@
             <groupId>com.groundpush</groupId>
             <artifactId>groundpush-pay</artifactId>
         </dependency>
-
-
-
     </dependencies>
     <build>
         <plugins>

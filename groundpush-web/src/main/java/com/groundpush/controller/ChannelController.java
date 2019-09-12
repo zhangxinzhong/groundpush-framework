@@ -2,20 +2,21 @@ package com.groundpush.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.Channel;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.ExcelUtils;
 import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.service.ChannelService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -110,5 +111,27 @@ public class ChannelController {
         }
     }
 
+    @ApiOperation(value = "获取excel的标题")
+    @RequestMapping(value = "/getExcelTitle", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResp getExcelTitle(@RequestParam("file") MultipartFile file) throws Exception {
+        try {
+            return JsonResp.success(ExcelUtils.getInstance().parseExcel(file.getInputStream()).getJsonTitle());
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
 
+    @ApiOperation(value = "导入数据")
+    @RequestMapping(value = "/importExcelData", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping,Integer channelId) throws Exception {
+        try {
+            return JsonResp.success(channelService.addChannelData(channelId,file.getOriginalFilename(),mapping,file.getInputStream()));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
 }

@@ -1,3 +1,35 @@
 .res-search-top .station_serach_city {
   margin-left: 0px;
 }
+
+#upDataDialog .page-content{
+  font-size: 12px;
+}
+
+#upDataDialog .form-head{
+  margin-top: 15px;
+}
+
+#upDataDialog legend{
+  padding-left: 20px;
+  font-size: 14px;
+}
+
+#upDataDialog .layui-input, .layui-select, .layui-textarea{
+  height: 30px;
+}
+
+#upDataDialog .form-head .layui-form-label {
+  padding: 5px 10px;
+  width: 100px;
+}
+#upDataDialog .form-head .layui-input-inline {
+  width: 150px;
+}
+#upDataDialog .form-head .upBtn {
+  width: auto;
+}
+#upDataDialog .tabTrTd {
+  display: none;
+}
+

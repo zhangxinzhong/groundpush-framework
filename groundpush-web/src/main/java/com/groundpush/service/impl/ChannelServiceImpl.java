@@ -1,5 +1,6 @@
 package com.groundpush.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.model.Channel;
@@ -10,6 +11,7 @@ import com.groundpush.service.ChannelService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.*;
 import java.util.Optional;
 
 @Service
@@ -43,5 +45,22 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public void delById(Channel channel) {
         channelMapper.updateChannel(channel);
+    }
+
+    @Override
+    public Integer addChannelData(Integer channelId, String fileName, String mapping, InputStream inputStream) throws IOException {
+        File file=new File("/tmp/channel");
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        String path=file.getPath()+File.separator+fileName;
+        FileOutputStream fileOutputStream=new FileOutputStream(new File(path));
+        byte[] bytes=new byte[1024];
+        while (inputStream.read(bytes)!=-1){
+            fileOutputStream.write(bytes);
+        }
+        fileOutputStream.close();
+        inputStream.close();
+        return channelMapper.addChannelData(channelId,fileName, mapping);
     }
 }

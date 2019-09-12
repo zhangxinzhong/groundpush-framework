@@ -7,7 +7,7 @@
  * @param $async:数据加载方式
  * @param $response:返回数据
  */
-function callInterface($type, $url, $data, $async) {
+function callInterface($type, $url, $data, $async,$processData) {
 	// 调用接口
 	var $response = {};
 	$.ajax({
@@ -17,6 +17,8 @@ function callInterface($type, $url, $data, $async) {
 		dataType : 'json',
 		cache : false,// 从页面缓存获取加载信息
 		async : $async, // false 同步加载,true异步加载
+		processData: $processData==undefined?true:$processData,
+		contentType : false,
 		beforeSend : function() {
 		},
 		success : function(response) {

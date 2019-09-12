@@ -17,6 +17,4 @@
             <artifactId>groundpush-security-core</artifactId>
         </dependency>
     </dependencies>
-
-
 </project>
