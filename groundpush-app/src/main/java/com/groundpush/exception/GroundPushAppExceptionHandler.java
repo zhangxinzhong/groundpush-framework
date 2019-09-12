@@ -9,12 +9,9 @@ import com.groundpush.pay.exception.PayException;
 import com.groundpush.security.core.exception.ValidateCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * @description: 公共异常处理
@@ -86,7 +83,7 @@ public class GroundPushAppExceptionHandler {
     @ResponseBody
     @ExceptionHandler(GroundPushMethodArgumentNotValidException.class)
     public JsonResp methodArgumentNotValidException(GroundPushMethodArgumentNotValidException e) {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         for (FieldError fieldError : e.getFieldErrors()) {
             sb.append(" [").append(fieldError.getDefaultMessage()).append("]");
         }
