@@ -14,6 +14,7 @@ import com.groundpush.security.core.validatecode.ValidateCodeRepository;
 import com.groundpush.security.core.validatecode.ValidateCodeType;
 import com.groundpush.security.oauth.TokenAuthenticationFailHander;
 import com.groundpush.security.oauth.mobile.processor.OneClickLoginProcessor;
+import com.groundpush.security.oauth.mobile.smscode.SmsValidateCodeCalibrator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -53,6 +54,9 @@ public class MobileFilter extends OncePerRequestFilter {
     @Resource
     private OneClickLoginProcessor oneClickLoginProcessor;
 
+    @Resource
+    private SmsValidateCodeCalibrator smsValidateCodeCalibrator;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -79,31 +83,13 @@ public class MobileFilter extends OncePerRequestFilter {
 
         //验证码登录
         if (StringUtils.isNotBlank(valiCode) && StringUtils.isNotBlank(deviceId)) {
-            ValidateCode validateCode = validateCodeRepository.get(new ServletWebRequest(request, response), ValidateCodeType.SMS);
-            if (validateCode == null) {
-                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
+            try{
+                smsValidateCodeCalibrator.checkSmsValidateCode(new ServletWebRequest(request, response));
+                log.info("客户通过手机号验证码方式登录进入应用，loginNo: {}，设备号：{}", mobileNo, deviceId);
+            }catch (ValidateCodeException e){
+                log.error(e.toString(),e);
+                throw e;
             }
-
-            //验证码不为空
-            if (StringUtils.isBlank(validateCode.getCode()) || StringUtils.isBlank(valiCode)) {
-                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
-            }
-
-            //比对过期时间
-            LocalDateTime currentDate = LocalDateTime.now();
-            if (validateCode.getExpireTime().isBefore(currentDate)) {
-                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorMessage());
-            }
-
-            //验证码不匹配
-            if (!StringUtils.equalsIgnoreCase(validateCode.getCode(), valiCode)) {
-                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorMessage());
-            }
-
-            log.info("客户通过手机号验证码方式登录进入应用，loginNo: {}，设备号：{}", mobileNo, deviceId);
-
-            //删除图片验证码
-            validateCodeRepository.remove(new ServletWebRequest(request, response), ValidateCodeType.SMS);
 
             //accessToken不为空 说明是一键登录
         } else if (StringUtils.isNotBlank(accessToken)) {

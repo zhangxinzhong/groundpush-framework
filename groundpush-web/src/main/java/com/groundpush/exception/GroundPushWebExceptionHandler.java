@@ -26,7 +26,7 @@ public class GroundPushWebExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(BusinessException.class)
-    public JsonResp businessExcetion(BusinessException e) {
+    public JsonResp businessException(BusinessException e) {
         return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
@@ -38,7 +38,7 @@ public class GroundPushWebExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(SystemException.class)
-    public JsonResp systemExcetion(SystemException e) {
+    public JsonResp systemException(SystemException e) {
         return JsonResp.failure(e.getMessage());
     }
 
@@ -50,7 +50,7 @@ public class GroundPushWebExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    public JsonResp excetion(Exception e) {
+    public JsonResp exception(Exception e) {
         return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorMessage());
     }
 }

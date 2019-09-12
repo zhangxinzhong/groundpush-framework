@@ -64,6 +64,10 @@ public class JsonResp implements Serializable {
         return new JsonResp(code, message, new HashMap());
     }
 
+    public static JsonResp failure(Object data) {
+        return new JsonResp(FAILURE, data);
+    }
+
     public static JsonResp failure(String message) {
         return new JsonResp(FAILURE, message, new HashMap());
     }

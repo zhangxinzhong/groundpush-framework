@@ -37,8 +37,8 @@ public class MathUtil {
     /**
      * 精确减法运算
      *
-     * @param v1 被减数
-     * @param v2 减数
+     * @param v1 减数
+     * @param v2 被减数
      * @return 两个参数的差(BigDecimal)
      */
     public static BigDecimal subtract(BigDecimal v1, BigDecimal v2) {
@@ -404,6 +404,36 @@ public class MathUtil {
             return null;
         }
         return min(valList[0], valList);
+    }
+
+    /**
+     * v1 大于 v2
+     * @param v1
+     * @param v2
+     * @return
+     */
+    public static Boolean greaterThan(BigDecimal v1, BigDecimal v2) {
+        if (null != v1 && null != v2) {
+            if (v1.compareTo(v2) > -1) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
+
+    /**
+     * v1 小于 v2
+     * @param v1
+     * @param v2
+     * @return
+     */
+    public static Boolean lessThan(BigDecimal v1, BigDecimal v2) {
+        if (null != v1 && null != v2) {
+            if (v1.compareTo(v2) == -1) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
     }
 }
 

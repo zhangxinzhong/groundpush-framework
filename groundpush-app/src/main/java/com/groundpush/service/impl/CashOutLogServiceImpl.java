@@ -8,6 +8,7 @@ import com.groundpush.service.CashOutLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,5 +29,21 @@ public class CashOutLogServiceImpl implements CashOutLogService {
     public List<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         return cashOutLogMapper.queryCashOutLog(cashOutLogQueryCondition);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void createCashOutLog(CashOutLog build) {
+        cashOutLogMapper.createCashOutLog(build);
+    }
+
+    @Override
+    public void updateCashOutLog(CashOutLog cashOutLog) {
+        cashOutLogMapper.updateCashOutLog(cashOutLog);
+    }
+
+    @Override
+    public void updateCashOutLogByOutBizNo(CashOutLog build) {
+        cashOutLogMapper.updateCashOutLogByOutBizNo(build);
     }
 }

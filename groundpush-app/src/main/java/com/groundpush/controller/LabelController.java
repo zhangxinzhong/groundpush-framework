@@ -27,12 +27,7 @@ public class LabelController {
 
     @GetMapping
     public JsonResp getLabelByType() {
-        try {
-            List<Label> list  = labelService.getLabelByType(Constants.TYPE_ONE);
-            return JsonResp.success(list);
-        } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        }
+        List<Label> list = labelService.getLabelByType(Constants.TYPE_ONE);
+        return JsonResp.success(list);
     }
 }

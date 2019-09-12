@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Customer;
 import com.groundpush.service.CustomerService;
 import com.groundpush.vo.CustomerVo;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,53 +38,39 @@ public class CustomerController {
     @ApiOperation(value = "获取客户")
     @JsonView(Customer.DetailCustomerView.class)
     @GetMapping("/{customerId:\\d+}")
-    public JsonResp getCustomer(@PathVariable Integer customerId){
-        try {
-            Optional<Customer> optionalCustomer = customerService.getCustomer(customerId);
-            return JsonResp.success(optionalCustomer.isPresent()?optionalCustomer.get():null);
-        }catch (Exception e){
-            log.error(e.getMessage(), e);
-            throw e;
-        }
+    public JsonResp getCustomer(@PathVariable Integer customerId) {
+        Optional<Customer> optionalCustomer = customerService.getCustomer(customerId);
+        return JsonResp.success(optionalCustomer.isPresent() ? optionalCustomer.get() : null);
     }
 
     @ApiOperation(value = "更新客登录账号、头像及客户父子关系")
     @PutMapping
-    public JsonResp updateCustomer(@Valid @RequestBody CustomerVo customerVo){
-        try{
-            customerService.updateCustomer(customerVo);
-            return JsonResp.success();
-        }catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw e;
+    public JsonResp updateCustomer(@Valid @RequestBody CustomerVo customerVo, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        customerService.updateCustomer(customerVo);
+        return JsonResp.success();
     }
 
     @ApiOperation(value = "邀请列表")
     @GetMapping
-    public JsonResp queryCustomer(@Valid CustomerQueryCondition customerQueryCondition, @PageableDefault(page = 1,size =20) Pageable pageable){
-
-        try{
-            List<Customer> customers = customerService.queryCustomer(customerQueryCondition,pageable);
-            return JsonResp.success(customers);
-        }catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw e;
+    public JsonResp queryCustomer(@Valid CustomerQueryCondition customerQueryCondition, BindingResult bindingResult, @PageableDefault(page = 1, size = 20) Pageable pageable) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        List<Customer> customers = customerService.queryCustomer(customerQueryCondition, pageable);
+        return JsonResp.success(customers);
     }
 
     @ApiOperation(value = "创建客户")
     @PostMapping
-    public JsonResp createCustomer(@Valid @RequestBody Customer customer){
-        try{
-            customerService.createCustomer(customer);
-            return JsonResp.success();
-        }catch (BusinessException e){
-            throw e;
+    public JsonResp createCustomer(@Valid @RequestBody Customer customer, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        catch (Exception e){
-            throw e;
-        }
+        customerService.createCustomer(customer);
+        return JsonResp.success();
     }
 
 }

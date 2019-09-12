@@ -2,6 +2,7 @@ package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderQueryCondition;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
 import com.groundpush.service.OrderService;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,51 +36,40 @@ public class OrderController {
     @ApiOperation(value = "创建订单")
     @ResponseBody
     @PostMapping
-    public JsonResp createOrder(@Valid @RequestBody Order order) {
-        try {
-            orderService.createOrder(order);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
+    public JsonResp createOrder(@Valid @RequestBody Order order, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        orderService.createOrder(order);
+        return JsonResp.success();
     }
 
     @ApiOperation(value = "订单申诉")
     @PutMapping("/{orderId:\\d+}")
-    public JsonResp updateOrder(@Valid @PathVariable Integer orderId, @NotBlank(message = "订单唯一标识不可为空") String uniqueCode) {
-        try {
-            //TODO 此接口需要在渠道建立后在进行补充
-            orderService.updateOrderUniqueCode(orderId, uniqueCode);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
+    public JsonResp updateOrder(@Valid @PathVariable Integer orderId, @NotBlank(message = "订单唯一标识不可为空") String uniqueCode, BindingResult bindingResult) {
+        //TODO 此接口需要在渠道建立后在进行补充
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        orderService.updateOrderUniqueCode(orderId, uniqueCode);
+        return JsonResp.success();
     }
 
     @DeleteMapping
     @ResponseBody
-    public JsonResp deleteOrder(@NotNull(message = "订单号不可为空") Integer orderId) {
-        try {
-            orderService.deleteOrder(orderId);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
+    public JsonResp deleteOrder(@Valid @NotNull(message = "订单号不可为空") Integer orderId, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        orderService.deleteOrder(orderId);
+        return JsonResp.success();
     }
 
     @ApiOperation(value = "查询订单")
     @GetMapping
     @ResponseBody
     public JsonResp queryOrder(OrderQueryCondition orderQueryCondition, @PageableDefault(page = 1, size = 20) Pageable pageable) {
-        try {
-            List<Order> orders = orderService.queryOrder(orderQueryCondition, pageable);
-            return JsonResp.success(orders);
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
+        List<Order> orders = orderService.queryOrder(orderQueryCondition, pageable);
+        return JsonResp.success(orders);
     }
 }

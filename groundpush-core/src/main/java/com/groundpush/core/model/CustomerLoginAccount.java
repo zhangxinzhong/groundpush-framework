@@ -28,11 +28,11 @@ public class CustomerLoginAccount implements Serializable {
 
     @JsonView(Customer.DetailCustomerView.class)
     @ApiModelProperty(value = "客户账号编号")
-    @NotNull
     private Integer customerLoginAccountId;
 
     @JsonView(Customer.DetailCustomerView.class)
     @ApiModelProperty(value = "客户编号")
+    @NotNull(message = "客户编号不可为空")
     private Integer customerId;
 
     /**
@@ -40,7 +40,13 @@ public class CustomerLoginAccount implements Serializable {
      */
     @JsonView(Customer.DetailCustomerView.class)
     @ApiModelProperty(value = "账号")
+    @NotNull(message = "账号不可为空")
     private String loginNo;
+
+    @JsonView(Customer.DetailCustomerView.class)
+    @ApiModelProperty(value = "真实姓名")
+    @NotNull(message ="真实姓名不可为空")
+    private String name;
 
     /**
      * 密码
@@ -52,7 +58,8 @@ public class CustomerLoginAccount implements Serializable {
      * 登录类型：手机号、账号密码、微信、支付宝
      */
     @JsonView(Customer.DetailCustomerView.class)
-    @ApiModelProperty(value = "登录类型：手机号、账号密码、微信、支付宝")
+    @ApiModelProperty(value = "登录类型：1=手机号密码 2=微信 3=支付宝")
+    @NotNull(message ="登录类型不可为空")
     private Integer type;
 
     private LocalDateTime createdTime;

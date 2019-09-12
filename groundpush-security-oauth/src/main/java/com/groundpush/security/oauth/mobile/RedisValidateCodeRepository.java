@@ -47,11 +47,11 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository {
         StringBuffer sb = new StringBuffer();
         sb
                 .append("code:")
-                .append(request.getParameter(securityProperties.getSms().getDeviceParamName()))
+                .append(request.getParameter(securityProperties.getSms().getDeviceParamName()) == null ? request.getHeader(securityProperties.getSms().getDeviceParamName()) : request.getParameter(securityProperties.getSms().getDeviceParamName()))
                 .append("mobile:")
-                .append(request.getParameter(securityProperties.getSms().getMobileNoParamName()))
+                .append(request.getParameter(securityProperties.getSms().getMobileNoParamName()) == null ? request.getHeader(securityProperties.getSms().getMobileNoParamName()) : request.getParameter(securityProperties.getSms().getMobileNoParamName()))
                 .append(":").append(validateCodeType);
-        log.info("redis sms key :{}",sb.toString());
+        log.info("redis sms key :{}", sb.toString());
         return sb.toString();
 
     }

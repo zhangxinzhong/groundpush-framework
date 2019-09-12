@@ -20,7 +20,7 @@ public interface CustomerLoginAccountMapper {
      *
      * @param customerLoginAccount
      */
-    @Insert(" insert into t_customer_login_account (customer_id, login_no, password, type, created_time) values (#{customerId},#{loginNo},#{password},#{type},current_timestamp); ")
+    @Insert(" insert into t_customer_login_account (customer_id, login_no, name, password, type, created_time) values (#{customerId},#{loginNo},#{name},#{password},#{type},current_timestamp) ")
     void createCustomerLoginAccount(CustomerLoginAccount customerLoginAccount);
 
     /**
@@ -33,7 +33,8 @@ public interface CustomerLoginAccountMapper {
             " update  t_customer_login_account  set  ",
             " <if test='password != null'> password =#{password},  </if> ",
             " <if test='loginNo != null'> login_no =#{loginNo},  </if> ",
-            " c.last_modified_time= current_timestamp where c.customer_id=#{customerId} and type=#{type} ",
+            " <if test='name != null'> name =#{name},  </if> ",
+            " last_modified_time= current_timestamp where customer_login_account_id=#{customerLoginAccountId} and type=#{type} ",
             "</script>"
     })
     void updateCustomerLoginAccount(CustomerLoginAccount customerLoginAccount);
@@ -55,9 +56,20 @@ public interface CustomerLoginAccountMapper {
 
     /**
      * 通过登录名查询用户是否存在
-     * @param loginNo
+     *
+     * @param loginNo 账号
+     * @param type    类型
      * @return
      */
-    @Select(" select * from t_customer_login_account ca where ca.login_no=#{loginNo} ")
-    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(String loginNo);
+    @Select(" select * from t_customer_login_account ca where ca.login_no=#{loginNo} and ca.type=#{type} ")
+    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(String loginNo, Integer type);
+
+    /**
+     * 通过账号类型查询账户
+     *
+     * @param customerAccountQueryCondition
+     * @return
+     */
+    @Select(" select * from t_customer_login_account cla where cla.customer_id=#{customerId} and cla.type=#{type} ")
+    Optional<CustomerLoginAccount> getCustomerLoginAccountByTypeAndCustomerId(CustomerAccountQueryCondition customerAccountQueryCondition);
 }

@@ -51,50 +51,30 @@ public class MenuController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public JsonResp addMenu(@RequestBody Menu menu) {
-        try {
-            menuService.insertSingleMenu(menu);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
+        menuService.insertSingleMenu(menu);
+        return JsonResp.success();
     }
 
     @RequestMapping("/detail")
     @ResponseBody
     public JsonResp detailMenu(Integer menuId) {
-        try {
-            Optional<Menu> menu = menuService.getById(menuId);
-            return JsonResp.success(menu.get());
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
+        Optional<Menu> menu = menuService.getById(menuId);
+        return JsonResp.success(menu.get());
     }
 
 
     @RequestMapping("/edit")
     @ResponseBody
     public JsonResp updateMenu(@RequestBody Menu menu) {
-        try {
-            menuService.updateMenu(menu);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
+        menuService.updateMenu(menu);
+        return JsonResp.success();
     }
 
     @RequestMapping("/del")
     @ResponseBody
     public JsonResp deleteMenu(@Valid @NotNull Integer menuId) {
-        try {
-            menuService.deleteMenu(menuId);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
+        menuService.deleteMenu(menuId);
+        return JsonResp.success();
     }
 
 

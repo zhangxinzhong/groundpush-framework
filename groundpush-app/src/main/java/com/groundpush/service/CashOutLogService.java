@@ -21,4 +21,21 @@ public interface CashOutLogService {
      */
     List<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition, Pageable pageable);
 
+    /**
+     * 创建提现记录
+     * @param build
+     */
+    void createCashOutLog(CashOutLog build);
+
+    /**
+     * 修改提现记录
+     * @param cashOutLog
+     */
+    void updateCashOutLog(CashOutLog cashOutLog);
+
+    /**
+     * 通过支付唯一码修改支付信息
+     * @param build
+     */
+    void updateCashOutLogByOutBizNo(CashOutLog build);
 }

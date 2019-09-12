@@ -6,6 +6,7 @@ import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.MathUtil;
+import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.mapper.*;
 import com.groundpush.service.CustomerAccountService;
 import com.groundpush.service.OrderBonusService;
@@ -42,6 +43,8 @@ public class OrderBonusServiceImpl implements OrderBonusService {
     @Resource
     private CustomerAccountService customerAccountService;
 
+    @Resource
+    private SessionUtils sessionUtils;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -55,12 +58,16 @@ public class OrderBonusServiceImpl implements OrderBonusService {
         try {
             orderPay = OrderPayVo.builder().startDateTime(dateUtils.getMinOfDay(orderPay.getOrderCreateDate())).endDateTime(dateUtils.getMaxOfDay(orderPay.getOrderCreateDate())).orderStatus(Constants.ORDER_STATUS_SUCCESS).build();
             List<OrderBonus> orderBonuses = orderBonusMapper.queryOrderByTaskIdAndOrderCreateTimeAndStatus(orderPay);
+            if (orderBonuses == null || orderBonuses.size() == 0) {
+                throw new BusinessException(String.format(ExceptionEnum.ORDER_BONUS_SUCCESS_NOT_EXISTS.getErrorMessage(), orderPay.getTaskId()));
+            }
+            // 获取当前登录用户
+            User user = sessionUtils.getLoginUserInfo().getUser();
             for (OrderBonus orderBonus : orderBonuses) {
                 //根据订单分成修改客户账号金额
                 customerAccountService.updateCustomerAccountAmountByCustomerId(CustomerAccount.builder().customerId(orderBonus.getCustomerId()).amount(orderBonus.getCustomerBonus()).build());
                 //支付成功后，将订单状态（status）修改为已支付
-                // todo 此处需要设置最后修改人
-                Order order = Order.builder().orderId(orderBonus.getOrderId()).status(Constants.ORDER_STATUS_PAY_SUCCESS).build();
+                Order order = Order.builder().orderId(orderBonus.getOrderId()).status(Constants.ORDER_STATUS_PAY_SUCCESS).lastModifiedBy(user.getUserId()).build();
                 orderMapper.updateOrder(order);
             }
         } catch (Exception e) {

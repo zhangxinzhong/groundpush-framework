@@ -102,7 +102,7 @@ public class Constants {
     /**
      * ok值
      */
-    public static final String  IS_OK="OK";
+    public static final String IS_OK = "OK";
 
     /**
      * 任务状态（0-已发布）
@@ -122,12 +122,12 @@ public class Constants {
     /**
      * 可用状态 表示可见
      */
-    public static  final Integer STATUS_VAILD = 1;
+    public static final Integer STATUS_VAILD = 1;
 
     /**
      * 不可用状态 表示不可见
      */
-    public static  final Integer STATUS_LOSE = 0;
+    public static final Integer STATUS_LOSE = 0;
 
     /**
      * 任务收藏
@@ -137,12 +137,12 @@ public class Constants {
     /**
      * 标签类型 主要标签
      */
-    public static  final Integer TYPE_ONE = 1;
+    public static final Integer TYPE_ONE = 1;
 
     /**
      * 标签类型 次要标签
      */
-    public static  final Integer TYPE_ZERO = 0;
+    public static final Integer TYPE_ZERO = 0;
 
     public static final String SESSION_LOGIN_USER_INFO = "session_login_user_info";
 
@@ -157,6 +157,17 @@ public class Constants {
      */
     public static  final Integer AUDIT_TWO = 2;
 
+    /**
+     * 支付宝支付成功状态码
+     */
+    public static final String ALI_PAY_SUCCESS_CODE = "10000";
 
+    /**
+     * 客户昵称
+     */
+    public static final String CUSTOMER_NIKE_NAME = "路客";
 
+    public static final String ALIPAY = "支付宝";
+
+    public static final String WEIXIN = "微信";
 }

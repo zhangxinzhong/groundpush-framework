@@ -1,6 +1,9 @@
 package com.groundpush.service;
 
+import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.CustomerAccount;
+import com.groundpush.pay.model.AliPayResponse;
+import com.groundpush.vo.PayVo;
 
 import java.util.Optional;
 
@@ -23,4 +26,10 @@ public interface CustomerAccountService {
      * @param customerAccount
      */
     void createCustomerAccount(CustomerAccount customerAccount);
+
+    /**
+     * 支付
+     * @param pay
+     */
+    Optional<AliPayResponse> pay(PayVo pay);
 }

@@ -9,6 +9,7 @@ package com.groundpush.core.exception;
  * CA 表示 customerAccount（客户账号） 序号从：O40001 开始
  * SMS 表示  短信验证码 序号从：O50001 开始
  * Excetion 表示系统级异常 序号从：O0000 开始
+ * P 表示 支付  序号从：O60001 开始
  * @author: zhangxinzhong
  * @date: 2019-08-26 下午1:25
  */
@@ -24,16 +25,23 @@ public enum ExceptionEnum {
     , ORDERNO_EXISTS("O20004", "订单号已存在")
     , ORDER_BONUS_ERROR("O20005", "订单分成与任务分成比不匹配，请联系管理员修改任务分成比。")
     , ORDER_BONUS_EXISTS("O20006", "订单不可进行多次分成")
+    , ORDER_BONUS_SUCCESS_NOT_EXISTS("O20007", "任务编号：%s 的订单状态不正常，无法进行支付")
     , CUSTOMER_NOT_EXISTS("C30001", "客户不存在")
     , CREATE_CUSTOMER_ERROR("C30002", "创建客户失败，请联系管理员！")
     , CUSTOMER_EXISTS_ORDER("C30003", "客户已经存在订单，不可更改推广人")
     , CUSTOMER_ACCOUNT_EXISTS("CA40001", "客户账号已存在")
-    , PAY_CUSTOMER_AMOUNT("CA40002", "支付客户金额失败")
+
+    , CUSTOMER_LOGIN_ACCOUNT_NOT_EXISTS("CA40003", "客户账号不存在")
+    , CUSTOMER_ACCOUNT_NOT_EXISTS("CA40004", "客户账户不存在")
+    , CUSTOMER_ACCOUNT_NOT_ENOUGH("CA40005", "账户余额不足")
+    , CUSTOMER_ACCOUNT_NOT_PAY("CA40006", "客户未绑定%s")
     , VALIDATE_CODE_UNEXPIRED("O50001", "短信验证码还未过期，请勿重新发送！")
     , VALIDATE_CODE_EXCEPTION("O50002", "短信验证码发送异常，请联系管理员！")
     , VALIDATE_CODE_NOT_EXISTS("O50003", "验证码不存在！")
     , VALIDATE_CODE_EXPIRE("O50004", "验证码已过期！")
     , VALIDATE_CODE_NOT_MATCH("O50005", "验证码不匹配！")
+    , PAY_CUSTOMER_AMOUNT("P60001", "支付客户金额失败")
+    , PAY_TYPE_UNKNOWN("P60002", "未知的支付类型")
     , VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH("O50006", "号码不匹配！");
 
     private String errorCode;

@@ -71,13 +71,13 @@ public class Order implements Serializable {
     /**
      * 任务id
      */
-    @NotNull(message ="任务编号不可为空")
+    @NotNull(message = "任务编号不可为空")
     private Integer taskId;
 
     /**
      * 客户编号
      */
-    @NotNull(message ="客户编号不可为空")
+    @NotNull(message = "客户编号不可为空")
     private Integer customerId;
 
 
@@ -89,5 +89,8 @@ public class Order implements Serializable {
 
     @ApiModelProperty("分成类型：完成人、推广人、团队领导")
     private Integer bonusType;
+
+    @NotNull(message = "任务类型不可为空，实例：申请任务=1 推广任务=2")
+    private Integer taskType;
 
 }

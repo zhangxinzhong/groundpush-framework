@@ -1,7 +1,14 @@
 package com.groundpush.core.utils;
 
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.model.Order;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -57,7 +64,7 @@ public class UniqueCode {
                         //重置flag，随机产生false还是true
                         insertflag = random.nextBoolean();
                     }
-                //如果timeflag=false,时间数字已经插入满7位，则不抓阄了。保持insertflag=true 如果已经加够了否则不操作
+                    //如果timeflag=false,时间数字已经插入满7位，则不抓阄了。保持insertflag=true 如果已经加够了否则不操作
                 } else {
                     //将zimuflag变为已加够，false
                     zimuflag = false;
@@ -84,5 +91,29 @@ public class UniqueCode {
             }
         }
         return uniqueId.toString();
+    }
+
+    /**
+     * 生成订单号
+     * yyyyMMddHHmmssSSS+主键
+     *
+     * @return
+     */
+    public String generateUniqueCodeByPrimaryKey(Integer primaryKey) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+        StringBuffer stringBuffer = new StringBuffer().append(LocalDateTime.now().format(dtf)).append(String.format("%07d", primaryKey));
+        return stringBuffer.toString();
+    }
+
+
+    /**
+     * 时间戳+随机数+主键
+     *
+     * @param primaryKey
+     * @return
+     */
+    public String generateRandomCode(Integer primaryKey) {
+        StringBuffer stringBuffer = new StringBuffer().append(System.currentTimeMillis()).append(RandomStringUtils.randomNumeric(6)).append(primaryKey);
+        return stringBuffer.toString();
     }
 }

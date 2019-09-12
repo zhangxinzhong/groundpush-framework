@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AliPayRsponse {
+public class AliPayResponse {
 
     /**
      * 网关返回码

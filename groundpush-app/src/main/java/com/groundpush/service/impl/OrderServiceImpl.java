@@ -7,6 +7,7 @@ import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderTaskCustomer;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.OrderMapper;
 import com.groundpush.mapper.OrderTaskCustomerMapper;
 import com.groundpush.service.OrderBonusService;
@@ -31,6 +32,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
+    @Resource
+    UniqueCode uniqueCode;
 
     @Resource
     private OrderMapper orderMapper;
@@ -52,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new BusinessException(ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorCode(), ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorMessage());
             }
             //生成订单号 并更新订单
-            order.setOrderNo(generateOrderNoByOrderId(orderId));
+            order.setOrderNo(uniqueCode.generateUniqueCodeByPrimaryKey(orderId));
             orderMapper.updateOrderNoByOrderId(order);
             //保存客户任务订单关联关系
             orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().orderId(orderId).taskId(order.getTaskId()).customerId(order.getCustomerId()).build());

@@ -5,6 +5,7 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.common.View;
 import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.condition.TaskQueryCondition;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -41,40 +43,34 @@ public class TaskCollectController {
     @ApiOperation(value = "任务收藏")
     @JsonView(View.class)
     @PostMapping
-    public JsonResp createTaskCollect(@Valid @RequestBody TaskCollect taskCollect) {
-        try {
-            taskCollectService.createTaskCollect(taskCollect);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw e;
+    public JsonResp createTaskCollect(@Valid @RequestBody TaskCollect taskCollect, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        taskCollectService.createTaskCollect(taskCollect);
+        return JsonResp.success();
     }
 
     @ApiOperation("取消任务收藏")
     @JsonView(View.class)
     @DeleteMapping
-    public JsonResp unTaskCollect(@Valid @RequestBody TaskCollect taskCollect) {
-        try {
-            taskCollectService.removeTaskCollect(taskCollect);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw e;
+    public JsonResp unTaskCollect(@Valid @RequestBody TaskCollect taskCollect, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        taskCollectService.removeTaskCollect(taskCollect);
+        return JsonResp.success();
     }
 
 
     @ApiOperation("收藏任务列表")
     @JsonView(Task.DetailTaskView.class)
     @GetMapping
-    public JsonResp queryTaskCollect(@Valid TaskQueryCondition taskQueryCondition, @PageableDefault(page = 0, size = 20) Pageable pageable) {
-        try {
-            return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskQueryCondition, pageable)));
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
+    public JsonResp queryTaskCollect(@Valid TaskQueryCondition taskQueryCondition, @PageableDefault(page = 0, size = 20) Pageable pageable, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskQueryCondition, pageable)));
     }
 
 

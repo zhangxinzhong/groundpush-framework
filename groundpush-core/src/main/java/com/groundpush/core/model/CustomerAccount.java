@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * @description:客户账户表
@@ -36,4 +37,8 @@ public class CustomerAccount {
      */
     @ApiModelProperty(value = "账号公分")
     private BigDecimal amount;
+
+    private LocalDateTime createdTime;
+
+    private LocalDateTime lastModifiedTime;
 }

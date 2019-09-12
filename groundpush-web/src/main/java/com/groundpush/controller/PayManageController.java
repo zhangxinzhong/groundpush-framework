@@ -1,33 +1,33 @@
 package com.groundpush.controller;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.model.*;
 import com.groundpush.core.utils.SessionUtils;
+import com.groundpush.service.AuditLogService;
 import com.groundpush.service.OrderBonusService;
 import com.groundpush.vo.OrderPayVo;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import com.github.pagehelper.Page;
-import com.groundpush.core.condition.OrderListQueryCondition;
-import com.groundpush.service.AuditLogService;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.ui.Model;
 
 
 /**
- * @description: 支付
- * @author: hss
+ * @description: 支付管理
+ * @author: zhangxinzhong
  * @date: 2019-09-09 下午1:33
  */
 @Slf4j
 @Controller
-@RequestMapping("/pay")
-public class PayController {
+@RequestMapping("/payManage")
+public class PayManageController {
 
     @Resource
     private OrderBonusService orderBonusService;
@@ -39,13 +39,9 @@ public class PayController {
     private AuditLogService auditLogService;
 
     @PostMapping
-    public JsonResp pay(@Valid OrderPayVo orderPay) {
-        try {
-            orderBonusService.orderBonusPay(orderPay);
-            return JsonResp.success();
-        } catch (BusinessException e) {
-            throw e;
-        }
+    public JsonResp pay(@Valid OrderPayVo orderPay, BindingResult bindingResult) {
+        orderBonusService.orderBonusPay(orderPay);
+        return JsonResp.success();
     }
 
 

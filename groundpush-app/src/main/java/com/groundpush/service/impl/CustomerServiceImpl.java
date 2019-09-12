@@ -9,6 +9,7 @@ import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.CustomerMapper;
 import com.groundpush.security.core.repository.ObjectRepository;
@@ -35,7 +36,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class CustomerServiceImpl implements CustomerService,ObjectRepository<Customer> {
+public class CustomerServiceImpl implements CustomerService, ObjectRepository<Customer> {
 
     @Resource
     private CustomerMapper customerMapper;
@@ -143,6 +144,6 @@ public class CustomerServiceImpl implements CustomerService,ObjectRepository<Cus
     }
 
     private String generateNickName() {
-        return RandomStringUtils.randomAscii(4);
+        return Constants.CUSTOMER_NIKE_NAME;
     }
 }

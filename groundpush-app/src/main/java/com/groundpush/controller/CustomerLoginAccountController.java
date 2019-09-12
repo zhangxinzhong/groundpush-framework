@@ -1,17 +1,17 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.service.CustomerLoginAccountService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @description:客户账号
@@ -27,17 +27,22 @@ public class CustomerLoginAccountController {
     @Resource
     private CustomerLoginAccountService customerLoginAccountService;
 
-    @ApiOperation(value = "修改手机号、绑定微信支付宝")
+    @ApiOperation(value = "修改手机号")
     @PutMapping
     public JsonResp updateCustomerLoginAccount(@RequestBody CustomerLoginAccount customerLoginAccount) {
-        try {
-            customerLoginAccountService.updateCustomerLoginAccount(customerLoginAccount);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        }
+        customerLoginAccountService.updateCustomerLoginAccount(customerLoginAccount);
+        return JsonResp.success();
 
+    }
+
+    @ApiOperation(value = "绑定支付宝、微信")
+    @PostMapping
+    public JsonResp createCustomerLoginAccount(@Valid @RequestBody CustomerLoginAccount customerLoginAccount, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+        }
+        customerLoginAccountService.createCustomerLoginAccount(customerLoginAccount);
+        return JsonResp.success();
     }
 
 }
