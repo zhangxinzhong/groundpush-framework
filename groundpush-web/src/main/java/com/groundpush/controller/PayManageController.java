@@ -3,6 +3,7 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderListQueryCondition;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.*;
 import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.service.AuditLogService;
@@ -40,6 +41,9 @@ public class PayManageController {
 
     @PostMapping
     public JsonResp pay(@Valid OrderPayVo orderPay, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+        }
         orderBonusService.orderBonusPay(orderPay);
         return JsonResp.success();
     }

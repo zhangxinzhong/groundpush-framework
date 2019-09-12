@@ -408,13 +408,14 @@ public class MathUtil {
 
     /**
      * v1 大于 v2
+     *
      * @param v1
      * @param v2
      * @return
      */
     public static Boolean greaterThan(BigDecimal v1, BigDecimal v2) {
         if (null != v1 && null != v2) {
-            if (v1.compareTo(v2) > -1) {
+            if (v1.compareTo(v2) > 0) {
                 return Boolean.TRUE;
             }
         }
@@ -423,6 +424,7 @@ public class MathUtil {
 
     /**
      * v1 小于 v2
+     *
      * @param v1
      * @param v2
      * @return

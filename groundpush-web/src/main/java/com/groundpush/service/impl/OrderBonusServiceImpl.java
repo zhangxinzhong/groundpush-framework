@@ -8,6 +8,7 @@ import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.mapper.*;
+import com.groundpush.service.AuditLogService;
 import com.groundpush.service.CustomerAccountService;
 import com.groundpush.service.OrderBonusService;
 import com.groundpush.vo.OrderBonusVo;
@@ -44,6 +45,9 @@ public class OrderBonusServiceImpl implements OrderBonusService {
     private CustomerAccountService customerAccountService;
 
     @Resource
+    private AuditLogService auditLogService;
+
+    @Resource
     private SessionUtils sessionUtils;
 
 
@@ -52,7 +56,9 @@ public class OrderBonusServiceImpl implements OrderBonusService {
     public void orderBonusPay(OrderPayVo orderPay) {
         //todo 查询订单是否审核完毕
 
-
+//        if(!auditLogService.isAuditPass(orderPay.getTaskId(), orderPay.getOrderCreateDate())){
+//            throw new BusinessException(ExceptionEnum.ORDER_NOT_AUDIT.getErrorCode(),ExceptionEnum.ORDER_NOT_AUDIT.getErrorMessage())
+//        }
         //todo 此处需要优化，若订单量大会产生问题
         // 通过任务ID、订单成功状态和订单时间查询此任务所有生效订单及客户 此处需要通过2个状态：订单状态和渠道方订单状态
         try {

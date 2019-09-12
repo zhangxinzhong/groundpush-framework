@@ -37,6 +37,9 @@ public class Order implements Serializable {
     @NotNull(message = "渠道URI不可为空")
     private String channelUri;
 
+    @NotNull(message = "任务类型不可为空，实例：申请任务=1 推广任务=2")
+    private Integer type;
+
     /**
      * 唯一标识
      * 用于和渠道提供的excel对比订单有效性
@@ -90,7 +93,6 @@ public class Order implements Serializable {
     @ApiModelProperty("分成类型：完成人、推广人、团队领导")
     private Integer bonusType;
 
-    @NotNull(message = "任务类型不可为空，实例：申请任务=1 推广任务=2")
-    private Integer taskType;
+
 
 }

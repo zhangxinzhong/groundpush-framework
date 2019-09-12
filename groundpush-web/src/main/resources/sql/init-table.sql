@@ -180,6 +180,7 @@ CREATE TABLE `t_order` (
        `channel_uri` varchar(128) DEFAULT NULL,
        `unique_code` varchar(128) DEFAULT NULL,
        `status` tinyint(1) DEFAULT NULL,
+       `type` tinyint(1) DEFAULT NULL,
        `settlement_amount` DECIMAL(11,2) DEFAULT NULL,
        `settlement_status` tinyint(1) DEFAULT NULL,
        `created_time` datetime DEFAULT NULL,

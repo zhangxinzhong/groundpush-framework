@@ -1,11 +1,13 @@
 package com.groundpush.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -29,6 +31,8 @@ public class OrderPayVo {
      * 订单创建时间
      *  因任务可以永不过期，使用时间来标识哪天的任务订单
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     @NotNull(message = "支付订单时间不可为空")
     private LocalDateTime orderCreateDate;
 

@@ -26,6 +26,7 @@ public enum ExceptionEnum {
     , ORDER_BONUS_ERROR("O20005", "订单分成与任务分成比不匹配，请联系管理员修改任务分成比。")
     , ORDER_BONUS_EXISTS("O20006", "订单不可进行多次分成")
     , ORDER_BONUS_SUCCESS_NOT_EXISTS("O20007", "任务编号：%s 的订单状态不正常，无法进行支付")
+    , ORDER_NOT_AUDIT("O20008", "订单还未审核")
     , CUSTOMER_NOT_EXISTS("C30001", "客户不存在")
     , CREATE_CUSTOMER_ERROR("C30002", "创建客户失败，请联系管理员！")
     , CUSTOMER_EXISTS_ORDER("C30003", "客户已经存在订单，不可更改推广人")

@@ -30,7 +30,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
     public void updateCustomerAccountAmountByCustomerId(CustomerAccount build) {
         try {
             Optional<CustomerAccount> optionalCustomerAccount = customerAccountMapper.getCustomerAccount(build.getCustomerId());
-            //订单存在，获取当前订单金额相加
+            //获取当前客户账户金额相加
             if (optionalCustomerAccount.isPresent()) {
                 CustomerAccount customerAccount = optionalCustomerAccount.get();
                 BigDecimal accountAmount = MathUtil.add(customerAccount.getAmount(), build.getAmount());
