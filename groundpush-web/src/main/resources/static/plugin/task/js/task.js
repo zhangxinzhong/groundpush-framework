@@ -15,9 +15,10 @@ layui.use(['form', 'upload'], function () {
 
 //处理文件上传
 function initImgForGroup() {
+    alert(123);
     upload.render({
-        elem: '#imgDJZS,#titleDJZS', //绑定元素
-        url: '${appRoot}/apply/uploadFile',//上传接口
+        elem: '#imgDJZS123', //绑定元素
+        url: '/upload/uploadFile',//上传接口
         size: '5024',
         before: function (obj) {
             console.log(obj);
@@ -25,7 +26,6 @@ function initImgForGroup() {
             obj.preview(function (index, file, result) {
                 $('#imgDJZS').attr('src', result); //图片链接（base64）
             });
-            $("#titleDJZS").html("");
             $("#imgDJZS").attr("title", "点击更换封面图");
         },
         data: {
@@ -34,8 +34,8 @@ function initImgForGroup() {
         },
         done: function (res) {
             console.log(res);
-            var fileName = res.fileName;
-            $("#picUrl").val(fileName);
+            //var fileName = res.fileName;
+            //$("#picUrl").val(fileName);
         }
     });
 }

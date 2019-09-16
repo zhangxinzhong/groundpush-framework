@@ -150,6 +150,13 @@ public class Task implements Serializable {
     @JsonView(DetailTaskView.class)
     private LocalDateTime expiredTime;
 
+    /**
+     * 是否上传结果
+     */
+    @NotNull(message = "是否上传结果不可为空")
+    @JsonView(SimpleTaskView.class)
+    private BigDecimal isResult;
+
     @JsonView(DetailTaskView.class)
     private Integer createdBy;
 

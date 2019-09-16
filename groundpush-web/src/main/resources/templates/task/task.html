@@ -100,7 +100,7 @@
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">封面图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px"
+                                <img style="margin-left: -10px" id="imgDJZS123" name="imgFile"
                                      src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
                                 <br><label>上传封面图片</label>
                             </div>
@@ -211,6 +211,14 @@
                             <label class="btn col-lg-1">团队领导分成：</label>
                             <input class="form-control col-lg-1" name="leaderRatio" id="leaderRatio"
                                    style="width:80%;display:inline" type="number">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">是否上传结果：</label>
+                            <select class="form-control col-lg-1" name="isResult" id="isResult"
+                                    style="width:80%;display:inline">
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
                         </div>
 
                         <input type="hidden" name="taskAttributes" id="taskAttributes">
@@ -398,7 +406,7 @@
             return;
         //如果校验通过则提交表单
         $.ajax({
-            url: "/",
+            url: "/task/save",
             async: false,
             type: "POST",
             contentType: 'application/json',
@@ -441,6 +449,7 @@
                         $("#ownerRatio").val(dataMsg.ownerRatio);
                         $("#spreadRatio").val(dataMsg.spreadRatio);
                         $("#leaderRatio").val(dataMsg.leaderRatio);
+                        $("#isResult").val(dataMsg.isResult);
                         //子表数据
                         var taskAttributes = dataMsg.taskAttributes;
                         //定义两部分的页面值
@@ -646,7 +655,7 @@
                 '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
                 '                <option value="7" selected>图片</option>' +
                 '                </select>' +
-                '                <img class="my-img form-control col-lg-5" id="imgDJZS" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
+                '                <img class="my-img form-control col-lg-5" id="imgDJZS" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline"  />' +
                 '                <input type="hidden" class="content" name="content" value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" />';
         }
         //组上

@@ -38,7 +38,7 @@ public interface TaskMapper {
      * @param task
      * @return
      */
-    @Insert(" insert into t_task(title, img_uri, amount, source, type, location, spread_total, handler_num, audit_duration, expend_time, complete_odds, owner_ratio, spread_ratio, leader_ratio, created_by, created_time ) values (#{title},#{imgUri},#{amount},#{source},#{type},#{location},#{spreadTotal},#{handlerNum},#{auditDuration},#{expendTime},#{completeOdds},#{ownerRatio},#{spreadRatio},#{leaderRatio},#{createdBy},current_timestamp) ")
+    @Insert(" insert into t_task(title, img_uri, amount, source, type, location, spread_total, handler_num, audit_duration, expend_time, complete_odds, owner_ratio, spread_ratio, leader_ratio, created_by, created_time,is_result ) values (#{title},#{imgUri},#{amount},#{source},#{type},#{location},#{spreadTotal},#{handlerNum},#{auditDuration},#{expendTime},#{completeOdds},#{ownerRatio},#{spreadRatio},#{leaderRatio},#{createdBy},current_timestamp,#{isResult}) ")
     @Options(useGeneratedKeys = true,keyProperty = "taskId")
     Integer createSingleTask(Task task);
 
@@ -66,6 +66,7 @@ public interface TaskMapper {
             " <if test='spreadRatio != null'> spread_ratio=#{spreadRatio},  </if> ",
             " <if test='leaderRatio != null'> leader_ratio=#{leaderRatio},  </if> ",
             " <if test='lastModifiedBy != null'> last_modified_by=#{lastModifiedBy},  </if> ",
+            " <if test='isResult != null'> is_result=#{isResult},  </if> ",
             " last_modified_time = CURRENT_TIMESTAMP ",
             "where task_id=#{taskId}",
             "</script>"
