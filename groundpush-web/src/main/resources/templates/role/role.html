@@ -40,6 +40,13 @@
     </div>
 </script>
 
+<script type="text/html" id="toolbarLink">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addUpmLink" id="addUpmLink">确认</button>
+    </div>
+</script>
+
+
 
 <!-- 新增角色模态框 begin -->
 <div class="modal fade bs-example-modal-lg" id="addRoleDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
@@ -100,7 +107,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="updateRoleTitle">新增角色</h4>
+                <h4 class="modal-title" id="updateRoleTitle">编辑角色</h4>
             </div>
             <div class="modal-body">
                 <div class="modal-body-max no-padding">
@@ -118,17 +125,17 @@
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色code:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色编码:</label>
                                         <div class="col-md-10">
-                                            <input type="text" name="code" lay-verify="code" autocomplete="off" maxlength="60" placeholder="请输入角色名称" class="layui-input">
+                                            <input type="text" name="code" lay-verify="code" autocomplete="off" maxlength="60" placeholder="请输入角色编码" class="layui-input">
                                         </div>
                                     </div>
 
                                     <div class="layui-form-item">
                                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>角色状态:</label>
                                         <div class="col-md-10">
-                                            <input type="radio" name="status" value="1" title="未生效"  >
-                                            <input type="radio" name="status" value="0" title="生效" checked>
+                                            <input type="radio" name="status" value="1" title="有效" checked >
+                                            <input type="radio" name="status" value="0" title="无效" >
                                         </div>
                                     </div>
 
@@ -160,10 +167,11 @@
                     <div class="page-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <form class="layui-form" action="" id="viewOrderForm">
-                                    <!-- user/privilege/menu table -->
-                                    <table class="layui-hide" id="view" lay-filter="view"></table>
-                                </form>
+                                <input hidden type="text" name="hideEvent" id="hideEvent" class="layui-input">
+                                <input hidden type="text" name="hideRoleId" id="hideRoleId" class="layui-input">
+                                <!-- user/privilege/menu table -->
+                                <table class="layui-hide" id="view" lay-filter="view"></table>
+
                             </div>
                         </div>
                     </div>
@@ -174,8 +182,8 @@
 </div>
 <!-- 用户、权限、角色列表模态框 end -->
 
-<!-- 关联用户、权限、菜单列表模态框 begin -->
-<div class="modal fade bs-example-modal-lg" id="linkUpmDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+<!-- 关联用户、权限、菜单列模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="linkUpmDialog"   tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -187,10 +195,10 @@
                     <div class="page-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <form class="layui-form" action="" id="linkUpmForm">
+                                <input hidden type="text" name="hideEventLink" id="hideEventLink" class="layui-input">
+                                <input hidden type="text" name="hideRoleIdLink" id="hideRoleIdLink" class="layui-input">
                                     <!-- user/privilege/menu table -->
-                                    <table class="layui-hide" id="link" lay-filter="view"></table>
-                                </form>
+                                    <table class="layui-hide" id="link" lay-filter="link"></table>
                             </div>
                         </div>
                     </div>
@@ -199,7 +207,12 @@
         </div>
     </div>
 </div>
-<!-- 关联用户、权限、角色列表模态框 end -->
+<!-- 关联用户、权限、角色模态框 end -->
+
+
+
+
+
 
 </body>
 </html>

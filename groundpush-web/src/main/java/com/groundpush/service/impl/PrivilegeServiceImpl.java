@@ -1,6 +1,10 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.groundpush.core.model.Privilege;
 import com.groundpush.core.model.Uri;
+import com.groundpush.mapper.PrivilegeMapper;
 import com.groundpush.mapper.PrivilegeUriMapper;
 import com.groundpush.service.PrivilegeService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +27,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Resource
     private PrivilegeUriMapper privilegeUriMapper;
 
+
+    @Resource
+    private PrivilegeMapper privilegeMapper;
+
     @Override
     public boolean hasPrivilege(String LoginNo, String uri) {
         List<Uri> uris = queryUriByLoginNo(LoginNo);
@@ -41,4 +49,12 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     public List<Uri> queryUriByLoginNo(String LoginNo) {
         return privilegeUriMapper.queryUriByLoginNo(LoginNo);
     }
+
+    @Override
+    public Page<Privilege> queryAllPrivileges(Integer page, Integer limit) {
+        PageHelper.startPage(page,limit);
+        return privilegeMapper.queryAllPrivileges();
+    }
+
+
 }

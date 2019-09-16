@@ -1,5 +1,7 @@
 package com.groundpush.service;
 
+import com.github.pagehelper.Page;
+import com.groundpush.core.model.Privilege;
 import com.groundpush.core.model.Uri;
 
 import java.util.List;
@@ -20,4 +22,6 @@ public interface PrivilegeService {
     boolean hasPrivilege(String LoginNo, String uri);
 
     List<Uri> queryUriByLoginNo(String LoginNo);
+
+    Page<Privilege> queryAllPrivileges(Integer page, Integer limit);
 }

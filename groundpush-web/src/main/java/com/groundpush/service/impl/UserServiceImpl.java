@@ -1,5 +1,7 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.groundpush.core.model.*;
 import com.groundpush.mapper.*;
 import com.groundpush.security.core.repository.ObjectRepository;
@@ -75,6 +77,12 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
             return Optional.of(loginUserInfo);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Page<User> getAllUsersPages(Integer page,Integer limit) {
+        PageHelper.startPage(page,limit);
+        return userMapper.getAllUsersPages();
     }
 
     @Override

@@ -33,8 +33,18 @@ public class PageResult implements Serializable {
     @JsonView(View.class)
     private List rows;
 
+    @JsonView(View.class)
+    private List ids;
+
+
     public PageResult(Page page) {
         this.total = page.getTotal();
         this.rows = page.getResult();
+    }
+
+    public PageResult(Page page,List ids) {
+        this.total = page.getTotal();
+        this.rows = page.getResult();
+        this.ids = ids;
     }
 }

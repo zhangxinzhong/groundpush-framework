@@ -39,7 +39,10 @@ public class Privilege implements Serializable {
      */
     private String checkFlag;
 
-
+    /**
+     * ****************非数据库字段***************
+     */
+    private String createdName;
 
 
 }

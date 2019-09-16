@@ -1,5 +1,6 @@
 package com.groundpush.service;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.User;
 
@@ -24,5 +25,12 @@ public interface UserService {
      * @return
      */
     Optional<LoginUserInfo> getLoginUserInfo(String loginNo);
+
+    /**
+     * 查询所有用户列表
+     * @return
+     */
+    Page<User> getAllUsersPages(Integer page,Integer limit);
+
 
 }
