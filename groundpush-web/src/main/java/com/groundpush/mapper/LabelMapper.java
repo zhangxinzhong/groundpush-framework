@@ -2,10 +2,7 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Label;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Optional;
 
@@ -67,5 +64,5 @@ public interface LabelMapper {
      * @return
      */
     @Select(" select * from t_label where label_id=#{labelId}")
-    Optional<Label> queryLabelById(Integer labelId);
+    Optional<Label> queryLabelById(@Param("labelId") Integer labelId);
 }

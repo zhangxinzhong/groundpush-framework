@@ -5,6 +5,7 @@ import com.groundpush.core.condition.UpmAddCondition;
 import com.groundpush.core.model.*;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -43,13 +44,13 @@ public interface RoleUserPrivilegeMenuMapper {
     void addRoleMenu(UpmAddCondition upmAddCondition);
 
     @Delete("delete from t_user_role where  role_id = #{roleId}")
-    void delRoleUser(Integer roleId);
+    void delRoleUser(@Param("roleId") Integer roleId);
 
     @Delete("delete from t_role_privilege where  role_id = #{roleId}")
-    void delRolePrivilege(Integer roleId);
+    void delRolePrivilege(@Param("roleId") Integer roleId);
 
     @Delete("delete from t_role_menu where  role_id = #{roleId}")
-    void delRoleMenu(Integer roleId);
+    void delRoleMenu(@Param("roleId") Integer roleId);
 
     @Select({"<script>",
             " select b.user_id,",
@@ -66,7 +67,7 @@ public interface RoleUserPrivilegeMenuMapper {
                     " b.last_modified_time",
                     " from t_user_role a LEFT JOIN t_user b on a.user_id = b.user_id where a.role_id = #{roleId} ",
             "</script>"})
-    Page<User> findAllUsersByRoleId(Integer roleId);
+    Page<User> findAllUsersByRoleId(@Param("roleId") Integer roleId);
 
     @Select({"<script>",
             " select b.privilege_id,",
@@ -80,7 +81,7 @@ public interface RoleUserPrivilegeMenuMapper {
                     "b.last_modified_time ",
                     " from t_role_privilege a LEFT JOIN t_privilege b on a.privilege_id = b.privilege_id where a.role_id = #{roleId} ",
             "</script>"})
-    Page<Privilege> findAllPrivilegesByRoleId(Integer roleId);
+    Page<Privilege> findAllPrivilegesByRoleId(@Param("roleId") Integer roleId);
 
     @Select({"<script>",
             " select ",
@@ -98,7 +99,7 @@ public interface RoleUserPrivilegeMenuMapper {
             "b.last_modified_time ",
             " from t_role_menu a left join t_menu b on a.menu_id = b.menu_id where a.role_id = #{roleId} ",
             "</script>"})
-    Page<Menu> findAllMenusByRoleId(Integer roleId);
+    Page<Menu> findAllMenusByRoleId(@Param("roleId") Integer roleId);
 
     @Select({"<script>",
             " select sum(b.counts) from (",
@@ -108,25 +109,25 @@ public interface RoleUserPrivilegeMenuMapper {
             " union all",
             " select count(1) counts from  t_role_menu a where a.role_id = #{roleId}) b ",
             "</script>"})
-    Integer findAllUpmsByRoleId(Integer roleId);
+    Integer findAllUpmsByRoleId(@Param("roleId") Integer roleId);
 
 
     @Select({"<script>",
             " select b.user_id  from t_user b where b.user_id in ",
             " (select c.user_id from t_user_role c where c.role_id = #{roleId}) ",
             "</script>"})
-    List<Integer> findAllUserIdsByRoleId(Integer roleId);
+    List<Integer> findAllUserIdsByRoleId(@Param("roleId") Integer roleId);
 
     @Select({"<script>",
             " select b.privilege_id  from t_privilege b where b.privilege_id in ",
             " (select c.privilege_id from t_role_privilege c where c.role_id = #{roleId}) ",
             "</script>"})
-    List<Integer> findAllPriIdsByRoleId(Integer roleId);
+    List<Integer> findAllPriIdsByRoleId(@Param("roleId") Integer roleId);
 
     @Select({"<script>",
             " select b.menu_id from t_menu b where b.menu_id in ",
             " (select c.menu_id from t_role_menu c where c.role_id = #{roleId}) ",
             "</script>"})
-    List<Integer> findAllMenuIdsByRoleId(Integer roleId);
+    List<Integer> findAllMenuIdsByRoleId(@Param("roleId") Integer roleId);
 
 }

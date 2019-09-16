@@ -47,6 +47,6 @@ public interface RoleMapper {
     void updateRole(Role role);
 
     @Delete(" delete from t_role where role_id = #{roleId} ")
-    void delRole(Integer roleId);
+    void delRole(@Param("roleId") Integer roleId);
 
 }

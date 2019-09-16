@@ -3,6 +3,7 @@ package com.groundpush.mapper;
 import com.groundpush.core.model.Label;
 import com.groundpush.core.model.TaskLabel;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -39,7 +40,7 @@ public interface TaskLabelMapper {
      * @return
      */
     @Select(" select * from t_task_label t where t.tl_id=#{tlId}  ")
-    Optional<TaskLabel> getTaskLabel(Integer tlId);
+    Optional<TaskLabel> getTaskLabel(@Param("tlId") Integer tlId);
 
     @Select(" select * from t_task_label t where t.label_id = #{labelId}  ")
     List<TaskLabel> getTaskLabelByLabelId(Label label);
