@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @description:任务
@@ -61,6 +60,7 @@ public class TaskServiceImpl implements TaskService {
             Task task = optionalTask.get();
             //任务添加属性
             addTaskAttr(task);
+
             return Optional.of(task);
         }
         return Optional.empty();
@@ -96,13 +96,13 @@ public class TaskServiceImpl implements TaskService {
         Boolean taskAttributeResult = true;
         List<TaskAttribute> taskAttributes = task.getTaskAttributes();
         if (taskAttributes != null && taskAttributes.size() > 0) {
-            for(TaskAttribute taskAttribute : taskAttributes){
+            for (TaskAttribute taskAttribute : taskAttributes) {
                 taskAttribute.setTaskId(taskId);
                 //todo
                 //taskAttribute.setCreatedBy();
                 //taskAttribute.setLastModifiedBy();
             }
-            taskAttributeResult = taskAttributeMapper.createTaskAttribute(taskAttributes)>0?true:false;
+            taskAttributeResult = taskAttributeMapper.createTaskAttribute(taskAttributes) > 0 ? true : false;
         }
         //返回结果
         return taskAttributeResult && taskResult && labelResult;
@@ -116,10 +116,35 @@ public class TaskServiceImpl implements TaskService {
     public void addTaskAttr(Task task) {
         if (task.getTaskId() != null) {
             //获取申请任务属性
-            task.setGetTaskAttributes(taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.GET_TASK_ATTRIBUTE));
+            List<TaskAttribute> getTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.GET_TASK_ATTRIBUTE);
+            task.setGetTaskAttributes(getTasks);
             //获取推广任务属性
-            task.setSpreadTaskAttributes(taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.SPREAD_TASK_ATTRIBUTE));
+            List<TaskAttribute> spreadTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.SPREAD_TASK_ATTRIBUTE);
+            task.setSpreadTaskAttributes(spreadTasks);
+
+            // 处理申请任务 添加属性到map中方便app端使用
+            task.setGetTaskAttributesMap(addTaskAttributeToMap(getTasks));
+            // 申请任务 添加属性到map中方便app端使用
+            task.setSpreadTaskAttributesMap(addTaskAttributeToMap(spreadTasks));
         }
 
+    }
+
+    private Map<Integer, List<TaskAttribute>> addTaskAttributeToMap(List<TaskAttribute> taskAttr) {
+        if (taskAttr != null && taskAttr.size() > 0) {
+            Map<Integer, List<TaskAttribute>> taskAttrMap = new HashMap<>();
+            for (TaskAttribute taskAttribute : taskAttr) {
+                Integer mapKey = taskAttribute.getLabelType();
+                if (taskAttrMap.containsKey(mapKey)) {
+                    taskAttrMap.get(mapKey).add(taskAttribute);
+                } else {
+                    List<TaskAttribute> listTaskAttribute = new ArrayList<TaskAttribute>();
+                    listTaskAttribute.add(taskAttribute);
+                    taskAttrMap.put(mapKey, listTaskAttribute);
+                }
+            }
+            return taskAttrMap;
+        }
+        return Collections.EMPTY_MAP;
     }
 }

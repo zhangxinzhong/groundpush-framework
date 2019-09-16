@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 任务model
@@ -179,24 +180,36 @@ public class Task implements Serializable {
     @JsonView(DetailTaskView.class)
     private List<TaskAttribute> spreadTaskAttributes;
 
+    /**
+     * 申请任务map APP端使用
+     */
+    @JsonView(DetailTaskView.class)
+    private Map<Integer, List<TaskAttribute>> getTaskAttributesMap;
+
+    /**
+     * 推广任务map APP端使用
+     */
+    @JsonView(DetailTaskView.class)
+    private Map<Integer, List<TaskAttribute>> spreadTaskAttributesMap;
+
     @NotNull(message = "标签内容不可为空")
     @JsonView(SimpleTaskView.class)
     private String labelIds;
 
-    @NotNull(message ="任务编辑内容不可为空")
+    @NotNull(message = "任务编辑内容不可为空")
     @JsonView(SimpleTaskView.class)
     private List<TaskAttribute> taskAttributes;
 
-    /*
-     ************************* 添加次要标签 *****************************************
+    /**
+     * 添加次要标签
      */
     @ApiParam("次要标签 格式：label1,label2,label3")
     @JsonView(SimpleTaskView.class)
     private String labelName;
 
 
-    /*
-     ************************* 任务是否存在订单 *****************************************
+    /**
+     * 任务是否存在订单
      */
     @ApiParam("任务是否存在订单 false为否 true为是")
     @JsonView(SimpleTaskView.class)
