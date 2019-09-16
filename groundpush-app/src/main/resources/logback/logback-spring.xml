@@ -180,7 +180,7 @@
 
     <!--测试环境:打印控制台和输出到文件-->
     <springProfile name="test">
-        <root level="info">
+        <root level="INFO">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="INFO_FILE" />
             <appender-ref ref="WARN_FILE" />

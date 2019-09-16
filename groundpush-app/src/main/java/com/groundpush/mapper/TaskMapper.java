@@ -3,10 +3,7 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Optional;
 
@@ -96,5 +93,5 @@ public interface TaskMapper {
      * @return
      */
     @Select(" select * from t_task t where t.task_id=#{taskId}  ")
-    Optional<Task> getTask(Integer taskId);
+    Optional<Task> getTask(@Param("taskId") Integer taskId);
 }

@@ -20,14 +20,14 @@ public interface OrderMapper {
      * @return
      */
     @Select(" select * from t_order where order_id=#{orderId} ")
-    Optional<Order> getOrder(Integer orderId);
+    Optional<Order> getOrder(@Param("orderId") Integer orderId);
 
     /**
      * 删除订单
      * @param orderId
      */
     @Delete(" delete from t_order where order_id=#{orderId} ")
-    void deleteOrder(Integer orderId);
+    void deleteOrder(@Param("orderId") Integer orderId);
 
     /**
      * 分页查询订单
@@ -48,7 +48,7 @@ public interface OrderMapper {
      * @param uniqueCode
      */
     @Update(" update t_order t set t.unique_code=#{uniqueCode} where t.order_id=#{orderId} ")
-    void updateOrderUniqueCode(Integer orderId, String uniqueCode);
+    void updateOrderUniqueCode(@Param("orderId") Integer orderId,@Param("uniqueCode") String uniqueCode);
 
     /**
      * 创建订单
@@ -72,7 +72,7 @@ public interface OrderMapper {
      * @return
      */
     @Select(" select * from t_order where order_no=#{orderNo} ")
-    Order queryOrderByOrderNo(String orderNo);
+    Order queryOrderByOrderNo(@Param("orderNo") String orderNo);
 
     /**
      * 修改订单
@@ -95,7 +95,7 @@ public interface OrderMapper {
      * @return
      */
     @Select(" select * from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.customer_id=#{customerId} ")
-    List<Order> queryOrderByCustomerId(Integer customerId);
+    List<Order> queryOrderByCustomerId(@Param("customerId") Integer customerId);
 
     /**
      * 修改订单号(订单创建完成后刷新订单号)

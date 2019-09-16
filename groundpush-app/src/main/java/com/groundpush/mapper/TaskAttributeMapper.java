@@ -3,6 +3,7 @@ package com.groundpush.mapper;
 import com.groundpush.core.model.TaskAttribute;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -23,14 +24,14 @@ public interface TaskAttributeMapper {
      * @return
      */
     @Select(" select * from t_task_attribute ta where ta.task_id = #{taskId} and ta.type=#{type} ")
-    List<TaskAttribute> queryTaskAttributeByTaskId(Integer taskId, Integer type);
+    List<TaskAttribute> queryTaskAttributeByTaskId(@Param("taskId") Integer taskId,@Param("type") Integer type);
 
     /**
      * 删除任务的时候删除任务相关属性
      * @param taskId
      */
     @Delete(" delete from t_task_attribute ta where ta.task_id = #{taskId} ")
-    void deleteTaskAttributeByTaskId(Integer taskId);
+    void deleteTaskAttributeByTaskId(@Param("taskId") Integer taskId);
 
     /**
      * 创建任务相关属性
@@ -49,5 +50,5 @@ public interface TaskAttributeMapper {
     Integer createTaskAttribute(List<TaskAttribute> taskAttributes);
 
     @Select(" select * from t_task_attribute ta where ta.task_id = #{taskId} ")
-    List<TaskAttribute> getTaskAttributeListByTaskId(Integer taskId);
+    List<TaskAttribute> getTaskAttributeListByTaskId(@Param("taskId") Integer taskId);
 }

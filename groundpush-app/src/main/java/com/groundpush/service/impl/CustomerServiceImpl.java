@@ -92,6 +92,9 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw e;
+        }catch (Throwable e) {
+            log.error(e.getMessage(), e);
+            throw e;
         }
     }
 
@@ -124,6 +127,9 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw e;
+        } catch (Throwable e) {
+            log.error(e.getMessage(), e);
+            throw e;
         }
     }
 
@@ -136,7 +142,7 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
     public Optional<Customer> queryOrCreate(String mobile) {
         Optional<Customer> optionalCustomer = customerMapper.queryCustomerByLoginNo(mobile);
         if (!optionalCustomer.isPresent()) {
-            Customer customer = Customer.builder().loginNo(mobile).build();
+            Customer customer = Customer.builder().loginNo(mobile).type(Constants.LOGIN_TYPE_1).build();
             createCustomer(customer);
             return Optional.of(customer);
         }

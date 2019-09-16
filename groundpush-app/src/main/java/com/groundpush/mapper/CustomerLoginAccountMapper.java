@@ -3,8 +3,10 @@ package com.groundpush.mapper;
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.model.CustomerLoginAccount;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +64,7 @@ public interface CustomerLoginAccountMapper {
      * @return
      */
     @Select(" select * from t_customer_login_account ca where ca.login_no=#{loginNo} and ca.type=#{type} ")
-    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(String loginNo, Integer type);
+    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(@Param("loginNo") String loginNo, @Param("type") Integer type);
 
     /**
      * 通过账号类型查询账户

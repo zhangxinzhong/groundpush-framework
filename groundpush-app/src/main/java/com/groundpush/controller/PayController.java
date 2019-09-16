@@ -7,7 +7,6 @@ import com.groundpush.pay.model.AliPayResponse;
 import com.groundpush.service.CashOutLogService;
 import com.groundpush.service.CustomerAccountService;
 import com.groundpush.vo.PayVo;
-import javafx.scene.control.Alert;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.groundpush.core.model.OrderBonus;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -40,5 +41,5 @@ public interface OrderBonusMapper {
      * @return
      */
     @Select(" select * from t_order_bonus where order_id= #{orderId} ")
-    List<OrderBonus> queryOrderBonusByOrderId(Integer orderId);
+    List<OrderBonus> queryOrderBonusByOrderId(@Param("orderId") Integer orderId);
 }
