@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.groundpush.core.model.OrderTaskCustomer;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -25,5 +26,5 @@ public interface OrderTaskCustomerMapper {
      * @param taskId
      */
     @Select(" SELECT a.* FROM t_order_task_customer a where a.task_id = #{taskId} ")
-    List<OrderTaskCustomer> findOrderByTaskId(Integer taskId);
+    List<OrderTaskCustomer> findOrderByTaskId(@Param("taskId") Integer taskId);
 }

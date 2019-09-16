@@ -170,6 +170,9 @@ public class OrderBonusServiceImpl implements OrderBonusService {
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
+        }catch (Throwable e) {
+            log.error(e.getMessage(), e);
+            throw e;
         }
     }
 
@@ -185,8 +188,10 @@ public class OrderBonusServiceImpl implements OrderBonusService {
         Optional<Customer> customerOptional = customerMapper.getCustomer(cust.getParentId());
         if (customerOptional.isPresent()) {
             Customer customer = customerOptional.get();
-            log.info("订单号：{} 的团队领导分成：{}", order, orderBonuses);
+            log.info("订单号：{} 的团队领导分成：{}", order.getOrderId(), bonusAmount);
             orderBonuses.add(OrderBonus.builder().customerId(customer.getCustomerId()).orderId(order.getOrderId()).bonusType(bonusType).customerBonus(bonusAmount).build());
+        } else {
+            log.info("订单号：{} 的团队领导不存在：{}", order.getOrderId(), cust.toString());
         }
     }
 }

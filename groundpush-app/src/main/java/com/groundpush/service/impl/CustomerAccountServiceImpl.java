@@ -117,6 +117,9 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
+        }catch (Throwable e) {
+            log.error(e.getMessage(), e);
+            throw e;
         }
     }
 }

@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.groundpush.core.model.CustomerAccount;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -22,7 +23,7 @@ public interface CustomerAccountMapper {
      * @return
      */
     @Select(" select * from t_customer_account where customer_id= #{customerId} ")
-    Optional<CustomerAccount> getCustomerAccount(Integer customerId);
+    Optional<CustomerAccount> getCustomerAccount(@Param("customerId") Integer customerId);
 
     /**
      * 创建客户账户信息
@@ -39,5 +40,5 @@ public interface CustomerAccountMapper {
      * @param customerAccountAmount 客户账户余额
      */
     @Update(" update t_customer_account set amount=#{customerAccountAmount},last_modified_time=current_timestamp where customer_id=#{customerId} ")
-    void subtractCustomerAccountAmount(Integer customerId, BigDecimal customerAccountAmount);
+    void subtractCustomerAccountAmount(@Param("customerId") Integer customerId, @Param("customerAccountAmount") BigDecimal customerAccountAmount);
 }
