@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -35,25 +36,19 @@ public class UploadController {
     @GetMapping
     @ResponseBody
     @RequestMapping("/uploadFile")
-    public Map<String, Object> uploadFile(HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> uploadFile(@RequestParam MultipartFile file) {
         //返回数据
         Map<String, Object> result = new HashMap<String, Object>();
         try {
             //返回文件访问路径
-            String uploadFilePath = "";
+            Map<String,Object> fileMap = new HashMap<String, Object>();
             // 获取文件并上传
-            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
-                    request.getSession().getServletContext());
-            if (multipartResolver.isMultipart(request)) {
-                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-                MultipartFile imgFile = multiRequest.getFile("file");
-                if (imgFile != null && imgFile.getSize() > 0) {
-                    uploadFilePath = OSSUnit.upload(imgFile);
-                }
+            if (file != null && file.getSize() > 0) {
+                fileMap = OSSUnit.upload(file);
             }
             result.put("code", "200");
             result.put("msg", "成功");
-            result.put("uploadFilePath", uploadFilePath);
+            result.put("fileData", fileMap);
         } catch (Exception e) {
             result.put("code", "500");
             result.put("msg", "上传错误请联系工作人员");

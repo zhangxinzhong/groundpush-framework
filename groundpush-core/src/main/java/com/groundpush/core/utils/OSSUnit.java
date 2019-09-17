@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -160,24 +164,29 @@ public class OSSUnit {
 
     // 拼参数上传
     @SuppressWarnings("static-access")
-    public static String upload(MultipartFile file) {
-        String resultMsg = "";
+    public static Map<String, Object> upload(MultipartFile file) {
+        //返回结果
+        Map<String,Object> resultMap = new HashMap<String,Object>();
         try {
             InputStream is = file.getInputStream();
             String name = file.getOriginalFilename();
             String[] split = name.split("\\.");
             int length = split.length;
-            String time = System.getSecurityManager() + "";
+            long currentTimeMillis = System.currentTimeMillis();
+            System.out.println(currentTimeMillis);
+            String time = String.valueOf(currentTimeMillis);
             String fileName = time + "." + split[length - 1];
             OSSUnit ossunit = new OSSUnit();
             OSSClient client = OSSUnit.getOSSClient();
             uploadFileAliyun(client, is, BUCKET_NAME, fileName, ROOT_DIR);
-            resultMsg = BASE_URL + fileName;
-            //resultMsg = ossunit.uploadFileAliyun(client, is, bucketName, fileName, "data/inputFiles/");
+            String filePath = BASE_URL + ROOT_DIR + fileName;
+            //组一下子
+            resultMap.put("filePath",filePath);
+            resultMap.put("fileName",fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return resultMsg;
+        return resultMap;
     }
 
     public static String upload(File file) {

@@ -119,5 +119,11 @@ public class TaskController {
         }
     }
 
+    //打开h5页面
+    @RequestMapping("/toH5Page")
+    public String toH5Page(Model model) {
+        return "/h5/page";
+    }
+
 
 }
