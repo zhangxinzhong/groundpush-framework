@@ -100,12 +100,11 @@
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">封面图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px" id="imgDJZS123" name="imgFile"
+                                <img style="margin-left: -10px" id="imgFMT"
                                      src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
                                 <br><label>上传封面图片</label>
                             </div>
-                            <input type="hidden" name="imgUri" id="imgUri"
-                                   value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
+                            <input type="hidden" name="imgUri" id="imgUri">
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">标&emsp;题：</label>
@@ -224,29 +223,30 @@
                         <input type="hidden" name="taskAttributes" id="taskAttributes">
                     </form>
 
-                    <div class="row" id="allTaskDiv" style="margin-top: 15px">
-                        <div class="col-lg-6" id="MyTask" style="border-right:1px solid #000">
-                            <div style="margin-left: 20px;" class="row">
-                                <a class="btn btn-primary col-lg-2">我的任务编辑</a>
-                                <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
-                                   onclick="addJieDuan('MyTask')">添加阶段</a>
-                            </div>
-                            <div id="MyTaskContentDiv">
+                    <form>
+                        <div class="row" id="allTaskDiv" style="margin-top: 15px">
+                            <div class="col-lg-6" id="MyTask" style="border-right:1px solid #000">
+                                <div style="margin-left: 20px;" class="row">
+                                    <a class="btn btn-primary col-lg-2">我的任务编辑</a>
+                                    <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
+                                       onclick="addJieDuan('MyTask')">添加阶段</a>
+                                </div>
+                                <div id="MyTaskContentDiv">
 
+                                </div>
+                            </div>
+                            <div class="col-lg-6" id="GeneralizeTask">
+                                <div style="margin-left: 20px;" class="row">
+                                    <a class="btn btn-primary col-lg-2">推广任务编辑</a>
+                                    <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
+                                       onclick="addJieDuan('GeneralizeTask')">添加阶段</a>
+                                </div>
+                                <div id="GeneralizeTaskContentDiv">
+
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-6" id="GeneralizeTask">
-                            <div style="margin-left: 20px;" class="row">
-                                <a class="btn btn-primary col-lg-2">推广任务编辑</a>
-                                <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
-                                   onclick="addJieDuan('GeneralizeTask')">添加阶段</a>
-                            </div>
-                            <div id="GeneralizeTaskContentDiv">
-
-                            </div>
-                        </div>
-                    </div>
-
+                    </form>
 
                 </div>
                 <div class="modal-footer">
@@ -437,6 +437,8 @@
                         //基础数据
                         var dataMsg = data.data;
                         $("#thisTaskId").val(dataMsg.taskId);
+                        $("#imgUri").val(dataMsg.imgUri);
+                        $("#imgFMT").attr("src",dataMsg.imgUri);
                         $("#title").val(dataMsg.title);
                         $("#source").val(dataMsg.source);
                         $("#location").val(dataMsg.location);
@@ -655,7 +657,7 @@
                 '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
                 '                <option value="7" selected>图片</option>' +
                 '                </select>' +
-                '                <img class="my-img form-control col-lg-5" id="imgDJZS" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline"  />' +
+                '                <img class="imgDJZS my-img form-control col-lg-5" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline"  />' +
                 '                <input type="hidden" class="content" name="content" value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" />';
         }
         //组上

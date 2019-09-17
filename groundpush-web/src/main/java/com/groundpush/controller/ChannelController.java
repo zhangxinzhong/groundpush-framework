@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Channel;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.utils.Constants;
@@ -15,10 +16,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 @Slf4j
@@ -58,7 +61,7 @@ public class ChannelController {
     @ApiOperation(value = "添加渠道")
     @RequestMapping(value = "/addChannel", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp addChannel(@RequestBody Channel channel) {
+    public JsonResp addChannel(@Valid @RequestBody Channel channel, BindingResult bindingResult) {
         try {
             channel.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
             channelService.createChannel(channel);
@@ -72,8 +75,11 @@ public class ChannelController {
     @ApiOperation(value = "修改渠道")
     @RequestMapping(value = "/updateChannel", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp updateChannel(@RequestBody Channel channel) {
+    public JsonResp updateChannel(@Valid @RequestBody Channel channel, BindingResult bindingResult) {
         try {
+            if (bindingResult.hasErrors()) {
+                throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+            }
             channelService.updateChannel(channel);
             return JsonResp.success();
         } catch (Exception e) {

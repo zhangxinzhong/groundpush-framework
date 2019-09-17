@@ -3,6 +3,8 @@ package com.groundpush.service;
 import com.groundpush.core.model.TaskUri;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Optional;
+
 /**
  * @description:任务uri service
  * @author: hss
@@ -15,5 +17,5 @@ public interface TaskUriService {
      * @param taskId
      * @return
      */
-    TaskUri queryValidTaskUriByTaskId(Integer taskId);
+    Optional<TaskUri> queryValidTaskUriByTaskId(Integer taskId);
 }
