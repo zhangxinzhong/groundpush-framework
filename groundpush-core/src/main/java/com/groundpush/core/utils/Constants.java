@@ -187,4 +187,7 @@ public class Constants {
     public static final String ALIPAY = "支付宝";
 
     public static final String WEIXIN = "微信";
+
+
+    public static final  String CODE_KEY_PREFIX = "code_key_";
 }

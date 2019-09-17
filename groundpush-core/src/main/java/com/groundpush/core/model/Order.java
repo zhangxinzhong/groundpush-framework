@@ -47,7 +47,7 @@ public class Order implements Serializable {
     private String uniqueCode;
 
     /**
-     * 订单状态
+     * 订单状态  1:已通过  2：待审核  3：审核中
      */
     private Integer status;
 

@@ -76,6 +76,8 @@ public class TaskController {
         //todo 添加任务中是否有订单判断
         List<OrderTaskCustomer> list = orderTaskCustomerService.findOrderByTaskId(task.getTaskId());
         task.setHasOrder(list != null && list.size() > 0 ? true : false);
+        Optional<TaskCollect> taskCollect = taskCollectService.queryCollectsByTaskId(task.getTaskId());
+        task.setHasCollect(taskCollect.isPresent());
         return JsonResp.success(task);
     }
 }

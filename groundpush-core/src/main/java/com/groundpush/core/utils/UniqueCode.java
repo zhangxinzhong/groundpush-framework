@@ -116,4 +116,17 @@ public class UniqueCode {
         StringBuffer stringBuffer = new StringBuffer().append(System.currentTimeMillis()).append(RandomStringUtils.randomNumeric(6)).append(primaryKey);
         return stringBuffer.toString();
     }
+
+
+    /**
+     * 前缀+时间戳+随机数
+     *
+     * @return
+     */
+    public String generRandomCodeKey() {
+        StringBuffer stringBuffer = new StringBuffer().append(Constants.CODE_KEY_PREFIX).append(System.currentTimeMillis()).append(RandomStringUtils.randomNumeric(6));
+        return stringBuffer.toString();
+    }
+
+
 }

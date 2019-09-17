@@ -223,4 +223,11 @@ public class Task implements Serializable {
     @JsonView(SimpleTaskView.class)
     private Boolean hasOrder;
 
+    /**
+     * 任务是否存在订单
+     */
+    @ApiParam("是否收藏")
+    @JsonView(SimpleTaskView.class)
+    private Boolean hasCollect;
+
 }

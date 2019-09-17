@@ -13,7 +13,6 @@ import com.groundpush.service.RoleService;
 import com.groundpush.service.UserService;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * @description:
+ * @description:角色管理模块
  * @author: hss
  * @date: 2019/9/12 9:55
  */

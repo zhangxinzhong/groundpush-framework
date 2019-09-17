@@ -154,7 +154,7 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             BigDecimal totalBonus = MathUtil.sum(taskFinishCustBonus, taskSpreadCustBonus, taskLeaderCustBonus);
 
             if (MathUtil.greaterThan(taskAmount, totalBonus)) {
-                throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorMessage());
+                throw new BusinessException(ExceptionEnum.ORDER_BONUS_ERROR.getErrorCode(), ExceptionEnum.ORDER_BONUS_ERROR.getErrorMessage());
             }
 
             List<OrderBonus> orderBonuses = orderBonusMapper.queryOrderBonusByOrderId(orderId);

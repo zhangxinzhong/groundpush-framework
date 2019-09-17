@@ -38,6 +38,7 @@ public interface OrderMapper {
             "<script>",
             "select * from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.customer_id = #{customerId}",
             " <if test='status != null'> and status =#{status}  </if> ",
+            " <if test='selectTime != null'> and status =#{selectTime}  </if> ",
             "</script>"
     })
     List<Order> queryOrder(OrderQueryCondition order);

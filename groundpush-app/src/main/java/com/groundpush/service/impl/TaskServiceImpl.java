@@ -40,6 +40,8 @@ public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskAttributeService taskAttributeService;
 
+
+
     @Override
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
@@ -126,6 +128,7 @@ public class TaskServiceImpl implements TaskService {
             task.setGetTaskAttributesSet(addTaskAttributeToSet(getTasks));
             // 申请任务 添加属性到map中方便app端使用
             task.setSpreadTaskAttributesSet(addTaskAttributeToSet(spreadTasks));
+            //
         }
 
     }
