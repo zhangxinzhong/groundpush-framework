@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,7 +25,11 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Role implements Serializable {
     private Integer roleId;
+
+    @NotNull(message="角色名称不可为空")
     private String name;
+
+    @NotNull(message="角色编号不可为空")
     private String code;
     private Integer status;
     private Integer createdBy;

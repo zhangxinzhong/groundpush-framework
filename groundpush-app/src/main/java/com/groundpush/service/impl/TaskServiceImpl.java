@@ -123,14 +123,14 @@ public class TaskServiceImpl implements TaskService {
             task.setSpreadTaskAttributes(spreadTasks);
 
             // 处理申请任务 添加属性到map中方便app端使用
-            task.setGetTaskAttributesMap(addTaskAttributeToMap(getTasks));
+            task.setGetTaskAttributesSet(addTaskAttributeToSet(getTasks));
             // 申请任务 添加属性到map中方便app端使用
-            task.setSpreadTaskAttributesMap(addTaskAttributeToMap(spreadTasks));
+            task.setSpreadTaskAttributesSet(addTaskAttributeToSet(spreadTasks));
         }
 
     }
 
-    private Map<Integer, List<TaskAttribute>> addTaskAttributeToMap(List<TaskAttribute> taskAttr) {
+    private Set<List<TaskAttribute>> addTaskAttributeToSet(List<TaskAttribute> taskAttr) {
         if (taskAttr != null && taskAttr.size() > 0) {
             Map<Integer, List<TaskAttribute>> taskAttrMap = new HashMap<>();
             for (TaskAttribute taskAttribute : taskAttr) {
@@ -143,8 +143,8 @@ public class TaskServiceImpl implements TaskService {
                     taskAttrMap.put(mapKey, listTaskAttribute);
                 }
             }
-            return taskAttrMap;
+            return new HashSet<> (taskAttrMap.values());
         }
-        return Collections.EMPTY_MAP;
+        return Collections.EMPTY_SET;
     }
 }

@@ -130,7 +130,6 @@
          * AJAX请求公用方法
          * @param url 后台请求地址
          * @param data 参数
-         * @param dataType 请求类型
          * @param asyncFlag false 同步加载,true异步加载
          * @param map index
          * @param callBack
@@ -162,7 +161,37 @@
          * AJAX请求公用方法
          * @param url 后台请求地址
          * @param data 参数
-         * @param dataType 请求类型
+         * @param asyncFlag false 同步加载,true异步加载
+         * @param map index
+         * @param callBack
+         * @param errorBack
+         */
+        putAjax: function(url,data,callBack, errorBack) {
+            console.log( url, data);
+            $.ajax({
+                type : 'put',
+                async : false,
+                data : data,
+                dataType : 'json',
+                url : Utils.encode(url),
+                contentType:'application/json',
+                error : function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (Utils.verifyFunction(errorBack)) {
+                        errorBack(data,XMLHttpRequest, textStatus, errorThrown);
+                    }
+                },
+                success : function(data) {
+                    if (Utils.verifyFunction(callBack)) {
+                        callBack(data);
+                    }
+                }
+            });
+        },
+
+        /**
+         * AJAX请求公用方法
+         * @param url 后台请求地址
+         * @param data 参数
          * @param asyncFlag false 同步加载,true异步加载
          * @param map index
          * @param callBack
@@ -172,6 +201,37 @@
 
             $.ajax({
                 type : 'get',
+                cache : false,// 从页面缓存获取加载信息
+                async : false,
+                dataType : 'json',
+                url : Utils.encode(url),
+                data : data,
+                error : function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (Utils.verifyFunction(errorBack)) {
+                        errorBack(data,XMLHttpRequest, textStatus, errorThrown);
+                    }
+                },
+                success : function(data) {
+                    if (Utils.verifyFunction(callBack)) {
+                        callBack(data);
+                    }
+                }
+            });
+        },
+
+        /**
+         * AJAX请求公用方法
+         * @param url 后台请求地址
+         * @param data 参数
+         * @param asyncFlag false 同步加载,true异步加载
+         * @param map index
+         * @param callBack
+         * @param errorBack
+         */
+        deleteAjax: function(url,data,callBack, errorBack) {
+
+            $.ajax({
+                type : 'delete',
                 cache : false,// 从页面缓存获取加载信息
                 async : false,
                 dataType : 'json',

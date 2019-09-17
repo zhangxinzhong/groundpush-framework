@@ -65,7 +65,7 @@ public interface ChannelMapper {
      * @return
      */
     @Select(" select * from t_channel where channel_id=#{channelId}")
-    Optional<Channel> queryChannelById(Integer channelId);
+    Optional<Channel> queryChannelById(@Param("channelId") Integer channelId);
 
     @Insert("insert into t_channel_data(channel_id,file_name,mapping) values(#{channelId},#{fileName},#{mapping})")
     Integer addChannelData(@Param("channelId") Integer channelId, @Param("fileName")String fileName, @Param("mapping")String mapping);

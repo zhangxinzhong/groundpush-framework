@@ -2,12 +2,14 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.condition.UpmAddCondition;
 import com.groundpush.core.model.*;
 import com.groundpush.mapper.RoleMapper;
 import com.groundpush.mapper.RoleUserPrivilegeMenuMapper;
 import com.groundpush.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,6 +29,8 @@ public class RoleServiceImpl implements RoleService {
     @Resource
     private RoleUserPrivilegeMenuMapper rupmMapper;
 
+
+
     @Override
     public Page<Role> queryAllRoles(Integer page,Integer limit) {
         PageHelper.startPage(page,limit);
@@ -39,8 +43,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delRole(Role role) {
-        roleMapper.delRole(role);
+    public void delRole(Integer roleId) {
+        roleMapper.delRole(roleId);
     }
 
     @Override
@@ -48,15 +52,28 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.updateRole(role);
     }
 
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addRupm(RoleUserPrivilegeMenu rupm) {
-        rupmMapper.addRoleUserPrivilegeMenu(rupm);
+    public void addRoleUser(UpmAddCondition upmAddCondition) {
+        rupmMapper.delRoleUser(upmAddCondition.getRoleId());
+        rupmMapper.addRoleUser(upmAddCondition);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void delRupmByLinkId(List<Integer> linkId) {
-        rupmMapper.delRoleUserPrivilegeMenu(linkId);
+    public void addPrivilege(UpmAddCondition upmAddCondition) {
+        rupmMapper.delRolePrivilege(upmAddCondition.getRoleId());
+        rupmMapper.addPrivilege(upmAddCondition);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void addRoleMenu(UpmAddCondition upmAddCondition) {
+        rupmMapper.delRoleMenu(upmAddCondition.getRoleId());
+        rupmMapper.addRoleMenu(upmAddCondition);
+    }
+
 
     @Override
     public Page<User> findUsersByRoleId(Integer roleId,Integer page,Integer limit) {
@@ -77,8 +94,23 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleUserPrivilegeMenu>  findAllUpmsByRoleId(Integer roleId){
+    public Integer  findAllUpmsByRoleId(Integer roleId){
         return rupmMapper.findAllUpmsByRoleId(roleId);
+    }
+
+    @Override
+    public List<Integer> findAllUserIdsByRoleId(Integer roleId){
+        return rupmMapper.findAllUserIdsByRoleId(roleId);
+    }
+
+    @Override
+    public List<Integer> findAllPriIdsByRoleId(Integer roleId){
+        return rupmMapper.findAllPriIdsByRoleId(roleId);
+    }
+
+    @Override
+    public List<Integer> findAllMenuIdsByRoleId(Integer roleId){
+        return rupmMapper.findAllMenuIdsByRoleId(roleId);
     }
 
 }

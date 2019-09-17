@@ -1,9 +1,10 @@
 package com.groundpush.service;
 
 import com.github.pagehelper.Page;
-import com.groundpush.core.model.Dict;
 import com.groundpush.core.model.DictDetail;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,4 +49,13 @@ public interface DictDetailService {
      * @return
      */
     public Page<DictDetail> getDictDetailList(Integer nowPage, Integer pageSize);
+
+    /**
+     * 查询数据字典子项
+     * @param dictId 数据字典编号
+     * @param page 当前页
+     * @param limit 每页条数
+     * @return
+     */
+    Page<DictDetail> queryDictDetailByDict(Integer dictId, Integer page, Integer limit);
 }

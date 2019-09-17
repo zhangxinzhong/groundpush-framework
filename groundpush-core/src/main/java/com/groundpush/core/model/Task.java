@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @description: 任务model
@@ -191,13 +192,13 @@ public class Task implements Serializable {
      * 申请任务map APP端使用
      */
     @JsonView(DetailTaskView.class)
-    private Map<Integer, List<TaskAttribute>> getTaskAttributesMap;
+    private Set<List<TaskAttribute>> getTaskAttributesSet;
 
     /**
      * 推广任务map APP端使用
      */
     @JsonView(DetailTaskView.class)
-    private Map<Integer, List<TaskAttribute>> spreadTaskAttributesMap;
+    private Set<List<TaskAttribute>> spreadTaskAttributesSet;
 
     @NotNull(message = "标签内容不可为空")
     @JsonView(SimpleTaskView.class)

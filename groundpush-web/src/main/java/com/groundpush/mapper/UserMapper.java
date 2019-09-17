@@ -1,5 +1,6 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.model.User;
 import org.apache.ibatis.annotations.Select;
 
@@ -17,4 +18,9 @@ public interface UserMapper {
 
     @Select(" select * from t_user where user_id = #{id} ")
     Optional<User> getUserById(Integer id);
+
+
+    @Select(" select * from t_user ")
+    Page<User> getAllUsersPages();
+
 }

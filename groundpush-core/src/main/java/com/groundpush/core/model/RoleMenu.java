@@ -11,38 +11,23 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @description: user 信息
+ * @description:
  * @author: zhangxinzhong
- * @date: 2019-08-19 上午9:27
+ * @date: 2019-08-19 下午1:25
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements Serializable {
-    private Integer userId;
-    private String loginNo;
-    private String name;
-    private String namePinyin;
-    private String mobileNo;
-    private String workEmail;
+public class RoleMenu implements Serializable {
+    private Integer roleId;
+    private Integer menuId;
     private Integer status;
-    /**
-     * 头像url
-     */
-    private String photo;
-
+    private Integer createdBy;
     @JsonIgnore
     private Date createdTime;
-
+    private Integer lastModifiedBy;
     @JsonIgnore
     private Date lastModifiedTime;
-
-    private Integer lastModifiedBy;
-
-    /**
-     * ****************非数据库字段***************
-     */
-    private String createdName;
 }

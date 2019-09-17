@@ -36,4 +36,11 @@ public class Menu implements Serializable {
      * 是否叶子菜单
      */
     private Boolean leaf;
+
+    /**
+     * ****************非数据库字段***************
+     */
+    private String createdName;
+
+    private String parentName;
 }
