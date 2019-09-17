@@ -1,5 +1,6 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.model.Privilege;
 import org.apache.ibatis.annotations.Select;
 
@@ -26,4 +27,7 @@ public interface PrivilegeMapper {
      */
     @Select(" select * from t_privilege ")
     List<Privilege> queryAll();
+
+    @Select(" select a.* from t_privilege a ")
+    Page<Privilege> queryAllPrivileges();
 }

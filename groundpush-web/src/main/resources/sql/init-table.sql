@@ -260,6 +260,37 @@ CREATE TABLE `t_cashout_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+-- 标签表
+drop table if exists t_label;
+CREATE TABLE `t_label` (
+  `label_id` int(11) NOT NULL AUTO_INCREMENT,
+  `label_name` varchar(50) DEFAULT NULL COMMENT '标签名称',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `created_by` int(11) DEFAULT NULL COMMENT '创建人',
+  `status` tinyint(4) DEFAULT '1' COMMENT '是否可用（0否，1是）',
+  `type` tinyint(4) DEFAULT '1' COMMENT '标签类型（0-次要标签，1-主要标签）',
+  `sort` int(11) DEFAULT '0' COMMENT '排序大者在前',
+  `modify_time` datetime DEFAULT NULL,
+  `remark` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`label_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='标签表';
+
+-- 渠道表
+drop table if exists t_channel;
+CREATE TABLE `t_channel` (
+  `channel_id` int(20) NOT NULL AUTO_INCREMENT,
+  `company_name` varchar(200) DEFAULT NULL COMMENT '公司名称',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `status` tinyint(4) DEFAULT NULL COMMENT '当前状态 是否可用（0否，1是）',
+  `link_name` varchar(50) DEFAULT NULL COMMENT '联系人',
+  `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
+  `address` varchar(200) DEFAULT NULL COMMENT '公司地址',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `created_by` int(20) DEFAULT NULL,
+  PRIMARY KEY (`channel_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
 
 
 

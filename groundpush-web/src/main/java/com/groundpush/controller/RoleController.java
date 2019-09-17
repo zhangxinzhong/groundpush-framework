@@ -2,17 +2,18 @@ package com.groundpush.controller;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.core.condition.RupmQueryCondition;
+import com.groundpush.core.condition.UpmAddCondition;
 import com.groundpush.core.model.*;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.SessionUtils;
+import com.groundpush.service.MenuService;
+import com.groundpush.service.PrivilegeService;
 import com.groundpush.service.RoleService;
+import com.groundpush.service.UserService;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -32,8 +33,18 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
+
     @Resource
     private SessionUtils sessionUtils;
+
+    @Resource
+    private MenuService menuService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private PrivilegeService privilegeService;
 
     @GetMapping("/toRole")
     public String toRole(){
@@ -77,17 +88,17 @@ public class RoleController {
 
     /**
      * 删除角色
-     * @param role
+     * @param roleId
      */
     @RequestMapping("/delRole")
     @ResponseBody
-    public JsonResp  delRole(@RequestBody @Valid Role role){
+    public JsonResp  delRole(@RequestParam(value = "roleId") Integer roleId){
         try {
-            List<RoleUserPrivilegeMenu>  list = roleService.findAllUpmsByRoleId(role.getRoleId());
-            if(list.size() > 0){
+            Integer  counts = roleService.findAllUpmsByRoleId(roleId);
+            if(counts.intValue() > 0){
                 return JsonResp.failure("角色关联未解绑不可删除");
             }
-            roleService.delRole(role);
+            roleService.delRole(roleId);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -105,6 +116,7 @@ public class RoleController {
     @ResponseBody
     public JsonResp  updateRole(@RequestBody @Valid Role role){
         try {
+            role.setLastModifiedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
             roleService.updateRole(role);
             return JsonResp.success();
         } catch (Exception e) {
@@ -115,14 +127,16 @@ public class RoleController {
 
 
     /**
-     * 添加关联权限
-     * @param rupm
+     * 添加角色用户关联
+     * @param upmAddCondition
      */
-    @RequestMapping("/addRupm")
+    @PostMapping("/addRoleUser")
     @ResponseBody
-    public JsonResp  addRupm(@RequestBody @Valid RoleUserPrivilegeMenu rupm){
+    public JsonResp  addRoleUser(@RequestBody UpmAddCondition upmAddCondition){
         try {
-            roleService.addRupm(rupm);
+            upmAddCondition.setStatus(Constants.STATUS_VAILD);
+            upmAddCondition.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            roleService.addRoleUser(upmAddCondition);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -131,14 +145,34 @@ public class RoleController {
     }
 
     /**
-     * 删除某个权限设置
-     * @param rupmQuery
+     * 添加角色权限关联
+     * @param upmAddCondition
      */
-    @RequestMapping("/delRupmByLinkId")
+    @PostMapping("/addPrivilege")
     @ResponseBody
-    public JsonResp  delRupmByLinkId(@RequestBody @Valid RupmQueryCondition rupmQuery){
+    public JsonResp  addPrivilege(@RequestBody UpmAddCondition upmAddCondition){
         try {
-            roleService.delRupmByLinkId(rupmQuery.getLinkIds());
+            upmAddCondition.setStatus(Constants.STATUS_VAILD);
+            upmAddCondition.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            roleService.addPrivilege(upmAddCondition);
+            return JsonResp.success();
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
+
+    /**
+     * 添加关联权限
+     * @param upmAddCondition
+     */
+    @PostMapping("/addRoleMenu")
+    @ResponseBody
+    public JsonResp  addRoleMenu(@RequestBody UpmAddCondition upmAddCondition){
+        try {
+            upmAddCondition.setStatus(Constants.STATUS_VAILD);
+            upmAddCondition.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            roleService.addRoleMenu(upmAddCondition);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -155,10 +189,11 @@ public class RoleController {
      */
     @RequestMapping("/findUsersByRoleId")
     @ResponseBody
-    public JsonResp  findUsersByRoleId(Integer roleId, Integer page, Integer limit){
+    public JsonResp  findUsersByRoleId(@RequestParam(value = "roleId",required = true) Integer roleId, Integer page, Integer limit){
         try {
             Page<User> pages = roleService.findUsersByRoleId(roleId,page,limit);
-            return JsonResp.success(new PageResult(pages));
+            List<Integer> userIds = roleService.findAllUserIdsByRoleId(roleId);
+            return JsonResp.success(new PageResult(pages,userIds));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
@@ -175,10 +210,11 @@ public class RoleController {
      */
     @RequestMapping("/findPrivilegesByRoleId")
     @ResponseBody
-    public JsonResp  findPrivilegesByRoleId(Integer roleId, Integer page, Integer limit){
+    public JsonResp  findPrivilegesByRoleId(@RequestParam(value = "roleId",required = true) Integer roleId, Integer page, Integer limit){
         try {
             Page<Privilege> pages = roleService.findPrivilegesByRoleId(roleId,page,limit);
-            return JsonResp.success(new PageResult(pages));
+            List<Integer> priIds = roleService.findAllPriIdsByRoleId(roleId);
+            return JsonResp.success(new PageResult(pages,priIds));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
@@ -193,9 +229,28 @@ public class RoleController {
      */
     @RequestMapping("/findMenusByRoleId")
     @ResponseBody
-    public JsonResp  findMenusByRoleId(Integer roleId, Integer page, Integer limit){
+    public JsonResp  findMenusByRoleId(@RequestParam(value = "roleId",required = true) Integer roleId, Integer page, Integer limit){
         try {
             Page<Menu> pages = roleService.findMenusByRoleId(roleId,page,limit);
+            List<Integer> menuIds = roleService.findAllMenuIdsByRoleId(roleId);
+            return JsonResp.success(new PageResult(pages,menuIds));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
+
+    /**
+     * 查询所有用户分页
+     * @param limit
+     * @param page
+     * @return
+     */
+    @RequestMapping("/queryAllUsersPages")
+    @ResponseBody
+    public JsonResp queryAllUsersPages(Integer limit, Integer page){
+        try {
+            Page<User> pages = userService.getAllUsersPages(page,limit);
             return JsonResp.success(new PageResult(pages));
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -203,4 +258,40 @@ public class RoleController {
         }
     }
 
+    /**
+     * 查询所有菜单分页
+     * @param limit
+     * @param page
+     * @return
+     */
+    @RequestMapping("/queryAllMenusPages")
+    @ResponseBody
+    public JsonResp queryAllMenusPages(Integer limit, Integer page){
+        try {
+            Page<Menu> pages = menuService.queryAll(page,limit);
+            return JsonResp.success(new PageResult(pages));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
+
+
+    /**
+     * 查询所有权限分页
+     * @param limit
+     * @param page
+     * @return
+     */
+    @RequestMapping("/queryAllPrivilegePages")
+    @ResponseBody
+    public JsonResp queryAllPrivilegePages(Integer limit, Integer page){
+        try {
+            Page<Privilege> pages = privilegeService.queryAllPrivileges(page,limit);
+            return JsonResp.success(new PageResult(pages));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
 }

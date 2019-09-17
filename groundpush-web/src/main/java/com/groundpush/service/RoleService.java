@@ -1,7 +1,9 @@
 package com.groundpush.service;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.UpmAddCondition;
 import com.groundpush.core.model.*;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -29,9 +31,9 @@ public interface RoleService {
 
     /**
      * 添加角色
-     * @param role
+     * @param roleId
      */
-    void delRole(Role role);
+    void delRole(Integer roleId);
 
     /**
      * 修改角色
@@ -41,18 +43,22 @@ public interface RoleService {
 
 
     /**
-     * 添加关联权限
-     * @param rupm
+     * 添加角色用户关联
+     * @param upmAddCondition
      */
-    void addRupm(RoleUserPrivilegeMenu rupm);
+    void addRoleUser(UpmAddCondition upmAddCondition);
 
     /**
-     * 删除某个权限设置
-     * @param linkId
+     * 添加角色权限关联
+     * @param upmAddCondition
      */
-    void delRupmByLinkId(List<Integer> linkId);
+    void addPrivilege(UpmAddCondition upmAddCondition);
 
-
+    /**
+     * 添加角色菜单关联
+     * @param upmAddCondition
+     */
+    void addRoleMenu(UpmAddCondition upmAddCondition);
 
 
     /**
@@ -87,6 +93,28 @@ public interface RoleService {
      * @param roleId
      * @return
      */
-    List<RoleUserPrivilegeMenu>  findAllUpmsByRoleId(Integer roleId);
+    Integer findAllUpmsByRoleId(Integer roleId);
+
+
+    /**
+     * 获取所有关联用户id
+     * @param roleId
+     * @return
+     */
+    List<Integer> findAllUserIdsByRoleId(Integer roleId);
+
+    /**
+     * 获取所有关联权限id
+     * @param roleId
+     * @return
+     */
+    List<Integer> findAllPriIdsByRoleId(Integer roleId);
+
+    /**
+     * 获取所有关联菜单id
+     * @param roleId
+     * @return
+     */
+    public List<Integer> findAllMenuIdsByRoleId(Integer roleId);
 
 }

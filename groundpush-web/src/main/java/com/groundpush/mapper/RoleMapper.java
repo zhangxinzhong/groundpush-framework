@@ -2,10 +2,7 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Role;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @description:
@@ -18,10 +15,10 @@ public interface RoleMapper {
             "<script>",
             " select ",
             " a.role_id, a.name, a.code, a.status, ",
-            " (select count(1) from t_role_user_privilege_menu b where b.role_id = a.role_id and b.type = 1) user_num, ",
-            " (select count(1) from t_role_user_privilege_menu b where b.role_id = a.role_id and b.type = 2) privilege_num, ",
-            " (select count(1) from t_role_user_privilege_menu b where b.role_id = a.role_id and b.type = 3) menu_num, ",
-            " (select b. name from t_user b where b.user_id = a.created_by) created_name, ",
+            " (select count(1) from t_user_role b where b.role_id = a.role_id) user_num, ",
+            " (select count(1) from t_role_privilege b where b.role_id = a.role_id) privilege_num, ",
+            " (select count(1) from t_role_menu b where b.role_id = a.role_id) menu_num, ",
+            " (select b.name from t_user b where b.user_id = a.created_by) created_name, ",
             " a.created_time, (select b.name from t_user b where b.user_id = a.last_modified_by ) last_modifyed_name,",
             " a.last_modified_time from t_role a",
             "</script>"
@@ -40,16 +37,16 @@ public interface RoleMapper {
     @Update({
             "<script>",
             " update t_role ",
-            " set last_modified_by = #{lastModifiedBy},last_modified_time = current_timestamp,",
+            " set last_modified_by = #{lastModifiedBy},",
             " <if test='name != null'> name = #{name},</if>",
             " <if test='code != null'> code = #{code},</if>",
             " <if test='status != null'> status = #{status},</if>",
-            " where role_id = #{roleId}",
+            " last_modified_time = current_timestamp where role_id = #{roleId}",
             "</script>"
     })
     void updateRole(Role role);
 
     @Delete(" delete from t_role where role_id = #{roleId} ")
-    void delRole(Role role);
+    void delRole(@Param("roleId") Integer roleId);
 
 }
