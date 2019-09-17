@@ -8,6 +8,7 @@ import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
+import com.groundpush.core.model.TaskUri;
 import com.groundpush.service.TaskCollectService;
 import com.groundpush.service.TaskUriService;
 import io.swagger.annotations.ApiModel;
@@ -24,11 +25,11 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * @description:任务uri
- * @author: zhangxinzhong
- * @date: 2019-08-27 上午9:58
+ * @author: hss
+ * @date: 2019-09-17
  */
 @Slf4j
-@ApiModel(value = "任务收藏")
+@ApiModel(value = "任务uri")
 @RequestMapping("/taskUri")
 @RestController
 public class TaskUriController {
@@ -39,13 +40,11 @@ public class TaskUriController {
 
 
     @ApiOperation("获取今日任务uri")
-    @JsonView(Task.DetailTaskView.class)
-    @GetMapping("/{taksId:\\d+}")
-    public JsonResp queryTaskCollect(@NotBlank(message = "taskId不能为空") @Valid @PathVariable Integer taksId,BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
-        }
-        return JsonResp.success(taskUriService.queryValidTaskUriByTaskId(taksId).get());
+    @JsonView(TaskUri.DetailTaskUriView.class)
+    @GetMapping("/{taskId:\\d+}")
+    public JsonResp queryTaskCollect(@Valid @PathVariable Integer taskId) {
+
+        return JsonResp.success(taskUriService.queryValidTaskUriByTaskId(taskId).get());
     }
 
 

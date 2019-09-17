@@ -17,6 +17,8 @@ public interface TaskUriMapper {
     @Select({
             "<script>",
             " select  ",
+            " a.task_uri_id,",
+            " a.created_by,",
             " a.created_time,",
             " a.last_modified_by,",
             " a.last_modified_time,",
