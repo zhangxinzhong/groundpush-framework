@@ -2,10 +2,7 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Dict;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Optional;
 
@@ -58,7 +55,7 @@ public interface DictMapper {
      * @return Integer
      */
     @Delete(" delete from t_dict where dict_id=#{dictId} ")
-    Integer deleteDict(Integer dictId);
+    Integer deleteDict(@Param("dictId") Integer dictId);
 
     /**
      * 通过字典ID查询菜单
@@ -67,7 +64,7 @@ public interface DictMapper {
      * @return
      */
     @Select(" select * from t_dict where dict_id=#{dictId} ")
-    Optional<Dict> getById(Integer dictId);
+    Optional<Dict> getById(@Param("dictId") Integer dictId);
 
 
 }

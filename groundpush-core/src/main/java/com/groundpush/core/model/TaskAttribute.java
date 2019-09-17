@@ -84,6 +84,12 @@ public class TaskAttribute implements Serializable {
     @JsonView(Task.DetailTaskView.class)
     private Integer createUri;
 
+    /**
+     * 图片唯一识别码
+     */
+    @JsonView(Task.DetailTaskView.class)
+    private String imgCode;
+
     @JsonView(Task.DetailTaskView.class)
     private Integer createdBy;
 

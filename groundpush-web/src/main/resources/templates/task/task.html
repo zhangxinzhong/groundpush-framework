@@ -377,6 +377,8 @@
             obj["labelType"] = labelType.val();
             var rowType = $(object).find(".rowType");
             obj["rowType"] = rowType.val();
+            var imgCode = $(object).find(".imgCode");
+            obj["imgCode"] = imgCode.val();
             var createUri = $(object).find(".createUri");
             if (createUri.is(':checked')) {
                 obj["createUri"] = 1;
@@ -438,7 +440,7 @@
                         var dataMsg = data.data;
                         $("#thisTaskId").val(dataMsg.taskId);
                         $("#imgUri").val(dataMsg.imgUri);
-                        $("#imgFMT").attr("src",dataMsg.imgUri);
+                        $("#imgFMT").attr("src", dataMsg.imgUri);
                         $("#title").val(dataMsg.title);
                         $("#source").val(dataMsg.source);
                         $("#location").val(dataMsg.location);
@@ -487,7 +489,7 @@
                             //阶段内容
                             var TaskMsgHtml = "";
                             //所属阶段的内容
-                            console.log("查看返回的结果：" + $("#myTaskHtml").html());
+                            console.log("查看返回的结果：" + $("#generalizeTaskHtml").html());
                             $("#myTaskHtml .labelRowDiv").each(function (dataIndex, dataMsg) {
                                 var onLabelIndex = $(dataMsg).attr("onLabelIndex");
                                 if (onLabelIndex == num) {
@@ -504,7 +506,7 @@
                         //推广任务编辑部分
                         var GeneralizeTaskContentDivHtml = "";
                         for (var i in taskAttributes) {
-                            var num = parseInt(i + 1);
+                            var num = parseInt(i) + 1;
                             //阶段标头内容
                             var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
                                 '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
@@ -518,11 +520,11 @@
                             $("#generalizeTaskHtml .labelRowDiv").each(function (dataIndex, dataMsg) {
                                 var onLabelIndex = $(dataMsg).attr("onLabelIndex");
                                 if (onLabelIndex == num) {
-                                    TaskMsgHtml += dataMsg;
+                                    TaskMsgHtml += $(dataMsg).prop("outerHTML");
                                 }
                             })
                             if (TaskMsgHtml.length > 0) {
-                                MyTaskContentDivHtml += TaskLabelHtml + TaskMsgHtml;
+                                GeneralizeTaskContentDivHtml += TaskLabelHtml + TaskMsgHtml;
                             }
                         }
                         $("#GeneralizeTaskContentDiv").html(GeneralizeTaskContentDivHtml);
@@ -540,6 +542,8 @@
     function getZiTaskMsg(taskAttribute) {
         //content
         var content = taskAttribute.content;
+        //图片唯一标识
+        var imgCode = taskAttribute.imgCode;
         //序号
         var seq = taskAttribute.seq;
         //是否生成URL
@@ -651,14 +655,28 @@
                 '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
                 '                </span>';
         } else if (rowType == 7) {
+            //组一下子唯 一标识
+            var labelClass = "imgTP" + imgCode;
+            var valueClass = "imgVAL" + imgCode;
             //图片
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '                <input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
                 '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
                 '                <option value="7" selected>图片</option>' +
                 '                </select>' +
-                '                <img class="imgDJZS my-img form-control col-lg-5" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline"  />' +
-                '                <input type="hidden" class="content" name="content" value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" />';
+                '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="' + content + '" style="margin-left: 5px;width:55%; height: 200px;display:inline"  />' +
+                '                <input type="hidden" class="' + valueClass + ' content" name="content" value="' + content + '" />' +
+                '                <input type="hidden" class="imgCode" name="imgCode" value="' + imgCode + '" />';
+            //把这些KEY和VAL记住
+            var activeSubjectsObject = {};
+            activeSubjectsObject.name = activeSubjectsName[i];
+            activeSubjectsObject.value = activeSubjectsNum[j];
+            activeSubjectsArr.push(activeSubjectsObject);
+
+
+
+
+                    attributeFileUpload("."+labelClass, "."+valueClass);
         }
         //组上
         ziHtml += '<a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +

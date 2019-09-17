@@ -59,7 +59,7 @@ public interface DictDetailMapper {
      * @return Integer
      */
     @Delete(" delete from t_dict_detail where detail_id=#{detailId} ")
-    Integer deleteDictDetail(Integer detailId);
+    Integer deleteDictDetail(@Param("detailId") Integer detailId);
 
     /**
      * 通过字典ID查询字典项
@@ -68,10 +68,11 @@ public interface DictDetailMapper {
      * @return
      */
     @Select(" select * from t_dict_detail where detail_id=#{detailId} ")
-    Optional<DictDetail> getById(Integer detailId);
+    Optional<DictDetail> getById(@Param("detailId") Integer detailId);
 
     /**
      * 通过数据字典编号查询数据字典项
+     *
      * @param dictId 数据字典编号
      * @return 数据字典子项分页
      */
