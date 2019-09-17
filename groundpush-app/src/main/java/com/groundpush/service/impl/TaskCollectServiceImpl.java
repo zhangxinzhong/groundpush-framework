@@ -69,8 +69,8 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     }
 
     @Override
-    public Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
+    public Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
         return taskCollectMapper.queryTaskCollect(taskQueryCondition);
     }
 

@@ -1,9 +1,11 @@
 package com.groundpush.controller;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.PageResult;
 import com.groundpush.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -68,8 +70,10 @@ public class OrderController {
     @ApiOperation(value = "查询订单")
     @GetMapping
     @ResponseBody
-    public JsonResp queryOrder(OrderQueryCondition orderQueryCondition, @PageableDefault(page = 1, size = 20) Pageable pageable) {
-        List<Order> orders = orderService.queryOrder(orderQueryCondition, pageable);
-        return JsonResp.success(orders);
+    public JsonResp queryOrder(OrderQueryCondition orderQueryCondition,
+                               @RequestParam(value = "pageNumber",required = false,defaultValue = "1") Integer pageNumber,
+                               @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer  pageSize) {
+        Page<Order> orders = orderService.queryOrder(orderQueryCondition, pageNumber,pageSize);
+        return JsonResp.success(new PageResult(orders));
     }
 }

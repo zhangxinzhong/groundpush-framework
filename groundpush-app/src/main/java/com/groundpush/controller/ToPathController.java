@@ -60,6 +60,7 @@ public class ToPathController {
                 order.setChannelUri(taskUri.get().getUri());
                 orderService.createOrder(order);
             }
+            redisUtils.del(toPathCondition.getKey());
         }else{
             bool = false;
         }

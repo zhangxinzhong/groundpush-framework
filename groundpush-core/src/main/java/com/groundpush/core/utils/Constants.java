@@ -189,5 +189,9 @@ public class Constants {
     public static final String WEIXIN = "微信";
 
 
+    /**
+     * 二维码key 前缀
+     *
+     */
     public static final  String CODE_KEY_PREFIX = "code_key_";
 }

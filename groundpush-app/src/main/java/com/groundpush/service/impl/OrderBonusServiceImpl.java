@@ -153,7 +153,7 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             //处理分成相加若分成大于总金额则说明：1.任务新建时分成填写错误 2.计算分成错误
             BigDecimal totalBonus = MathUtil.sum(taskFinishCustBonus, taskSpreadCustBonus, taskLeaderCustBonus);
 
-            if (MathUtil.greaterThan(taskAmount, totalBonus)) {
+            if (MathUtil.greaterThan(totalBonus,taskAmount)) {
                 throw new BusinessException(ExceptionEnum.ORDER_BONUS_ERROR.getErrorCode(), ExceptionEnum.ORDER_BONUS_ERROR.getErrorMessage());
             }
 
