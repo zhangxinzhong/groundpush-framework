@@ -5,9 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.groundpush.core.model.DictDetail;
 import com.groundpush.mapper.DictDetailMapper;
 import com.groundpush.service.DictDetailService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,32 +21,37 @@ import java.util.Optional;
 public class DictDetailServiceImpl implements DictDetailService {
 
     @Resource
-    private DictDetailMapper dictDetailMapperMapper;
+    private DictDetailMapper dictDetailMapper;
 
     @Override
     public Boolean insertDictDetail(DictDetail dictDetail) {
-        return dictDetailMapperMapper.insertDictDetail(dictDetail) > 0 ? true : false;
+        return dictDetailMapper.insertDictDetail(dictDetail) > 0 ? true : false;
     }
 
     @Override
     public Optional<DictDetail> getById(Integer detailId) {
-        return dictDetailMapperMapper.getById(detailId);
+        return dictDetailMapper.getById(detailId);
     }
 
     @Override
     public Boolean updateDictDetail(DictDetail dictDetail) {
-        return dictDetailMapperMapper.updateDictDetail(dictDetail) > 0 ? true : false;
+        return dictDetailMapper.updateDictDetail(dictDetail) > 0 ? true : false;
     }
 
     @Override
     public Boolean deleteDictDetail(Integer detailId) {
-        return dictDetailMapperMapper.deleteDictDetail(detailId) > 0 ? true : false;
+        return dictDetailMapper.deleteDictDetail(detailId) > 0 ? true : false;
     }
 
     @Override
     public Page<DictDetail> getDictDetailList(Integer nowPage, Integer pageSize) {
         PageHelper.startPage(nowPage, pageSize);
-        return dictDetailMapperMapper.getDictDetailList();
+        return dictDetailMapper.getDictDetailList();
     }
 
+    @Override
+    public Page<DictDetail> queryDictDetailByDict(Integer dictId, Integer page, Integer limit) {
+        PageHelper.startPage(page,limit);
+        return dictDetailMapper.queryDictDetailByDict(dictId);
+    }
 }

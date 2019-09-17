@@ -1,16 +1,17 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.DictDetail;
 import com.groundpush.service.DictDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
@@ -31,35 +32,26 @@ public class DictDetailController {
      * @param dictDetail
      * @return
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @PostMapping
     @ResponseBody
-    public JsonResp addDictDetail(@RequestBody DictDetail dictDetail) {
-        try {
-            dictDetailService.insertDictDetail(dictDetail);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
+    public JsonResp addDictDetail(@Valid @RequestBody DictDetail dictDetail, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-
+        return JsonResp.success(dictDetailService.insertDictDetail(dictDetail));
     }
 
     /**
      * 查看字典项信息
      *
-     * @param dictDetailId
+     * @param detailId
      * @return
      */
-    @RequestMapping("/detail")
+    @GetMapping("/{detailId:\\d+}")
     @ResponseBody
-    public JsonResp detailDict(Integer dictDetailId) {
-        try {
-            Optional<DictDetail> dictDetail = dictDetailService.getById(dictDetailId);
-            return JsonResp.success(dictDetail.get());
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
+    public JsonResp detailDict(@PathVariable(name = "detailId") Integer detailId) {
+        Optional<DictDetail> dictDetail = dictDetailService.getById(detailId);
+        return JsonResp.success(dictDetail.isPresent() ? dictDetail.get() : null);
     }
 
     /**
@@ -68,36 +60,23 @@ public class DictDetailController {
      * @param dictDetail
      * @return
      */
-    @RequestMapping("/edit")
+    @PutMapping
     @ResponseBody
     public JsonResp updateDictDetail(@RequestBody DictDetail dictDetail) {
-        try {
-            dictDetailService.updateDictDetail(dictDetail);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
+        dictDetailService.updateDictDetail(dictDetail);
+        return JsonResp.success();
     }
 
     /**
      * 删除字典项信息
      *
-     * @param dictDetailId
+     * @param detailId
      * @return
      */
-    @RequestMapping("/del")
     @ResponseBody
-    public JsonResp deleteDictDetail(Integer dictDetailId) {
-        try {
-            if (dictDetailId != null) {
-                dictDetailService.deleteDictDetail(dictDetailId);
-                return JsonResp.success();
-            }
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-        return JsonResp.failure();
+    @DeleteMapping
+    public JsonResp deleteDictDetail(@RequestParam Integer detailId) {
+        dictDetailService.deleteDictDetail(detailId);
+        return JsonResp.success();
     }
 }

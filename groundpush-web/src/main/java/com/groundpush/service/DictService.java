@@ -42,11 +42,11 @@ public interface DictService {
 
     /**
      * 根据条件查找字典项
-     * @param nowPage
+     * @param pageNumber
      * @param pageSize
      * @return
      */
-    public Page<Dict> getDictList(Integer nowPage, Integer pageSize);
+    public Page<Dict> getDictList(Integer pageNumber, Integer pageSize);
 
     /**
      * 保存字典项

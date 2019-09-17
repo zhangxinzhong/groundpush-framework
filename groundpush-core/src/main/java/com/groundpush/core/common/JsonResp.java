@@ -68,10 +68,6 @@ public class JsonResp implements Serializable {
         return new JsonResp(FAILURE, data);
     }
 
-    public static JsonResp failure(String message) {
-        return new JsonResp(FAILURE, message, new HashMap());
-    }
-
     @JsonView(View.class)
     public String getMessage() {
         return message;

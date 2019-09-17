@@ -39,7 +39,16 @@ public interface DictMapper {
      * @param dict
      * @return Integer
      */
-    @Update(" update t_dict set code=#{code},name=#{name},dict_type=#{dictType},last_modified_time=current_timestamp where dict_id=#{dictId} ")
+    @Update({
+            "<script>",
+            " update t_dict set ",
+            " <if test='name != null'> name = #{name},</if>",
+            " <if test='code != null'> code = #{code},</if>",
+            " <if test='dictType != null'> dict_type = #{dictType},</if>",
+            " last_modified_time = current_timestamp ",
+            " where dict_id=#{dictId} ",
+            "</script>"
+    })
     Integer updateDict(Dict dict);
 
     /**

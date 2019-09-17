@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>登录--XXX管理系统</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -15,77 +14,42 @@
 
 </head>
 <body>
-<!--新增菜单-->
-<div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-method="showSaveDictDialog" data-custom-event="dict" id="addDict">新增菜单</button>
-</div>
-
 <!-- dict table -->
 <table class="layui-hide" id="dict" lay-filter="dict"></table>
 
 <!-- dict tobar-->
 <script type="text/html" id="toolbarDict">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-xs" lay-event="editDictDetail">编辑字典项</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="showAddDictDialog" >新增字典</a>
 </script>
 
+<!-- dict tobar-->
+<script type="text/html" id="toolbarDictOperation">
+    <a class="layui-btn layui-btn-xs" lay-event="editDict">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delDict">删除</a>
+</script>
 
-<!-- 添加/修改字典组模态框 -->
-<div class="modal fade bs-example-modal-lg" id="saveDictDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<!-- dictDetail tobar-->
+<script type="text/html" id="toolbarDictDetail">
+    <a class="layui-btn layui-btn-xs" lay-event="showDictDetailDialog">新增字典子项</a>
+</script>
+
+<!-- dictDetail tobar-->
+<script type="text/html" id="toolbarDictDetailOperation">
+    <a class="layui-btn layui-btn-xs" lay-event="editDictDetail">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delDictDetail">删除</a>
+</script>
+
+<!-- 添加字典模态框 -->
+<div class="modal fade bs-example-modal-lg" id="addDictDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="dictTitle">添加字典</h4>
+                <h4 class="modal-title" id="addDictTitle">添加字典</h4>
             </div>
             <div class="modal-body">
-                <form class="layui-form" action="" id="saveDictForm" lay-filter="saveDictForm">
-                    <input type="hidden" name="dictId" class="layui-input">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典编码</label>
-                        <div class="col-md-10">
-                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典名称</label>
-                        <div class="col-md-10">
-                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入字典名称" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典类型</label>
-                        <div class=" col-md-10">
-                            <select name="dictType" lay-verify="required" class="layui-input">
-                                <option value="0">树型结构</option>
-                                <option value="1">列表结构</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="saveDict">提交</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 添加/修改字典项模态框 -->
-<div class="modal fade bs-example-modal-lg" id="saveDictDetailDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="dictDetailTitle">添加字典</h4>
-            </div>
-            <div class="modal-body">
-                <form class="layui-form" action="" id="saveDictDetailForm" lay-filter="saveDictForm">
-                    <input type="hidden" name="dictId" class="layui-input">
+                <form class="layui-form" action="" id="addDictForm" lay-filter="addDictForm">
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典编码</label>
                         <div class="col-md-10">
@@ -117,5 +81,133 @@
     </div>
 </div>
 
+<!-- 修改字典模态框 -->
+<div class="modal fade bs-example-modal-lg" id="editDictDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="editDictTitle">修改字典</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="editDictForm" lay-filter="editDictForm">
+                    <input type="hidden" name="dictId" class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典编码</label>
+                        <div class="col-md-10">
+                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典名称</label>
+                        <div class="col-md-10">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入字典名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典类型</label>
+                        <div class=" col-md-10">
+                            <select name="dictType" lay-verify="required" class="layui-input">
+                                <option value="0">树型结构</option>
+                                <option value="1">列表结构</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editDict">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 字典子项列表模态框 -->
+<div class="modal fade bs-example-modal-lg" id="dictDetailListDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="dictDetailListTitle">字典子项</h4>
+            </div>
+            <div class="modal-body">
+                <!-- dict detail table -->
+                <table class="layui-hide" id="dictDetail" lay-filter="dictDetail"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加字典子项模态框 -->
+<div class="modal fade bs-example-modal-lg" id="addDictDetailDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="addDictDetailTitle">添加字典项</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="addDictDetailForm" lay-filter="addDictDetailForm">
+                    <input type="hidden" name="dictId" id="dictId" class="layui-input">
+                    <input type="hidden" name="detailId" class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典子项编码</label>
+                        <div class="col-md-10">
+                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典子项编码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典子项名称</label>
+                        <div class="col-md-10">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入字典子项名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="addDictDetail">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改字典子项模态框 -->
+<div class="modal fade bs-example-modal-lg" id="editDictDetailDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="editDictDetailTitle">修改字典项</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="editDictDetailForm" lay-filter="editDictDetailForm">
+                    <input type="hidden" name="detailId" class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典子项编码</label>
+                        <div class="col-md-10">
+                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典子项编码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典子项名称</label>
+                        <div class="col-md-10">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入字典子项名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editDictDetail">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

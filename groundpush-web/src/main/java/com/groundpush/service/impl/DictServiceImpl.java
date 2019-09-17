@@ -42,8 +42,8 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public Page<Dict> getDictList(Integer nowPage, Integer pageSize) {
-        PageHelper.startPage(nowPage, pageSize);
+    public Page<Dict> getDictList(Integer pageNumber, Integer pageSize) {
+        PageHelper.startPage(pageNumber, pageSize);
         return dictMapper.getDictList();
     }
 
