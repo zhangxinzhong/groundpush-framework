@@ -1,6 +1,7 @@
 package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.DictQueryCondition;
 import com.groundpush.core.model.Dict;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -19,10 +20,17 @@ public interface DictMapper {
     /**
      * 查询所有字典项
      *
+     * @param dictQueryCondition
      * @return
      */
-    @Select(" select * from t_dict order by created_time desc ")
-    Page<Dict> getDictList();
+    @Select({
+            "<script>",
+            " select * from t_dict where 1=1 ",
+            " <if test='code != null'> and code = #{code}</if>",
+            " order by created_time asc  ",
+            "</script>"
+    })
+    Page<Dict> queryAll(DictQueryCondition dictQueryCondition);
 
     /**
      * 插入单条菜单
@@ -69,5 +77,12 @@ public interface DictMapper {
     @Select(" select * from t_dict where dict_id=#{dictId} ")
     Optional<Dict> getById(Integer dictId);
 
-
+    /**
+     * 通过字典编码查询字典
+     *
+     * @param code
+     * @return
+     */
+    @Select(" select * from t_dict where code=#{code} ")
+    Optional<Dict> getByCode(String code);
 }

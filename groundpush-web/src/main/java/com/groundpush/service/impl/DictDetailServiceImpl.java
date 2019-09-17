@@ -2,14 +2,13 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.condition.DictDetailQueryCondition;
 import com.groundpush.core.model.DictDetail;
 import com.groundpush.mapper.DictDetailMapper;
 import com.groundpush.service.DictDetailService;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -50,8 +49,8 @@ public class DictDetailServiceImpl implements DictDetailService {
     }
 
     @Override
-    public Page<DictDetail> queryDictDetailByDict(Integer dictId, Integer page, Integer limit) {
+    public Page<DictDetail> queryDictDetailByDict(DictDetailQueryCondition dictDetailQueryCondition, Integer page, Integer limit) {
         PageHelper.startPage(page,limit);
-        return dictDetailMapper.queryDictDetailByDict(dictId);
+        return dictDetailMapper.queryDictDetailByDict(dictDetailQueryCondition);
     }
 }

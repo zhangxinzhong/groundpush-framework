@@ -2,6 +2,8 @@ package com.groundpush.controller;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.condition.DictDetailQueryCondition;
+import com.groundpush.core.condition.DictQueryCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Dict;
 import com.groundpush.core.model.DictDetail;
@@ -46,14 +48,15 @@ public class DictController {
     /**
      * 根据条件获取字典列表信息
      *
+     * @param dictQueryCondition
      * @param page
      * @param limit
      * @return
      */
     @ResponseBody
     @GetMapping
-    public JsonResp getDictList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
-        Page<Dict> dicts = dictService.getDictList(page, limit);
+    public JsonResp getDictList(DictQueryCondition dictQueryCondition, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
+        Page<Dict> dicts = dictService.queryAll(dictQueryCondition,page, limit);
         return JsonResp.success(new PageResult(dicts));
 
     }
@@ -75,7 +78,7 @@ public class DictController {
     }
 
     /**
-     * 查看字典项信息
+     * 查看字典信息
      *
      * @param dictId
      * @return
@@ -112,8 +115,11 @@ public class DictController {
 
     @ResponseBody
     @GetMapping("/{dictId:\\d+}/dictDetail")
-    public JsonResp queryDictDetailByDict(@Valid @PathVariable @NotNull(message = "数据字典编号不可为空") Integer dictId, @RequestParam(name = "page") Integer page, @RequestParam(name = "limit") Integer limit) {
-        Page<DictDetail> dictDetails = dictDetailService.queryDictDetailByDict(dictId, page, limit);
+    public JsonResp queryDictDetailByDict(@Valid DictDetailQueryCondition dictDetailQueryCondition,BindingResult bindingResult, @RequestParam(name = "page",defaultValue = "1") Integer page, @RequestParam(name = "limit",defaultValue = "20") Integer limit) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+        }
+        Page<DictDetail> dictDetails = dictDetailService.queryDictDetailByDict(dictDetailQueryCondition, page, limit);
         return JsonResp.success(new PageResult(dictDetails));
     }
 }

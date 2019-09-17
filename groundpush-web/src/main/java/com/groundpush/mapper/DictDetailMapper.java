@@ -1,6 +1,7 @@
 package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.DictDetailQueryCondition;
 import com.groundpush.core.model.Dict;
 import com.groundpush.core.model.DictDetail;
 import org.apache.ibatis.annotations.*;
@@ -72,10 +73,17 @@ public interface DictDetailMapper {
 
     /**
      * 通过数据字典编号查询数据字典项
-     * @param dictId 数据字典编号
+     *
+     * @param dictDetailQueryCondition 数据字典项查询条件
      * @return 数据字典子项分页
      */
-    @Select(" select * from t_dict_detail where dict_id=#{dictId} ")
-    Page<DictDetail> queryDictDetailByDict(@Param("dictId") Integer dictId);
+    @Select({
+            "<script>",
+            " select * from t_dict_detail where dict_id=#{dictId} ",
+            " <if test='code != null'> and code = #{code}</if>",
+            " order by created_time asc  ",
+            "</script>"
+    })
+    Page<DictDetail> queryDictDetailByDict(DictDetailQueryCondition dictDetailQueryCondition);
 
 }
