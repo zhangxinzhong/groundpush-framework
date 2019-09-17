@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.common.View;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Label;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.TaskLabel;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -61,8 +63,11 @@ public class LabelController {
     @ApiOperation(value = "添加标签")
     @RequestMapping(value = "/addLabel", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp addLabel(@RequestBody Label label) {
+    public JsonResp addLabel(@Valid @RequestBody Label label, BindingResult bindingResult) {
         try {
+            if (bindingResult.hasErrors()) {
+                throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+            }
             label.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
             labelService.createLabel(label);
             return JsonResp.success();
@@ -75,8 +80,11 @@ public class LabelController {
     @ApiOperation(value = "修改标签")
     @RequestMapping(value = "/updateLabel", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp updateLabel(@RequestBody Label label) {
+    public JsonResp updateLabel(@Valid @RequestBody Label label,BindingResult bindingResult) {
         try {
+            if (bindingResult.hasErrors()) {
+                throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+            }
             labelService.updateLabel(label);
             return JsonResp.success();
         } catch (Exception e) {

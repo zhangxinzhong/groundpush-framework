@@ -62,7 +62,6 @@ public class Label {
 
     @ApiModelProperty(value = "排序 1：次要标签 2：主要标签")
     @JsonView(AllLabelView.class)
-    @NotNull(message="排序不可为空")
     private Integer sort;
 
     @ApiModelProperty(value = "备注 标签说明")

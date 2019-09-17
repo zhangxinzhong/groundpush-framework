@@ -3,6 +3,7 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.UpmAddCondition;
+import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.SessionUtils;
@@ -12,7 +13,9 @@ import com.groundpush.service.RoleService;
 import com.groundpush.service.UserService;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -75,8 +78,11 @@ public class RoleController {
      */
     @RequestMapping("/addRole")
     @ResponseBody
-    public JsonResp  addRole(@RequestBody @Valid Role role){
+    public JsonResp  addRole(@RequestBody @Valid Role role, BindingResult bindingResult){
         try {
+            if (bindingResult.hasErrors()) {
+                throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+            }
             role.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
             roleService.addRole(role);
             return JsonResp.success();
@@ -114,8 +120,11 @@ public class RoleController {
      */
     @RequestMapping("/updateRole")
     @ResponseBody
-    public JsonResp  updateRole(@RequestBody @Valid Role role){
+    public JsonResp  updateRole(@RequestBody @Valid Role role, BindingResult bindingResult){
         try {
+            if (bindingResult.hasErrors()) {
+                throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+            }
             role.setLastModifiedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
             roleService.updateRole(role);
             return JsonResp.success();

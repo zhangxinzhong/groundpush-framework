@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -32,8 +33,9 @@ public class Channel {
     @JsonView(OutChannelView.class)
     private Integer channelId;
 
-    @ApiModelProperty(value = "标签名称")
+    @ApiModelProperty(value = "公司名称")
     @JsonView(OutChannelView.class)
+    @NotNull(message="公司名称不可为空")
     private String companyName;
 
     @ApiModelProperty(value = "创建时间")
@@ -54,14 +56,17 @@ public class Channel {
 
     @ApiModelProperty(value = "联系人")
     @JsonView(OutChannelView.class)
+    @NotNull(message="联系人不可为空")
     private String linkName;
 
     @ApiModelProperty(value = "联系电话")
     @JsonView(OutChannelView.class)
+    @NotNull(message="联系电话不可为空")
     private String phone;
 
     @ApiModelProperty(value = "公司地址")
     @JsonView(OutChannelView.class)
+    @NotNull(message="公司地址不可为空")
     private String address;
 
     @ApiModelProperty(value = "备注")
