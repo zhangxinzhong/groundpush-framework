@@ -8,6 +8,7 @@ import com.groundpush.core.model.*;
 import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.service.AuditLogService;
 import com.groundpush.service.OrderBonusService;
+import com.groundpush.service.PayService;
 import com.groundpush.vo.OrderPayVo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ import javax.validation.Valid;
 public class PayManageController {
 
     @Resource
-    private OrderBonusService orderBonusService;
+    private PayService payService;
 
     @Resource
     private SessionUtils sessionUtils;
@@ -44,7 +45,7 @@ public class PayManageController {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        orderBonusService.orderBonusPay(orderPay);
+        payService.pay(orderPay);
         return JsonResp.success();
     }
 

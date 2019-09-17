@@ -44,15 +44,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-    @Autowired
+    @Resource
     private UserDetailsService userDetailsService;
 
     @Resource
     private ValidateCodeFilter validateCodeFilter;
 
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     /**
@@ -82,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login", "/validate/codeImage", "/invalidSession").permitAll()
                 .anyRequest()
-                .authenticated()
+                .access("@groundPushUserDetailsService.hasPermission(request,authentication)")
                 .and()
                 .csrf().disable();
 
@@ -91,7 +96,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .maximumSessions(1)
 //                .and()
 //                .and().authorizeRequests().anyRequest().access("@userPrivilegeService.hasPermission(request,authentication)");
-
 
         http
                 //logout 后清除session

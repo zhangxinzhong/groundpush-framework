@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -20,16 +21,25 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserAccount implements Serializable {
+
+    private Integer userAccountId;
+
     private Integer userId;
     private String password;
     private Integer status;
-    private Date createdTime;
-    private Date lastModifiedTime;
-    // 密码错误次数
+    private LocalDateTime createdTime;
+    private LocalDateTime lastModifiedTime;
+    /**
+     * 密码错误次数
+     */
     private Integer passwordErrorCount;
     private String historyPassword;
-    // 上次登录时间
-    private Date lastLoginTime;
-    // 密码解锁时间
-    private Date unlockTime;
+    /**
+     * 上次登录时间
+     */
+    private LocalDateTime lastLoginTime;
+    /**
+     * 密码解锁时间
+     */
+    private LocalDateTime unlockTime;
 }

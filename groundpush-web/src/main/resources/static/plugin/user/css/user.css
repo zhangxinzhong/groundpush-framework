@@ -1,0 +1,103 @@
+.res-search-top .station_serach_city {
+  margin-left: 0px;
+}
+#orderDialog .layui-input-block,
+#orderSelectDialog .layui-input-block {
+  margin-left: 80px;
+  min-height: 36px;
+}
+#orderDialog .layui-form-label,
+#orderSelectDialog .layui-form-label {
+  padding: 5px 8px;
+}
+#orderDialog .search-renzheng,
+#orderSelectDialog .search-renzheng {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 5px;
+}
+#orderDialog .order-radio div,
+#orderSelectDialog .order-radio div {
+  padding-left: 8px;
+}
+#orderDialog .order-textarea-div,
+#orderSelectDialog .order-textarea-div {
+  width: 90%;
+}
+#orderDialog .layui-input-inline,
+#orderSelectDialog .layui-input-inline {
+  width: 230px;
+}
+#orderDialog .months-div,
+#orderSelectDialog .months-div {
+  position: absolute;
+  width: 55px;
+  top: -6px;
+  right: 40px;
+}
+#orderDialog .months-div label,
+#orderSelectDialog .months-div label {
+  width: auto;
+  position: inherit;
+  top: 0px;
+  right: -45px;
+}
+#orderDialog #orderForm,
+#orderSelectDialog #orderForm {
+  padding-bottom: 10px;
+}
+#orderDialog .layui-elem-field legend,
+#orderSelectDialog .layui-elem-field legend {
+  width: auto;
+  border: 0px;
+}
+#orderDialog .res-info,
+#orderSelectDialog .res-info {
+  margin: 0px 12px 10px 12px;
+}
+#orderDialog .res-info legend,
+#orderSelectDialog .res-info legend {
+  margin-bottom: 5px;
+}
+#orderDialog .res-info .checkbox-div,
+#orderSelectDialog .res-info .checkbox-div {
+  margin-top: 8px;
+}
+#orderDialog .res-info .layui-icon-ok,
+#orderSelectDialog .res-info .layui-icon-ok {
+  margin-top: 1px;
+}
+#orderDialog .res-info span,
+#orderSelectDialog .res-info span {
+  height: auto;
+}
+#orderDialog .res-info .search-input,
+#orderSelectDialog .res-info .search-input {
+  float: right;
+  padding-bottom: 10px;
+}
+#orderDialog .res-info .layui-form .layui-form-item:last-child,
+#orderSelectDialog .res-info .layui-form .layui-form-item:last-child {
+  margin-bottom: 0px;
+}
+#orderDialog .res-info div[lay-id=orderResTab],
+#orderSelectDialog .res-info div[lay-id=orderResTab] {
+  margin: 0px;
+}
+#searchResDialog .res-search-top label {
+  padding: 5px 9px;
+}
+#searchResDialog .layui-icon-ok {
+  margin-top: 1px;
+}
+#searchResDialog .layui-table-cell {
+  height: auto;
+}
+#searchResDialog .res-search-region .layui-input-inline {
+  width: 90px;
+}
+#orderSelectDialog #res-info {
+  margin-left: 10px;
+  margin-right: 10px;
+}

@@ -13,13 +13,12 @@
         var uri =  [[${uri}]];
         var bool = [[${bool}]];
     </script>
-    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/common/h5.js"
-            th:src="@{/common/common.js}"></script>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/common/h5.js" th:src="@{/common/common.js}"></script>
 </head>
 <style>
 
 </style>
-<body >
+<body onload="bool">
 <p th:if="${!bool}" >二维码已失效</p>
 </body>
 </html>

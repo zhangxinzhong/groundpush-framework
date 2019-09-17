@@ -1,11 +1,8 @@
 package com.groundpush.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.ToPathCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskUri;
-import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.RedisUtils;
 import com.groundpush.service.OrderService;
 import com.groundpush.service.TaskUriService;
@@ -16,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;

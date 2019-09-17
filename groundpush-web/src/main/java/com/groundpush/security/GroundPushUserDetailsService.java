@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class GroundPushUserDetailsService implements  UserDetailsService {
+public class GroundPushUserDetailsService implements UserDetailsService {
 
     @Resource
     private UserService userService;
@@ -47,11 +47,13 @@ public class GroundPushUserDetailsService implements  UserDetailsService {
             LoginUserInfo loginUserInfo = optionalLoginUserInfo.get();
             List<Role> roleList = loginUserInfo.getRoleList();
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            for (Role role : roleList) {
-                if (StringUtils.isNotBlank(role.getCode())) {
-                    GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getCode());
-                    //此处将角色信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
-                    grantedAuthorities.add(grantedAuthority);
+            if (roleList != null && roleList.size() > 0) {
+                for (Role role : roleList) {
+                    if (StringUtils.isNotBlank(role.getCode())) {
+                        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getCode());
+                        //此处将角色信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
+                        grantedAuthorities.add(grantedAuthority);
+                    }
                 }
             }
             return new org.springframework.security.core.userdetails.User(loginUserInfo.getUser().getLoginNo(), loginUserInfo.getUserAccount().getPassword(), grantedAuthorities);
@@ -69,7 +71,7 @@ public class GroundPushUserDetailsService implements  UserDetailsService {
             Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(Constants.SUPER_ADMIN);
             //若当前用户时超级管理员则可访问所有请求
-            if(roles.contains(simpleGrantedAuthority)){
+            if (roles.contains(simpleGrantedAuthority)) {
                 return Boolean.TRUE;
             }
             // 注意这里不能用equal来判断，因为有些URL是有参数的，所以要用AntPathMatcher来比较
