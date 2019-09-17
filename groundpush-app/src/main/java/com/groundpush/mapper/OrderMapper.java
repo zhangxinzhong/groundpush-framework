@@ -1,5 +1,6 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
 import org.apache.ibatis.annotations.*;
@@ -38,10 +39,10 @@ public interface OrderMapper {
             "<script>",
             "select * from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.customer_id = #{customerId}",
             " <if test='status != null'> and status =#{status}  </if> ",
-            " <if test='selectTime != null'> and status =#{selectTime}  </if> ",
+            " <if test='selectTime != null'> and date_format(b.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(b.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
             "</script>"
     })
-    List<Order> queryOrder(OrderQueryCondition order);
+    Page<Order> queryOrder(OrderQueryCondition order);
 
     /**
      * 更新订单结果

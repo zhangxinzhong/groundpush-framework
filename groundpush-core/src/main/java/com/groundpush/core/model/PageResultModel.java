@@ -35,14 +35,14 @@ public class PageResultModel implements Serializable {
 
 
     /**
-     * 主要标签
+     * list
      */
     @JsonView(View.class)
-    private List labels;
+    private List list;
 
-    public PageResultModel(Page page,List labels) {
+    public PageResultModel(Page page,List list) {
         this.total = page.getTotal();
         this.rows = page.getResult();
-        this.labels = labels;
+        this.list = list;
     }
 }

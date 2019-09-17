@@ -10,10 +10,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <script type="text/javascript">
-        var uri =  [[${uri}]];
+        var uri =  '[[${uri}]]';
         var bool = [[${bool}]];
+        if(bool == true){
+            location.href=uri;
+        }
     </script>
     <script type="text/javascript" id="groundpush-scrpit" pageSrc="/common/h5.js" th:src="@{/common/common.js}"></script>
+
 </head>
 <style>
 

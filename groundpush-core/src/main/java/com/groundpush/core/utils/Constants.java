@@ -188,10 +188,6 @@ public class Constants {
 
     public static final String WEIXIN = "微信";
 
-
-    public static final String CODE_KEY_PREFIX = "code_key_";
-
-
     /**
      * 正常用户状态
      */
@@ -204,4 +200,9 @@ public class Constants {
 
 
     public static final String INIT_USER_PASSWORD = "Abcd112233";
+    /**
+     * 二维码key 前缀
+     *
+     */
+    public static final  String CODE_KEY_PREFIX = "code_key_";
 }

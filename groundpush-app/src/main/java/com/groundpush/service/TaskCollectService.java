@@ -34,7 +34,7 @@ public interface TaskCollectService {
      * @param taskQueryCondition
      * @return
      */
-    Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Pageable pageable);
+    Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize);
 
     /**
      * 通过taskId判断是否有收藏

@@ -1,5 +1,6 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.ToPathCondition;
@@ -88,8 +89,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> queryOrder(OrderQueryCondition order, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
+    public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer  pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
         return orderMapper.queryOrder(order);
     }
 
