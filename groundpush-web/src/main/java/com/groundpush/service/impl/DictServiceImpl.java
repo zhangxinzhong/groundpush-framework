@@ -2,6 +2,7 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.condition.DictQueryCondition;
 import com.groundpush.core.model.Dict;
 import com.groundpush.mapper.DictMapper;
 import com.groundpush.service.DictService;
@@ -42,9 +43,9 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
-    public Page<Dict> getDictList(Integer pageNumber, Integer pageSize) {
+    public Page<Dict> queryAll(DictQueryCondition dictQueryCondition, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
-        return dictMapper.getDictList();
+        return dictMapper.queryAll(dictQueryCondition);
     }
 
     @Override
@@ -57,5 +58,10 @@ public class DictServiceImpl implements DictService {
             dictResult = dictMapper.updateDict(dict)>0?true:false;
         }
         return dictResult;
+    }
+
+    @Override
+    public Optional<Dict> getByCode(String code) {
+        return dictMapper.getByCode(code);
     }
 }

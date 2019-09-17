@@ -53,7 +53,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典编码</label>
                         <div class="col-md-10">
-                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
+                            <input type="text" name="code" lay-verify="dictCode" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -66,8 +66,8 @@
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典类型</label>
                         <div class=" col-md-10">
                             <select name="dictType" lay-verify="required" class="layui-input">
-                                <option value="0">树型结构</option>
-                                <option value="1">列表结构</option>
+                                <option value="0">列表结构</option>
+                                <option value="1">树型结构</option>
                             </select>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典编码</label>
                         <div class="col-md-10">
-                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
+                            <input type="text" name="code" lay-verify="dictCode" autocomplete="off" placeholder="请输入字典编码" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -109,13 +109,13 @@
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典类型</label>
                         <div class=" col-md-10">
                             <select name="dictType" lay-verify="required" class="layui-input">
-                                <option value="0">树型结构</option>
-                                <option value="1">列表结构</option>
+                                <option value="0">列表结构</option>
+                                <option value="1">树型结构</option>
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editDict">提交</button>
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editDict">更新</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </form>
@@ -157,7 +157,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典子项编码</label>
                         <div class="col-md-10">
-                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典子项编码" class="layui-input">
+                            <input type="text" name="code" lay-verify="dictDetailCode" autocomplete="off" placeholder="请输入字典子项编码" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -191,7 +191,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>字典子项编码</label>
                         <div class="col-md-10">
-                            <input type="text" name="code" lay-verify="required" autocomplete="off" placeholder="请输入字典子项编码" class="layui-input">
+                            <input type="text" name="code" lay-verify="dictDetailCode" autocomplete="off" placeholder="请输入字典子项编码" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -201,7 +201,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editDictDetail">提交</button>
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editDictDetail">更新</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </form>

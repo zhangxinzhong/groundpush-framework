@@ -1,19 +1,42 @@
 layui.use(['table', 'form', 'layer'], function () {
-    var table = layui.table;
-    var form = layui.form;
-    var layer = layui.layer;
+    let table = layui.table;
+    let form = layui.form;
+    let layer = layui.layer;
 
     //自定义验证规则
     form.verify({
-        name: function (value) {
-            if (value.length < 5) {
-                return '最少输入5个字符';
+        dictCode: function (value) {
+            if (Utils.isEmpty(value)) {
+                return '字典编码不可为空';
             }
+            let message;
+            Utils.getAjax("/dict", {code: value}, function (rep) {
+                if (rep.code == '200' && !Utils.isEmptyArray(rep.data.rows)) {
+                    message = '字典编码已经存在';
+                }
+            }, function (rep) {
+                console.log(rep);
+            });
+            return message;
+        }, dictDetailCode: function (value) {
+            if (Utils.isEmpty(value)) {
+                return '字典项编码不可为空';
+            }
+            let message;
+            let dictId = $("#dictId").val();
+            Utils.getAjax("/dict/" + dictId + "/dictDetail", {code: value}, function (rep) {
+                if (rep.code == '200' && !Utils.isEmptyArray(rep.data.rows)) {
+                    message = '字典项编码已经存在';
+                }
+            }, function (rep) {
+                console.log(rep);
+            });
+            return message;
         }
     });
 
     //触发事件
-    var eventListener = {
+    let eventListener = {
         initDictTable: function () {
             table.render({
                 elem: '#dict'
@@ -211,6 +234,7 @@ layui.use(['table', 'form', 'layer'], function () {
         }
         , hideAddDictDetailDialog: function () {
             $('#addDictDetailDialog').modal('hide');
+            $('#addDictDetailForm')[0].reset();
         }, showEditDictDetailDialog: function () {
             $('#editDictDetailDialog').modal('show');
         }
