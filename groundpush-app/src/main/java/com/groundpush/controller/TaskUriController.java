@@ -45,7 +45,7 @@ public class TaskUriController {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        return JsonResp.success(taskUriService.queryValidTaskUriByTaskId(taksId));
+        return JsonResp.success(taskUriService.queryValidTaskUriByTaskId(taksId).get());
     }
 
 
