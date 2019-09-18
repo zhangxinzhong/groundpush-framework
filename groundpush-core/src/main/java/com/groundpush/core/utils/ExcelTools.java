@@ -20,17 +20,9 @@ import java.util.List;
 
 /**
  * .
- * <p>
- * -----------------------------------------------------------------------------
- * <p>
+ *
  * 工程名： groundpush-framework
- * <p>
- * 授 权： (C) Copyright Unimedia Corporation 2019-2050
- * <p>
- * 公 司： 北京玖众传媒股份有限公司
- * <p>
- * -----------------------------------------------------------------------------
- * 注 意： 本内容仅限于北京玖众传媒股份有限公司公司内部使用，禁止转发
+ *
  *
  * @author luzq
  * @version 1.0
@@ -392,9 +384,12 @@ public final class ExcelTools {
         ExcelTools excelTools=ExcelTools.getInstance();
         excelTools.openExcel("/home/lzq/win7/tb_gd_stock_20190818.xls");
         excelTools.setRowResult(380,(sheetName,countRow,resultCount,result)->{
+            result.forEach(res->{
+                System.out.println(res[0]);
+            });
             String resultShow="result:[sheetName:{0},count:{1},resCount:{2},result:{3}]";
             System.out.println("=======================================");
-            System.out.println(MessageFormat.format(resultShow,sheetName,countRow,resultCount, Arrays.toString(result)));
+            System.out.println(MessageFormat.format(resultShow,sheetName,countRow,resultCount, result.toString()));
         });
     }
 }

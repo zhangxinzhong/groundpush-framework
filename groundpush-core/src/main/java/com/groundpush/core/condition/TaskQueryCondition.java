@@ -25,7 +25,7 @@ public class TaskQueryCondition implements Serializable {
     private String title;
 
     @ApiModelProperty(value = "任务类型")
-    private String type;
+    private String  type;
 
     @ApiModelProperty(value = "排序方式 取值：最新：created_time,价格高：amount,速度快：expired_Time,审核快：audit_duration,通过率高：complete_odds")
     private String sort;
@@ -42,3 +42,4 @@ public class TaskQueryCondition implements Serializable {
 
 
 }
+
