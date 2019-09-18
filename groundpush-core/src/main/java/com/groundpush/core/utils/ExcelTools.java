@@ -111,14 +111,15 @@ public final class ExcelTools {
         int sheetCount=excelBook.getNumberOfSheets();
         for(int i=0;i<sheetCount;i++){
             curSheet=excelBook.getSheetAt(i);
-            int countRow=curSheet.getLastRowNum();
+            int countRow=curSheet.getLastRowNum()+1;
             int curResCount=ExcelConstant.DEFAULT_ROW_INDEX;//当前返回总数
             int pushCount=0;
             List<Object[]> result=new LinkedList<>();
             for(curRowIndex=0;curRowIndex<countRow;curRowIndex++){
                 curRow=curSheet.getRow(curRowIndex);
                 result.add(getRowDate());
-                if((countRow-resultCount*pushCount)<resultCount||(++curResCount)==resultCount){
+                ++curResCount;
+                if((curResCount+resultCount*pushCount)==countRow||curResCount==resultCount){
                     excelOpetion.excelRowResult(curSheet.getSheetName(),countRow,
                             curResCount,result);
                     curResCount=ExcelConstant.DEFAULT_ROW_INDEX;
