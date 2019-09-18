@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskListCount;
+import com.groundpush.core.model.TaskPopListCount;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -73,4 +74,11 @@ public interface OrderService {
      */
     List<TaskListCount> queryCountByCustomIdTaskId(Integer customId,List<Integer> taskIds);
 
+
+    /**
+     * 获取详情推广任务Poplist
+     * @param customerId
+     * @return
+     */
+    List<TaskPopListCount> queryPopCountByCustomerId(Integer customerId);
 }
