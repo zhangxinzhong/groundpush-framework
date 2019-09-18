@@ -28,8 +28,8 @@ public interface TaskMapper {
             " (SELECT  GROUP_CONCAT(b.label_name) FROM t_label b LEFT JOIN t_task_label c on b.label_id = c.label_id where b.type = 0 and c.task_id = t1.task_id) label_name",
             "  from t_task t1 where 1=1  ",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
-            " <if test='type != null'> and t1.type in (#{type})  </if> ",
-            " <if test='location != null'> and  FIND_IN_SET(#{location},t2.location)  </if> ",
+            " <if test='location != null and location != \"\"'> and  FIND_IN_SET(#{location},t1.location) </if>",
+            " <if test='type != null and type != \"\"'> and t1.type in (#{type})  </if> ",
             " <if test='sort != null'> order by #{sort}  </if> ",
             "</script>"
     })

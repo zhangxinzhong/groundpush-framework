@@ -134,7 +134,7 @@ public class Constants {
     /**
      * 任务收藏
      */
-    public static final Integer TASK_TYPE_1 = 1;
+    public static final String TASK_TYPE_COLLECT = "collect";
 
     /**
      * 标签类型 主要标签

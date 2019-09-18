@@ -3,6 +3,7 @@ package com.groundpush.service;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.TaskListCount;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -54,4 +55,22 @@ public interface OrderService {
      * @return
      */
     List<Order> queryOrderByCustomerId(Integer customerId);
+
+
+    /**
+     * 获取今日所有任务对应订单数
+     * @param taskIds
+     * @return
+     */
+    List<TaskListCount> queryCountByTaskId(List<Integer> taskIds);
+
+
+    /**
+     * 获取今日客户任务对应订单数
+     * @param customId
+     * @param taskIds
+     * @return
+     */
+    List<TaskListCount> queryCountByCustomIdTaskId(Integer customId,List<Integer> taskIds);
+
 }
