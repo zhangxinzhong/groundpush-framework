@@ -29,8 +29,8 @@ function labelLoad(labelIds) {
                     var labelName = dataList[i].labelName;
                     var labelId = dataList[i].labelId;
                     var isLabelOk = false;
-                    for(var y in labelIdList){
-                        if(labelIdList[y] == labelId){
+                    for (var y in labelIdList) {
+                        if (labelIdList[y] == labelId) {
                             isLabelOk = true;
                             break;
                         }
@@ -69,8 +69,8 @@ function provinceLoad(provinces) {
                 for (var i in dataList) {
                     var labelName = dataList[i].labelName;
                     var isLabelOk = false;
-                    for(var y in labelIdList){
-                        if(labelIdList[y] == labelName){
+                    for (var y in labelIdList) {
+                        if (labelIdList[y] == labelName) {
                             isLabelOk = true;
                             break;
                         }
@@ -109,8 +109,8 @@ function locationLoad(locations) {
                 for (var i in dataList) {
                     var labelName = dataList[i].labelName;
                     var isLabelOk = false;
-                    for(var y in labelIdList){
-                        if(labelIdList[y] == labelName){
+                    for (var y in labelIdList) {
+                        if (labelIdList[y] == labelName) {
                             isLabelOk = true;
                             break;
                         }
@@ -163,45 +163,44 @@ function channelLoad() {
 layui.use(['form', 'upload'], function () {
     form = layui.form;
     upload = layui.upload;
-    //initImgForGroup();
     //封面图片的
     attributeFileUpload("#imgFMT", "#imgUri");
     //缩略图片的
     attributeFileUpload("#imgSLT", "#iconUri");
+
+    uploadExcel(".uploadExcel");
 });
 
-//处理文件上传----主表的
-function initImgForGroup() {
+//处理文件上传----任务URL
+function uploadExcel(classCodes) {
     upload.render({
-        elem: '#imgFMT', //绑定元素
-        url: '/upload/uploadFile',//上传接口
+        elem: classCodes, //绑定元素
+        url: '/task/uploadExcel',//上传接口
         size: '5024',
+        accept: 'file',
         before: function (obj) {
-            console.log(obj);
-            //预读本地文件示例，不支持ie8
-            obj.preview(function (index, file, result) {
-                $('#imgFMT').attr('src', result); //图片链接（base64）
-            });
-            $("#imgFMT").attr("title", "点击更换封面图");
-        },
-        data: {
-            //"tableName": "hl_kj"//往后台传数据用的
+            this.data = getuploaddata();
+            layer.load(); //上传loading
         },
         done: function (res) {
+            layer.closeAll('loading'); //关闭loading
             console.log(res);
             var code = res.code;
             if (code == "200") {
-                var fileData = res.fileData;
-                var filePath = fileData.filePath;
-                var fileName = fileData.fileName;
-                $('#imgFMT').attr('src', filePath);
-                $('#imgUri').val(fileName);
             } else {
                 var msg = res.msg;
                 alert(msg)
             }
         }
     });
+}
+
+function getuploaddata() {
+    var temporaryTaskId = $("#temporaryTaskId").val();
+    var data = {
+        "taskId" : temporaryTaskId
+    };
+    return data;
 }
 
 //处理文件上传----子表的

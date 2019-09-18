@@ -7,18 +7,23 @@ import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
+import com.groundpush.core.utils.ExcelTools;
+import com.groundpush.core.utils.OSSUnit;
 import com.groundpush.service.TaskAttributeService;
 import com.groundpush.service.TaskService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * @description:任务
@@ -119,11 +124,31 @@ public class TaskController {
         }
     }
 
-    //打开h5页面
-    @RequestMapping("/toH5Page")
-    public String toH5Page(Model model) {
-        return "/h5/page";
+    //上传任务URL
+    @RequestMapping("/uploadExcel")
+    @ResponseBody
+    public Map<String, Object> uploadExcel(@RequestParam MultipartFile file) throws IOException, InvalidFormatException {
+        //返回数据
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            ExcelTools excelTools = ExcelTools.getInstance();
+            excelTools.openExcel(file.getInputStream());
+            excelTools.setRowResult(100, (sheetName, countRow, resultCount, result) -> {
+                for(Object oneObj : result){
+                    String taskURL = oneObj.toString();
+                    System.out.println("=======================================");
+                    System.out.println(taskURL);
+                    System.out.println("=======================================");
+                }
+            });
+            resultMap.put("code", "200");
+            resultMap.put("msg", "成功");
+        } catch (Exception e) {
+            resultMap.put("code", "500");
+            resultMap.put("msg", "上传错误请联系工作人员");
+            log.error(e.toString(), e);
+            throw e;
+        }
+        return resultMap;
     }
-
-
 }

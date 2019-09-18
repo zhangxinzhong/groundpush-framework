@@ -21,39 +21,9 @@
     <button type="button" class="btn btn-primary" onclick="addTask()">
         新增任务
     </button>
+    <input type="hidden" name="temporaryTaskId" id="temporaryTaskId">
     <table class="table table-bordered" style="margin-top: 10px" id="loadTaskData">
-        <tr>
-            <th style="text-align: center;vertical-align: middle;">封面图片</th>
-            <th style="text-align: center;vertical-align: middle;">任务标题</th>
-            <th style="text-align: center;vertical-align: middle;">任务公分</th>
-            <th style="text-align: center;vertical-align: middle;">所属公司</th>
-            <th style="text-align: center;vertical-align: middle;">每日推广任务总数</th>
-            <th style="text-align: center;vertical-align: middle;">单人每日可做任务数</th>
-            <th style="text-align: center;vertical-align: middle;">完成人分成比</th>
-            <th style="text-align: center;vertical-align: middle;">推广人分成比</th>
-            <th style="text-align: center;vertical-align: middle;">推广领导分成比</th>
-            <th style="text-align: center;vertical-align: middle;">发布类型</th>
-            <th style="text-align: center;vertical-align: middle;">操作</th>
-        </tr>
-        <tr>
-            <td style="text-align: center;vertical-align: middle;">
-                <img style="width: 100px;height: 50px" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
-            </td>
-            <td style="text-align: center;vertical-align: middle;">任务标题1</td>
-            <td style="text-align: center;vertical-align: middle;">10公分</td>
-            <td style="text-align: center;vertical-align: middle;">京东1</td>
-            <td style="text-align: center;vertical-align: middle;">1000</td>
-            <td style="text-align: center;vertical-align: middle;">100</td>
-            <td style="text-align: center;vertical-align: middle;">10%</td>
-            <td style="text-align: center;vertical-align: middle;">20%</td>
-            <td style="text-align: center;vertical-align: middle;">30%</td>
-            <td style="text-align: center;vertical-align: middle;">发布中</td>
-            <td style="text-align: center;vertical-align: middle;">
-                <button class="layui-btn" onclick="seeTask()">查看任务</button>
-                <button class="layui-btn" onclick="delTask()">删除任务</button>
-                <button class="layui-btn" onclick="delTask()">发布任务</button>
-            </td>
-        </tr>
+
     </table>
     <nav aria-label="Page navigation" style="margin-top:-31px ;">
         <ul class="pagination">
@@ -101,7 +71,8 @@
                             <label class="btn col-lg-1">封面图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
                                 <img style="margin-left: -10px;height: 200px" id="imgFMT"
-                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" onerror="excptionUrl(this)">
+                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
+                                     onerror="excptionUrl(this)">
                                 <br><label>上传封面图片</label>
                             </div>
                             <input type="hidden" name="imgUri" id="imgUri">
@@ -110,7 +81,8 @@
                             <label class="btn col-lg-1">缩略图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
                                 <img style="margin-left: -10px;height: 200px" id="imgSLT"
-                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" onerror="excptionUrl(this)">
+                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
+                                     onerror="excptionUrl(this)">
                                 <br><label>上传缩略图片</label>
                             </div>
                             <input type="hidden" name="iconUri" id="iconUri">
@@ -273,7 +245,6 @@
                     compoundPage(data.data);
                     //加载页面列表
                     var tableHtml = '<tr>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">封面图片</th>\n' +
                         '            <th style="text-align: center;vertical-align: middle;">任务标题</th>\n' +
                         '            <th style="text-align: center;vertical-align: middle;">单笔佣金</th>\n' +
                         '            <th style="text-align: center;vertical-align: middle;">所属公司</th>\n' +
@@ -285,7 +256,9 @@
                         '            <th style="text-align: center;vertical-align: middle;">发布类型</th>\n' +
                         '            <th style="text-align: center;vertical-align: middle;">操作</th>\n' +
                         '        </tr>';
-                    for (var i in dataList) {
+                    //定义一个数组
+                    var uploadExcelArray = new Array();
+                    for (var i = 0; i < dataList.length; i++) {
                         var status = dataList[i].status;
                         var statusName;
                         if (status == 0) {
@@ -295,10 +268,14 @@
                         } else if (status == 2) {
                             statusName = "已过期";
                         }
+                        //先来组一下子上传文件ID的规则
+                        //获取随机数字
+                        var number = Math.ceil(Math.random() * 10);
+                        //获取当前的时间戳
+                        var timestamp = Date.parse(new Date());
+                        var uploadExcel = "uploadExcel" + timestamp + number;
+                        //组页面
                         tableHtml += '<tr>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">\n' +
-                            '                <img style="width: 100px;height: 50px" src="' + dataList[i].imgUri + '" onerror="excptionUrl(this)">\n' +
-                            '            </td>\n' +
                             '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].title + '</td>\n' +
                             '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].amount + '元</td>\n' +
                             '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].source + '</td>\n' +
@@ -312,13 +289,28 @@
                             '                <button class="layui-btn" onclick="seeTask(' + dataList[i].taskId + ')">查看任务</button>\n' +
                             '                <button class="layui-btn" onclick="delTask(' + dataList[i].taskId + ')">删除任务</button>\n' +
                             '                <button class="layui-btn" onclick="sendTask(' + dataList[i].taskId + ')">发布任务</button>\n' +
+                            '                <button class="layui-btn" onclick="uploadFileData('+dataList[i].taskId+',this)">上传任务URL</button>\n' +
+                            '                <input class="layui-btn uploadExcel" type="hidden">\n' +
                             '            </td>\n' +
                             '        </tr>';
+                        //把这个破唯一标识扔进去
+                        uploadExcelArray.push("." + uploadExcel);
                     }
                     $("#loadTaskData").html(tableHtml);
+                    //让这个上传按钮可以监听的到
+                    console.log("==================================================");
+                    console.log(uploadExcelArray);
+                    console.log("==========================================");
+                    //uploadExcel(".uploadExcel");
                 }
             }
         })
+    }
+
+    function uploadFileData(taskId,object) {
+        $("#temporaryTaskId").val(taskId);
+        var obj = $(object);
+        obj.parent().find(".uploadExcel").click();
     }
 
     //组表单json串
@@ -437,11 +429,11 @@
                         var dataMsg = data.data;
                         $("#thisTaskId").val(dataMsg.taskId);
                         $("#imgUri").val(dataMsg.imgUri);
-                        if(dataMsg.imgUri != null && dataMsg.imgUri != ""){
+                        if (dataMsg.imgUri != null && dataMsg.imgUri != "") {
                             $("#imgFMT").attr("src", dataMsg.imgUri);
                         }
                         $("#iconUri").val(dataMsg.iconUri);
-                        if(dataMsg.iconUri != null && dataMsg.iconUri != ""){
+                        if (dataMsg.iconUri != null && dataMsg.iconUri != "") {
                             $("#imgSLT").attr("src", dataMsg.iconUri);
                         }
                         $("#title").val(dataMsg.title);

@@ -37,11 +37,11 @@ public class TaskUri {
     @JsonView(SimpleTaskUriView.class)
     private String uri;
 
-    @ApiModelProperty("任务uri")
+    @ApiModelProperty("创建人")
     @JsonView(DetailTaskUriView.class)
     private Integer createdBy;
 
-    @ApiModelProperty("任务uri")
+    @ApiModelProperty("创建时间")
     @JsonView(DetailTaskUriView.class)
     private LocalDateTime createdTime;
 
