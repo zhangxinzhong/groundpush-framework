@@ -1,6 +1,7 @@
 package com.groundpush.service;
 
 import com.groundpush.core.model.TaskUri;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,11 @@ public interface TaskUriService {
      * @return
      */
     Boolean save(List<TaskUri> taskUris);
+
+    /**
+     * 删除任务相关URI
+     * @param taskId
+     * @return
+     */
+    Boolean del(Integer taskId);
 }

@@ -1,7 +1,6 @@
 package com.groundpush.core.condition;
 
 import io.swagger.annotations.ApiModel;
-import javafx.beans.DefaultProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

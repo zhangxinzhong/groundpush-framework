@@ -24,13 +24,18 @@ public class TaskUriServiceImpl implements TaskUriService {
     @Override
     public Boolean save(List<TaskUri> taskUris) {
         Boolean result = true;
-        //先删
+        //保存
         if(taskUris!=null && taskUris.size()>0){
-            result = taskUriMapper.del(taskUris.get(0)) > 0 ? true : false;
-            if (result) {
-                return taskUriMapper.insert(taskUris) > 0 ? true : false;
-            }
+            result = taskUriMapper.insert(taskUris) > 0 ? true : false;
         }
+        return result;
+    }
+
+    @Override
+    public Boolean del(Integer taskId) {
+        Boolean result = true;
+        //保存
+        result = taskUriMapper.del(taskId) > 0 ? true : false;
         return result;
     }
 }

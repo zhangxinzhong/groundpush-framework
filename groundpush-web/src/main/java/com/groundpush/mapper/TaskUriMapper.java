@@ -16,8 +16,8 @@ import java.util.Optional;
  */
 public interface TaskUriMapper {
 
-    @Delete(" delete from t_task_uri where task_id = #{taskUri.taskId} ")
-    Integer del(TaskUri taskUri);
+    @Delete(" delete from t_task_uri where task_id = #{taskId} ")
+    Integer del(@Param("taskId") int taskId);
 
     @Insert({
             "<script>",
