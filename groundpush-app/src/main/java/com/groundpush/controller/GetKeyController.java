@@ -2,10 +2,7 @@ package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.AppCodeKey;
-import com.groundpush.core.utils.DateUtils;
-import com.groundpush.core.utils.RedisUtils;
-import com.groundpush.core.utils.StringUtils;
-import com.groundpush.core.utils.UniqueCode;
+import com.groundpush.core.utils.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +36,9 @@ public class GetKeyController {
     @Resource
     private DateUtils dateUtils;
 
+    @Resource
+    private AesUtils aesUtils;
+
 
 
     @ApiOperation("获取验证二维码key")
@@ -51,7 +51,7 @@ public class GetKeyController {
             long currMilli  = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
             redisUtils.set(key,key,maxMilli-currMilli);
         }
-        return JsonResp.success(new AppCodeKey(key));
+        return JsonResp.success(new AppCodeKey(aesUtils.ecodes(key,Constants.APP_AES_KEY)));
     }
 
 

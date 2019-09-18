@@ -205,4 +205,10 @@ public class Constants {
      *
      */
     public static final  String CODE_KEY_PREFIX = "code_key_";
+
+    /**
+     * 用于二维码key的加密key
+     *
+     */
+    public static final  String APP_AES_KEY = "appAesKey";
 }
