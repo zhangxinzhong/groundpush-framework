@@ -41,8 +41,27 @@ public class TaskServiceImpl implements TaskService {
     private TaskAttributeService taskAttributeService;
 
     @Override
-    public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer page , Integer limit) {
-        PageHelper.startPage(page,limit);
+    public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
+        Page<Task> tasks = taskMapper.queryTaskAll(taskQueryCondition);
+        for (Task task : tasks) {
+            Integer taskId = task.getTaskId();
+            //获取相关标签内容
+            List<TaskLabel> taskLabelList = taskLabelMapper.getTaskLabelByTaskId(taskId);
+            //组labels
+            String labelIds = "";
+            if (taskLabelList != null && taskLabelList.size() > 0) {
+                for (TaskLabel taskLabel : taskLabelList) {
+                    Integer tlId = taskLabel.getTlId();
+                    labelIds = labelIds + "," + tlId;
+                }
+            }
+            if (StringUtils.isNotEmpty(labelIds)) {
+                labelIds = labelIds.substring(1);
+            }
+            task.setLabelIds(labelIds);
+        }
+
         return taskMapper.queryTaskAll(taskQueryCondition);
     }
 
@@ -77,8 +96,11 @@ public class TaskServiceImpl implements TaskService {
         }
         taskId = task.getTaskId();
         System.out.println(taskId);
-        //添加、更新标签内容
+        //添加标签内容
         Boolean labelResult = true;
+        //删除
+        labelResult = taskLabelMapper.deleteTaskLabelByTaskId(taskId) > 0 ? true : false;
+        //添加
         String labelIds = task.getLabelIds();
         if (StringUtils.isNotEmpty(labelIds)) {
             String[] labelIdList = labelIds.split(",");
@@ -94,17 +116,17 @@ public class TaskServiceImpl implements TaskService {
         //添加任务内容（先删除后添加）
         Boolean taskAttributeResult = true;
         //删除
-        taskAttributeResult = taskAttributeMapper.deleteTaskAttributeByTaskId(taskId)>0?true:false;
+        taskAttributeResult = taskAttributeMapper.deleteTaskAttributeByTaskId(taskId) > 0 ? true : false;
         //添加
         List<TaskAttribute> taskAttributes = task.getTaskAttributes();
         if (taskAttributes != null && taskAttributes.size() > 0) {
-            for(TaskAttribute taskAttribute : taskAttributes){
+            for (TaskAttribute taskAttribute : taskAttributes) {
                 taskAttribute.setTaskId(taskId);
                 //todo
                 //taskAttribute.setCreatedBy();
                 //taskAttribute.setLastModifiedBy();
             }
-            taskAttributeResult = taskAttributeMapper.createTaskAttribute(taskAttributes)>0?true:false;
+            taskAttributeResult = taskAttributeMapper.createTaskAttribute(taskAttributes) > 0 ? true : false;
         }
         //返回结果
         return taskAttributeResult && taskResult && labelResult;
@@ -112,7 +134,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Boolean updateTask(Task task) {
-        return taskMapper.updateTask(task)>0?true:false;
+        return taskMapper.updateTask(task) > 0 ? true : false;
     }
 
     /**

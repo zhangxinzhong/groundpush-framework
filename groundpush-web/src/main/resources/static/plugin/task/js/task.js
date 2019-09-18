@@ -1,16 +1,76 @@
 $(function () {
-    //加载下拉列表内容
-    $(".selectpicker").selectpicker('refresh');
     //加载表格内容
     loadTaskData();
+    //加载标签内容
+    labelLoad();
+    //加载公司内容
+    channelLoad();
+    //加载下拉列表内容
+    $(".selectpicker").selectpicker('refresh');
 
 })
+
+//加载标签内容
+function labelLoad() {
+    $.ajax({
+        url: "/label/getLabelAll",
+        async: false,
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+            var code = data.code;
+            if(code == "200"){
+                var labelHtml = "";
+                var dataList = data.dataList;
+                for(var i in dataList){
+                    var labelName = dataList[i].labelName;
+                    var labelId = dataList[i].labelId;
+                    labelHtml += '<option value="' + labelId + '">' + labelName + '</option>';
+                }
+                $("#selectLabelIds").html(labelHtml);
+            }else{
+                var msg = data.msg;
+                alert(msg);
+            }
+        }
+    });
+}
+
+//加载公司内容
+function channelLoad() {
+    $.ajax({
+        url: "/channel/getChannelAll",
+        async: false,
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+            var code = data.code;
+            if (code == "200") {
+                var channelHtml = "";
+                var dataList = data.dataList;
+                for (var i in dataList) {
+                    var channelId = dataList[i].channelId;
+                    var companyName = dataList[i].companyName;
+                    channelHtml += '<option value="' + channelId + '">' + companyName + '</option>';
+                }
+                $("#source").html(channelHtml);
+            } else {
+                var msg = data.msg;
+                alert(msg);
+            }
+        }
+    });
+}
+
 //layui处理文件上传----主表的
 layui.use(['form', 'upload'], function () {
     form = layui.form;
     upload = layui.upload;
-    initImgForGroup();
-    //form.render();
+    //initImgForGroup();
+    //封面图片的
+    attributeFileUpload("#imgFMT", "#imgUri");
+    //缩略图片的
+    attributeFileUpload("#imgSLT", "#iconUri");
 });
 
 //处理文件上传----主表的
@@ -61,7 +121,7 @@ function attributeFileUpload(labelClass, valueClass) {
             obj.preview(function (index, file, result) {
                 $(labelClass).attr('src', result); //图片链接（base64）
             });
-            $(labelClass).attr("title", "点击更换封面图");
+            $(labelClass).attr("title", "点击更换图片");
         },
         data: {
             //"tableName": "hl_kj"//往后台传数据用的
@@ -145,7 +205,7 @@ function addTaskImage(object) {
     var labelIndex = obj.parent().attr("labelIndex");
     //先来组一下子图片ID的规则
     //获取随机数字
-    var number = Math.ceil(Math.random()*10);
+    var number = Math.ceil(Math.random() * 10);
     //获取当前的时间戳
     var timestamp = Date.parse(new Date());
     var labelClass = "imgTP" + timestamp + number;
@@ -156,9 +216,9 @@ function addTaskImage(object) {
         '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
         '<option value="7">图片</option>' +
         '</select>' +
-        '                <img class="'+labelClass+' my-img form-control col-lg-5" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
-        '                <input type="hidden" class="'+valueClass+' content" name="content" value="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" />' +
-        '                <input type="hidden" class="imgCode" name="imgCode" value="'+ timestamp +'" />' +
+        '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
+        '                <input type="hidden" class="' + valueClass + ' content" name="content" value="" />' +
+        '                <input type="hidden" class="imgCode" name="imgCode" value="' + timestamp + '" />' +
         '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
         '                <input type="hidden" class="labelType" name="labelType" value="' + labelIndex + '">';
     if (type == "GeneralizeTask") {
@@ -170,7 +230,7 @@ function addTaskImage(object) {
     }
     obj.parent().after(html);
     //动态加载告知layui
-    attributeFileUpload("."+labelClass, "."+valueClass);
+    attributeFileUpload("." + labelClass, "." + valueClass);
 }
 
 //删除单位

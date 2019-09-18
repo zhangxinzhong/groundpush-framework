@@ -100,11 +100,20 @@
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">封面图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px" id="imgFMT"
-                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">
+                                <img style="margin-left: -10px;height: 200px" id="imgFMT"
+                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" onerror="excptionUrl(this)">
                                 <br><label>上传封面图片</label>
                             </div>
                             <input type="hidden" name="imgUri" id="imgUri">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">缩略图：</label>
+                            <div class="btn col-lg-2" style="text-align: center">
+                                <img style="margin-left: -10px;height: 200px" id="imgSLT"
+                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" onerror="excptionUrl(this)">
+                                <br><label>上传缩略图片</label>
+                            </div>
+                            <input type="hidden" name="iconUri" id="iconUri">
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">标&emsp;题：</label>
@@ -119,13 +128,6 @@
                                     style="width:80%;display:inline"
                                     data-title="点击选择标签（可多选）" data-width="80%" data-live-search="true"
                                     data-live-search-placeholder="搜索" data-actions-box="true">
-                                <option value="1">标签1</option>
-                                <option value="2">标签2</option>
-                                <option value="3">标签3</option>
-                                <option value="4">标签4</option>
-                                <option value="5">标签5</option>
-                                <option value="6">标签6</option>
-                                <option value="7">标签7</option>
                             </select>
                         </div>
 
@@ -133,8 +135,6 @@
                             <label class="btn col-lg-1">公&emsp;司：</label>
                             <select class="form-control col-lg-3" name="source" id="source"
                                     style="width:21%;display:inline">
-                                <option value="00100">标签1</option>
-                                <option value="00101">标签2</option>
                             </select>
                             <select class="selectpicker form-control col-lg-3" id="shengfen" multiple
                                     style="width:21%;display:inline"
@@ -306,7 +306,7 @@
                         }
                         tableHtml += '<tr>\n' +
                             '            <td style="text-align: center;vertical-align: middle;">\n' +
-                            '                <img style="width: 100px;height: 50px" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png">\n' +
+                            '                <img style="width: 100px;height: 50px" src="' + dataList[i].imgUri + '" onerror="excptionUrl(this)">\n' +
                             '            </td>\n' +
                             '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].title + '</td>\n' +
                             '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].amount + '元</td>\n' +
@@ -440,7 +440,13 @@
                         var dataMsg = data.data;
                         $("#thisTaskId").val(dataMsg.taskId);
                         $("#imgUri").val(dataMsg.imgUri);
-                        $("#imgFMT").attr("src", dataMsg.imgUri);
+                        if(dataMsg.imgUri != null && dataMsg.imgUri != ""){
+                            $("#imgFMT").attr("src", dataMsg.imgUri);
+                        }
+                        $("#iconUri").val(dataMsg.iconUri);
+                        if(dataMsg.iconUri != null && dataMsg.iconUri != ""){
+                            $("#imgSLT").attr("src", dataMsg.iconUri);
+                        }
                         $("#title").val(dataMsg.title);
                         $("#source").val(dataMsg.source);
                         $("#location").val(dataMsg.location);
@@ -454,6 +460,13 @@
                         $("#spreadRatio").val(dataMsg.spreadRatio);
                         $("#leaderRatio").val(dataMsg.leaderRatio);
                         $("#isResult").val(dataMsg.isResult);
+                        //回显标签
+                        console.log("=================================================================");
+                        console.log(dataMsg);
+                        console.log("=================================================================");
+
+                        //$("#selectLabelIds").val(dataMsg.labelIds);
+                        $('#selectLabelIds').selectpicker('val',dataMsg.labelIds);
                         //子表数据
                         var taskAttributes = dataMsg.taskAttributes;
                         //定义两部分的页面值
@@ -530,6 +543,8 @@
                         $("#GeneralizeTaskContentDiv").html(GeneralizeTaskContentDivHtml);
                         //清除临时内容
                         $("#generalizeTaskHtml").html("");
+                        //调用一下子那个啥。。。。动态加载的那个文件上传的那个东西
+                        upLoadFile();
                     }
                 }
             }
@@ -538,7 +553,19 @@
         $modal.modal();
     }
 
+    //处理详情回显时的文件加载
+    function upLoadFile() {
+        for (var i in resultMap) {
+            var labelClass = resultMap[i].key;
+            var valueClass = resultMap[i].value;
+            attributeFileUpload(labelClass, valueClass);
+        }
+    }
+
     //处理回显子表部分
+    //先定义一个数组在说
+    var resultMap = [];
+
     function getZiTaskMsg(taskAttribute) {
         //content
         var content = taskAttribute.content;
@@ -664,19 +691,14 @@
                 '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
                 '                <option value="7" selected>图片</option>' +
                 '                </select>' +
-                '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="' + content + '" style="margin-left: 5px;width:55%; height: 200px;display:inline"  />' +
+                '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="' + content + '" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
                 '                <input type="hidden" class="' + valueClass + ' content" name="content" value="' + content + '" />' +
                 '                <input type="hidden" class="imgCode" name="imgCode" value="' + imgCode + '" />';
             //把这些KEY和VAL记住
-            var activeSubjectsObject = {};
-            activeSubjectsObject.name = activeSubjectsName[i];
-            activeSubjectsObject.value = activeSubjectsNum[j];
-            activeSubjectsArr.push(activeSubjectsObject);
-
-
-
-
-                    attributeFileUpload("."+labelClass, "."+valueClass);
+            var map = {};
+            map.key = "." + labelClass;
+            map.value = "." + valueClass;
+            resultMap.push(map);
         }
         //组上
         ziHtml += '<a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +

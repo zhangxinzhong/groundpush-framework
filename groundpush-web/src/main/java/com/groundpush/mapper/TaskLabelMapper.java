@@ -2,10 +2,7 @@ package com.groundpush.mapper;
 
 import com.groundpush.core.model.Label;
 import com.groundpush.core.model.TaskLabel;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,4 +41,10 @@ public interface TaskLabelMapper {
 
     @Select(" select * from t_task_label t where t.label_id = #{labelId}  ")
     List<TaskLabel> getTaskLabelByLabelId(Label label);
+
+    @Delete(" delete from t_task_label where task_id = #{taskId} ")
+    Integer deleteTaskLabelByTaskId(@Param("taskId") Integer taskId);
+
+    @Select(" select * from t_task_label t where t.task_id = #{taskId}  ")
+    List<TaskLabel> getTaskLabelByTaskId(@Param("taskId") Integer taskId);
 }

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ChannelMapper {
@@ -69,4 +70,8 @@ public interface ChannelMapper {
 
     @Insert("insert into t_channel_data(channel_id,file_name,mapping) values(#{channelId},#{fileName},#{mapping})")
     Integer addChannelData(@Param("channelId") Integer channelId, @Param("fileName")String fileName, @Param("mapping")String mapping);
+
+    @Select(" select * from t_channel")
+    List<Channel> getChannelAll();
+
 }

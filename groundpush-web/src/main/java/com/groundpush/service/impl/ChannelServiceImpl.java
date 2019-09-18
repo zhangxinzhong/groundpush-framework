@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +63,10 @@ public class ChannelServiceImpl implements ChannelService {
         fileOutputStream.close();
         inputStream.close();
         return channelMapper.addChannelData(channelId,fileName, mapping);
+    }
+
+    @Override
+    public List<Channel> getChannelAll() {
+        return channelMapper.getChannelAll();
     }
 }

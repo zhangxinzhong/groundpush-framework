@@ -7,6 +7,7 @@ import io.swagger.models.auth.In;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -56,4 +57,10 @@ public interface ChannelService {
      * @return
      */
     Integer addChannelData(Integer channelId, String fileName, String mapping, InputStream inputStream) throws IOException;
+
+    /**
+     * 获取所有的公司列表信息
+     * @return
+     */
+    List<Channel> getChannelAll();
 }

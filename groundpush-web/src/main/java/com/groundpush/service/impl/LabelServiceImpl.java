@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,5 +42,10 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public void delById(Label label) {
         labelMapper.removeLabel(label);
+    }
+
+    @Override
+    public List<Label> getLabelAll() {
+        return labelMapper.getLabelAll();
     }
 }

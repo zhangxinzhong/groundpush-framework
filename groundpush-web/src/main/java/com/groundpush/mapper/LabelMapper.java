@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.model.Label;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LabelMapper {
@@ -65,4 +66,11 @@ public interface LabelMapper {
      */
     @Select(" select * from t_label where label_id=#{labelId}")
     Optional<Label> queryLabelById(@Param("labelId") Integer labelId);
+
+    /**
+     *
+     * @return
+     */
+    @Select(" select * from t_label")
+    List<Label> getLabelAll();
 }

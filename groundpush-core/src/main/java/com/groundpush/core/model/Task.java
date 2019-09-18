@@ -67,6 +67,13 @@ public class Task implements Serializable {
     private String imgUri;
 
     /**
+     * 封面图
+     */
+    @NotBlank(message = "缩略图不可为空")
+    @JsonView(SimpleTaskView.class)
+    private String iconUri;
+
+    /**
      * 任务类型
      */
     @NotNull(message = "任务类型不可为空")
@@ -201,7 +208,7 @@ public class Task implements Serializable {
     private Set<List<TaskAttribute>> spreadTaskAttributesSet;
 
     @NotNull(message = "标签内容不可为空")
-    @JsonView(SimpleTaskView.class)
+    @JsonView(DetailTaskView.class)
     private String labelIds;
 
     @NotNull(message = "任务编辑内容不可为空")
