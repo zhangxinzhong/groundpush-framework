@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -125,4 +127,26 @@ public class LabelController {
             throw e;
         }
     }
+
+    @ApiOperation(value = "获取所有标签列表--任务页用")
+    @JsonView(Label.OutLabelView.class)
+    @RequestMapping(value = "/getLabelAll")
+    @ResponseBody
+    public Map<String,Object> getLabelPage() {
+        Map<String,Object> resultMap = new HashMap<String,Object>();
+        try {
+            List<Label>  labelList  = labelService.getLabelAll();
+            if(labelList!=null && labelList.size()>0){
+                resultMap.put("dataList",labelList);
+                resultMap.put("code","200");
+            }
+        } catch (Exception e) {
+            resultMap.put("code","500");
+            resultMap.put("msg","获取标签列表失败！");
+            log.error(e.toString(), e);
+            throw e;
+        }
+        return resultMap;
+    }
 }
+

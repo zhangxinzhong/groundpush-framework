@@ -22,8 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
 @Slf4j
 @Controller
 @RequestMapping("/channel")
@@ -49,7 +52,7 @@ public class ChannelController {
     @JsonView(Channel.OutChannelView.class)
     public JsonResp getChannelPage(Integer page, Integer limit) {
         try {
-            Page<Channel> pageLabel  = channelService.queryAll(page,limit);
+            Page<Channel> pageLabel = channelService.queryAll(page, limit);
             return JsonResp.success(new PageResult(pageLabel));
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -132,12 +135,33 @@ public class ChannelController {
     @ApiOperation(value = "导入数据")
     @RequestMapping(value = "/importExcelData", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping,Integer channelId) throws Exception {
+    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId) throws Exception {
         try {
-            return JsonResp.success(channelService.addChannelData(channelId,file.getOriginalFilename(),mapping,file.getInputStream()));
+            return JsonResp.success(channelService.addChannelData(channelId, file.getOriginalFilename(), mapping, file.getInputStream()));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
         }
+    }
+
+    @ApiOperation(value = "获取所有渠道列表")
+    @RequestMapping(value = "/getChannelAll")
+    @ResponseBody
+    @JsonView(Channel.OutChannelView.class)
+    public Map<String, Object>  getChannelAll() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            List<Channel> channelList = channelService.getChannelAll();
+            if (channelList != null && channelList.size() > 0) {
+                resultMap.put("dataList", channelList);
+                resultMap.put("code", "200");
+            }
+        } catch (Exception e) {
+            resultMap.put("msg", "获取公司信息列表失败！");
+            resultMap.put("code", "500");
+            log.error(e.toString(), e);
+            throw e;
+        }
+        return resultMap;
     }
 }

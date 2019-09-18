@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.model.Label;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,4 +45,10 @@ public interface LabelService {
      * @param label
      */
     void  delById(Label label);
+
+    /**
+     * 获取所有标签列表
+     * @return
+     */
+    List<Label> getLabelAll();
 }
