@@ -2,6 +2,7 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.condition.MenuQueryCondition;
 import com.groundpush.core.model.Menu;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.mapper.MenuMapper;
@@ -24,17 +25,21 @@ public class MenuServiceImpl implements MenuService {
     private MenuMapper menuMapper;
 
     @Override
-    public Page<Menu> queryAll(Integer page, Integer limit) {
+    public Page<Menu> queryAll(MenuQueryCondition menuQueryCondition, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        return menuMapper.queryAll();
+        return menuMapper.queryAll(menuQueryCondition);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertSingleMenu(Menu menu) {
         if (menu != null) {
+            menu.setLeaf(Boolean.TRUE);
             //设置是否是叶子节点
-            menu.setLeaf(menu.getParentId() == null ? Boolean.FALSE : Boolean.TRUE);
+            if (menu.getParentId() == null) {
+                menu.setParentId(Constants.MENU_PARENT_ID);
+                menu.setLeaf(Boolean.FALSE);
+            }
             //设置排序
             menu.setSeq(menuMapper.queryMaxMenuSeq());
             menu.setCode(generateMenuCode());
@@ -62,7 +67,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> queryAll() {
-        return menuMapper.queryAll();
+//        return menuMapper.queryAll(menuQueryCondition);
+        return null;
     }
 
     @Override
@@ -73,6 +79,7 @@ public class MenuServiceImpl implements MenuService {
 
     /**
      * 生成菜单码
+     *
      * @return
      */
     private String generateMenuCode() {

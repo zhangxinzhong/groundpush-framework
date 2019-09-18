@@ -1,29 +1,40 @@
-$(function() {
+$(function () {
+    //触发事件
+    let eventListener = {
+        initMenuTree: function (parentId) {
+            parentId = parentId || 0;
+            Utils.getAjax("/menu/loadMenu", {page: 1, limit: 20}, function (rep) {
+                if (rep.code == '200') {
+                    eventListener.showMenuData(rep.data.rows);
+                }
+            }, function (rep) {
+
+            });
+        }, showMenuData: function (data) {
+            for (let index in data) {
+                let menu = data[index];
+
+
+                $("#menu-tree").append('<li class="layui-nav-item"><a href="javascript:;" name="data-menu-a" data-menu-uri="' + menu.path + '">' + menu.name + '</a>');
+
+                //处理叶子节点
+                // if (menu.leaf) {
+                //     $("dl[data-parent-menu='" + menu.parentId + "']").append('<dd><a href="javascript:;" name="data-menu-a" data-menu-uri="' + menu.path + '">' + menu.name + '</a></dd>');
+                // } else {
+                // if (Utils.isEmpty(menu.path)) {
+                //     $("#menu-tree").append('<li class="layui-nav-item  layui-nav-itemed"><a class="" href="javascript:;" >' + menu.name + '</a><dl data-parent-menu="' + menu.menuId + '" class="layui-nav-child"></dl></li>');
+                //     continue;
+                // }
+                // }
+
+            }
+        }
+    }
+
+    eventListener.initMenuTree();
+
     $("a[name='data-menu-a']").click(function () {
-        var menuUri = $(this).data('menu-uri');
+        let menuUri = $(this).data('menu-uri');
         $("#iframe-menu").attr("src", menuUri);
     });
-
-    // let test=1000000;
-    // alert('$'+test.format(2));
-    //
-    // layui.use(['layer', 'table', 'element'], function (layer, $, element) {
-    //     layer.open({
-    //         type: 2, //（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-    //         title: '您好',
-    //         id: 'LAY_layuipro', //设定一个id，防止重复弹出
-    //         offset: 'auto', //坐标
-    //         moveType: 1, //拖拽模式，0或者1
-    //         area: ['340px', '215px'], //宽高
-    //         btn: ['继续弹出', '全部关闭'],
-    //         content: ['/toPage', 'no'], //iframe的url，no代表不显示滚动条
-    //         yes: function () {
-    //             layer.msg("yes");
-    //         }
-    //         , btn2: function () {
-    //             layer.msg("close");
-    //         }
-    //     });
-    //
-    // });
 });

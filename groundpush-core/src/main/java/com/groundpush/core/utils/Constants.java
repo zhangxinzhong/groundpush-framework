@@ -205,4 +205,11 @@ public class Constants {
      *
      */
     public static final  String CODE_KEY_PREFIX = "code_key_";
+
+    /**
+     * 菜单默认父级id
+     */
+    public static final  Integer MENU_PARENT_ID = 0;
+
+
 }
