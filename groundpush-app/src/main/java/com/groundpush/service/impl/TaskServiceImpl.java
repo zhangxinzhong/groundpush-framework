@@ -6,10 +6,12 @@ import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskLabel;
+import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.mapper.TaskAttributeMapper;
 import com.groundpush.mapper.TaskLabelMapper;
 import com.groundpush.mapper.TaskMapper;
+import com.groundpush.service.OrderService;
 import com.groundpush.service.TaskAttributeService;
 import com.groundpush.service.TaskService;
 import org.apache.commons.lang3.StringUtils;
@@ -40,12 +42,15 @@ public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskAttributeService taskAttributeService;
 
+    @Resource
+    private OrderService orderService;
 
 
     @Override
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
-        return taskMapper.queryTaskAll(taskQueryCondition);
+        Page<Task> pageTask = taskMapper.queryTaskAll(taskQueryCondition);
+        return addCount(taskQueryCondition.getCustomerId(),pageTask);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -149,5 +154,41 @@ public class TaskServiceImpl implements TaskService {
             return new HashSet<> (taskAttrMap.values());
         }
         return Collections.EMPTY_SET;
+    }
+
+    private Page<Task> addCount(Integer customId,Page<Task> list){
+        List<Integer> taskIds  = new ArrayList<>();
+        for(Task task:list){
+            taskIds.add(task.getTaskId());
+        }
+        List<TaskListCount> taskCounts = orderService.queryCountByTaskId(taskIds);
+        Map<Integer,Integer> taskMap = new HashMap<>();
+        for(TaskListCount  count: taskCounts){
+            taskMap.put(count.getTaskId(),count.getTaskPerson());
+        }
+
+        List<TaskListCount> taskCustomCounts = orderService.queryCountByCustomIdTaskId(customId,taskIds);
+        Map<Integer,Integer> taskCustomMap = new HashMap<>();
+        for (TaskListCount taskCustomCount : taskCustomCounts) {
+            taskCustomMap.put(taskCustomCount.getTaskId(),taskCustomCount.getCustomPopCount());
+        }
+        for (Task task : list) {
+            Integer taskPerson = taskMap.get(task.getTaskId());
+            if(taskPerson != null){
+                task.setTaskPerson(taskPerson.toString());
+                task.setSurNumber(String.valueOf(task.getSpreadTotal()-taskPerson));
+            }else{
+                task.setSurNumber(String.valueOf(task.getSpreadTotal()));
+                task.setTaskPerson("0");
+            }
+            Integer customPopCount =  taskCustomMap.get(task.getTaskId());
+            if(customPopCount != null){
+                task.setSurPopCount(String.valueOf(task.getHandlerNum()-customPopCount));
+            }else{
+                task.setSurPopCount("0");
+            }
+        }
+
+        return list;
     }
 }

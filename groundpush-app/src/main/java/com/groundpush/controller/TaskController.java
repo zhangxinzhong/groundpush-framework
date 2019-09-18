@@ -59,7 +59,7 @@ public class TaskController {
         //todo 将任务类型list合并到任务list接口中
         List<Label> list = labelService.getLabelByType(Constants.TYPE_ONE);
         //todo customerid 不为空 且 类型为空收藏
-        if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), String.valueOf(Constants.TASK_TYPE_1))) {
+        if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), Constants.TASK_TYPE_COLLECT)) {
             Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageNumber,pageSize);
             return JsonResp.success(new PageResultModel(taskCollect, list));
         }

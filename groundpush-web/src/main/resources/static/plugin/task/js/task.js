@@ -1,17 +1,20 @@
 $(function () {
     //加载表格内容
     loadTaskData();
-    //加载标签内容
-    labelLoad();
     //加载公司内容
     channelLoad();
-    //加载下拉列表内容
+    //加载标签内容
+    labelLoad("");
+    //加载省份内容
+    provinceLoad("");
+    //加载位置内容
+    locationLoad("");
     $(".selectpicker").selectpicker('refresh');
-
 })
 
 //加载标签内容
-function labelLoad() {
+function labelLoad(labelIds) {
+    var labelIdList = labelIds.split(",");
     $.ajax({
         url: "/label/getLabelAll",
         async: false,
@@ -19,21 +22,115 @@ function labelLoad() {
         dataType: 'json',
         success: function (data) {
             var code = data.code;
-            if(code == "200"){
+            if (code == "200") {
                 var labelHtml = "";
                 var dataList = data.dataList;
-                for(var i in dataList){
+                for (var i in dataList) {
                     var labelName = dataList[i].labelName;
                     var labelId = dataList[i].labelId;
-                    labelHtml += '<option value="' + labelId + '">' + labelName + '</option>';
+                    var isLabelOk = false;
+                    for (var y in labelIdList) {
+                        if (labelIdList[y] == labelId) {
+                            isLabelOk = true;
+                            break;
+                        }
+                    }
+                    if (isLabelOk) {
+                        labelHtml += '<option value="' + labelId + '" selected>' + labelName + '</option>';
+                    } else {
+                        labelHtml += '<option value="' + labelId + '" >' + labelName + '</option>';
+                    }
                 }
                 $("#selectLabelIds").html(labelHtml);
-            }else{
+            } else {
                 var msg = data.msg;
                 alert(msg);
             }
         }
     });
+    //加载下拉列表内容
+    $("#selectLabelIds").selectpicker('refresh');
+    $("#selectLabelIds").selectpicker('render');
+}
+
+//加载省份内容--省份
+function provinceLoad(provinces) {
+    var labelIdList = provinces.split(",");
+    $.ajax({
+        url: "/label/getLabelAll",
+        async: false,
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+            var code = data.code;
+            if (code == "200") {
+                var labelHtml = "";
+                var dataList = data.dataList;
+                for (var i in dataList) {
+                    var labelName = dataList[i].labelName;
+                    var isLabelOk = false;
+                    for (var y in labelIdList) {
+                        if (labelIdList[y] == labelName) {
+                            isLabelOk = true;
+                            break;
+                        }
+                    }
+                    if (isLabelOk) {
+                        labelHtml += '<option value="' + labelName + '" selected>' + labelName + '</option>';
+                    } else {
+                        labelHtml += '<option value="' + labelName + '" >' + labelName + '</option>';
+                    }
+                }
+                $("#provinces").html(labelHtml);
+            } else {
+                var msg = data.msg;
+                alert(msg);
+            }
+        }
+    });
+    //加载下拉列表内容
+    $("#provinces").selectpicker('refresh');
+    $("#provinces").selectpicker('render');
+}
+
+//加载位置信息--市
+function locationLoad(locations) {
+    var labelIdList = locations.split(",");
+    $.ajax({
+        url: "/label/getLabelAll",
+        async: false,
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+            var code = data.code;
+            if (code == "200") {
+                var labelHtml = "";
+                var dataList = data.dataList;
+                for (var i in dataList) {
+                    var labelName = dataList[i].labelName;
+                    var isLabelOk = false;
+                    for (var y in labelIdList) {
+                        if (labelIdList[y] == labelName) {
+                            isLabelOk = true;
+                            break;
+                        }
+                    }
+                    if (isLabelOk) {
+                        labelHtml += '<option value="' + labelName + '" selected>' + labelName + '</option>';
+                    } else {
+                        labelHtml += '<option value="' + labelName + '" >' + labelName + '</option>';
+                    }
+                }
+                $("#locations").html(labelHtml);
+            } else {
+                var msg = data.msg;
+                alert(msg);
+            }
+        }
+    });
+    //加载下拉列表内容
+    $("#locations").selectpicker('refresh');
+    $("#locations").selectpicker('render');
 }
 
 //加载公司内容
@@ -66,45 +163,44 @@ function channelLoad() {
 layui.use(['form', 'upload'], function () {
     form = layui.form;
     upload = layui.upload;
-    //initImgForGroup();
     //封面图片的
     attributeFileUpload("#imgFMT", "#imgUri");
     //缩略图片的
     attributeFileUpload("#imgSLT", "#iconUri");
+
+    uploadExcel(".uploadExcel");
 });
 
-//处理文件上传----主表的
-function initImgForGroup() {
+//处理文件上传----任务URL
+function uploadExcel(classCodes) {
     upload.render({
-        elem: '#imgFMT', //绑定元素
-        url: '/upload/uploadFile',//上传接口
+        elem: classCodes, //绑定元素
+        url: '/task/uploadExcel',//上传接口
         size: '5024',
+        accept: 'file',
         before: function (obj) {
-            console.log(obj);
-            //预读本地文件示例，不支持ie8
-            obj.preview(function (index, file, result) {
-                $('#imgFMT').attr('src', result); //图片链接（base64）
-            });
-            $("#imgFMT").attr("title", "点击更换封面图");
-        },
-        data: {
-            //"tableName": "hl_kj"//往后台传数据用的
+            this.data = getuploaddata();
+            layer.load(); //上传loading
         },
         done: function (res) {
+            layer.closeAll('loading'); //关闭loading
             console.log(res);
             var code = res.code;
             if (code == "200") {
-                var fileData = res.fileData;
-                var filePath = fileData.filePath;
-                var fileName = fileData.fileName;
-                $('#imgFMT').attr('src', filePath);
-                $('#imgUri').val(fileName);
             } else {
                 var msg = res.msg;
                 alert(msg)
             }
         }
     });
+}
+
+function getuploaddata() {
+    var temporaryTaskId = $("#temporaryTaskId").val();
+    var data = {
+        "taskId" : temporaryTaskId
+    };
+    return data;
 }
 
 //处理文件上传----子表的

@@ -6,9 +6,7 @@ import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.ToPathCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.core.model.Order;
-import com.groundpush.core.model.OrderTaskCustomer;
-import com.groundpush.core.model.TaskUri;
+import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.OrderMapper;
@@ -140,7 +138,20 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.queryOrderByCustomerId(customerId);
     }
 
+    @Override
+    public List<TaskListCount> queryCountByTaskId(List<Integer> taskIds) {
+        return orderMapper.queryCountByTaskId(taskIds);
+    }
 
+    @Override
+    public List<TaskListCount> queryCountByCustomIdTaskId(Integer customId, List<Integer> taskIds) {
+        return orderMapper.queryCountByCustomIdTaskId(customId,taskIds);
+    }
+
+    @Override
+    public List<TaskPopListCount> queryPopCountByCustomerId(Integer customerId) {
+        return orderMapper.queryPopCountByCustomerId(customerId);
+    }
 
 
 }

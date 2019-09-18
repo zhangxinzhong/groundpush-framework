@@ -98,6 +98,12 @@ public class Task implements Serializable {
     private String location;
 
     /**
+     * 任务所在地
+     */
+    @JsonView(SimpleTaskView.class)
+    private String province;
+
+    /**
      * 每日推广任务总数
      */
     @NotNull(message = "每日推广任务总数不可为空")
@@ -245,24 +251,24 @@ public class Task implements Serializable {
     private String taskPerson;
 
     /**
-     * 任务剩余推广人
+     * 今日您剩余推广次数
      */
-    @ApiParam("任务剩余推广次数")
+    @ApiParam("今日您剩余推广次数")
     @JsonView(SimpleTaskView.class)
     private String surPopCount;
 
     /**
-     * 任务剩余名额
+     * 剩余名额
      */
-    @ApiParam("任务剩余名额")
+    @ApiParam("剩余名额")
     @JsonView(SimpleTaskView.class)
     private String surNumber;
 
 
     /**
-     * 任务剩余名额
+     * 任务用户已用订单
      */
-    @ApiParam("任务用户已推广剩余次数")
+    @ApiParam("任务用户已用订单")
     @JsonView(SimpleTaskView.class)
     private String customPopCount;
 

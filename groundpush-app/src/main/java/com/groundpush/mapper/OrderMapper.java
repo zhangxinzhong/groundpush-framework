@@ -3,6 +3,9 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.TaskListCount;
+import com.groundpush.core.model.TaskPopListCount;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -106,4 +109,46 @@ public interface OrderMapper {
     @Update(" update t_order set order_no=#{orderNo} where order_id=#{orderId} ")
     void updateOrderNoByOrderId(Order order);
 
+    @Select({
+            "<script>",
+            " select ",
+            " b.task_id,count(1) task_person ",
+            " from t_order a",
+            " left join t_order_task_customer b on a.order_id = b.order_id ",
+            " where  date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.task_id in ",
+            "<foreach collection='list' item='taskId' open='(' separator=',' close=')'>",
+               "#{taskId}",
+            "</foreach>",
+            " group by b.task_id ",
+            "</script>"
+    })
+    List<TaskListCount> queryCountByTaskId(List<Integer> taskIds);
+
+
+    @Select({
+            "<script>",
+            " select ",
+            " b.task_id,b.customer_id,count(1) custom_pop_count ",
+            " from t_order a",
+            " left join t_order_task_customer b on a.order_id = b.order_id ",
+            " where a.type = 2 and date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.customer_id = #{customId} and b.task_id in  ",
+            "<foreach collection='taskIds' item='taskId' open='(' separator=',' close=')'>",
+            "#{taskId}",
+            "</foreach>",
+            " group by b.task_id,b.customer_id ",
+            "</script>"
+    })
+    List<TaskListCount> queryCountByCustomIdTaskId(Integer customId,List<Integer> taskIds);
+
+    @Select({
+            "<script>",
+            " SELECT ",
+            " (SELECT c.title FROM t_task c WHERE c.task_id = b.task_id) title",
+            " (SELECT count(1) FROM t_order a WHERE a.order_id = b.order_id ) pop_task_count,",
+            " (SELECT count(1) FROM t_order a WHERE a.order_id = b.order_id AND a.unique_code IS NOT NULL) result_count",
+            " FROM t_order_task_customer b LEFT JOIN t_order d ON b.order_id = d.order_id",
+            " WHERE b.customer_id = #{customerId} AND d.type = 2 ",
+            "</script>"
+    })
+    List<TaskPopListCount> queryPopCountByCustomerId(Integer customerId);
 }
