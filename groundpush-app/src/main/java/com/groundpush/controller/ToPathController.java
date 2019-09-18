@@ -3,8 +3,10 @@ package com.groundpush.controller;
 import com.groundpush.core.condition.ToPathCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskUri;
+import com.groundpush.core.utils.AesUtils;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.RedisUtils;
+import com.groundpush.core.utils.StringUtils;
 import com.groundpush.service.OrderService;
 import com.groundpush.service.TaskUriService;
 import io.swagger.annotations.ApiModel;
@@ -34,6 +36,12 @@ public class ToPathController {
     private RedisUtils redisUtils;
 
     @Resource
+    private AesUtils aesUtils;
+
+    @Resource
+    private StringUtils stringUtils;
+
+    @Resource
     private OrderService orderService;
 
     @Resource
@@ -43,10 +51,11 @@ public class ToPathController {
     @ApiOperation("页面跳转uri")
     @GetMapping
     public String toPage(@Valid  ToPathCondition toPathCondition,BindingResult bindingResult,Model model) {
-        Object obj = redisUtils.get(toPathCondition.getKey());
+        String key = aesUtils.dcodes(toPathCondition.getKey(),Constants.APP_AES_KEY);
+        String obj = (String)redisUtils.get(key);
         boolean bool = true;
         Optional<TaskUri> taskUri = null;
-        if(obj != null){
+        if(stringUtils.isNotBlank(obj) && obj.equals(key)){
             taskUri = taskUriService.queryValidTaskUriByTaskId(toPathCondition.getTaskId());
             if(taskUri.isPresent()){
                 Order order = new Order();
@@ -57,6 +66,7 @@ public class ToPathController {
                 order.setChannelUri(taskUri.get().getUri());
                 orderService.createOrder(order);
             }
+            redisUtils.del(key);
         }else{
             bool = false;
         }
