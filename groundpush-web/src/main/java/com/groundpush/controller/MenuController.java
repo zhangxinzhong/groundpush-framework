@@ -2,16 +2,14 @@ package com.groundpush.controller;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.condition.MenuQueryCondition;
 import com.groundpush.core.model.Menu;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -34,16 +32,14 @@ public class MenuController {
 
 
     @RequestMapping("/toMenuList")
-    public String queryMenu(Model model) {
-        List<Menu> menus = menuService.queryAll();
-        model.addAttribute("menus", menus);
+    public String queryMenu() {
         return "menu/menu";
     }
 
     @ResponseBody
     @RequestMapping("/loadMenu")
-    public JsonResp loadMenu(Integer page, Integer limit) {
-        Page<Menu> menus = menuService.queryAll(page, limit);
+    public JsonResp loadMenu(MenuQueryCondition menuQueryCondition, @RequestParam(defaultValue = "1", required = false) Integer page, @RequestParam(defaultValue = "20", required = false) Integer limit) {
+        Page<Menu> menus = menuService.queryAll(menuQueryCondition, page, limit);
         return JsonResp.success(new PageResult(menus));
 
     }

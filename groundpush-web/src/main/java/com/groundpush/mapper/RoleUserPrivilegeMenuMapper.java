@@ -19,7 +19,7 @@ public interface RoleUserPrivilegeMenuMapper {
 
 
     @Insert({"<script>",
-            " insert into t_user_role(user_id,role_id,status,created_by,created_time) values ",
+            " insert into t_role_user(user_id,role_id,status,created_by,created_time) values ",
             "<foreach collection='ids' item='id' open='(' close=')' separator='),('>",
             " #{id},#{roleId},#{status},#{createdBy},current_timestamp",
             "</foreach>",
@@ -43,7 +43,7 @@ public interface RoleUserPrivilegeMenuMapper {
             "</script>"})
     void addRoleMenu(UpmAddCondition upmAddCondition);
 
-    @Delete("delete from t_user_role where  role_id = #{roleId}")
+    @Delete("delete from t_role_user where  role_id = #{roleId}")
     void delRoleUser(@Param("roleId") Integer roleId);
 
     @Delete("delete from t_role_privilege where  role_id = #{roleId}")
@@ -65,7 +65,7 @@ public interface RoleUserPrivilegeMenuMapper {
                     " b.created_time,",
                     " b.last_modified,",
                     " b.last_modified_time",
-                    " from t_user_role a LEFT JOIN t_user b on a.user_id = b.user_id where a.role_id = #{roleId} ",
+                    " from t_role_user a LEFT JOIN t_user b on a.user_id = b.user_id where a.role_id = #{roleId} ",
             "</script>"})
     Page<User> findAllUsersByRoleId(@Param("roleId") Integer roleId);
 
@@ -103,7 +103,7 @@ public interface RoleUserPrivilegeMenuMapper {
 
     @Select({"<script>",
             " select sum(b.counts) from (",
-            " select count(1) counts from  t_user_role a where a.role_id = #{roleId}",
+            " select count(1) counts from  t_role_user a where a.role_id = #{roleId}",
             " union all",
             " select count(1) counts from  t_role_privilege a where a.role_id = #{roleId}",
             " union all",
@@ -114,7 +114,7 @@ public interface RoleUserPrivilegeMenuMapper {
 
     @Select({"<script>",
             " select b.user_id  from t_user b where b.user_id in ",
-            " (select c.user_id from t_user_role c where c.role_id = #{roleId}) ",
+            " (select c.user_id from t_role_user c where c.role_id = #{roleId}) ",
             "</script>"})
     List<Integer> findAllUserIdsByRoleId(@Param("roleId") Integer roleId);
 

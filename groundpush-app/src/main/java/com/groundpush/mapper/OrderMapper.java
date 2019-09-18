@@ -3,6 +3,8 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.TaskListCount;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -106,4 +108,34 @@ public interface OrderMapper {
     @Update(" update t_order set order_no=#{orderNo} where order_id=#{orderId} ")
     void updateOrderNoByOrderId(Order order);
 
+    @Select({
+            "<script>",
+            " select ",
+            " b.task_id,count(1) task_person ",
+            " from t_order a",
+            " left join t_order_task_customer b on a.order_id = b.order_id ",
+            " where date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.task_id in ",
+            "<foreach collection='list' item='taskId' open='(' separator=',' close=')'>",
+               "#{taskId}",
+            "</foreach>",
+            " group by b.task_id ",
+            "</script>"
+    })
+    List<TaskListCount> queryCountByTaskId(List<Integer> taskIds);
+
+
+    @Select({
+            "<script>",
+            " select ",
+            " b.task_id,b.customer_id,count(1) custom_pop_count ",
+            " from t_order a",
+            " left join t_order_task_customer b on a.order_id = b.order_id ",
+            " where date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.customer_id = #{customId} and b.task_id in  ",
+            "<foreach collection='taskIds' item='taskId' open='(' separator=',' close=')'>",
+            "#{taskId}",
+            "</foreach>",
+            " group by b.task_id,b.customer_id ",
+            "</script>"
+    })
+    List<TaskListCount> queryCountByCustomIdTaskId(Integer customId,List<Integer> taskIds);
 }

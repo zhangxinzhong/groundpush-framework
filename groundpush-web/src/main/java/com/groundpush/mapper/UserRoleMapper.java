@@ -18,6 +18,6 @@ public interface UserRoleMapper {
      * @param userId
      * @return
      */
-    @Select(" select r.* from t_role r inner join t_user_role ur on ur.role_id  = r.role_id where ur.user_id=#{userId} ")
+    @Select(" select r.* from t_role r inner join t_role_user ur on ur.role_id  = r.role_id where ur.user_id=#{userId} ")
     List<Role> queryRoleByUserId(Integer userId);
 }

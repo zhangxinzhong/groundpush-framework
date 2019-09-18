@@ -49,20 +49,20 @@
                                                     <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
                                                 </div>
                                             </div>
-                                            <div class="layui-form-item">
-                                                <label class="layui-form-label col-md-2">父级菜单</label>
-                                                <div class=" col-md-10">
-                                                    <select name="parentId" lay-search="">
-                                                        <option value="">直接选择或搜索选择</option>
-                                                        <option th:each="menu,userStat:${menus}" th:value="${menu.menuId}" th:text="${menu.name}" ></option>
-                                                    </select>
-                                                </div>
-                                            </div>
+<!--                                            <div class="layui-form-item">-->
+<!--                                                <label class="layui-form-label col-md-2">父级菜单</label>-->
+<!--                                                <div class=" col-md-10">-->
+<!--                                                    <select name="parentId" lay-search="">-->
+<!--                                                        <option value="">直接选择或搜索选择</option>-->
+<!--                                                        <option th:each="menu,userStat:${menus}" th:value="${menu.menuId}" th:text="${menu.name}" ></option>-->
+<!--                                                    </select>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
 
                                             <div class="layui-form-item">
-                                                <label class="layui-form-label col-md-2"><span class="required_style">*</span>菜单URI</label>
+                                                <label class="layui-form-label col-md-2">菜单URI</label>
                                                 <div class=" col-md-10">
-                                                    <input type="text" name="path" lay-verify="required" autocomplete="off" placeholder="请输入菜单URI" class="layui-input">
+                                                    <input type="text" name="path" autocomplete="off" placeholder="请输入菜单URI" class="layui-input">
                                                 </div>
                                             </div>
 
@@ -105,20 +105,20 @@
                                                     <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
                                                 </div>
                                             </div>
-                                            <div class="layui-form-item">
-                                                <label class="layui-form-label col-md-2">父级菜单</label>
-                                                <div class=" col-md-10">
-                                                    <select name="parentId" lay-search="">
-                                                        <option value="">直接选择或搜索选择</option>
-                                                        <option th:each="menu,userStat:${menus}" th:value="${menu.menuId}" th:text="${menu.name}" ></option>
-                                                    </select>
-                                                </div>
-                                            </div>
+<!--                                            <div class="layui-form-item">-->
+<!--                                                <label class="layui-form-label col-md-2">父级菜单</label>-->
+<!--                                                <div class=" col-md-10">-->
+<!--                                                    <select name="parentId" lay-search="">-->
+<!--                                                        <option value="">直接选择或搜索选择</option>-->
+<!--                                                        <option th:each="menu,userStat:${menus}" th:value="${menu.menuId}" th:text="${menu.name}" ></option>-->
+<!--                                                    </select>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
 
                                             <div class="layui-form-item">
-                                                <label class="layui-form-label col-md-2"><span class="required_style">*</span>菜单URI</label>
+                                                <label class="layui-form-label col-md-2">菜单URI</label>
                                                 <div class=" col-md-10">
-                                                    <input type="text" name="path" lay-verify="required" autocomplete="off" placeholder="请输入菜单URI" class="layui-input">
+                                                    <input type="text" name="path" autocomplete="off" placeholder="请输入菜单URI" class="layui-input">
                                                 </div>
                                             </div>
 

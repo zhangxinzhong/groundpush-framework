@@ -18,7 +18,7 @@ public interface PrivilegeMapper {
      * @param userId
      * @return
      */
-    @Select(" select p.* from t_privilege p inner join t_role_privilege rp on rp.privilege_id = p.privilege_id  inner join t_user_role ur on ur.role_id = rp.role_id where ur.user_id = #{userId} ")
+    @Select(" select p.* from t_privilege p inner join t_role_privilege rp on rp.privilege_id = p.privilege_id  inner join t_role_user ur on ur.role_id = rp.role_id where ur.user_id = #{userId} ")
     List<Privilege> queryPrivilegeByUserId(Integer userId);
 
     /**

@@ -28,6 +28,6 @@ public interface PrivilegeUriMapper {
     })
     List<Uri> queryUriByPrivilegeId(List<Integer> privilegeIds);
 
-    @Select(" select distinct u.* from t_uri u inner join t_privilege_uri pu on pu.uri_id = u.uri_id  inner join t_role_privilege rp on rp.privilege_id = pu.privilege_id  inner join t_user_role ur on ur.role_id = rp.role_id inner join t_user usr on usr.user_id=ur.user_id where usr.login_no=#{loginNo} ")
+    @Select(" select distinct u.* from t_uri u inner join t_privilege_uri pu on pu.uri_id = u.uri_id  inner join t_role_privilege rp on rp.privilege_id = pu.privilege_id  inner join t_role_user ur on ur.role_id = rp.role_id inner join t_user usr on usr.user_id=ur.user_id where usr.login_no=#{loginNo} ")
     List<Uri> queryUriByLoginNo(String loginNo);
 }

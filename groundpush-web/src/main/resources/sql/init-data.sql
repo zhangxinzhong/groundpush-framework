@@ -1,7 +1,7 @@
 truncate table t_user;
 truncate table t_user_account;
 truncate table t_role;
-truncate table t_user_role;
+truncate table t_role_user;
 truncate table t_privilege;
 truncate table t_role_privilege;
 truncate table t_uri;
@@ -15,9 +15,9 @@ insert into t_user_account(user_id, password, status, password_error_count, hist
 insert into t_role(name,code, status, created_by, created_time, last_modified_by, last_modified_time)values ('超级管理员','super_admin',0,null,null,null,null);
 insert into t_role(name,code, status, created_by, created_time, last_modified_by, last_modified_time)values ('普通用户','user',0,null,null,null,null);
 
-insert into t_user_role(user_id, role_id, status, created_by, created_time, last_modified_by, last_modified_time)values (1,1,0,null,null,null,null);
-insert into t_user_role(user_id, role_id, status, created_by, created_time, last_modified_by, last_modified_time)values (2,2,0,null,null,null,null);
-insert into t_user_role(user_id, role_id, status, created_by, created_time, last_modified_by, last_modified_time)values (2,1,0,null,null,null,null);
+insert into t_role_user(user_id, role_id, status, created_by, created_time, last_modified_by, last_modified_time)values (1,1,0,null,null,null,null);
+insert into t_role_user(user_id, role_id, status, created_by, created_time, last_modified_by, last_modified_time)values (2,2,0,null,null,null,null);
+insert into t_role_user(user_id, role_id, status, created_by, created_time, last_modified_by, last_modified_time)values (2,1,0,null,null,null,null);
 
 insert into t_privilege(name, status, created_by, created_time, last_modified_by, last_modified_time)values ('新增角色',0,null,null,null,null);
 insert into t_privilege(name, status, created_by, created_time, last_modified_by, last_modified_time)values ('删除角色',0,null,null,null,null);

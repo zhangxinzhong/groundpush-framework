@@ -1,12 +1,14 @@
 package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.MenuQueryCondition;
 import com.groundpush.core.model.Menu;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,19 +22,25 @@ import java.util.Optional;
 public interface MenuMapper {
 
     /**
-     * 查询所有菜单
+     * 分页查询所有菜单
      *
+     * @param menuQueryCondition 查询条件
      * @return
      */
-    @Select(" select * from t_menu where status = 0 order by seq ")
-    Page<Menu> queryAll();
+    @Select({
+            "<script>",
+            " select * from t_menu where status = 1 ",
+            " order by seq,leaf asc  ",
+            "</script>"
+    })
+    Page<Menu> queryAll(MenuQueryCondition menuQueryCondition);
 
     /**
      * 插入单条菜单
      *
      * @param menu
      */
-    @Insert(" insert into t_menu (name,code,parent_id,seq,status,path,leaf,created_time) values(#{name},#{code},#{parentId},#{seq},0,#{path},#{leaf},current_timestamp) ")
+    @Insert(" insert into t_menu (name,code,parent_id,seq,status,path,leaf,created_time) values(#{name},#{code},#{parentId},#{seq},1,#{path},#{leaf},current_timestamp) ")
     void insertSingleMenu(Menu menu);
 
     /**
@@ -57,7 +65,7 @@ public interface MenuMapper {
      * @param code
      * @return
      */
-    @Select(" select * from t_menu where status = 0 and code=#{code}")
+    @Select(" select * from t_menu where status = 1 and code=#{code}")
     Optional<Menu> queryMenuByCode(String code);
 
     /**
@@ -84,4 +92,13 @@ public interface MenuMapper {
      */
     @Select(" select * from t_menu where menu_id=#{menuId} ")
     Optional<Menu> getById(Integer menuId);
+
+    /**
+     * 通过用户编号查询菜单
+     * @param userId
+     * @return
+     */
+
+    @Select(" select * from t_menu t inner join t_role_menu rm on rm.menu_id = t.menu_id inner join t_role_user ru on ru.role_id = rm.role_id where ru.user_id=#{userId} ")
+    List<Menu> queryMenuByLoginUser(Integer userId);
 }

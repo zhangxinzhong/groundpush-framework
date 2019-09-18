@@ -2,6 +2,7 @@ package com.groundpush.service;
 
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.MenuQueryCondition;
 import com.groundpush.core.model.Menu;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface MenuService {
      * @param limit
      * @return
      */
-    Page<Menu> queryAll(Integer page, Integer limit);
+    Page<Menu> queryAll(MenuQueryCondition menuQueryCondition, Integer page, Integer limit);
 
     /**
      * 新增菜单
@@ -58,4 +59,10 @@ public interface MenuService {
      * @return
      */
     Optional<Menu> getById(Integer menuId);
+
+    /**
+     * 查询登录用户的关联的菜单
+     * @return
+     */
+    List<Menu> loadMenuByLoginUser();
 }

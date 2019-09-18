@@ -66,7 +66,7 @@
             return typeof value !== 'undefined';
         },
         isEmpty: function (value) {
-            return value == null || value === undefined || toString.call(value) === "";
+            return value == null || value === undefined || value === "";
         },
         isBoolean: function (value) {
             return typeof value === 'boolean';

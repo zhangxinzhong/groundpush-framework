@@ -134,7 +134,7 @@ public class Constants {
     /**
      * 任务收藏
      */
-    public static final Integer TASK_TYPE_1 = 1;
+    public static final String TASK_TYPE_COLLECT = "collect";
 
     /**
      * 标签类型 主要标签
@@ -207,7 +207,12 @@ public class Constants {
     public static final  String CODE_KEY_PREFIX = "code_key_";
 
     /**
-     * 用于二维码key的加密key
+     * 菜单默认父级id
+     */
+    public static final  Integer MENU_PARENT_ID = 0;
+
+
+     /** 用于二维码key的加密key
      *
      */
     public static final  String APP_AES_KEY = "appAesKey";

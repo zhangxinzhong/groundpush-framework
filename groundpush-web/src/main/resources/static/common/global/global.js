@@ -1,7 +1,7 @@
 var Global = {
 		
 	//分页：默认每页显示条数
-	PAGE_SISE : 2,
+	PAGE_SISE : 20,
 	
 	//分页条数选择
 	LIMITS : [10, 20, 30, 40, 50, 100],
