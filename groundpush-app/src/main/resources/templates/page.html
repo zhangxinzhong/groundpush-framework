@@ -16,13 +16,12 @@
             location.href=uri;
         }
     </script>
-    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/common/h5.js" th:src="@{/common/common.js}"></script>
 
 </head>
 <style>
 
 </style>
 <body onload="bool">
-<p th:if="${!bool}" >二维码已失效</p>
+<p th:if="${!bool}" ><img th:src="@{/erweimashixiao.png}" alt="二维码已失效" /></p>
 </body>
 </html>

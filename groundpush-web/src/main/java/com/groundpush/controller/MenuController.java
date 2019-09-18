@@ -32,9 +32,7 @@ public class MenuController {
 
 
     @RequestMapping("/toMenuList")
-    public String queryMenu(Model model) {
-        List<Menu> menus = menuService.queryAll();
-        model.addAttribute("menus", menus);
+    public String queryMenu() {
         return "menu/menu";
     }
 

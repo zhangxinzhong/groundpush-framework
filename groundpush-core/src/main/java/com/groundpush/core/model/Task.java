@@ -237,4 +237,33 @@ public class Task implements Serializable {
     @JsonView(SimpleTaskView.class)
     private Boolean hasCollect;
 
+    /**
+     * 任务参与人
+     */
+    @ApiParam("任务参与人")
+    @JsonView(SimpleTaskView.class)
+    private String taskPerson;
+
+    /**
+     * 任务剩余推广人
+     */
+    @ApiParam("任务剩余推广次数")
+    @JsonView(SimpleTaskView.class)
+    private String surPopCount;
+
+    /**
+     * 任务剩余名额
+     */
+    @ApiParam("任务剩余名额")
+    @JsonView(SimpleTaskView.class)
+    private String surNumber;
+
+
+    /**
+     * 任务剩余名额
+     */
+    @ApiParam("任务用户已推广剩余次数")
+    @JsonView(SimpleTaskView.class)
+    private String customPopCount;
+
 }

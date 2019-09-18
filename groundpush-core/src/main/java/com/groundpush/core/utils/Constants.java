@@ -212,4 +212,8 @@ public class Constants {
     public static final  Integer MENU_PARENT_ID = 0;
 
 
+     /** 用于二维码key的加密key
+     *
+     */
+    public static final  String APP_AES_KEY = "appAesKey";
 }
