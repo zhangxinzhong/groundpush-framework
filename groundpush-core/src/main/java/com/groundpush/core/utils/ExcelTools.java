@@ -120,7 +120,7 @@ public final class ExcelTools {
                 result.add(getRowDate());
                 if((countRow-resultCount*pushCount)<resultCount||(++curResCount)==resultCount){
                     excelOpetion.excelRowResult(curSheet.getSheetName(),countRow,
-                            curResCount,result.toArray(new Object[curResCount]));
+                            curResCount,result);
                     curResCount=ExcelConstant.DEFAULT_ROW_INDEX;
                     pushCount++;
                     result=new LinkedList<>();
