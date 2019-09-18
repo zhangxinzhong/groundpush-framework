@@ -20,6 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class TaskListCount implements Serializable {
 
+    //*************用于app任务列表页中参与人、剩余名额、推广剩余次数*********************//
     @ApiModelProperty("任务ID")
     private Integer taskId;
 
