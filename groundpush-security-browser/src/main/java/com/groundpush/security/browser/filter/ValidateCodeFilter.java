@@ -1,9 +1,8 @@
 package com.groundpush.security.browser.filter;
 
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.core.utils.Constants;
 import com.groundpush.security.browser.SessionValidateCodeRepository;
-import com.groundpush.security.browser.handler.GroundPushAuthenticationFailHander;
+import com.groundpush.security.browser.handler.GroundPushAuthenticationFailHandler;
 import com.groundpush.security.core.exception.ValidateCodeException;
 import com.groundpush.security.core.validatecode.ImageCode;
 import com.groundpush.security.core.validatecode.ValidateCodeType;
@@ -31,7 +30,7 @@ import java.time.LocalDateTime;
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
     @Resource
-    private GroundPushAuthenticationFailHander groundPushAuthenticationFailHander;
+    private GroundPushAuthenticationFailHandler groundPushAuthenticationFailHandler;
 
     @Resource
     private SessionValidateCodeRepository sessionValidateCodeRepository;
@@ -45,7 +44,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
                 validateCode(request,response);
             }
         }catch (ValidateCodeException e){
-            groundPushAuthenticationFailHander.onAuthenticationFailure(request, response, e);
+            groundPushAuthenticationFailHandler.onAuthenticationFailure(request, response, e);
             return;
         }
 

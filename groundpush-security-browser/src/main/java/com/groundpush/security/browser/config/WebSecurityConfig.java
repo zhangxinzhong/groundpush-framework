@@ -1,10 +1,9 @@
 package com.groundpush.security.browser.config;
 
 import com.groundpush.security.browser.filter.ValidateCodeFilter;
-import com.groundpush.security.browser.handler.GroundPushAuthenticationFailHander;
+import com.groundpush.security.browser.handler.GroundPushAuthenticationFailHandler;
 import com.groundpush.security.browser.handler.GroundPushAuthenticationSuccessHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -28,7 +27,7 @@ import javax.annotation.Resource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
-    private GroundPushAuthenticationFailHander groundPushAuthenticationFailHander;
+    private GroundPushAuthenticationFailHandler groundPushAuthenticationFailHandler;
 
     @Resource
     private GroundPushAuthenticationSuccessHandler groundPushAuthenticationSuccessHandler;
@@ -82,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/authentication/form")
                 .successHandler(groundPushAuthenticationSuccessHandler)
-                .failureHandler(groundPushAuthenticationFailHander)
+                .failureHandler(groundPushAuthenticationFailHandler)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login", "/validate/codeImage", "/invalidSession").permitAll()

@@ -1,24 +1,33 @@
 layui.use(['form', 'layedit', 'laydate'], function () {
     let form = layui.form;
+    let layer = layui.layer;
     //自定义验证规则
     form.verify({
-        username: function (value) {
-            if (value.length < 5) {
-                return '标题至少得5个字符';
-            }
-        }
-        , password: [
-            /^[\S]{6,12}$/
-            , '密码必须6到12位，且不能出现空格'
+        password: [
+            /^[\S]{5,12}$/
+            , '密码必须5到12位，且不能出现空格'
         ]
-        , content: function (value) {
-            layedit.sync(editIndex);
-        }
+
     });
+
+    let eventListener = {
+        reloadImgCode: function () {
+            let uri = "/validate/codeImage?random=" + Math.random();
+            $(".validation-code img").attr("src", uri);
+        }
+    };
 
     //监听提交
     form.on('submit(login)', function (data) {
-        return true;
+        Utils.postLoginAjax("/authentication/form", data.field, function (rep) {
+            if (rep.code === '200') {
+                window.location = "/home";
+            }
+        }, function (rep) {
+            layer.msg(rep.data);
+            eventListener.reloadImgCode();
+        });
+        return false;
     });
 
     //监听手机号
@@ -34,11 +43,12 @@ layui.use(['form', 'layedit', 'laydate'], function () {
 
 
     //验证码
-    // $(".validation-code img").on("click", function() {
-    //     let $this = $(this);
-    //     let uri = "/validate/codeImage?random="+Math.random();
-    //     $this.attr("src",uri);
-    // });
+    $(".validation-code img").on("click", function () {
+        // let $this = $(this);
+        // let uri = "/validate/codeImage?random=" + Math.random();
+        // $this.attr("src", uri);
+        eventListener.reloadImgCode();
+    });
 });
 
 

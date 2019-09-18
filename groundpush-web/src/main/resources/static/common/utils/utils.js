@@ -127,7 +127,7 @@
                 contentType: 'application/x-www-form-urlencoded',
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     if (Utils.verifyFunction(errorBack)) {
-                        errorBack(data, XMLHttpRequest, textStatus, errorThrown);
+                        errorBack(XMLHttpRequest.responseJSON, textStatus, errorThrown);
                     }
                 },
                 success: function (data) {
