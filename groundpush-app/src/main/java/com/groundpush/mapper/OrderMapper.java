@@ -38,8 +38,8 @@ public interface OrderMapper {
     @Select({
             "<script>",
             "select * from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.customer_id = #{customerId}",
-            " <if test='status != null'> and status =#{status}  </if> ",
-            " <if test='selectTime != null'> and date_format(b.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(b.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
+            " <if test='status != null'> and o.status =#{status}  </if> ",
+            " <if test='selectTime != null'> and date_format(o.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(o.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
             "</script>"
     })
     Page<Order> queryOrder(OrderQueryCondition order);
@@ -105,4 +105,5 @@ public interface OrderMapper {
      */
     @Update(" update t_order set order_no=#{orderNo} where order_id=#{orderId} ")
     void updateOrderNoByOrderId(Order order);
+
 }
