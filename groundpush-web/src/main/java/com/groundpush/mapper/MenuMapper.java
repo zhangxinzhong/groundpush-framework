@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -91,4 +92,13 @@ public interface MenuMapper {
      */
     @Select(" select * from t_menu where menu_id=#{menuId} ")
     Optional<Menu> getById(Integer menuId);
+
+    /**
+     * 通过用户编号查询菜单
+     * @param userId
+     * @return
+     */
+
+    @Select(" select * from t_menu t inner join t_role_menu rm on rm.menu_id = t.menu_id inner join t_role_user ru on ru.role_id = rm.role_id where ru.user_id=#{userId} ")
+    List<Menu> queryMenuByLoginUser(Integer userId);
 }

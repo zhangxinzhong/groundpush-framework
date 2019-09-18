@@ -29,8 +29,8 @@ CREATE TABLE `t_user_account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 用户角色表
-drop table if exists t_user_role;
-CREATE TABLE `t_user_role` (
+drop table if exists t_role_user;
+CREATE TABLE `t_role_user` (
       `user_id` int(11) NOT NULL,
       `role_id` int(11) NOT NULL,
       `status` tinyint(1) DEFAULT NULL,

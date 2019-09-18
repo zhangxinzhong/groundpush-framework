@@ -15,7 +15,7 @@ public interface RoleMapper {
             "<script>",
             " select ",
             " a.role_id, a.name, a.code, a.status, ",
-            " (select count(1) from t_user_role b where b.role_id = a.role_id) user_num, ",
+            " (select count(1) from t_role_user b where b.role_id = a.role_id) user_num, ",
             " (select count(1) from t_role_privilege b where b.role_id = a.role_id) privilege_num, ",
             " (select count(1) from t_role_menu b where b.role_id = a.role_id) menu_num, ",
             " (select b.name from t_user b where b.user_id = a.created_by) created_name, ",

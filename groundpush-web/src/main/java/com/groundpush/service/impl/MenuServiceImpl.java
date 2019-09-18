@@ -3,14 +3,17 @@ package com.groundpush.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.MenuQueryCondition;
+import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.Menu;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.mapper.MenuMapper;
 import com.groundpush.service.MenuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +26,9 @@ import java.util.Optional;
 public class MenuServiceImpl implements MenuService {
     @Resource
     private MenuMapper menuMapper;
+
+    @Resource
+    private SessionUtils sessionUtils;
 
     @Override
     public Page<Menu> queryAll(MenuQueryCondition menuQueryCondition, Integer page, Integer limit) {
@@ -87,5 +93,16 @@ public class MenuServiceImpl implements MenuService {
         Integer code = menuMapper.queryMaxMenuId();
         sb.append(Constants.MENU_CODE).append(code == null ? 1 : code);
         return sb.toString();
+    }
+
+    @Override
+    public List<Menu> loadMenuByLoginUser() {
+        LoginUserInfo loginUserInfo = sessionUtils.getLoginUserInfo();
+
+        if (loginUserInfo != null && loginUserInfo.getUser() != null) {
+            return menuMapper.queryMenuByLoginUser(loginUserInfo.getUser().getUserId());
+        }
+
+        return Collections.EMPTY_LIST;
     }
 }

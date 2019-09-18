@@ -59,4 +59,10 @@ public interface MenuService {
      * @return
      */
     Optional<Menu> getById(Integer menuId);
+
+    /**
+     * 查询登录用户的关联的菜单
+     * @return
+     */
+    List<Menu> loadMenuByLoginUser();
 }
