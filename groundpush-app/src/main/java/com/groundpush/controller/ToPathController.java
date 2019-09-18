@@ -3,6 +3,7 @@ package com.groundpush.controller;
 import com.groundpush.core.condition.ToPathCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskUri;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.RedisUtils;
 import com.groundpush.service.OrderService;
 import com.groundpush.service.TaskUriService;
@@ -52,6 +53,7 @@ public class ToPathController {
                 order.setCustomerId(toPathCondition.getCustomId());
                 order.setType(toPathCondition.getType());
                 order.setTaskId(toPathCondition.getTaskId());
+                order.setStatus(Constants.ORDER_STATUS_EFFECT_REVIEW);
                 order.setChannelUri(taskUri.get().getUri());
                 orderService.createOrder(order);
             }

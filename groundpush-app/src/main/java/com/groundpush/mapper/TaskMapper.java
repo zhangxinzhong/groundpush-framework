@@ -40,7 +40,7 @@ public interface TaskMapper {
             " from t_task t2 where 1=1 ",
             " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='type != null'> and t2.type in( #{type})  </if> ",
-            " and location = #{location} ",
+            " and  FIND_IN_SET(#{location},t2.location) ",
             " <if test='sort != null'> order by #{sort} </if> ",
             ")",
             "  </if> ",
