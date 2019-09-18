@@ -6,6 +6,7 @@ import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.service.MenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
@@ -35,6 +36,7 @@ public class HomeController {
         return "home/page";
     }
 
+    @ResponseBody
     @RequestMapping("/loadMenuByLoginUser")
     public JsonResp loadMenuByLoginUser() {
         return JsonResp.success(menuService.loadMenuByLoginUser());

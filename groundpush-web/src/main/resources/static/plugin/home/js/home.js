@@ -4,7 +4,7 @@ $(function () {
         initMenuTree: function () {
             Utils.getAjax("/loadMenuByLoginUser", null, function (rep) {
                 if (rep.code == '200') {
-                    eventListener.showMenuData(rep.data.rows);
+                    eventListener.showMenuData(rep.data);
                 }
             }, function (rep) {
 
