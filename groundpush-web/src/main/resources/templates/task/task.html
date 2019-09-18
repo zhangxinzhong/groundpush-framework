@@ -136,26 +136,17 @@
                             <select class="form-control col-lg-3" name="source" id="source"
                                     style="width:21%;display:inline">
                             </select>
-                            <select class="selectpicker form-control col-lg-3" id="shengfen" multiple
-                                    style="width:21%;display:inline"
+                            <input type="hidden" name="province" id="province">
+                            <select class="selectpicker form-control col-lg-3" name="provinces" id="provinces" multiple
+                                    style="width:21%;display:inline;margin-left: 5px"
                                     data-title="点击选择省份（可多选）" data-width="21%" data-live-search="true"
                                     data-live-search-placeholder="搜索" data-actions-box="true">
-                                <option>标签1</option>
-                                <option>标签2</option>
-                                <option>标签3</option>
-                                <option>标签4</option>
-                                <option>标签5</option>
                             </select>
-                            <select class="selectpicker form-control col-lg-3" name="location" id="location" multiple
+                            <input type="hidden" name="location" id="location">
+                            <select class="selectpicker form-control col-lg-3" name="locations" id="locations" multiple
                                     style="width:21%;display:inline"
                                     data-title="点击选择城市（可多选）" data-width="21%" data-live-search="true"
                                     data-live-search-placeholder="搜索" data-actions-box="true">
-                                <option>标签1</option>
-                                <option>标签2</option>
-                                <option>标签3</option>
-                                <option>标签4</option>
-                                <option>标签5</option>
-                                <option>标签6</option>
                             </select>
                         </div>
                         <div class="row panel-heading">
@@ -392,6 +383,12 @@
         //获取标签内容
         var selectLabelIds = $('#selectLabelIds').selectpicker('val');
         $("#labelIds").val(selectLabelIds);
+        //获取省份内容
+        var provinces = $('#provinces').selectpicker('val');
+        $("#province").val(provinces);
+        //获取城市内容
+        var locations = $('#locations').selectpicker('val');
+        $("#location").val(locations);
         //获取表单内容项转成JSON
         var dataCollect = $('#submitTask').serialize();
         dataCollect = decodeURIComponent(dataCollect, true);//防止中文乱码
@@ -461,12 +458,11 @@
                         $("#leaderRatio").val(dataMsg.leaderRatio);
                         $("#isResult").val(dataMsg.isResult);
                         //回显标签
-                        console.log("=================================================================");
-                        console.log(dataMsg);
-                        console.log("=================================================================");
-
-                        //$("#selectLabelIds").val(dataMsg.labelIds);
-                        $('#selectLabelIds').selectpicker('val',dataMsg.labelIds);
+                        labelLoad(dataMsg.labelIds);
+                        //加载省份内容
+                        provinceLoad(dataMsg.province);
+                        //加载位置内容
+                        locationLoad(dataMsg.location);
                         //子表数据
                         var taskAttributes = dataMsg.taskAttributes;
                         //定义两部分的页面值

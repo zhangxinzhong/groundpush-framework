@@ -98,6 +98,12 @@ public class Task implements Serializable {
     private String location;
 
     /**
+     * 任务所在地
+     */
+    @JsonView(SimpleTaskView.class)
+    private String province;
+
+    /**
      * 每日推广任务总数
      */
     @NotNull(message = "每日推广任务总数不可为空")

@@ -1,17 +1,20 @@
 $(function () {
     //加载表格内容
     loadTaskData();
-    //加载标签内容
-    labelLoad();
     //加载公司内容
     channelLoad();
-    //加载下拉列表内容
+    //加载标签内容
+    labelLoad("");
+    //加载省份内容
+    provinceLoad("");
+    //加载位置内容
+    locationLoad("");
     $(".selectpicker").selectpicker('refresh');
-
 })
 
 //加载标签内容
-function labelLoad() {
+function labelLoad(labelIds) {
+    var labelIdList = labelIds.split(",");
     $.ajax({
         url: "/label/getLabelAll",
         async: false,
@@ -19,21 +22,115 @@ function labelLoad() {
         dataType: 'json',
         success: function (data) {
             var code = data.code;
-            if(code == "200"){
+            if (code == "200") {
                 var labelHtml = "";
                 var dataList = data.dataList;
-                for(var i in dataList){
+                for (var i in dataList) {
                     var labelName = dataList[i].labelName;
                     var labelId = dataList[i].labelId;
-                    labelHtml += '<option value="' + labelId + '">' + labelName + '</option>';
+                    var isLabelOk = false;
+                    for(var y in labelIdList){
+                        if(labelIdList[y] == labelId){
+                            isLabelOk = true;
+                            break;
+                        }
+                    }
+                    if (isLabelOk) {
+                        labelHtml += '<option value="' + labelId + '" selected>' + labelName + '</option>';
+                    } else {
+                        labelHtml += '<option value="' + labelId + '" >' + labelName + '</option>';
+                    }
                 }
                 $("#selectLabelIds").html(labelHtml);
-            }else{
+            } else {
                 var msg = data.msg;
                 alert(msg);
             }
         }
     });
+    //加载下拉列表内容
+    $("#selectLabelIds").selectpicker('refresh');
+    $("#selectLabelIds").selectpicker('render');
+}
+
+//加载省份内容--省份
+function provinceLoad(provinces) {
+    var labelIdList = provinces.split(",");
+    $.ajax({
+        url: "/label/getLabelAll",
+        async: false,
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+            var code = data.code;
+            if (code == "200") {
+                var labelHtml = "";
+                var dataList = data.dataList;
+                for (var i in dataList) {
+                    var labelName = dataList[i].labelName;
+                    var isLabelOk = false;
+                    for(var y in labelIdList){
+                        if(labelIdList[y] == labelName){
+                            isLabelOk = true;
+                            break;
+                        }
+                    }
+                    if (isLabelOk) {
+                        labelHtml += '<option value="' + labelName + '" selected>' + labelName + '</option>';
+                    } else {
+                        labelHtml += '<option value="' + labelName + '" >' + labelName + '</option>';
+                    }
+                }
+                $("#provinces").html(labelHtml);
+            } else {
+                var msg = data.msg;
+                alert(msg);
+            }
+        }
+    });
+    //加载下拉列表内容
+    $("#provinces").selectpicker('refresh');
+    $("#provinces").selectpicker('render');
+}
+
+//加载位置信息--市
+function locationLoad(locations) {
+    var labelIdList = locations.split(",");
+    $.ajax({
+        url: "/label/getLabelAll",
+        async: false,
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+            var code = data.code;
+            if (code == "200") {
+                var labelHtml = "";
+                var dataList = data.dataList;
+                for (var i in dataList) {
+                    var labelName = dataList[i].labelName;
+                    var isLabelOk = false;
+                    for(var y in labelIdList){
+                        if(labelIdList[y] == labelName){
+                            isLabelOk = true;
+                            break;
+                        }
+                    }
+                    if (isLabelOk) {
+                        labelHtml += '<option value="' + labelName + '" selected>' + labelName + '</option>';
+                    } else {
+                        labelHtml += '<option value="' + labelName + '" >' + labelName + '</option>';
+                    }
+                }
+                $("#locations").html(labelHtml);
+            } else {
+                var msg = data.msg;
+                alert(msg);
+            }
+        }
+    });
+    //加载下拉列表内容
+    $("#locations").selectpicker('refresh');
+    $("#locations").selectpicker('render');
 }
 
 //加载公司内容

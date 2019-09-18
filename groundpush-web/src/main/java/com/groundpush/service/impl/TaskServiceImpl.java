@@ -43,25 +43,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        Page<Task> tasks = taskMapper.queryTaskAll(taskQueryCondition);
-        for (Task task : tasks) {
-            Integer taskId = task.getTaskId();
-            //获取相关标签内容
-            List<TaskLabel> taskLabelList = taskLabelMapper.getTaskLabelByTaskId(taskId);
-            //组labels
-            String labelIds = "";
-            if (taskLabelList != null && taskLabelList.size() > 0) {
-                for (TaskLabel taskLabel : taskLabelList) {
-                    Integer tlId = taskLabel.getTlId();
-                    labelIds = labelIds + "," + tlId;
-                }
-            }
-            if (StringUtils.isNotEmpty(labelIds)) {
-                labelIds = labelIds.substring(1);
-            }
-            task.setLabelIds(labelIds);
-        }
-
         return taskMapper.queryTaskAll(taskQueryCondition);
     }
 
@@ -77,6 +58,22 @@ public class TaskServiceImpl implements TaskService {
         Optional<Task> optionalTask = taskMapper.getTask(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
+            //加载标签
+            Integer taskId = task.getTaskId();
+            //获取相关标签内容
+            List<TaskLabel> taskLabelList = taskLabelMapper.getTaskLabelByTaskId(taskId);
+            //组labels
+            String labelIds = "";
+            if (taskLabelList != null && taskLabelList.size() > 0) {
+                for (TaskLabel taskLabel : taskLabelList) {
+                    Integer labelId = taskLabel.getLabelId();
+                    labelIds = labelIds + "," + labelId;
+                }
+            }
+            if (StringUtils.isNotEmpty(labelIds)) {
+                labelIds = labelIds.substring(1);
+            }
+            task.setLabelIds(labelIds);
             //任务添加属性
             addTaskAttr(task);
             return Optional.of(task);
