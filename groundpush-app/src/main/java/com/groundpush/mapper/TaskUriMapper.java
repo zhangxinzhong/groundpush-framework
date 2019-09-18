@@ -26,7 +26,7 @@ public interface TaskUriMapper {
             " a.uri,",
             " (select count(1) from  t_task_uri b where b.task_id = #{taskId}) counts",
             " from t_task_uri a where a.task_id = #{taskId} ",
-            " and date_format(a.last_modified_time,'%Y-%m-%d') = date_sub(curdate(),interval 1 day)   ",
+            " and TO_DAYS(NOW()) - TO_DAYS(a.last_modified_time)  > 0   ",
             " order by  a.last_modified_time desc limit 0,1",
             "</script>"
     })

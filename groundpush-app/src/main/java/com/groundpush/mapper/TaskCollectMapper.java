@@ -1,13 +1,16 @@
 package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
-import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * @description:收藏任务mapper
@@ -52,4 +55,7 @@ public interface TaskCollectMapper {
             "</script>"
     })
     Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition);
+
+    @Select(" select a.* from t_task_collect a where a.task_id = #{taskId} ")
+    Optional<TaskCollect> queryCollectsByTaskId(@Param("taskId") Integer taskId);
 }

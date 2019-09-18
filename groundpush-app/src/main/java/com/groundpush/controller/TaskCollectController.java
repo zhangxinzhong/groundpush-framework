@@ -66,11 +66,13 @@ public class TaskCollectController {
     @ApiOperation("收藏任务列表")
     @JsonView(Task.DetailTaskView.class)
     @GetMapping
-    public JsonResp queryTaskCollect(@Valid TaskQueryCondition taskQueryCondition, @PageableDefault(page = 0, size = 20) Pageable pageable, BindingResult bindingResult) {
+    public JsonResp queryTaskCollect(@Valid TaskQueryCondition taskQueryCondition,
+                                     @RequestParam(value = "pageNumber",required = false,defaultValue = "1") Integer pageNumber,
+                                     @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer  pageSize, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskQueryCondition, pageable)));
+        return JsonResp.success(new PageResult(taskCollectService.queryTaskCollect(taskQueryCondition, pageNumber,pageSize)));
     }
 
 

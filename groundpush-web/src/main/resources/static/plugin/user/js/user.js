@@ -16,17 +16,19 @@ layui.use('table', function () {
     let eventListener = {
         initTable: function () {
             table.render({
-                elem: '#menu'
-                , url: '/menu/loadMenu'
+                elem: '#user'
+                , url: '/user'
                 , toolbar: true
-                , title: 'menu-data'
+                , title: 'user-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'menuId', title: 'ID', width: 100, sort: true}
-                    , {field: 'name', title: '菜单名称', width: 300}
-                    , {field: 'code', title: '菜单编码', width: 300}
-                    , {field: 'path', title: 'URI', width: 500}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarMenu"}
+                    {field: 'userId', title: 'ID', width: 100, sort: true}
+                    , {field: 'loginNo', title: '登录名', width: 100}
+                    , {field: 'name', title: '用户名', width: 100}
+                    , {field: 'namePinyin', title: '用户名拼音', width: 100}
+                    , {field: 'mobileNo', title: '用户名手机号', width: 400}
+                    , {field: 'workEmail', title: '用户名邮箱', width: 400}
+                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarUser"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
@@ -47,8 +49,8 @@ layui.use('table', function () {
                     }
                 }
             });
-        }, reloadMenuTable: function () {
-            table.reload('menu', {
+        }, reloadUserTable: function () {
+            table.reload('user', {
                 where: {
                     curr: 1
                     , limit: Global.PAGE_SISE
@@ -58,102 +60,104 @@ layui.use('table', function () {
                 }
             });
         }
-        , addMenu: function (data) {
-            Utils.postAjax("/menu/add", JSON.stringify(data.field), function (rep) {
+        , addUser: function (data) {
+            Utils.postAjax("/user", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
-                    eventListener.hideAddMenuDialog();
-                    eventListener.reloadMenuTable();
+                    eventListener.hideAddUserDialog();
+                    eventListener.reloadUserTable();
                     layer.msg('菜单添加成功');
+                } else {
+                    layer.msg(rep.data);
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
         }
-        , detailMenu: function (data) {
-            Utils.getAjax("/menu/detail", {menuId: data.menuId}, function (rep) {
+        , detailUser: function (data) {
+            Utils.getAjax("/user/"+data.userId, null, function (rep) {
                 if (rep.code == '200') {
-                    form.val("editMenuForm", {
-                        "menuId": rep.data.menuId
+                    form.val("editUserForm", {
+                        "userId": rep.data.userId
+                        , "loginNo": rep.data.loginNo
                         , "name": rep.data.name
-                        , "parentId": rep.data.parentId
-                        , "path": rep.data.path
-                        , "seq": rep.data.seq
-                        , "leaf": rep.data.leaf
+                        , "namePinyin": rep.data.namePinyin
+                        , "mobileNo": rep.data.mobileNo
+                        , "workEmail": rep.data.workEmail
                     })
-                    eventListener.showEditMenuDialog();
+                    eventListener.showEditUserDialog();
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
         }
-        , editMenu: function (data) {
-            Utils.postAjax("/menu/edit", JSON.stringify(data.field), function (rep) {
+        , editUser: function (data) {
+            Utils.putAjax("/user", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
-                    eventListener.hideEditMenuDialog();
-                    eventListener.reloadMenuTable();
-                    layer.msg('菜单修改成功');
+                    eventListener.hideEditUserDialog();
+                    eventListener.reloadUserTable();
+                    layer.msg('用户修改成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
         }
-        , delMenu: function (data) {
-            Utils.getAjax("/menu/del", {menuId: data.menuId}, function (rep) {
+        , delUser: function (data) {
+            Utils.deleteAjax("/user", {userId: data.userId}, function (rep) {
                 if (rep.code == '200') {
-                    eventListener.reloadMenuTable();
+                    eventListener.reloadUserTable();
                     layer.msg("菜单删除成功");
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
         }
-        , showAddMenuDialog: function () {
-            $('#addMenuDialog').modal('show');
+        , showAddUserDialog: function () {
+            $('#addUserDialog').modal('show');
         }
-        , hideAddMenuDialog: function () {
-            $('#addMenuDialog').modal('hide');
-            $('#addMenuForm')[0].reset();
+        , hideAddUserDialog: function () {
+            $('#addUserDialog').modal('hide');
+            $('#addUserForm')[0].reset();
         }
-        , showEditMenuDialog: function () {
-            $('#editMenuDialog').modal('show');
+        , showEditUserDialog: function () {
+            $('#editUserDialog').modal('show');
         }
-        , hideEditMenuDialog: function () {
-            $('#editMenuDialog').modal('hide');
-            $('#editMenuForm')[0].reset();
+        , hideEditUserDialog: function () {
+            $('#editUserDialog').modal('hide');
+            $('#editUserForm')[0].reset();
         }
 
     };
 
     eventListener.initTable();
-    table.on('tool(menu)', function (obj) {
+    table.on('tool(user)', function (obj) {
         let data = obj.data;
         if (obj.event === 'edit') {
-            eventListener.detailMenu(data);
+            eventListener.detailUser(data);
         } else if (obj.event === 'del') {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
-                eventListener.delMenu(data);
+                eventListener.delUser(data);
                 layer.close(index);
             });
         }
     });
 
     //新增菜单
-    form.on('submit(addMenu)', function (data) {
-        eventListener.addMenu(data);
+    form.on('submit(addUser)', function (data) {
+        eventListener.addUser(data);
         //屏蔽表单提交
         return false;
     });
 
     //修改菜单
-    form.on('submit(editMenu)', function (data) {
-        eventListener.editMenu(data);
+    form.on('submit(editUser)', function (data) {
+        eventListener.editUser(data);
         //屏蔽表单提交
         return false;
     });
 
 
-    $('[data-custom-event="menu"]').on("click", function () {
+    $('[data-custom-event="user"]').on("click", function () {
         let $this = $(this);
         let _method = $this.data('method');
         eventListener[_method] ? eventListener[_method].call(this, $this) : '';

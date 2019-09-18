@@ -30,7 +30,7 @@ public class TaskUri {
     };
 
     @ApiModelProperty("任务uriId")
-    @JsonView(SimpleTaskUriView.class)
+    @JsonView(DetailTaskUriView.class)
     private Integer taskUriId;
 
     @ApiModelProperty("任务uri")

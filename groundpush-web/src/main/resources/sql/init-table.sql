@@ -9,15 +9,14 @@ CREATE TABLE `t_user` (
     `work_email` varchar(64) DEFAULT NULL,
     `status` tinyint(1) DEFAULT NULL,
     `photo` varchar(128) DEFAULT NULL,
-    `created_by` int(11) DEFAULT NULL,
     `created_time` datetime  DEFAULT NULL,
-    `last_modified` int(11) DEFAULT NULL,
     `last_modified_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 用户账户表
 drop table if exists t_user_account;
 CREATE TABLE `t_user_account` (
+      `user_account_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
       `user_id` int(11) NOT NULL,
       `password` varchar(128) DEFAULT NULL,
       `status` tinyint(1) DEFAULT NULL,

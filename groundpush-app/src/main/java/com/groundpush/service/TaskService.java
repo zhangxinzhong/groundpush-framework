@@ -17,10 +17,11 @@ public interface TaskService {
     /**
      * 分页查询任务
      * @param taskQueryCondition
-     * @param pageable
+     * @param pageNumber
+     * @param pageSize
      * @return
      */
-    Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Pageable pageable);
+    Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize);
 
     /**
      * 新增任务

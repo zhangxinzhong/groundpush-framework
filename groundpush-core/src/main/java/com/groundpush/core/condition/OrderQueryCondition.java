@@ -34,4 +34,13 @@ public class OrderQueryCondition implements Serializable {
     @ApiModelProperty(value = "客户编号")
     @NotNull
     private Integer customerId;
+
+    /**
+     * 订单状态
+     */
+    @ApiModelProperty(value = "app 时间查询 1:今天 3:3天内 7:7天内 15:15天内 30:30天内 90:90天内")
+    private Integer selectTime;
+
+
+
 }

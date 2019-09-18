@@ -7,6 +7,8 @@ import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 /**
  * @description: 任务收藏
  * @author: zhangxinzhong
@@ -32,6 +34,13 @@ public interface TaskCollectService {
      * @param taskQueryCondition
      * @return
      */
-    Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Pageable pageable);
+    Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize);
+
+    /**
+     * 通过taskId判断是否有收藏
+     * @param taskId
+     * @return
+     */
+    Optional<TaskCollect> queryCollectsByTaskId(Integer taskId);
 
 }

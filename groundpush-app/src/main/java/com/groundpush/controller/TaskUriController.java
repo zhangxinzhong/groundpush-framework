@@ -39,7 +39,7 @@ public class TaskUriController {
 
 
 
-    @ApiOperation("获取今日任务uri")
+    @ApiOperation("获取任务uri")
     @JsonView(TaskUri.DetailTaskUriView.class)
     @GetMapping("/{taskId:\\d+}")
     public JsonResp queryTaskCollect(@Valid @PathVariable Integer taskId) {

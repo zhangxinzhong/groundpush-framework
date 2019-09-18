@@ -1,11 +1,14 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.OrderQueryCondition;
+import com.groundpush.core.condition.ToPathCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderTaskCustomer;
+import com.groundpush.core.model.TaskUri;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.OrderMapper;
@@ -86,8 +89,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> queryOrder(OrderQueryCondition order, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
+    public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer  pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
         return orderMapper.queryOrder(order);
     }
 
@@ -136,4 +139,8 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> queryOrderByCustomerId(Integer customerId) {
         return orderMapper.queryOrderByCustomerId(customerId);
     }
+
+
+
+
 }

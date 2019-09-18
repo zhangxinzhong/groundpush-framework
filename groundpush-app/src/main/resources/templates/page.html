@@ -9,13 +9,20 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/h5.js"
-            th:src="@{/common.js}"></script>
+    <script type="text/javascript">
+        var uri =  '[[${uri}]]';
+        var bool = [[${bool}]];
+        if(bool == true){
+            location.href=uri;
+        }
+    </script>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/common/h5.js" th:src="@{/common/common.js}"></script>
+
 </head>
 <style>
-<span th:></span>
-</style>
-<body>
 
+</style>
+<body onload="bool">
+<p th:if="${!bool}" >二维码已失效</p>
 </body>
 </html>

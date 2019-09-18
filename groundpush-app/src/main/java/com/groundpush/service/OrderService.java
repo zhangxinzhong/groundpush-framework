@@ -1,5 +1,6 @@
 package com.groundpush.service;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +29,11 @@ public interface OrderService {
     /**
      * 分页查询订单
      * @param order
-     * @param pageable
+     * @param pageNumber
+     * @param pageSize
      * @return
      */
-    List<Order> queryOrder(OrderQueryCondition order, Pageable pageable);
+    Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer  pageSize);
 
     /**
      * 修改订单唯一编码（申请售后）

@@ -152,12 +152,12 @@ public class Constants {
     /**
      * audit 审核通过
      */
-    public static  final Integer AUDIT_ONE = 1;
+    public static final Integer AUDIT_ONE = 1;
 
     /**
      * audit 审核不通过
      */
-    public static  final Integer AUDIT_TWO = 2;
+    public static final Integer AUDIT_TWO = 2;
 
     /**
      * 支付宝支付成功状态码
@@ -172,19 +172,37 @@ public class Constants {
      * t_role_user_privilege_menu  type字段
      * 用户关联
      */
-    public static  final Integer ROLE_LINK_TYPE_USER = 1;
+    public static final Integer ROLE_LINK_TYPE_USER = 1;
     /**
      * t_role_user_privilege_menu  type字段
      * 权限关联
      */
-    public static  final Integer ROLE_LINK_TYPE_PRIVILEGE = 2;
+    public static final Integer ROLE_LINK_TYPE_PRIVILEGE = 2;
     /**
      * t_role_user_privilege_menu  type字段
      * 菜单关联
      */
-    public static  final Integer ROLE_LINK_TYPE_MENU = 3;
+    public static final Integer ROLE_LINK_TYPE_MENU = 3;
 
     public static final String ALIPAY = "支付宝";
 
     public static final String WEIXIN = "微信";
+
+    /**
+     * 正常用户状态
+     */
+    public static final Integer USER_STATUS_OK = 1;
+
+    /**
+     * 注销用户状态
+     */
+    public static final Integer USER_STATUS_DEL = 0;
+
+
+    public static final String INIT_USER_PASSWORD = "Abcd112233";
+    /**
+     * 二维码key 前缀
+     *
+     */
+    public static final  String CODE_KEY_PREFIX = "code_key_";
 }

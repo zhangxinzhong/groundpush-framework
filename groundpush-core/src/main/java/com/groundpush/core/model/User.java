@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,11 +23,21 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
     private Integer userId;
+
+    @NotNull(message ="登录名不可为空")
     private String loginNo;
+
+    @NotNull(message = "用户名不可为空")
     private String name;
+
     private String namePinyin;
+
+    @NotNull(message ="用户手机号不可为空")
     private String mobileNo;
+
+    @NotNull(message ="用户邮箱不可以为空")
     private String workEmail;
+
     private Integer status;
     /**
      * 头像url
@@ -38,8 +49,6 @@ public class User implements Serializable {
 
     @JsonIgnore
     private Date lastModifiedTime;
-
-    private Integer lastModifiedBy;
 
     /**
      * ****************非数据库字段***************

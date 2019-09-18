@@ -2,11 +2,14 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.condition.UserQueryCondition;
 import com.groundpush.core.model.*;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.mapper.*;
 import com.groundpush.security.core.repository.ObjectRepository;
 import com.groundpush.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +40,11 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
 
     @Resource
     private UserAccountMapper userAccountMapper;
+
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
 
 
     @Override
@@ -88,5 +96,28 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
     @Override
     public Optional<LoginUserInfo> queryOrCreate(String id) {
         return getLoginUserInfo(id);
+    }
+
+    @Override
+    public void createUser(User user) {
+        userMapper.createUser(user);
+        userAccountMapper.createUserAccount(UserAccount.builder().userId(user.getUserId()).password(bCryptPasswordEncoder.encode(Constants.INIT_USER_PASSWORD)).build());
+    }
+
+    @Override
+    public void editUser(User user) {
+        userMapper.editUser(user);
+    }
+
+    @Override
+    public Page<User> queryAll(UserQueryCondition userQueryCondition, Integer page, Integer limit) {
+        PageHelper.startPage(page,limit);
+        return userMapper.queryAll(userQueryCondition);
+    }
+
+    @Override
+    public void deleteUser(Integer userId) {
+        userMapper.deleteUser(userId);
+        userAccountMapper.deleteUserAccount(userId);
     }
 }
