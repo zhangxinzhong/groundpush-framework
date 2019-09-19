@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Ground Push</title>
@@ -9,8 +9,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" type="text/css" href="/plugin/login/css/login.css" />
-    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/login/js/login.js" th:src="@{/common/common.js}"></script>
+    <link rel="stylesheet" type="text/css" href="/plugin/login/css/login.css"/>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/login/js/login.js"
+            th:src="@{/common/common.js}"></script>
 </head>
 <body>
 <!--登录背景-->
@@ -19,12 +20,12 @@
 </div>
 <div class="login">
     <h1>登录</h1>
-    <form class="layui-form" method="post" action="/authentication/form">
+    <form class="layui-form" method="post">
         <div class="layui-form-item">
             <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text" autocomplete="off">
         </div>
         <div class="layui-form-item">
-            <input class="layui-input" name="password" placeholder="密码" lay-verify="required" type="password" autocomplete="off">
+            <input class="layui-input" name="password" placeholder="密码" lay-verify="required|password" type="password" autocomplete="off">
         </div>
         <div class="layui-form-item form_code">
             <input class="layui-input" name="imageCode" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">
@@ -32,22 +33,22 @@
         </div>
         <button type="submit" class="layui-btn login_btn" lay-submit="" lay-filter="login">登录</button>
 
-        <p style="color: red" id="security-message" th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></p>
+        <!--        <p style="color: red" id="security-message" th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></p>-->
     </form>
 
-<!--    <h1>手机号登录测试</h1>-->
-<!--    <form class="layui-form" method="post" action="/authentication/mobile">-->
-<!--        <div class="layui-form-item">-->
-<!--            <input class="layui-input" id="mobile" name="mobile" placeholder="手机号" value="13888888888" lay-verify="required" type="text" autocomplete="off">-->
-<!--        </div>-->
+    <!--    <h1>手机号登录测试</h1>-->
+    <!--    <form class="layui-form" method="post" action="/authentication/mobile">-->
+    <!--        <div class="layui-form-item">-->
+    <!--            <input class="layui-input" id="mobile" name="mobile" placeholder="手机号" value="13888888888" lay-verify="required" type="text" autocomplete="off">-->
+    <!--        </div>-->
 
-<!--        <div class="layui-form-item form_code">-->
-<!--            <input class="layui-input" name="mobileCode" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">-->
-<!--            <div class="validation-code"><button type="button" id="smsCode" class="layui-btn">发送验证</button></div>-->
-<!--        </div>-->
-<!--        <button type="submit" class="layui-btn login_btn" lay-submit="" lay-filter="mobile">登录</button>-->
+    <!--        <div class="layui-form-item form_code">-->
+    <!--            <input class="layui-input" name="mobileCode" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">-->
+    <!--            <div class="validation-code"><button type="button" id="smsCode" class="layui-btn">发送验证</button></div>-->
+    <!--        </div>-->
+    <!--        <button type="submit" class="layui-btn login_btn" lay-submit="" lay-filter="mobile">登录</button>-->
 
-<!--        <p style="color: red" id="security-message-mobile" th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></p>-->
+    <!--        <p style="color: red" id="security-message-mobile" th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></p>-->
     </form>
 </div>
 </body>

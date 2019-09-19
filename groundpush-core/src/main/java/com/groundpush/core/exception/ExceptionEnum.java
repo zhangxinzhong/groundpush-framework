@@ -8,8 +8,9 @@ package com.groundpush.core.exception;
  * C 表示 customer（客户） 序号从：O30001 开始
  * CA 表示 customerAccount（客户账号） 序号从：O40001 开始
  * SMS 表示  短信验证码 序号从：O50001 开始
- * Excetion 表示系统级异常 序号从：O0000 开始
  * P 表示 支付  序号从：O60001 开始
+ * U 表示 user 序号从：070001 开始
+ * Excetion 表示系统级异常 序号从：O0000 开始
  * @author: zhangxinzhong
  * @date: 2019-08-26 下午1:25
  */
@@ -41,9 +42,12 @@ public enum ExceptionEnum {
     , VALIDATE_CODE_NOT_EXISTS("O50003", "验证码不存在！")
     , VALIDATE_CODE_EXPIRE("O50004", "验证码已过期！")
     , VALIDATE_CODE_NOT_MATCH("O50005", "验证码不匹配！")
+    , VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH("O50006", "号码不匹配！")
     , PAY_CUSTOMER_AMOUNT("P60001", "支付客户金额失败")
     , PAY_TYPE_UNKNOWN("P60002", "未知的支付类型")
-    , VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH("O50006", "号码不匹配！");
+    , USER_NOT_EXISTS("U70001", "用户不存在")
+    , USER_AND_PASSWORD_ERROR("U70002", "用户名或密码错误");
+
 
     private String errorCode;
 

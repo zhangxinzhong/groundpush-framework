@@ -1,5 +1,7 @@
 package com.groundpush.security.browser.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.security.core.exception.ValidateCodeException;
@@ -30,6 +32,9 @@ public class GroundPushAuthenticationSuccessHandler extends SavedRequestAwareAut
     @Resource
     private ObjectRepository objectRepository;
 
+    @Resource
+    private ObjectMapper objectMapper;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         log.info("登录成功");
@@ -37,7 +42,8 @@ public class GroundPushAuthenticationSuccessHandler extends SavedRequestAwareAut
         Optional<LoginUserInfo> optionalLoginUserInfo = objectRepository.queryOrCreate(userDetails.getUsername());
         if (optionalLoginUserInfo.isPresent()) {
             request.getSession().setAttribute(Constants.SESSION_LOGIN_USER_INFO, optionalLoginUserInfo.get());
-            new DefaultRedirectStrategy().sendRedirect(request, response, "/home");
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(objectMapper.writeValueAsString(JsonResp.success(authentication)));
         } else {
             throw new ValidateCodeException("获取登录用户信息失败");
         }
