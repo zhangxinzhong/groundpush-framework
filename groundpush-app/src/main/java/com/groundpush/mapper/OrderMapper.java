@@ -143,7 +143,7 @@ public interface OrderMapper {
     @Select({
             "<script>",
             " SELECT ",
-            " (SELECT c.title FROM t_task c WHERE c.task_id = b.task_id) title",
+            " (SELECT c.title FROM t_task c WHERE c.task_id = b.task_id) title,",
             " (SELECT count(1) FROM t_order a WHERE a.order_id = b.order_id ) pop_task_count,",
             " (SELECT count(1) FROM t_order a WHERE a.order_id = b.order_id AND a.unique_code IS NOT NULL) result_count",
             " FROM t_order_task_customer b LEFT JOIN t_order d ON b.order_id = d.order_id",

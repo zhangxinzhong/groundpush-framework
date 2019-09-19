@@ -180,10 +180,8 @@ layui.use(['table','form','layer','upload'], function () {
         //可用状态默认为1 即可用
         data.field.status = 1;
 
-
         eventListener.addChannel(data);
-
-
+        $("#addChannlFrom")[0].reset();
 
         //屏蔽表单提交
         return false;

@@ -160,6 +160,7 @@ layui.use('table', function () {
         //可用状态默认为1 即可用
         data.field.status = 1;
         eventListener.addLabel(data);
+        $("#addLabelFrom")[0].reset();
         layui.form.render();
         //屏蔽表单提交
         return false;
