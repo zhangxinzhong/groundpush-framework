@@ -45,7 +45,7 @@ public interface TaskCollectMapper {
             " <if test='type != null'> and t1.type in (#{type})  </if> ",
             " <if test='sort != null'> order by #{sort}  </if> ",
             ")",
-            " <if test='location != null'> union ( select t2.* from t_task t2 inner join t_task_collect tc on tc.task_id=t2.task_id where tc.customer_id=#{customerId} ",
+            " <if test='location != null'> union ( select t2.* from t_task t2 inner join t_task_collect tc on tc.task_id=t2.task_id where  tc.customer_id=#{customerId} ",
             " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='type != null'> and t2.type in( #{type})  </if> ",
             " and location = #{location} ",
@@ -58,4 +58,8 @@ public interface TaskCollectMapper {
 
     @Select(" select a.* from t_task_collect a where a.task_id = #{taskId} ")
     Optional<TaskCollect> queryCollectsByTaskId(@Param("taskId") Integer taskId);
+
+
+    @Select(" select a.* from t_task_collect a where a.task_id = #{taskId} and a.customer_id=#{customerId} ")
+    Optional<TaskCollect> queryCollectsByTaskIdAndCustomId(@Param("taskId") Integer taskId,@Param("customerId") Integer customerId);
 }

@@ -21,12 +21,9 @@ public interface TaskMapper {
      */
     @Select({
             "<script>",
-            " select t1.task_id,t1.img_uri,t1.status,t1.source,t1.type,t1.amount,t1.location, ",
-            " t1.spread_total,t1.handler_num,t1.audit_duration,t1.expend_time,t1.complete_odds,",
-            " t1.owner_ratio,t1.spread_ratio,t1.leader_ratio,t1.expired_Time,t1.created_by,t1.created_time,",
-            " t1.last_modified_by,t1.last_modified_time, ",
+            " select t1.*, ",
             " (SELECT  GROUP_CONCAT(b.label_name) FROM t_label b LEFT JOIN t_task_label c on b.label_id = c.label_id where b.type = 0 and c.task_id = t1.task_id) label_name",
-            "  from t_task t1 where 1=1  ",
+            "  from t_task t1 where t1.status=1   ",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='location != null and location != \"\"'> and  FIND_IN_SET(#{location},t1.location) </if>",
             " <if test='type != null and type != \"\"'> and t1.type in (#{type})  </if> ",

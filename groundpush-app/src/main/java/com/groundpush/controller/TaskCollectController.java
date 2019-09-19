@@ -54,7 +54,7 @@ public class TaskCollectController {
     @ApiOperation("取消任务收藏")
     @JsonView(View.class)
     @DeleteMapping
-    public JsonResp unTaskCollect(@Valid @RequestBody TaskCollect taskCollect, BindingResult bindingResult) {
+    public JsonResp unTaskCollect(@Valid TaskCollect taskCollect, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
