@@ -55,7 +55,10 @@ function labelLoad(labelIds) {
 
 //加载省份内容--省份
 function provinceLoad(provinces) {
-    var labelIdList = provinces.split(",");
+    var labelIdList = "";
+    if (provinces != undefined && provinces.length != 0) {
+        labelIdList = provinces.split(",");
+    }
     $.ajax({
         url: "/label/getLabelAll",
         async: false,
@@ -95,7 +98,10 @@ function provinceLoad(provinces) {
 
 //加载位置信息--市
 function locationLoad(locations) {
-    var labelIdList = locations.split(",");
+    var labelIdList = "";
+    if (locations != undefined && locations.length != 0) {
+        labelIdList = locations.split(",");
+    }
     $.ajax({
         url: "/label/getLabelAll",
         async: false,
@@ -198,7 +204,7 @@ function uploadExcel(classCodes) {
 function getuploaddata() {
     var temporaryTaskId = $("#temporaryTaskId").val();
     var data = {
-        "taskId" : temporaryTaskId
+        "taskId": temporaryTaskId
     };
     return data;
 }
