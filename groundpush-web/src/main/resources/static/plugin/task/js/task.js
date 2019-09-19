@@ -234,9 +234,9 @@ function attributeFileUpload(labelClass, valueClass) {
             if (code == "200") {
                 var fileData = res.fileData;
                 var filePath = fileData.filePath;
-                var fileName = fileData.fileName;
+                //var fileName = fileData.fileName;
                 $(labelClass).attr('src', filePath);
-                $(valueClass).val(fileName);
+                $(valueClass).val(filePath);
             } else {
                 var msg = res.msg;
                 alert(msg)

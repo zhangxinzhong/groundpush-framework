@@ -51,9 +51,6 @@ public class TaskController {
     @Resource
     private TaskAttributeService taskAttributeService;
 
-    @Resource
-    private OssConfig ossConfig;
-
     @RequestMapping("/toTaskList")
     public String getTaskList(Model model) {
         return "/task/task";
@@ -128,14 +125,6 @@ public class TaskController {
             Task task = optionalTask.get();
             List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
             if (taskAttributeList != null && taskAttributeList.size() > 0) {
-                for (TaskAttribute taskAttribute : taskAttributeList) {
-                    Integer rowType = taskAttribute.getRowType();
-                    if (rowType == 7) {
-                        String content = taskAttribute.getContent();
-                        content = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + content;
-                        taskAttribute.setContent(content);
-                    }
-                }
                 task.setTaskAttributes(taskAttributeList);
             }
             return JsonResp.success(optionalTask.isPresent() ? task : null);

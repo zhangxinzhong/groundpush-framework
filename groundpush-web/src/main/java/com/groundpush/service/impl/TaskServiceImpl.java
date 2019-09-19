@@ -43,27 +43,10 @@ public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskAttributeService taskAttributeService;
 
-    @Resource
-    private OssConfig ossConfig;
-
     @Override
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
         Page<Task> tasks = taskMapper.queryTaskAll(taskQueryCondition);
-        if (tasks != null && tasks.size() > 0) {
-            for (Task task : tasks) {
-                String iconUri = task.getIconUri();
-                if (StringUtils.isNotEmpty(iconUri)) {
-                    iconUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + iconUri;
-                    task.setIconUri(iconUri);
-                }
-                String imgUri = task.getImgUri();
-                if (StringUtils.isNotEmpty(imgUri)) {
-                    imgUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + imgUri;
-                    task.setImgUri(imgUri);
-                }
-            }
-        }
         return tasks;
     }
 
@@ -79,17 +62,6 @@ public class TaskServiceImpl implements TaskService {
         Optional<Task> optionalTask = taskMapper.getTask(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
-            //回显图片
-            String iconUri = task.getIconUri();
-            if (StringUtils.isNotEmpty(iconUri)) {
-                iconUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + iconUri;
-                task.setIconUri(iconUri);
-            }
-            String imgUri = task.getImgUri();
-            if (StringUtils.isNotEmpty(imgUri)) {
-                imgUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + imgUri;
-                task.setImgUri(imgUri);
-            }
             //加载标签
             Integer taskId = task.getTaskId();
             //获取相关标签内容

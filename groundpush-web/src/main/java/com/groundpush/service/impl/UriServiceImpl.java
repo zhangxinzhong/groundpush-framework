@@ -12,6 +12,7 @@ import com.groundpush.core.utils.Constants;
 import com.groundpush.mapper.TaskAttributeMapper;
 import com.groundpush.mapper.TaskLabelMapper;
 import com.groundpush.mapper.TaskMapper;
+import com.groundpush.mapper.UriMapper;
 import com.groundpush.service.TaskAttributeService;
 import com.groundpush.service.TaskService;
 import com.groundpush.service.UriService;
@@ -32,7 +33,7 @@ import java.util.Optional;
 public class UriServiceImpl implements UriService {
 
     @Resource
-    private TaskMapper taskMapper;
+    private UriMapper uriMapper;
 
     @Override
     public Page<Task> queryTaskAll(Uri uri, Integer page, Integer limit) {
