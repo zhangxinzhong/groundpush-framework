@@ -773,79 +773,79 @@
         var dataObj = eval("(" + jsondata + ")");
         //封面图片
         var imgUri = dataObj.imgUri;
-        if (imgUri.length == 0) {
+        if (imgUri == undefined || imgUri.length == 0) {
             alert("封面图片不可为空！");
             return false;
         }
         //任务标题
         var title = dataObj.title;
-        if (title.length == 0) {
+        if (title == undefined ||title.length == 0) {
             alert("任务标题不可为空！");
             return false;
         }
         //标签项
         var labelIds = dataObj.labelIds;
-        if (labelIds.length == 0) {
+        if (labelIds == undefined ||labelIds.length == 0) {
             alert("标签项不可为空！");
             return false;
         }
         //公司项
         var source = dataObj.source;
-        if (source.length == 0) {
+        if (source == undefined ||source.length == 0) {
             alert("公司项不可为空！");
             return false;
         }
         //公司项
         var amount = dataObj.amount;
-        if (amount.length == 0) {
+        if (amount == undefined ||amount.length == 0) {
             alert("单笔佣金不可为空！");
             return false;
         }
         //推广总数
         var spreadTotal = dataObj.spreadTotal;
-        if (spreadTotal.length == 0) {
+        if (spreadTotal == undefined ||spreadTotal.length == 0) {
             alert("推广总数不可为空！");
             return false;
         }
         //可做任务数
         var handlerNum = dataObj.handlerNum;
-        if (handlerNum.length == 0) {
+        if (handlerNum == undefined ||handlerNum.length == 0) {
             alert("可做任务数不可为空！");
             return false;
         }
         //审核天数
         var auditDuration = dataObj.auditDuration;
-        if (auditDuration.length == 0) {
+        if (auditDuration == undefined ||auditDuration.length == 0) {
             alert("审核天数不可为空！");
             return false;
         }
         //任务耗时
         var expendTime = dataObj.expendTime;
-        if (expendTime.length == 0) {
+        if (expendTime == undefined ||expendTime.length == 0) {
             alert("任务耗时不可为空！");
             return false;
         }
         //综合通过率
         var completeOdds = dataObj.completeOdds;
-        if (completeOdds.length == 0) {
+        if (completeOdds == undefined ||completeOdds.length == 0) {
             alert("综合通过率不可为空！");
             return false;
         }
         //完成人分成
         var ownerRatio = dataObj.ownerRatio;
-        if (ownerRatio.length == 0) {
+        if (ownerRatio == undefined ||ownerRatio.length == 0) {
             alert("完成人分成不可为空！");
             return false;
         }
         //推广人分成
         var spreadRatio = dataObj.spreadRatio;
-        if (spreadRatio.length == 0) {
+        if (spreadRatio == undefined ||spreadRatio.length == 0) {
             alert("推广人分成不可为空！");
             return false;
         }
         //领导人分成
         var leaderRatio = dataObj.leaderRatio;
-        if (leaderRatio.length == 0) {
+        if (leaderRatio == undefined ||leaderRatio.length == 0) {
             alert("团队领导人分成不可为空！");
             return false;
         }
