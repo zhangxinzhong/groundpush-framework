@@ -43,6 +43,8 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     @Override
     public void createTaskCollect(TaskCollect taskCollect) {
         try{
+
+
             //验证任务是否存在
             Optional<Task> optionalTask = taskService.getTask(taskCollect.getTaskId());
             if(!optionalTask.isPresent()){
@@ -53,6 +55,11 @@ public class TaskCollectServiceImpl implements TaskCollectService {
             if(!optionalCustomer.isPresent()){
                 throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorMessage());
             }
+            Optional<TaskCollect> taskCollect1 = taskCollectMapper.queryCollectsByTaskIdAndCustomId(taskCollect.getTaskId(),taskCollect.getCustomerId());
+            if(taskCollect1.isPresent()){
+                throw new BusinessException(ExceptionEnum.TASK_COLLECT_EXCEPTION.getErrorCode(), ExceptionEnum.TASK_COLLECT_EXCEPTION.getErrorMessage());
+            }
+
             taskCollectMapper.createTaskCollect(taskCollect);
         }catch (BusinessException e) {
             log.error(e.getMesssage(),e);

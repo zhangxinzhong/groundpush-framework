@@ -8,6 +8,7 @@ import com.groundpush.core.model.Label;
 import com.groundpush.mapper.ChannelMapper;
 import com.groundpush.mapper.LabelMapper;
 import com.groundpush.service.ChannelService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 @Service
 public class ChannelServiceImpl implements ChannelService {
+    @Value("${groundpush.channel.path}")
+    private String channelDataFilePath="/tmp/channel";
     @Resource
     private ChannelMapper channelMapper;
 
@@ -50,7 +53,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Integer addChannelData(Integer channelId, String fileName, String mapping, InputStream inputStream) throws IOException {
-        File file=new File("/tmp/channel");
+        File file=new File(channelDataFilePath);
         if(!file.exists()){
             file.mkdirs();
         }
