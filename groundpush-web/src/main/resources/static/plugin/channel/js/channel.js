@@ -278,7 +278,7 @@ function initImportTab(form,excelTitle){
         execlTitle:excelTitle,
         tabTitle:['序号','系统标题','映射类型','数据标题'],
         dataType:[{key:1,value:'文字'},{key:2,value:'数字'},{key:3,value:'价格'}],
-        pushTitle:[{key:1,value:'人员编号'},{key:2,value:'产生时间'},{key:3,value:'是否有效'},{key:4,value:'失败原因'}],
+        pushTitle:[{key:1,value:'推广编号'},{key:2,value:'产生时间'},{key:3,value:'是否有效'},{key:4,value:'失败原因'}],
     };
 
     let elemtHtml={

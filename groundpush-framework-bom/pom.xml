@@ -40,6 +40,7 @@
         <alibaba.druid.version>1.1.15</alibaba.druid.version>
         <alibaba.fastjson.version>1.0.28</alibaba.fastjson.version>
         <apache.poi.version>3.9</apache.poi.version>
+        <baidu.sdk.version>4.8.0</baidu.sdk.version>
     </properties>
     <dependencyManagement>
         <dependencies>

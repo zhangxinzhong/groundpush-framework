@@ -102,6 +102,20 @@ public final class ExcelTools {
     }
 
     /**
+     * 获取Excel标题
+     * @return
+     */
+    public Object[] getExcelTitle(){
+        Row titleRow=excelBook.getSheetAt(0).getRow(0);
+        List<Object> tmpCache=new LinkedList<>();
+        titleRow.forEach(cell -> {
+            tmpCache.add(getCellValue(cell));
+        });
+
+        return tmpCache.toArray();
+    }
+
+    /**
      * 设置表格行数据返回
      * @param resultCount 每次返回数量
      * @param excelOpetion 委托对象
