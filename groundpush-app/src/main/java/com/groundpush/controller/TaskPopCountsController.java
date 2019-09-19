@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,15 +21,15 @@ import java.util.List;
 @Slf4j
 @ApiModel(value = "任务详情Poplist")
 @RequestMapping("/taskPopCounts")
-@Controller
+@RestController
 public class TaskPopCountsController {
 
     @Resource
     private OrderService orderService;
 
     @ApiOperation("任务详情Poplist")
-    @GetMapping("/{customerId:\\d+}")
-    public JsonResp getTaskPopCounts(@PathVariable Integer customerId) {
+    @GetMapping
+    public JsonResp getTaskPopCounts(@RequestParam(value = "customerId") Integer customerId) {
         List<TaskPopListCount> list = orderService.queryPopCountByCustomerId(customerId);
         return JsonResp.success(list);
     }
