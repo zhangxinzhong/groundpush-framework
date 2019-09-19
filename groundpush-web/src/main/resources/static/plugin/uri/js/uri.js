@@ -79,53 +79,13 @@ layui.use(['table', 'form', 'layer'], function () {
                     curr: 1 //重新从第 1 页开始
                 }
             });
-        }, initUriDetailTable: function (data) {
-            table.render({
-                elem: '#uriDetail'
-                , url: '/uri/' + data.uriId + '/uriDetail'
-                , toolbar: '#toolbarUriDetail'
-                , title: 'uri-detail-data'
-                , totalRow: true
-                , cols: [[
-                    {field: 'detailId', title: '字典项编号', width: 300, sort: true}
-                    , {field: 'code', title: '字典项编码', width: 300}
-                    , {field: 'name', title: '字典项名称', width: 300}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarUriDetailOperation"}
-                ]]
-                , page: true, curr: 1, limit: Global.PAGE_SISE
-                , response:
-                    {
-                        statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
-                    }
-                ,
-                parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-                    if (!Utils.isEmpty(res)) {
-                        return {
-
-                            "code": res.code, //解析接口状态
-                            "msg": res.message, //解析提示文本
-                            "count": res.data.total, //解析数据长度
-                            "data": res.data.rows //解析数据列表
-                        };
-                    }
-                }
-            });
-        }, reloadUriDetailTable: function () {
-            table.reload('uriDetail', {
-                where: {
-                    curr: 1
-                    , limit: Global.PAGE_SISE
-                }
-                , page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-            });
-        }, saveUri: function (data) {
+        },
+        saveUri: function (data) {
             Utils.postAjax("/uri/save", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
                     eventListener.hideAddUriDialog();
                     eventListener.reloadUriTable();
-                    layer.msg('字典添加成功');
+                    layer.msg('URI添加成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
@@ -135,7 +95,7 @@ layui.use(['table', 'form', 'layer'], function () {
                 if (rep.code == '200') {
                     eventListener.hideEditUriDialog();
                     eventListener.reloadUriTable();
-                    layer.msg('字典添加成功');
+                    layer.msg('URI添加成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
@@ -159,7 +119,7 @@ layui.use(['table', 'form', 'layer'], function () {
             Utils.deleteAjax("/uri/del", {uriId: data.uriId}, function (rep) {
                 if (rep.code == '200') {
                     eventListener.reloadUriTable();
-                    layer.msg("字典删除成功");
+                    layer.msg("URI删除成功");
                 }
             }, function (rep) {
                 layer.msg(rep.message);

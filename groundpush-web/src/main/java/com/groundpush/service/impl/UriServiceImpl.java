@@ -47,8 +47,7 @@ public class UriServiceImpl implements UriService {
 
     @Override
     public Optional<Uri> getUri(Integer id) {
-        Optional<Uri> uri = uriMapper.getUri(id);
-        return Optional.empty();
+        return uriMapper.getUri(id);
     }
 
     @Override

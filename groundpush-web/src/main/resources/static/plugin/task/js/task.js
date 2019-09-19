@@ -291,7 +291,7 @@ function updateRowType(object) {
     if (selectValue == "2") {
         html = '<textarea class="content form-control col-lg-5" name="content" id="textContent"\n' +
             'style="font-family: mFont;height:150px;width: 55%;margin-left: 5px;"></textarea>\n';
-    } else if (selectValue == "3") {
+    } else if (selectValue == "3" || selectValue == "5" || selectValue == "6") {
         html = '<input type="text" name="content" class="content form-control col-lg-5" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">' +
             '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
     } else {

@@ -557,7 +557,6 @@
     //处理回显子表部分
     //先定义一个数组在说
     var resultMap = [];
-
     function getZiTaskMsg(taskAttribute) {
         //content
         var content = taskAttribute.content;
@@ -656,8 +655,14 @@
                 '                <option value="6">保存二维码</option>' +
                 '                </select>' +
                 '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
-                '                </span>';
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n';
+            if (createUri == 0) {
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+                '</span>';
+            } else {
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri" checked>生成</label>\n';
+                '</span>';
+            }
         } else if (rowType == 6) {
             //保存二维码
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
@@ -671,8 +676,14 @@
                 '                <option value="6" selected>保存二维码</option>' +
                 '                </select>' +
                 '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
-                '                </span>';
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n';
+            if (createUri == 0) {
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+                '</span>';
+            } else {
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri" checked>生成</label>\n';
+                '</span>';
+            }
         } else if (rowType == 7) {
             //组一下子唯 一标识
             var labelClass = "imgTP" + imgCode;
