@@ -21,6 +21,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Uri {
     private Integer uriId;
+    private String uriName;
     private String uriPattern;
     private Integer status;
     private Integer createdBy;

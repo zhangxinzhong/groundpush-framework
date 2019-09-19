@@ -15,28 +15,51 @@ public interface UriService {
 
     /**
      * 分页查询任务
+     *
      * @param uri
      * @param page
      * @param limit
      * @return
      */
-    Page<Task> queryTaskAll(Uri uri, Integer page, Integer limit);
+    Page<Uri> queryTaskAll(Uri uri, Integer page, Integer limit);
 
     /**
      * 新增任务
+     *
      * @param uri
      * @return
      */
-    void insert(Uri uri);
+    Boolean insert(Uri uri);
 
     /**
      * 获取任务
+     *
      * @param id
      * @return
      */
-    Optional<Task> getUri(Integer id);
+    Optional<Uri> getUri(Integer id);
 
+    /**
+     * 只在任务
+     *
+     * @param uri
+     * @return
+     */
     Boolean save(Uri uri);
 
+    /**
+     * 更新任务
+     *
+     * @param uri
+     * @return
+     */
     Boolean update(Uri uri);
+
+    /**
+     * 删除任务
+     *
+     * @param uriId
+     * @return
+     */
+    Boolean del(Integer uriId);
 }

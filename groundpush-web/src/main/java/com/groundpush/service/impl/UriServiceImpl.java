@@ -36,27 +36,40 @@ public class UriServiceImpl implements UriService {
     private UriMapper uriMapper;
 
     @Override
-    public Page<Task> queryTaskAll(Uri uri, Integer page, Integer limit) {
-        return null;
+    public Page<Uri> queryTaskAll(Uri uri, Integer page, Integer limit) {
+        return uriMapper.queryTaskAll();
     }
 
     @Override
-    public void insert(Uri uri) {
-
+    public Boolean insert(Uri uri) {
+        return uriMapper.insert(uri) > 0 ? true : false;
     }
 
     @Override
-    public Optional<Task> getUri(Integer id) {
+    public Optional<Uri> getUri(Integer id) {
+        Optional<Uri> uri = uriMapper.getUri(id);
         return Optional.empty();
     }
 
     @Override
     public Boolean save(Uri uri) {
-        return null;
+        Boolean result = true;
+        Integer uriId = uri.getUriId();
+        if (uriId == null) {
+            result = this.insert(uri);
+        } else {
+            result = this.update(uri);
+        }
+        return result;
     }
 
     @Override
     public Boolean update(Uri uri) {
-        return null;
+        return uriMapper.update(uri) > 0 ? true : false;
+    }
+
+    @Override
+    public Boolean del(Integer uriId) {
+        return uriMapper.del(uriId) > 0 ? true : false;
     }
 }

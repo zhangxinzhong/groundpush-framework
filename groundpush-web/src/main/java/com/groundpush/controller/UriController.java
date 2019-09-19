@@ -1,29 +1,18 @@
 package com.groundpush.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.PageResult;
-import com.groundpush.core.model.Task;
-import com.groundpush.core.model.TaskAttribute;
-import com.groundpush.core.model.TaskUri;
-import com.groundpush.core.utils.ExcelTools;
-import com.groundpush.service.TaskAttributeService;
-import com.groundpush.service.TaskService;
-import com.groundpush.service.TaskUriService;
+import com.groundpush.core.model.Uri;
+import com.groundpush.service.UriService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.*;
+import java.util.Optional;
 
 
 /**
@@ -38,69 +27,36 @@ import java.util.*;
 public class UriController {
 
     @Resource
-    private TaskService taskService;
+    private UriService uriService;
 
-    @Resource
-    private TaskUriService taskUriService;
-
-    @Resource
-    private TaskAttributeService taskAttributeService;
-
-    @RequestMapping("/toTaskList")
-    public String getTaskList(Model model) {
-        return "/task/task";
+    @RequestMapping("/toUriList")
+    public String toUriList(Model model) {
+        return "/uri/uri";
     }
-
-
-    @RequestMapping("/save")
-    @ResponseBody
-    public JsonResp saveTask(Model model, @RequestBody Task task) {
-        try {
-            taskService.save(task);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
-
-    @RequestMapping("/updateTaskStatus")
-    @ResponseBody
-    public JsonResp updateTaskStatus(Task task) {
-        try {
-            taskService.updateTask(task);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
-
 
     /**
-     * 分页查询任务
+     * 分页查询Uri
      */
     @GetMapping
     @ResponseBody
-    @ApiOperation("任务查询服务")
-    @JsonView(Task.SimpleTaskView.class)
-    @RequestMapping("/getTaskPageList")
-    public JsonResp queryTask(TaskQueryCondition taskCondition, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+    @ApiOperation("Uri查询服务")
+    @RequestMapping("/getUriPageList")
+    public JsonResp queryTask(Uri uri, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         try {
-            Page<Task> tasks = taskService.queryTaskAll(taskCondition, nowPage, pageSize);
-            return JsonResp.success(new PageResult(tasks));
+            Page<Uri> uris = uriService.queryTaskAll(uri, nowPage, pageSize);
+            return JsonResp.success(new PageResult(uris));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
         }
     }
 
-    @PostMapping
-    @ApiOperation("新建任务")
+    @ApiOperation("Uri保存服务")
+    @RequestMapping("/save")
     @ResponseBody
-    public JsonResp CreateTask(@RequestBody Task task) {
+    public JsonResp saveUri(Model model, @RequestBody Uri uri) {
         try {
-            taskService.createSingleTask(task);
+            uriService.save(uri);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -108,59 +64,33 @@ public class UriController {
         }
     }
 
-    @ApiOperation("获取任务")
+    @ApiOperation("获取Uri")
     @ResponseBody
-    @GetMapping("getTask/{id:\\d+}")
-    @JsonView(Task.DetailTaskView.class)
+    @GetMapping("getUri/{id:\\d+}")
     public JsonResp getTask(@PathVariable Integer id) {
         try {
             //获取任务数据
-            Optional<Task> optionalTask = taskService.getTask(id);
+            Optional<Uri> optionalUri = uriService.getUri(id);
             //获取任务编辑数据
-            Task task = optionalTask.get();
-            List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
-            if (taskAttributeList != null && taskAttributeList.size() > 0) {
-                task.setTaskAttributes(taskAttributeList);
-            }
-            return JsonResp.success(optionalTask.isPresent() ? task : null);
+            Uri uri = optionalUri.get();
+            return JsonResp.success(optionalUri.isPresent() ? uri : null);
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
         }
     }
 
-    //上传任务URL
-    @RequestMapping("/uploadExcel")
+    @ApiOperation("Uri删除")
+    @RequestMapping("/del")
     @ResponseBody
-    public Map<String, Object> uploadExcel(@RequestParam MultipartFile file, Integer taskId) throws IOException, InvalidFormatException {
-        //返回数据
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    public JsonResp delUri(Model model, @RequestBody Uri uri) {
         try {
-            //先删除任务相关的URL
-            taskUriService.del(taskId);
-            //解析excel
-            ExcelTools excelTools = ExcelTools.getInstance();
-            excelTools.openExcel(file.getInputStream());
-            excelTools.setRowResult(100, (sheetName, countRow, resultCount, result) -> {
-                //数组
-                List<TaskUri> taskUriList = new ArrayList<TaskUri>();
-                for(Object[] oneObj : result){
-                    String taskUrl = oneObj[0].toString();
-                    TaskUri taskUri = new TaskUri();
-                    taskUri.setTaskId(taskId);
-                    taskUri.setUri(taskUrl);
-                    taskUriList.add(taskUri);
-                }
-                taskUriService.save(taskUriList);
-            });
-            resultMap.put("code", "200");
-            resultMap.put("msg", "成功");
+            uriService.del(uri.getUriId());
+            return JsonResp.success();
         } catch (Exception e) {
-            resultMap.put("code", "500");
-            resultMap.put("msg", "上传错误请联系工作人员");
             log.error(e.toString(), e);
             throw e;
         }
-        return resultMap;
     }
+
 }
