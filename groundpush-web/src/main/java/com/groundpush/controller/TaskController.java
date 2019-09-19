@@ -11,6 +11,7 @@ import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskUri;
 import com.groundpush.core.utils.ExcelTools;
 import com.groundpush.core.utils.OSSUnit;
+import com.groundpush.core.utils.StringUtils;
 import com.groundpush.service.TaskAttributeService;
 import com.groundpush.service.TaskService;
 import com.groundpush.service.TaskUriService;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
@@ -47,6 +50,9 @@ public class TaskController {
 
     @Resource
     private TaskAttributeService taskAttributeService;
+
+    @Resource
+    private OssConfig ossConfig;
 
     @RequestMapping("/toTaskList")
     public String getTaskList(Model model) {
@@ -122,6 +128,14 @@ public class TaskController {
             Task task = optionalTask.get();
             List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
             if (taskAttributeList != null && taskAttributeList.size() > 0) {
+                for (TaskAttribute taskAttribute : taskAttributeList) {
+                    Integer rowType = taskAttribute.getRowType();
+                    if (rowType == 7) {
+                        String content = taskAttribute.getContent();
+                        content = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + content;
+                        taskAttribute.setContent(content);
+                    }
+                }
                 task.setTaskAttributes(taskAttributeList);
             }
             return JsonResp.success(optionalTask.isPresent() ? task : null);
@@ -146,7 +160,7 @@ public class TaskController {
             excelTools.setRowResult(100, (sheetName, countRow, resultCount, result) -> {
                 //数组
                 List<TaskUri> taskUriList = new ArrayList<TaskUri>();
-                for(Object[] oneObj : result){
+                for (Object[] oneObj : result) {
                     String taskUrl = oneObj[0].toString();
                     TaskUri taskUri = new TaskUri();
                     taskUri.setTaskId(taskId);

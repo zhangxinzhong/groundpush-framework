@@ -54,12 +54,12 @@ public class TaskServiceImpl implements TaskService {
             for (Task task : tasks) {
                 String iconUri = task.getIconUri();
                 if (StringUtils.isNotEmpty(iconUri)) {
-                    iconUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + iconUri + "/";
+                    iconUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + iconUri;
                     task.setIconUri(iconUri);
                 }
                 String imgUri = task.getImgUri();
                 if (StringUtils.isNotEmpty(imgUri)) {
-                    imgUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + imgUri + "/";
+                    imgUri = ossConfig.getBaseUrl() + ossConfig.getRootDir() + "/" + imgUri;
                     task.setImgUri(imgUri);
                 }
             }
