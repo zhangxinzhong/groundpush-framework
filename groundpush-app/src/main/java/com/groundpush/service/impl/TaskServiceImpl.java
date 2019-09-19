@@ -50,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
         Page<Task> pageTask = taskMapper.queryTaskAll(taskQueryCondition);
-        return addCount(taskQueryCondition.getCustomerId(),pageTask);
+        return pageTask.size() >0?addCount(taskQueryCondition.getCustomerId(),pageTask):pageTask;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -140,7 +140,7 @@ public class TaskServiceImpl implements TaskService {
 
     private Set<List<TaskAttribute>> addTaskAttributeToSet(List<TaskAttribute> taskAttr) {
         if (taskAttr != null && taskAttr.size() > 0) {
-            Map<Integer, List<TaskAttribute>> taskAttrMap = new HashMap<>();
+            Map<Integer, List<TaskAttribute>> taskAttrMap = new LinkedHashMap<>();
             for (TaskAttribute taskAttribute : taskAttr) {
                 Integer mapKey = taskAttribute.getLabelType();
                 if (taskAttrMap.containsKey(mapKey)) {
@@ -151,7 +151,7 @@ public class TaskServiceImpl implements TaskService {
                     taskAttrMap.put(mapKey, listTaskAttribute);
                 }
             }
-            return new HashSet<> (taskAttrMap.values());
+            return new LinkedHashSet<> (taskAttrMap.values());
         }
         return Collections.EMPTY_SET;
     }
