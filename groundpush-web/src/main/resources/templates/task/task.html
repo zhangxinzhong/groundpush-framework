@@ -134,7 +134,7 @@
                             <span class="btn col-lg-1" style="text-align: left;">/天</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">可做任务：</label>
+                            <label class="btn col-lg-1">单人可推广任务数：</label>
                             <input class="form-control col-lg-1" name="handlerNum" id="handlerNum"
                                    style="width:80%;display:inline"
                                    type="number">
@@ -144,12 +144,14 @@
                             <label class="btn col-lg-1">审核天数：</label>
                             <input class="form-control col-lg-1" name="auditDuration" id="auditDuration"
                                    style="width:80%;display:inline" type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">/天</span>
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">任务耗时：</label>
                             <input class="form-control col-lg-1" name="expendTime" id="expendTime"
                                    style="width:80%;display:inline"
                                    type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">/分钟</span>
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">综合通过率：</label>
@@ -168,11 +170,13 @@
                             <label class="btn col-lg-1">推广人分成：</label>
                             <input class="form-control col-lg-1" name="spreadRatio" id="spreadRatio"
                                    style="width:80%;display:inline" type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">%</span>
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">团队领导分成：</label>
                             <input class="form-control col-lg-1" name="leaderRatio" id="leaderRatio"
                                    style="width:80%;display:inline" type="number">
+                            <span class="btn col-lg-1" style="text-align: left;">%</span>
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">是否上传结果：</label>
@@ -261,11 +265,11 @@
                     for (var i = 0; i < dataList.length; i++) {
                         var status = dataList[i].status;
                         var statusName;
-                        if (status == 0) {
+                        if (status == 1) {
                             statusName = "已发布";
-                        } else if (status == 1) {
-                            statusName = "未发布";
                         } else if (status == 2) {
+                            statusName = "未发布";
+                        } else if (status == 3) {
                             statusName = "已过期";
                         }
                         //先来组一下子上传文件ID的规则
@@ -716,7 +720,7 @@
     function delTask(taskId) {
         var data = {
             "taskId": taskId,
-            "status": 2
+            "status": 3
         }
         $.ajax({
             url: "/task/updateTaskStatus",
@@ -736,7 +740,7 @@
     function sendTask(taskId) {
         var data = {
             "taskId": taskId,
-            "status": 0
+            "status": 1
         }
         $.ajax({
             url: "/task/updateTaskStatus",

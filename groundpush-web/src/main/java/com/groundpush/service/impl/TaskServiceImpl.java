@@ -118,6 +118,7 @@ public class TaskServiceImpl implements TaskService {
         //添加、更新任务内容
         boolean taskResult = true;
         Integer taskId = task.getTaskId();
+        task.setStatus(Constants.TASK_STATUS_2);
         if (taskId == null) {
             taskResult = taskMapper.createSingleTask(task) > 0 ? true : false;
         } else {

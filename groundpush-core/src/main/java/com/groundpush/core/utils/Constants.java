@@ -107,19 +107,19 @@ public class Constants {
     public static final String IS_OK = "OK";
 
     /**
-     * 任务状态（0-已发布）
+     * 任务状态（1-已发布）
      */
-    public static final Integer TASK_STATUS_1 = 0;
+    public static final Integer TASK_STATUS_1 = 1;
 
     /**
-     * 任务状态（1-已保存未发布）
+     * 任务状态（2-已保存未发布）
      */
-    public static final Integer TASK_STATUS_2 = 1;
+    public static final Integer TASK_STATUS_2 = 2;
 
     /**
-     * 任务状态（2-已过期）
+     * 任务状态（3-已过期）
      */
-    public static final Integer TASK_STATUS_3 = 2;
+    public static final Integer TASK_STATUS_3 = 3;
 
     /**
      * 可用状态 表示可见
