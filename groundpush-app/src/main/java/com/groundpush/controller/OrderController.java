@@ -3,6 +3,7 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderQueryCondition;
+import com.groundpush.core.condition.OrderUpdateCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.PageResult;
@@ -47,13 +48,13 @@ public class OrderController {
     }
 
     @ApiOperation(value = "订单申诉")
-    @PutMapping("/{orderId:\\d+}")
-    public JsonResp updateOrder(@Valid @PathVariable Integer orderId, @NotBlank(message = "订单唯一标识不可为空") String uniqueCode, BindingResult bindingResult) {
+    @PutMapping
+    public JsonResp updateOrder(@Valid @RequestBody OrderUpdateCondition condition, BindingResult bindingResult) {
         //TODO 此接口需要在渠道建立后在进行补充
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        orderService.updateOrderUniqueCode(orderId, uniqueCode);
+        orderService.updateOrderUniqueCode(condition);
         return JsonResp.success();
     }
 

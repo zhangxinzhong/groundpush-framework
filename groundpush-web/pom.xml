@@ -17,10 +17,6 @@
             <artifactId>groundpush-security-browser</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

@@ -1,8 +1,5 @@
 package com.groundpush.core.utils;
 
-import com.alibaba.fastjson.JSONArray;
-import org.apache.ibatis.jdbc.Null;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -10,11 +7,8 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import java.io.*;
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -99,6 +93,20 @@ public final class ExcelTools {
         }
 
         return this;
+    }
+
+    /**
+     * 获取Excel标题
+     * @return
+     */
+    public Object[] getExcelTitle(){
+        Row titleRow=excelBook.getSheetAt(0).getRow(0);
+        List<Object> tmpCache=new LinkedList<>();
+        titleRow.forEach(cell -> {
+            tmpCache.add(getCellValue(cell));
+        });
+
+        return tmpCache.toArray();
     }
 
     /**

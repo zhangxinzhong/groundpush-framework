@@ -1,7 +1,5 @@
 package com.groundpush.core.utils;
 
-import io.swagger.models.auth.In;
-
 import java.math.BigDecimal;
 
 /**
@@ -216,4 +214,15 @@ public class Constants {
      *
      */
     public static final  String APP_AES_KEY = "appAesKey";
+
+
+    /**
+     * 订单结果接上传类型  1：上传结果集
+     */
+    public static final Integer L_O_U_T1 = 1;
+
+    /**
+     * 订单结果接上传类型  1：申诉上传结果集
+     */
+    public static final Integer L_O_U_T2 = 2;
 }

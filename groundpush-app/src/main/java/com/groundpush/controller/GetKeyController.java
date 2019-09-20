@@ -46,10 +46,7 @@ public class GetKeyController {
     public JsonResp createKey() {
         String  key = uniqueCode.generRandomCodeKey();
         if(stringUtils.isNotBlank(key)){
-            LocalDateTime  localDateTime = dateUtils.getMaxOfDay(LocalDateTime.now());
-            long maxMilli = localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
-            long currMilli  = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
-            redisUtils.set(key,key,maxMilli-currMilli);
+            redisUtils.set(key,key,dateUtils.getIntervalSecond());
         }
         return JsonResp.success(new AppCodeKey(aesUtils.ecodes(key,Constants.APP_AES_KEY)));
     }

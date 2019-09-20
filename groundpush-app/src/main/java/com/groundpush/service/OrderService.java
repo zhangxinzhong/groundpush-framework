@@ -2,12 +2,14 @@ package com.groundpush.service;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
+import com.groundpush.core.condition.OrderUpdateCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:
@@ -39,10 +41,9 @@ public interface OrderService {
 
     /**
      * 修改订单唯一编码（申请售后）
-     * @param orderId
-     * @param uniqueCode
+     * @param condition
      */
-    void updateOrderUniqueCode(Integer orderId, String uniqueCode);
+    void updateOrderUniqueCode(OrderUpdateCondition condition);
 
     /**
      * 更新订单
@@ -80,5 +81,14 @@ public interface OrderService {
      * @param customerId
      * @return
      */
-    List<TaskPopListCount> queryPopCountByCustomerId(Integer customerId);
+    Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId,Pageable pageable);
+
+
+    /**
+     * 获取某个任务客户推广次数以及提交结果数
+     * @param customerId
+     * @param taskId
+     * @return
+     */
+    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId);
 }
