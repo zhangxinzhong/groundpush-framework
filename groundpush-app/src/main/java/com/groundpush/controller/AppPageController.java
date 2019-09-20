@@ -1,8 +1,11 @@
 package com.groundpush.controller;
 
+import com.groundpush.core.utils.Constants;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,19 +20,20 @@ import org.springframework.web.servlet.ModelAndView;
  * @since JDK  1.8
  */
 @Slf4j
-@RestController
+@Controller
 @ApiModel(value = "app h5 页面")
 public class AppPageController {
 
     @ApiOperation("用户协议")
-    @RequestMapping(name = "/user/protocol",method = {RequestMethod.POST,RequestMethod.GET})
-    public ModelAndView getUserProtocolPage(){
-        return new ModelAndView("/app/user_protocol");
-    }
+    @GetMapping("/appPage/{type}")
+    public String getUserProtocolPage(@PathVariable String type) {
+        if (StringUtils.equalsIgnoreCase(type, Constants.CUSTOMER_PROTOCOL)) {
+            return "/app/user_protocol";
+        }else if(StringUtils.equalsIgnoreCase(type, Constants.CUSTOMER_PRIVACY)){
+            return "/app/user_privacy";
+        }
 
-    @ApiOperation("用户隐私")
-    @RequestMapping(name = "/user/privacy",method = {RequestMethod.POST,RequestMethod.GET})
-    public ModelAndView getUserPrivacyPage(){
-        return new ModelAndView("/app/user_privacy");
+        return "page";
+
     }
 }
