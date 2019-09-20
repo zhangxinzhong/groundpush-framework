@@ -291,7 +291,19 @@ CREATE TABLE `t_channel` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 
-
+-- 订单记录表
+drop table if exists t_order_log;
+CREATE TABLE `t_order_log` (
+  `log_id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'log主键id',
+  `order_id` int(20) DEFAULT NULL COMMENT '订单id',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `last_modify_time` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `unqiue_code` varchar(128) DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL COMMENT '上传类型 1:任务结果集上传 2：申诉上传',
+  `file_path` varchar(400) DEFAULT NULL COMMENT '文件url',
+  `file_name` varchar(200) DEFAULT NULL COMMENT '文件名称oss key',
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 

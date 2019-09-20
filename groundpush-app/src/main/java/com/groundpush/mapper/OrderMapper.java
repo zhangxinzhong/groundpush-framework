@@ -119,13 +119,13 @@ public interface OrderMapper {
             " from t_order a",
             " left join t_order_task_customer b on a.order_id = b.order_id ",
             " where  date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.task_id in ",
-            "<foreach collection='list' item='taskId' open='(' separator=',' close=')'>",
+            "<foreach collection='taskIds' item='taskId' open='(' separator=',' close=')'>",
                "#{taskId}",
             "</foreach>",
             " group by b.task_id ",
             "</script>"
     })
-    List<TaskListCount> queryCountByTaskId(List<Integer> taskIds);
+    List<TaskListCount> queryCountByTaskId(@Param("taskIds") List<Integer> taskIds);
 
 
     @Select({
@@ -141,7 +141,7 @@ public interface OrderMapper {
             " group by b.task_id,b.customer_id ",
             "</script>"
     })
-    List<TaskListCount> queryCountByCustomIdTaskId(Integer customId,List<Integer> taskIds);
+    List<TaskListCount> queryCountByCustomIdTaskId(@Param("customId") Integer customId,@Param("taskIds") List<Integer> taskIds);
 
     @Select({
             "<script>",
@@ -154,7 +154,7 @@ public interface OrderMapper {
             " WHERE b.customer_id = #{customerId} AND d.type = 2 ",
             "</script>"
     })
-    Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId);
+    Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId);
 
     @Select({
             "<script>",
@@ -169,7 +169,7 @@ public interface OrderMapper {
             " WHERE b.customer_id = #{customerId} AND d.type = 2 and b.task_id = #{taskId} ",
             "</script>"
     })
-    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId,Integer taskId);
+    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(@Param("customerId") Integer customerId,@Param("taskId") Integer taskId);
 
 
     @Select({
@@ -183,5 +183,5 @@ public interface OrderMapper {
             " AND a.unique_code IS NULL LIMIT 0,1 ",
             "</script>"
     })
-    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(Integer customerId,Integer taskId);
+    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(@Param("customerId") Integer customerId,@Param("taskId") Integer taskId);
 }
