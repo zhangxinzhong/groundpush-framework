@@ -135,9 +135,9 @@ public class ChannelController {
     @ApiOperation(value = "导入数据")
     @RequestMapping(value = "/importExcelData", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId) throws Exception {
+    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId,Integer taskId) throws Exception {
         try {
-            return JsonResp.success(channelService.addChannelData(channelId, file.getOriginalFilename(), mapping, file.getInputStream()));
+            return JsonResp.success(channelService.addChannelData(channelId,taskId, file.getOriginalFilename(), mapping, file.getInputStream()));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

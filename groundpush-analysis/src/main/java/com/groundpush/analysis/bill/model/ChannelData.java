@@ -12,9 +12,10 @@ import java.io.Serializable;
  * @createDate 2019-09-19 11:12
  * @since JDK  1.8
  */
-public class ChannelDataModel implements Serializable {
+public class ChannelData implements Serializable {
     private int id;
     private int channelId;
+    private int taskId;
     private String fileName;
     private String mapping;
     private String createTime;
@@ -25,6 +26,14 @@ public class ChannelDataModel implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
     public int getChannelId() {

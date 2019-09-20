@@ -19,7 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @Configuration
-@MapperScan(basePackages = "com.groundpush.analysis.bill.dao")
+@MapperScan(basePackages = "com.groundpush.analysis.bill.mapper")
 public class GroundpushAnalysisApplication {
     public static void main(String[] args) {
         SpringApplication.run(GroundpushAnalysisApplication.class,args);

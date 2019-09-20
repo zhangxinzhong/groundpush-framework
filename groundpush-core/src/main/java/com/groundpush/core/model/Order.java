@@ -67,7 +67,6 @@ public class Order implements Serializable {
 
     private LocalDateTime lastModifiedTime;
 
-
     /**
      * 审核原因
      */

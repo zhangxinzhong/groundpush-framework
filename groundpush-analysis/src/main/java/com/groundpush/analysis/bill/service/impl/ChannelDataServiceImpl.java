@@ -1,12 +1,17 @@
 package com.groundpush.analysis.bill.service.impl;
 
-import com.groundpush.analysis.bill.dao.IChannelDataDao;
-import com.groundpush.analysis.bill.model.ChannelDataModel;
+import com.groundpush.analysis.bill.mapper.IChannelDataMapper;
+import com.groundpush.analysis.bill.model.ChannelData;
 import com.groundpush.analysis.bill.service.IChannelDataService;
+import com.groundpush.core.model.Order;
+import com.groundpush.core.model.OrderBonus;
+import com.groundpush.core.model.Task;
+import com.groundpush.core.model.TaskUri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * .
@@ -20,11 +25,31 @@ import java.util.List;
  */
 @Service
 public class ChannelDataServiceImpl implements IChannelDataService {
-    @Autowired
-    private IChannelDataDao channelDataDao;
+    @Autowired(required = false)
+    private IChannelDataMapper channelDataDao;
 
     @Override
-    public List<ChannelDataModel> queryChannelDataAll() {
+    public List<ChannelData> queryChannelDataAll() {
         return channelDataDao.queryAllChannelData();
+    }
+
+    @Override
+    public Integer updateOrderStatus(String uniqueCode, int status,String failureResult) {
+        return channelDataDao.updateOrderStatus(uniqueCode,status,failureResult);
+    }
+
+    @Override
+    public Map<String, Object> queryTaskByTaskId(Integer taskId) {
+        return channelDataDao.queryTaskByTaskId(taskId);
+    }
+
+    @Override
+    public Integer addVirtUserOrder(Order order) {
+        return channelDataDao.addVirtUserOrder(order);
+    }
+
+    @Override
+    public Integer addVirtUserOderBonus(OrderBonus orderBonus) {
+        return channelDataDao.addVirtUserOderBonus(orderBonus);
     }
 }
