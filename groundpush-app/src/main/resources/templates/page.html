@@ -15,6 +15,12 @@
             background: url('/img/erweimashixiao.png');
             background-size:cover;
         }
+        .show_font{
+            font-size: 20px;
+            font-family: cursive;
+            margin-top: 60%;
+            margin-left: 35%;
+        }
     </style>
     <script type="text/javascript">
         var uri =  '[[${uri}]]';
@@ -29,7 +35,7 @@
 
 </style>
 <body >
-<p th:if="${bool != null and  !bool}" >二维码已失效</p>
-<p th:if="${bool == null}" >路径跳转错误</p>
+<p th:if="${bool != null and  !bool}" class="show_font" >二维码已失效！</p>
+<p th:if="${bool == null}" class="show_font" >路径跳转错误！</p>
 </body>
 </html>
