@@ -1,8 +1,7 @@
 package com.groundpush.core.utils;
 
-import com.alibaba.fastjson.JSONArray;
 import com.baidu.aip.ocr.AipOcr;
-import org.apache.commons.lang3.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -63,9 +62,9 @@ public class BaiduTesseractUtil {
      */
     private String jdAnalysisTemplate(JSONObject analysisResult) throws Exception {
         String uniqueCode=null;
-        JSONArray result=JSONArray.parseArray(analysisResult.getJSONArray("words_result").toString());
-        for(int j=0;j<result.size();j++){
-            com.alibaba.fastjson.JSONObject jsonObj=result.getJSONObject(j);
+        JSONArray result= analysisResult.getJSONArray("words_result");
+        for(int i=0;i<result.length();i++){
+            JSONObject jsonObj=result.getJSONObject(i);
             String val=jsonObj.getString("words");
             if(org.apache.commons.lang3.StringUtils.contains(val,"编号")){
                 int beginIndex=0;
@@ -74,7 +73,7 @@ public class BaiduTesseractUtil {
 
                 try {
                     if (org.apache.commons.lang3.StringUtils.contains(val, "编号") && val.length() <= 7) {
-                        resultVal = result.getJSONObject(j + 1).getString("words");
+                        resultVal = result.getJSONObject(i + 1).getString("words");
                         if (org.apache.commons.lang3.StringUtils.contains(resultVal, "复")) {
                             endIndex = resultVal.indexOf("复");
                         } else {

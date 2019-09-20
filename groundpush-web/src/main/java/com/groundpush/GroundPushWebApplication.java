@@ -26,8 +26,8 @@ public class GroundPushWebApplication {
     @Value("${baidu.secret_key:I0X3uUqSd14ioD4YlpLAqFZYTq98RYmt}")
     private String SECRET_KEY;
 
-    @Bean("baiduTesseractUtil")
-    public BaiduTesseractUtil aipOcr(){
+    @Bean
+    public BaiduTesseractUtil baiduTesseractUtil(){
         return new BaiduTesseractUtil(APP_ID, API_KEY, SECRET_KEY);
     }
 
