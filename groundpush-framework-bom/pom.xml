@@ -36,11 +36,10 @@
         <groundpush-security-oauth.version>0.0.1-SNAPSHOT</groundpush-security-oauth.version>
         <groundpush-pay.version>0.0.1-SNAPSHOT</groundpush-pay.version>
         <alipay-sdk-java.version>4.6.0.ALL</alipay-sdk-java.version>
-
         <alibaba.druid.version>1.1.15</alibaba.druid.version>
-        <alibaba.fastjson.version>1.0.28</alibaba.fastjson.version>
         <apache.poi.version>3.9</apache.poi.version>
         <baidu.sdk.version>4.8.0</baidu.sdk.version>
+        <aliyun-sdk-oss.version>2.2.1</aliyun-sdk-oss.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -306,13 +305,6 @@
                 <version>${apache.poi.version}</version>
             </dependency>
 
-            <!-- Alibaba -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${alibaba.fastjson.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
@@ -330,7 +322,13 @@
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
-                <version>2.2.1</version>
+                <version>${aliyun-sdk-oss.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baidu.aip</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>${baidu.sdk.version}</version>
             </dependency>
         </dependencies>
 

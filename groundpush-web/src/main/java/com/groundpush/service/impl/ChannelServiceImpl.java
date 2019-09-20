@@ -1,18 +1,18 @@
 package com.groundpush.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.model.Channel;
-import com.groundpush.core.model.Label;
 import com.groundpush.mapper.ChannelMapper;
-import com.groundpush.mapper.LabelMapper;
 import com.groundpush.service.ChannelService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
