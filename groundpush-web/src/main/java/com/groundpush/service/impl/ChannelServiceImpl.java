@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.groundpush.core.model.Channel;
 import com.groundpush.mapper.ChannelMapper;
 import com.groundpush.service.ChannelService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Integer addChannelData(Integer channelId, String fileName, String mapping, InputStream inputStream) throws IOException {
+    public Integer addChannelData(Integer channelId, Integer taskId, String fileName, String mapping, InputStream inputStream) throws IOException {
         File file=new File(channelDataFilePath);
         if(!file.exists()){
             file.mkdirs();
@@ -65,7 +66,7 @@ public class ChannelServiceImpl implements ChannelService {
         }
         fileOutputStream.close();
         inputStream.close();
-        return channelMapper.addChannelData(channelId,fileName, mapping);
+        return channelMapper.addChannelData(channelId,taskId,fileName, mapping);
     }
 
     @Override

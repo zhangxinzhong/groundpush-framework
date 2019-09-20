@@ -1,8 +1,13 @@
 package com.groundpush.analysis.bill.service;
 
-import com.groundpush.analysis.bill.model.ChannelDataModel;
+import com.groundpush.analysis.bill.model.ChannelData;
+import com.groundpush.core.model.Order;
+import com.groundpush.core.model.OrderBonus;
+import com.groundpush.core.model.Task;
+import com.groundpush.core.model.TaskUri;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * .
@@ -19,5 +24,35 @@ public interface IChannelDataService {
      * 获取所有的渠道数据
      * @return
      */
-    List<ChannelDataModel> queryChannelDataAll();
+    List<ChannelData> queryChannelDataAll();
+
+    /**
+     * 更新订单状态
+     * @param uniqueCode
+     * @param status
+     * @param failureResult 失败or成功意见
+     * @return
+     */
+    Integer updateOrderStatus(String uniqueCode,int status,String failureResult);
+
+    /**
+     * 获取任务信息
+     * @param taskId
+     * @return
+     */
+    Map<String,Object> queryTaskByTaskId(Integer taskId);
+
+    /**
+     * 新增虚拟用户订单
+     * @param order
+     * @return
+     */
+    Integer addVirtUserOrder(Order order);
+
+    /**
+     * 新增虚拟用户订单分成
+     * @param orderBonus
+     * @return
+     */
+    Integer addVirtUserOderBonus(OrderBonus orderBonus);
 }

@@ -1,5 +1,6 @@
 package com.groundpush.core.utils;
 
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -7,7 +8,9 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -162,17 +165,30 @@ public final class ExcelTools {
     private Object getCellValue(Cell cell){
         Object res=null;
         switch (cell.getCellType()) {
+            case Cell.CELL_TYPE_BLANK:
+                res = null;
+                break;
             case Cell.CELL_TYPE_BOOLEAN:
-                res =cell.getBooleanCellValue();
+                res = String.valueOf(cell.getBooleanCellValue());
+                break;
+            case Cell.CELL_TYPE_ERROR:
+                res = null;
                 break;
             case Cell.CELL_TYPE_FORMULA:
-                res = cell.getCellFormula();
+                Workbook wb = cell.getSheet().getWorkbook();
+                CreationHelper crateHelper = wb.getCreationHelper();
+                FormulaEvaluator evaluator = crateHelper.createFormulaEvaluator();
+                res = getCellValue(evaluator.evaluateInCell(cell));
                 break;
             case Cell.CELL_TYPE_NUMERIC:
-                res=cell.getNumericCellValue();
+                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                    res = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cell.getDateCellValue());
+                } else {
+                    res = new DecimalFormat("###################.###########").format(cell.getNumericCellValue());
+                }
                 break;
             case Cell.CELL_TYPE_STRING:
-                res = cell.getRichStringCellValue();
+                res = cell.getRichStringCellValue().getString();
                 break;
             default:
                 res = null;
