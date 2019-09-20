@@ -34,4 +34,11 @@ public class TaskPopListCount implements Serializable {
     @ApiModelProperty("任务id")
     private Integer taskId;
 
+    @ApiModelProperty("简略标题不可为空")
+    private String briefTitle;
+
+    @ApiModelProperty("示例图片不可为空")
+    private String exampleImg;
+
+
 }

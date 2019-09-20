@@ -37,21 +37,36 @@ public class DateUtils {
      * @return
      */
     public Boolean plusMinutesTime(LocalDateTime date) {
-        long nowMinutes = LocalDateTime.now().getMinute();
-        LocalDateTime local = date.plusMinutes(24*60-1);
-        long localMinute = local.getMinute();
-        return (localMinute - nowMinutes) > 0?true:false;
+        LocalDateTime endTime = date.plusMinutes(24*60);
+        LocalDateTime startTime = LocalDateTime.now();
+        Duration duration = java.time.Duration.between(startTime,endTime);
+        return duration.toMinutes() > 5?true:false;
     }
 
     /**
-     * 获得当前毫秒数-当天最大时间毫秒数的秒值
+     * 获得当前时间-当前当天最大时间的秒值
      * @return
      */
     public Long getIntervalSecond() {
-        LocalDateTime  localDateTime = getMaxOfDay(LocalDateTime.now());
-        long maxSecond = localDateTime.getSecond();
-        long currSecond  = LocalDateTime.now().getSecond();
-        long intervals = maxSecond - currSecond;
+        LocalDateTime nowLocDateTime = LocalDateTime.now();
+        LocalDateTime  endTime = getMaxOfDay(nowLocDateTime);
+        LocalDateTime  startTime = nowLocDateTime;
+        Duration duration = java.time.Duration.between(startTime,endTime);
+        long  intervals = duration.getSeconds();
         return intervals <= 30?1*60:intervals;
     }
+
+    /**
+     * 获取增加天数后的时间-当前时间天数的间隔
+     * @param date     需要增加天数的时间
+     * @param auditDay 增加天数
+     * @return
+     */
+    public Long getIntervalDays(LocalDateTime date,Integer auditDay) {
+        LocalDateTime endTime = date.plusDays(auditDay);
+        LocalDateTime startTime = LocalDateTime.now();
+        Duration duration = java.time.Duration.between(startTime,endTime);
+        return duration.toDays();
+    }
+
 }

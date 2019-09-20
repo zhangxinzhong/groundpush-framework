@@ -332,4 +332,9 @@ public class OSSUnit {
             LOG.error("删除阿里云OSS对象异常." + e.getMessage(), e);
         }
     }
+
+
+    public static void delFile(String key){
+         deleteFile(getOSSClient(),BUCKET_NAME,ROOT_DIR,key);
+    }
 }

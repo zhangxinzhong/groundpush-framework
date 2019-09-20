@@ -9,10 +9,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+    <style>
+        body {
+            height: 100%;width: 100%;
+            background: url('/img/erweimashixiao.png');
+            background-size:cover;
+        }
+    </style>
     <script type="text/javascript">
         var uri =  '[[${uri}]]';
-        var bool = [[${bool}]];
-        if(bool == true){
+        var bool = '[[${bool}]]';
+        if(bool == 'true'){
             location.href=uri;
         }
     </script>
@@ -21,7 +28,8 @@
 <style>
 
 </style>
-<body onload="bool">
-<p th:if="${!bool}" ><img th:src="@{/erweimashixiao.png}" alt="二维码已失效" /></p>
+<body >
+<p th:if="${bool != null and  !bool}" >二维码已失效</p>
+<p th:if="${bool == null}" >路径跳转错误</p>
 </body>
 </html>

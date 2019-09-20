@@ -40,7 +40,7 @@ public interface OrderMapper {
      */
     @Select({
             "<script>",
-            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title from t_order o ",
+            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title,c.audit_duration from t_order o ",
             " left join t_order_task_customer otc on otc.order_id = o.order_id ",
             " left join t_task c on otc.task_id = c.task_id ",
             " where otc.customer_id = #{customerId}",
@@ -147,8 +147,10 @@ public interface OrderMapper {
             "<script>",
             " SELECT ",
             " b.task_id,",
+            " c.brief_title,",
             " (SELECT c.title FROM t_task c WHERE c.task_id = b.task_id) title",
             " FROM t_order_task_customer b LEFT JOIN t_order d ON b.order_id = d.order_id",
+            " LEFT JOIN t_task c ON b.task_id = c.task_id ",
             " WHERE b.customer_id = #{customerId} AND d.type = 2 ",
             "</script>"
     })
@@ -158,6 +160,7 @@ public interface OrderMapper {
             "<script>",
             " SELECT ",
             " b.task_id,",
+            " c.example_img,",
             " c.title,",
             " count(1) pop_task_count,",
             " sum(case when d.unique_code IS NOT NULL then 1 else 0 end) result_count",
