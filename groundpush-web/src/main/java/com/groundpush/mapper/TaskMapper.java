@@ -38,7 +38,7 @@ public interface TaskMapper {
      * @param task
      * @return
      */
-    @Insert(" insert into t_task(title, img_uri,icon_uri, amount, source, type, status, location,province, spread_total, handler_num, audit_duration, expend_time, complete_odds, owner_ratio, spread_ratio, leader_ratio, created_by, created_time,is_result ) values (#{title},#{imgUri},#{iconUri},#{amount},#{source},#{type},#{status},#{location},#{province},#{spreadTotal},#{handlerNum},#{auditDuration},#{expendTime},#{completeOdds},#{ownerRatio},#{spreadRatio},#{leaderRatio},#{createdBy},current_timestamp,#{isResult}) ")
+    @Insert(" insert into t_task(title, img_uri,icon_uri, amount, source, type, status, location,province, spread_total, handler_num, audit_duration, expend_time, complete_odds, owner_ratio, spread_ratio, leader_ratio, created_by, created_time,is_result,brief_title,example_img ) values (#{title},#{imgUri},#{iconUri},#{amount},#{source},#{type},#{status},#{location},#{province},#{spreadTotal},#{handlerNum},#{auditDuration},#{expendTime},#{completeOdds},#{ownerRatio},#{spreadRatio},#{leaderRatio},#{createdBy},current_timestamp,#{isResult},#{briefTitle},#{exampleImg}) ")
     @Options(useGeneratedKeys = true, keyProperty = "taskId")
     Integer createSingleTask(Task task);
 
@@ -51,8 +51,10 @@ public interface TaskMapper {
     @Update({
             "<script>",
             " update t_task set  ",
-            " <if test='title != null'> title=#{title},  </if> ",
+            " <if test='briefTitle != null'> brief_title=#{briefTitle},  </if> ",
+            " <if test='exampleImg != null'> example_img=#{exampleImg},  </if> ",
             " <if test='imgUri != null'> img_uri=#{imgUri},  </if> ",
+            " <if test='iconUri != null'> icon_uri=#{iconUri},  </if> ",
             " <if test='iconUri != null'> icon_uri=#{iconUri},  </if> ",
             " <if test='source != null'> source=#{source},  </if> ",
             " <if test='type != null'> type=#{type},  </if> ",

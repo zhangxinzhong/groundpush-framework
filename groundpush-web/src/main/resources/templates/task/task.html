@@ -68,7 +68,7 @@
                         <input type="hidden" id="pageSize" value="20">
                         <input type="hidden" id="totalPageNum">
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">封面图：</label>
+                            <label class="btn col-lg-1">&emsp;封&emsp;面&emsp;图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
                                 <img style="margin-left: -10px;height: 200px" id="imgFMT"
                                      src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
@@ -78,7 +78,7 @@
                             <input type="hidden" name="imgUri" id="imgUri">
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">缩略图：</label>
+                            <label class="btn col-lg-1">&emsp;缩&emsp;略&emsp;图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
                                 <img style="margin-left: -10px;height: 200px" id="imgSLT"
                                      src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
@@ -88,14 +88,30 @@
                             <input type="hidden" name="iconUri" id="iconUri">
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">标&emsp;题：</label>
+                            <label class="btn col-lg-1">&emsp;示&emsp;例&emsp;图：</label>
+                            <div class="btn col-lg-2" style="text-align: center">
+                                <img style="margin-left: -10px;height: 200px" id="imgZST"
+                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
+                                     onerror="excptionUrl(this)">
+                                <br><label>上传示例图片</label>
+                            </div>
+                            <input type="hidden" name="exampleImg" id="exampleImg">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">&emsp;&emsp;标&emsp;&emsp;题：</label>
                             <input class="form-control col-lg-10" name="title" id="title"
+                                   style="width:80%;display:inline"
+                                   type="text">
+                        </div>
+                        <div class="row panel-heading">
+                            <label class="btn col-lg-1">&emsp;&emsp;简略标题：</label>
+                            <input class="form-control col-lg-10" name="briefTitle" id="briefTitle"
                                    style="width:80%;display:inline"
                                    type="text">
                         </div>
                         <div class="row panel-heading" id="labelDiv">
                             <input type="hidden" name="labelIds" id="labelIds">
-                            <label class="btn col-lg-1">标&emsp;签：</label>
+                            <label class="btn col-lg-1">&emsp;&emsp;标&emsp;&emsp;签：</label>
                             <select class="selectpicker form-control" multiple id="selectLabelIds" name="selectLabelIds"
                                     style="width:80%;display:inline"
                                     data-title="点击选择标签（可多选）" data-width="80%" data-live-search="true"
@@ -104,7 +120,7 @@
                         </div>
 
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">公&emsp;司：</label>
+                            <label class="btn col-lg-1">&emsp;&emsp;公&emsp;&emsp;司：</label>
                             <select class="form-control col-lg-3" name="source" id="source"
                                     style="width:21%;display:inline">
                             </select>
@@ -122,52 +138,52 @@
                             </select>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">单笔佣金：</label>
+                            <label class="btn col-lg-1">&emsp;&emsp;单笔佣金：</label>
                             <input class="form-control col-lg-1" name="amount" id="amount"
                                    style="width:80%;display:inline" type="number">
                             <span class="btn col-lg-1" style="text-align: left;">/元</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">推广总数：</label>
+                            <label class="btn col-lg-1">&emsp;&emsp;推广总数：</label>
                             <input class="form-control col-lg-1" name="spreadTotal" id="spreadTotal"
                                    style="width:80%;display:inline" type="number">
                             <span class="btn col-lg-1" style="text-align: left;">/天</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">单人可推广任务数：</label>
+                            <label class="btn col-lg-1">可推广任务数：</label>
                             <input class="form-control col-lg-1" name="handlerNum" id="handlerNum"
                                    style="width:80%;display:inline"
                                    type="number">
                             <span class="btn col-lg-1" style="text-align: left;">/人/天</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">审核天数：</label>
+                            <label class="btn col-lg-1">&emsp;&emsp;审核天数：</label>
                             <input class="form-control col-lg-1" name="auditDuration" id="auditDuration"
                                    style="width:80%;display:inline" type="number">
                             <span class="btn col-lg-1" style="text-align: left;">/天</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">任务耗时：</label>
+                            <label class="btn col-lg-1">&emsp;&emsp;任务耗时：</label>
                             <input class="form-control col-lg-1" name="expendTime" id="expendTime"
                                    style="width:80%;display:inline"
                                    type="number">
                             <span class="btn col-lg-1" style="text-align: left;">/分钟</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">综合通过率：</label>
+                            <label class="btn col-lg-1">&emsp;综合通过率：</label>
                             <input class="form-control col-lg-1" name="completeOdds" id="completeOdds"
                                    style="width:80%;display:inline" type="number">
                             <span class="btn col-lg-1" style="text-align: left;">%</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">完成人分成：</label>
+                            <label class="btn col-lg-1">&emsp;完成人分成：</label>
                             <input class="form-control col-lg-1" name="ownerRatio" id="ownerRatio"
                                    style="width:80%;display:inline"
                                    type="number">
                             <span class="btn col-lg-1" style="text-align: left;">%</span>
                         </div>
                         <div class="row panel-heading">
-                            <label class="btn col-lg-1">推广人分成：</label>
+                            <label class="btn col-lg-1">&emsp;推广人分成：</label>
                             <input class="form-control col-lg-1" name="spreadRatio" id="spreadRatio"
                                    style="width:80%;display:inline" type="number">
                             <span class="btn col-lg-1" style="text-align: left;">%</span>
@@ -293,7 +309,7 @@
                             '                <button class="layui-btn" onclick="seeTask(' + dataList[i].taskId + ')">查看任务</button>\n' +
                             '                <button class="layui-btn" onclick="delTask(' + dataList[i].taskId + ')">删除任务</button>\n' +
                             '                <button class="layui-btn" onclick="sendTask(' + dataList[i].taskId + ')">发布任务</button>\n' +
-                            '                <button class="layui-btn" onclick="uploadFileData('+dataList[i].taskId+',this)">上传任务URL</button>\n' +
+                            '                <button class="layui-btn" onclick="uploadFileData(' + dataList[i].taskId + ',this)">上传任务URL</button>\n' +
                             '                <input class="layui-btn uploadExcel" type="hidden">\n' +
                             '            </td>\n' +
                             '        </tr>';
@@ -311,7 +327,7 @@
         })
     }
 
-    function uploadFileData(taskId,object) {
+    function uploadFileData(taskId, object) {
         $("#temporaryTaskId").val(taskId);
         var obj = $(object);
         obj.parent().find(".uploadExcel").click();
@@ -440,7 +456,12 @@
                         if (dataMsg.iconUri != null && dataMsg.iconUri != "") {
                             $("#imgSLT").attr("src", dataMsg.iconUri);
                         }
+                        $("#exampleImg").val(dataMsg.exampleImg);
+                        if (dataMsg.exampleImg != null && dataMsg.exampleImg != "") {
+                            $("#imgZST").attr("src", dataMsg.exampleImg);
+                        }
                         $("#title").val(dataMsg.title);
+                        $("#briefTitle").val(dataMsg.briefTitle);
                         $("#source").val(dataMsg.source);
                         $("#location").val(dataMsg.location);
                         $("#spreadTotal").val(dataMsg.spreadTotal);
@@ -557,6 +578,7 @@
     //处理回显子表部分
     //先定义一个数组在说
     var resultMap = [];
+
     function getZiTaskMsg(taskAttribute) {
         //content
         var content = taskAttribute.content;
@@ -575,11 +597,24 @@
 
         //组页面了
         var ziHtml = "";
+        //处理一下子不同类型之下的单选生成按钮的问题
+        //块级类型
+        var divType = "";
+        //区别是否生成URL在哪边
+        var createUriName = "";
+        if (type == 1) {
+            divType = "MyTask";
+            createUriName = "createUriName1";
+        } else if (type == 2) {
+            divType = "GeneralizeTask";
+            createUriName = "createUriName2";
+        }
+        //拼页面
         if (rowType == 1) {
             //标题
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '" >\n' +
-                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
                 '                <option value="1" selected>标题</option>' +
                 '                <option value="2">内容</option>' +
                 '                <option value="3">URL</option>' +
@@ -594,7 +629,7 @@
             //内容
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
                 '                <option value="1" >标题</option>' +
                 '                <option value="2" selected>内容</option>' +
                 '                <option value="3">URL</option>' +
@@ -610,7 +645,7 @@
             //URL
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
                 '                <option value="1" >标题</option>' +
                 '                <option value="2" >内容</option>' +
                 '                <option value="3" selected>URL</option>' +
@@ -621,17 +656,17 @@
                 '                <span class="valueDiv">' +
                 '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">';
             if (createUri == 0) {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
                 '</span>';
             } else {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri" checked>生成</label>\n';
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri" checked>生成</label>\n';
                 '</span>';
             }
         } else if (rowType == 4) {
             //下载APP
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
                 '                <option value="1" >标题</option>' +
                 '                <option value="2">内容</option>' +
                 '                <option value="3">URL</option>' +
@@ -646,7 +681,7 @@
             //扫描二维码
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
                 '                <option value="1" >标题</option>' +
                 '                <option value="2">内容</option>' +
                 '                <option value="3">URL</option>' +
@@ -657,17 +692,17 @@
                 '                <span class="valueDiv">' +
                 '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n';
             if (createUri == 0) {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
                 '</span>';
             } else {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri" checked>生成</label>\n';
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri" checked>生成</label>\n';
                 '</span>';
             }
         } else if (rowType == 6) {
             //保存二维码
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
                 '                <option value="1" >标题</option>' +
                 '                <option value="2">内容</option>' +
                 '                <option value="3">URL</option>' +
@@ -678,10 +713,10 @@
                 '                <span class="valueDiv">' +
                 '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n';
             if (createUri == 0) {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
                 '</span>';
             } else {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri" checked>生成</label>\n';
+                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri" checked>生成</label>\n';
                 '</span>';
             }
         } else if (rowType == 7) {
@@ -691,7 +726,7 @@
             //图片
             ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
                 '                <input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
+                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
                 '                <option value="7" selected>图片</option>' +
                 '                </select>' +
                 '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="' + content + '" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
@@ -788,75 +823,96 @@
             alert("封面图片不可为空！");
             return false;
         }
+        //缩略图片
+        var iconUri = dataObj.iconUri;
+        if (iconUri == undefined || iconUri.length == 0) {
+            alert("缩略图片不可为空！");
+            return false;
+        }
+        //示例图片
+        var exampleImg = dataObj.exampleImg;
+        if (exampleImg == undefined || exampleImg.length == 0) {
+            alert("示例图片不可为空！");
+            return false;
+        }
         //任务标题
         var title = dataObj.title;
-        if (title == undefined ||title.length == 0) {
+        if (title == undefined || title.length == 0) {
             alert("任务标题不可为空！");
+            return false;
+        }
+        //简略标题
+        var briefTitle = dataObj.briefTitle;
+        if (briefTitle == undefined || briefTitle.length == 0) {
+            alert("简略标题不可为空！");
+            return false;
+        } else if (briefTitle.length > 7) {
+            alert("简略标题长度不可大于7个字符！");
             return false;
         }
         //标签项
         var labelIds = dataObj.labelIds;
-        if (labelIds == undefined ||labelIds.length == 0) {
+        if (labelIds == undefined || labelIds.length == 0) {
             alert("标签项不可为空！");
             return false;
         }
         //公司项
         var source = dataObj.source;
-        if (source == undefined ||source.length == 0) {
+        if (source == undefined || source.length == 0) {
             alert("公司项不可为空！");
             return false;
         }
         //公司项
         var amount = dataObj.amount;
-        if (amount == undefined ||amount.length == 0) {
+        if (amount == undefined || amount.length == 0) {
             alert("单笔佣金不可为空！");
             return false;
         }
         //推广总数
         var spreadTotal = dataObj.spreadTotal;
-        if (spreadTotal == undefined ||spreadTotal.length == 0) {
+        if (spreadTotal == undefined || spreadTotal.length == 0) {
             alert("推广总数不可为空！");
             return false;
         }
         //可做任务数
         var handlerNum = dataObj.handlerNum;
-        if (handlerNum == undefined ||handlerNum.length == 0) {
+        if (handlerNum == undefined || handlerNum.length == 0) {
             alert("可做任务数不可为空！");
             return false;
         }
         //审核天数
         var auditDuration = dataObj.auditDuration;
-        if (auditDuration == undefined ||auditDuration.length == 0) {
+        if (auditDuration == undefined || auditDuration.length == 0) {
             alert("审核天数不可为空！");
             return false;
         }
         //任务耗时
         var expendTime = dataObj.expendTime;
-        if (expendTime == undefined ||expendTime.length == 0) {
+        if (expendTime == undefined || expendTime.length == 0) {
             alert("任务耗时不可为空！");
             return false;
         }
         //综合通过率
         var completeOdds = dataObj.completeOdds;
-        if (completeOdds == undefined ||completeOdds.length == 0) {
+        if (completeOdds == undefined || completeOdds.length == 0) {
             alert("综合通过率不可为空！");
             return false;
         }
         //完成人分成
         var ownerRatio = dataObj.ownerRatio;
-        if (ownerRatio == undefined ||ownerRatio.length == 0) {
+        if (ownerRatio == undefined || ownerRatio.length == 0) {
             alert("完成人分成不可为空！");
             return false;
         }
         //推广人分成
         var spreadRatio = dataObj.spreadRatio;
-        if (spreadRatio == undefined ||spreadRatio.length == 0) {
+        if (spreadRatio == undefined || spreadRatio.length == 0) {
             alert("推广人分成不可为空！");
             return false;
         }
         //领导人分成
         var leaderRatio = dataObj.leaderRatio;
-        if (leaderRatio == undefined ||leaderRatio.length == 0) {
+        if (leaderRatio == undefined || leaderRatio.length == 0) {
             alert("团队领导人分成不可为空！");
             return false;
         }

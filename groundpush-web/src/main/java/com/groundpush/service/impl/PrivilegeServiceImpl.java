@@ -13,6 +13,7 @@ import org.springframework.util.AntPathMatcher;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:
@@ -35,9 +36,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     public boolean hasPrivilege(String LoginNo, String uri) {
         List<Uri> uris = queryUriByLoginNo(LoginNo);
         AntPathMatcher antPathMatcher = new AntPathMatcher();
-        if(uris.size() >0){
-            for (Uri url : uris){
-                if(antPathMatcher.match(url.getUriPattern(),uri)){
+        if (uris.size() > 0) {
+            for (Uri url : uris) {
+                if (antPathMatcher.match(url.getUriPattern(), uri)) {
                     return true;
                 }
             }
@@ -52,8 +53,47 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public Page<Privilege> queryAllPrivileges(Integer page, Integer limit) {
-        PageHelper.startPage(page,limit);
+        PageHelper.startPage(page, limit);
         return privilegeMapper.queryAllPrivileges();
+    }
+
+    @Override
+    public Page<Privilege> queryTaskAll(Privilege privilege, Integer nowPage, Integer pageSize) {
+        PageHelper.startPage(nowPage, pageSize);
+        return privilegeMapper.queryAllPrivileges();
+    }
+
+    @Override
+    public Boolean insert(Privilege privilege) {
+        return privilegeMapper.insert(privilege) > 0 ? true : false;
+    }
+
+    @Override
+    public Boolean update(Privilege privilege) {
+        return privilegeMapper.update(privilege) > 0 ? true : false;
+    }
+
+    @Override
+    public Boolean save(Privilege privilege) {
+        //返回结果
+        Boolean result = true;
+        Integer privilegeId = privilege.getPrivilegeId();
+        if (privilegeId != null) {
+            result = this.update(privilege);
+        } else {
+            result = this.insert(privilege);
+        }
+        return result;
+    }
+
+    @Override
+    public Optional<Privilege> getPrivilege(Integer id) {
+        return privilegeMapper.getPrivilege(id);
+    }
+
+    @Override
+    public Boolean del(Integer privilegeId) {
+        return privilegeMapper.del(privilegeId) > 0 ? true : false;
     }
 
 

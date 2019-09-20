@@ -172,6 +172,20 @@ public class Task implements Serializable {
     @JsonView(SimpleTaskView.class)
     private BigDecimal isResult;
 
+    /**
+     * 简略标题
+     */
+    @NotNull(message = "简略标题不可为空")
+    @JsonView(SimpleTaskView.class)
+    private String briefTitle;
+
+    /**
+     * 示例图片
+     */
+    @NotNull(message = "示例图片不可为空")
+    @JsonView(SimpleTaskView.class)
+    private String exampleImg;
+
     @JsonView(DetailTaskView.class)
     private Integer createdBy;
 

@@ -173,7 +173,9 @@ layui.use(['form', 'upload'], function () {
     attributeFileUpload("#imgFMT", "#imgUri");
     //缩略图片的
     attributeFileUpload("#imgSLT", "#iconUri");
-
+    //示例图片的
+    attributeFileUpload("#imgZST", "#exampleImg");
+    //上传文件
     uploadExcel(".uploadExcel");
 });
 
@@ -258,7 +260,7 @@ function addTaskText(object) {
     var labelIndex = obj.parent().attr("labelIndex");
     var html = '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelIndex + '" class="row labelRowDiv">\n' +
         '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+        '                <select name="rowType" class="rowType form-control col-lg-3" typeMsg="'+ type +'" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
         '                <option value="1">标题</option>' +
         '                <option value="2">内容</option>' +
         '                <option value="3">URL</option>' +
@@ -285,7 +287,15 @@ function addTaskText(object) {
 //切换当前类型
 function updateRowType(object) {
     var obj = $(object);
+    var type = obj.attr("typeMsg");
     var selectValue = obj.val();
+    //处理一下子不同类型之下的单选生成按钮的问题
+    var createUriName = "";
+    if (type == "GeneralizeTask") {
+        createUriName = "createUriName2";
+    } else {
+        createUriName = "createUriName1";
+    }
     //需要加载的对象
     var html = "";
     if (selectValue == "2") {
@@ -293,7 +303,7 @@ function updateRowType(object) {
             'style="font-family: mFont;height:150px;width: 55%;margin-left: 5px;"></textarea>\n';
     } else if (selectValue == "3" || selectValue == "5" || selectValue == "6") {
         html = '<input type="text" name="content" class="content form-control col-lg-5" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">' +
-            '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="createUri" class="createUri">生成</label>\n';
+            '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
     } else {
         html = '<input type="text" name="content" class="content form-control col-lg-5" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">';
     }

@@ -2,9 +2,10 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Privilege;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:
@@ -15,6 +16,7 @@ public interface PrivilegeMapper {
 
     /**
      * 通过userid 查询权限
+     *
      * @param userId
      * @return
      */
@@ -23,6 +25,7 @@ public interface PrivilegeMapper {
 
     /**
      * 查询所有权限
+     *
      * @return
      */
     @Select(" select * from t_privilege ")
@@ -30,4 +33,26 @@ public interface PrivilegeMapper {
 
     @Select(" select a.* from t_privilege a ")
     Page<Privilege> queryAllPrivileges();
+
+    @Select(" select * from t_privilege ")
+    Optional<Privilege> getPrivilege(Integer id);
+
+    @Delete("delete from t_privilege where privilege_id = #{privilegeId}")
+    Integer del(@Param("privilegeId") Integer privilegeId);
+
+    @Update({
+            "<script>",
+            " update t_privilege set  ",
+            " <if test='name != null'> name=#{name},  </if> ",
+            " <if test='code != null'> code=#{code},  </if> ",
+            " <if test='status != null'> status=#{status},  </if> ",
+            " <if test='lastModifiedBy != null'> last_modified_by=#{lastModifiedBy},  </if> ",
+            " last_modified_time = CURRENT_TIMESTAMP ",
+            "where privilege_id=#{privilegeId}",
+            "</script>"
+    })
+    Integer update(Privilege privilege);
+
+    @Insert(" insert into t_privilege(name, code,status, created_by, created_time, last_modified_by, last_modified_time ) values (#{name},#{code},#{status},#{createdBy},current_timestamp,#{lastModifiedBy},current_timestamp) ")
+    Integer insert(Privilege privilege);
 }

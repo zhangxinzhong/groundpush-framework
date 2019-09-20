@@ -5,6 +5,7 @@ import com.groundpush.core.model.Privilege;
 import com.groundpush.core.model.Uri;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:
@@ -24,4 +25,16 @@ public interface PrivilegeService {
     List<Uri> queryUriByLoginNo(String LoginNo);
 
     Page<Privilege> queryAllPrivileges(Integer page, Integer limit);
+
+    Page<Privilege> queryTaskAll(Privilege privilege, Integer nowPage, Integer pageSize);
+
+    Boolean insert(Privilege privilege);
+
+    Boolean update(Privilege privilege);
+
+    Boolean save(Privilege privilege);
+
+    Optional<Privilege> getPrivilege(Integer id);
+
+    Boolean del(Integer privilegeId);
 }
