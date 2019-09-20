@@ -73,6 +73,11 @@ public class Channel {
     @JsonView(OutChannelView.class)
     private String remark;
 
-    @ApiModelProperty(value = "备注")
+    @ApiModelProperty(value = "任务标题")
+    @JsonView(OutChannelView.class)
     private String title;
+
+    @ApiModelProperty(value = "任务编号")
+    @JsonView(OutChannelView.class)
+    private Integer taskId;
 }
