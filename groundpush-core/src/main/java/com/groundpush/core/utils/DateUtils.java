@@ -2,10 +2,7 @@ package com.groundpush.core.utils;
 
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Date;
 
 /**
@@ -33,4 +30,28 @@ public class DateUtils {
         return date.with(LocalTime.MAX);
     }
 
+
+    /**
+     * 判断时间是否超过24小时
+     * @param date
+     * @return
+     */
+    public Boolean plusMinutesTime(LocalDateTime date) {
+        long nowMinutes = LocalDateTime.now().getMinute();
+        LocalDateTime local = date.plusMinutes(24*60-1);
+        long localMinute = local.getMinute();
+        return (localMinute - nowMinutes) > 0?true:false;
+    }
+
+    /**
+     * 获得当前毫秒数-当天最大时间毫秒数的秒值
+     * @return
+     */
+    public Long getIntervalSecond() {
+        LocalDateTime  localDateTime = getMaxOfDay(LocalDateTime.now());
+        long maxSecond = localDateTime.getSecond();
+        long currSecond  = LocalDateTime.now().getSecond();
+        long intervals = maxSecond - currSecond;
+        return intervals <= 30?1*60:intervals;
+    }
 }

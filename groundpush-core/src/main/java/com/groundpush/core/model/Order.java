@@ -67,6 +67,13 @@ public class Order implements Serializable {
 
     private LocalDateTime lastModifiedTime;
 
+
+    /**
+     * 审核原因
+     */
+    private String remark;
+
+
     /**
      * *****************非数据库字段********************
      */
@@ -93,6 +100,13 @@ public class Order implements Serializable {
     @ApiModelProperty("分成类型：完成人、推广人、团队领导")
     private Integer bonusType;
 
+
+    @ApiModelProperty("缩略图不可为空")
+    private String iconUri;
+
+
+    @ApiModelProperty("任务标题不可为空")
+    private String title;
 
 
 }

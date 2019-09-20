@@ -31,4 +31,7 @@ public class TaskPopListCount implements Serializable {
     @ApiModelProperty("已提交结果数")
     private String resultCount;
 
+    @ApiModelProperty("任务id")
+    private Integer taskId;
+
 }

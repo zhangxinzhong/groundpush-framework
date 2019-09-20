@@ -40,7 +40,10 @@ public interface OrderMapper {
      */
     @Select({
             "<script>",
-            "select * from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.customer_id = #{customerId}",
+            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title from t_order o ",
+            " left join t_order_task_customer otc on otc.order_id = o.order_id ",
+            " left join t_task c on otc.task_id = c.task_id ",
+            " where otc.customer_id = #{customerId}",
             " <if test='status != null'> and o.status =#{status}  </if> ",
             " <if test='selectTime != null'> and date_format(o.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(o.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
             "</script>"
@@ -143,12 +146,39 @@ public interface OrderMapper {
     @Select({
             "<script>",
             " SELECT ",
-            " (SELECT c.title FROM t_task c WHERE c.task_id = b.task_id) title,",
-            " (SELECT count(1) FROM t_order a WHERE a.order_id = b.order_id ) pop_task_count,",
-            " (SELECT count(1) FROM t_order a WHERE a.order_id = b.order_id AND a.unique_code IS NOT NULL) result_count",
+            " b.task_id,",
+            " (SELECT c.title FROM t_task c WHERE c.task_id = b.task_id) title",
             " FROM t_order_task_customer b LEFT JOIN t_order d ON b.order_id = d.order_id",
             " WHERE b.customer_id = #{customerId} AND d.type = 2 ",
             "</script>"
     })
-    List<TaskPopListCount> queryPopCountByCustomerId(Integer customerId);
+    Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId);
+
+    @Select({
+            "<script>",
+            " SELECT ",
+            " b.task_id,",
+            " c.title,",
+            " count(1) pop_task_count,",
+            " sum(case when d.unique_code IS NOT NULL then 1 else 0 end) result_count",
+            " FROM t_order_task_customer b LEFT JOIN t_order d ON b.order_id = d.order_id ",
+            " LEFT JOIN t_task c ON b.task_id = c.task_id ",
+            " WHERE b.customer_id = #{customerId} AND d.type = 2 and b.task_id = #{taskId} ",
+            "</script>"
+    })
+    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId,Integer taskId);
+
+
+    @Select({
+            "<script>",
+            " SELECT ",
+            " a.* ",
+            " FROM ",
+            " t_order a ",
+            " LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id ",
+            " WHERE a.type = 2 AND b.task_id = #{taskId} AND b.customer_id = #{customerId}",
+            " AND a.unique_code IS NULL LIMIT 0,1 ",
+            "</script>"
+    })
+    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(Integer customerId,Integer taskId);
 }

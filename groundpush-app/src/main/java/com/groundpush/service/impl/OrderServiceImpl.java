@@ -3,16 +3,18 @@ package com.groundpush.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.OrderQueryCondition;
-import com.groundpush.core.condition.ToPathCondition;
+import com.groundpush.core.condition.OrderUpdateCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.OrderMapper;
 import com.groundpush.mapper.OrderTaskCustomerMapper;
 import com.groundpush.service.OrderBonusService;
 import com.groundpush.service.OrderService;
+import com.groundpush.service.OrderUploadLogService;
 import com.groundpush.vo.OrderBonusVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +37,8 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
     @Resource
     UniqueCode uniqueCode;
-
+    @Resource
+    private DateUtils dateUtils;
     @Resource
     private OrderMapper orderMapper;
 
@@ -44,6 +47,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private OrderTaskCustomerMapper orderTaskCustomerMapper;
+
+    @Resource
+    private OrderUploadLogService orderUploadLogService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -94,23 +100,40 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateOrderUniqueCode(Integer orderId, String uniqueCode) {
-        //通过订单id获取订单
-        Optional<Order> optionalOrder = orderMapper.getOrder(orderId);
+    public void updateOrderUniqueCode(OrderUpdateCondition condition) {
+        Optional<Order> optionalOrder = null;
+        if(condition.getTaskId() != null && condition.getOrderId() == null){
+            //通过任务id和客户id获取未提交结果集的某一个订单
+            optionalOrder = orderMapper.queryCodeNullOrderByCustomerIdAndTaskId(condition.getCustomerId(),condition.getTaskId());
+        }else{
+            //通过订单id获取订单
+            optionalOrder = orderMapper.getOrder(condition.getOrderId());
+        }
+
+
         if(!optionalOrder.isPresent()){
             throw  new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }
 
-        //通过唯一标识查询订单结果
+        Order  order = optionalOrder.get();
+        //判断是否为任务结果集上传
+        if(Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())){
+            boolean bool = dateUtils.plusMinutesTime(order.getCreatedTime());
+            if(!bool){
+                throw  new BusinessException(ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorCode(), ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorMessage());
+            }
+        }
+        Integer type = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())?Constants.L_O_U_T1:Constants.L_O_U_T2;
 
-        //若结果存在返回申诉成功否则返回申诉失败
+        OrderLog orderLog = new OrderLog();
+        orderLog.setOrderId(condition.getOrderId());
+        orderLog.setUnqiueCode(condition.getUniqueCode());
+        orderLog.setType(type);
+        orderLog.setImgUrl(condition.getImgUrl());
+        orderUploadLogService.createOrderUploadLog(orderLog);
 
-        //TODO
-        //TODO
-        //TODO
-        //TODO
 
-        orderMapper.updateOrderUniqueCode(orderId,uniqueCode);
+        orderMapper.updateOrderUniqueCode(condition.getOrderId(),condition.getUniqueCode());
     }
 
     /**
@@ -149,8 +172,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<TaskPopListCount> queryPopCountByCustomerId(Integer customerId) {
-        return orderMapper.queryPopCountByCustomerId(customerId);
+    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId,Pageable pageable) {
+        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
+        return orderMapper.queryPopListByCustomerId(customerId);
+    }
+
+    @Override
+    public Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId) {
+        return orderMapper.queryPutResultByCustomerIdAndTaskId(customerId,taskId);
     }
 
 
