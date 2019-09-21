@@ -9,6 +9,7 @@ import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
+import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.mapper.OrderMapper;
 import com.groundpush.mapper.OrderTaskCustomerMapper;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -101,7 +103,17 @@ public class OrderServiceImpl implements OrderService {
 
     private  Page<Order> setOrderSurDay(Page<Order> page){
         for(Order order : page){
-            dateUtils.getIntervalDays(order.getCreatedTime(),order.getAuditDuration());
+            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus())?dateUtils.getIntervalDays(order.getCreatedTime(),order.getAuditDuration()):0L;
+            order.setIntervalDays(days.intValue());
+            Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())?dateUtils.plusMinutesTime(order.getCreatedTime()):false;
+            order.setHasReUpload(reUpload);
+            dateUtils.plusMinutesTime(order.getCreatedTime());
+            BigDecimal amount = order.getAmount();
+            if(Constants.ORDER_TYPE_1.equals(order.getType())){
+                order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
+            }else {
+                order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getSpreadRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
+            }
         }
         return page;
     }
@@ -111,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateOrderUniqueCode(OrderUpdateCondition condition) {
         Optional<Order> optionalOrder = null;
-        if(condition.getTaskId() != null && condition.getOrderId() == null){
+        if(condition.getTaskId() != null){
             //通过任务id和客户id获取未提交结果集的某一个订单
             optionalOrder = orderMapper.queryCodeNullOrderByCustomerIdAndTaskId(condition.getCustomerId(),condition.getTaskId());
         }else{
@@ -143,7 +155,7 @@ public class OrderServiceImpl implements OrderService {
         orderUploadLogService.createOrderUploadLog(orderLog);
 
 
-        orderMapper.updateOrderUniqueCode(condition.getOrderId(),condition.getUniqueCode());
+        orderMapper.updateOrderUniqueCode(order.getOrderId(),condition.getUniqueCode());
     }
 
     /**

@@ -28,7 +28,7 @@ import java.util.List;
  * @date: 2019-08-27 下午2:54
  */
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
 
@@ -37,7 +37,6 @@ public class OrderController {
 
 
     @ApiOperation(value = "创建订单")
-    @ResponseBody
     @PostMapping
     public JsonResp createOrder(@Valid @RequestBody Order order, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -59,7 +58,6 @@ public class OrderController {
     }
 
     @DeleteMapping
-    @ResponseBody
     public JsonResp deleteOrder(@Valid @NotNull(message = "订单号不可为空") Integer orderId, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -70,7 +68,6 @@ public class OrderController {
 
     @ApiOperation(value = "查询订单")
     @GetMapping
-    @ResponseBody
     public JsonResp queryOrder(OrderQueryCondition orderQueryCondition,
                                @RequestParam(value = "pageNumber",required = false,defaultValue = "1") Integer pageNumber,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer  pageSize) {

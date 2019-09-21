@@ -288,6 +288,7 @@ public class Task implements Serializable {
     private String customPopCount;
 
     @ApiModelProperty("app任务列表金额 任务金额*完成人分成百分比")
-    private BigDecimal appAmount;
+    @JsonView(SimpleTaskView.class)
+    private String appAmount;
 
 }

@@ -40,6 +40,7 @@ public class FileInfo implements Serializable {
     private String unqiueCode;
 
     public FileInfo(String unqiueCode,String filePath,String fileName){
+        this.unqiueCode = unqiueCode;
         this.filePath = filePath;
         this.fileName = fileName;
     }

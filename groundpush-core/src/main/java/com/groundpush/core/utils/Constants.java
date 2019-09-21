@@ -225,7 +225,6 @@ public class Constants {
      * 订单结果接上传类型  1：申诉上传结果集
      */
     public static final Integer LOAD_RESULT_T2 = 2;
-    public static final Integer L_O_U_T2 = 2;
 
     /**
      * 用户隐私
@@ -236,4 +235,14 @@ public class Constants {
      * 用户协议
      */
     public static final String CUSTOMER_PROTOCOL = "protocol";
+
+    /**
+     * 订单类型为申请任务 1
+     */
+    public static final Integer ORDER_TYPE_1 = 1;
+
+    /**
+     * 订单类型为推广任务 2
+     */
+    public static final Integer ORDER_TYPE_2 = 2;
 }
