@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -91,6 +94,29 @@ public class UriController {
             log.error(e.toString(), e);
             throw e;
         }
+    }
+
+    /**
+     * 获取所有的URI
+     */
+    @GetMapping
+    @ResponseBody
+    @RequestMapping("/getUriALL")
+    public Map<String,Object> getUriALL() {
+        Map<String,Object> resultMap = new HashMap<String,Object>();
+        try {
+            List<Uri> uriList = uriService.getUriALL();
+            if(uriList!=null && uriList.size()>0){
+                resultMap.put("code","200");
+                resultMap.put("dataList",uriList);
+            }
+        } catch (Exception e) {
+            resultMap.put("code","500");
+            resultMap.put("msg","获取URI失败请联系管理员！");
+            log.error(e.toString(), e);
+            throw e;
+        }
+        return resultMap;
     }
 
 }

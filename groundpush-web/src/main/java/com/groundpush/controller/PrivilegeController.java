@@ -82,11 +82,11 @@ public class PrivilegeController {
     }
 
     @ApiOperation("权限删除")
-    @RequestMapping("/del")
+    @RequestMapping(value = "/del",method = RequestMethod.DELETE)
     @ResponseBody
-    public JsonResp delPrivilege(Model model, @RequestBody Privilege privilege) {
+    public JsonResp delPrivilege(Model model,@RequestParam("privilegeId") Integer privilegeId) {
         try {
-            privilegeService.del(privilege.getPrivilegeId());
+            privilegeService.del(privilegeId);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);

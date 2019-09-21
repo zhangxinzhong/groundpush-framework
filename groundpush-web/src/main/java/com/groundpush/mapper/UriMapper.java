@@ -47,4 +47,7 @@ public interface UriMapper {
 
     @Delete("delete from t_uri where uri_id = #{uriId}")
     Integer del(@Param("uriId") Integer uriId);
+
+    @Select(" select * from t_uri ")
+    List<Uri> getUriAll();
 }

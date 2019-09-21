@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="/plugin/privilege/css/privilege.css"/>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/privilege/js/privilege.js"
+            th:src="@{/common/common.js}"></script>
+
+</head>
+<body>
+<!-- privilege table -->
+<table class="layui-hide" id="privilege" lay-filter="privilege"></table>
+
+<!-- privilege tobar-->
+<script type="text/html" id="toolbarPrivilege">
+    <a class="layui-btn layui-btn-xs" lay-event="showAddPrivilegeDialog" >新增字典</a>
+</script>
+
+<!-- privilege tobar-->
+<script type="text/html" id="toolbarPrivilegeOperation">
+    <a class="layui-btn layui-btn-xs" lay-event="editPrivilege">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delPrivilege">删除</a>
+</script>
+
+<!-- privilegeUri tobar-->
+<script type="text/html" id="toolbarPrivilegeUri">
+    <a class="layui-btn layui-btn-xs" lay-event="showPrivilegeUriDialog">新增URI项</a>
+</script>
+
+<!-- privilegeUri tobar-->
+<script type="text/html" id="toolbarPrivilegeUriOperation">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delPrivilegeUri">删除</a>
+</script>
+
+<!-- 添加字典模态框 -->
+<div class="modal fade bs-example-modal-lg" id="addPrivilegeDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="addPrivilegeTitle">添加权限信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="addPrivilegeForm" lay-filter="addPrivilegeForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>权限编码</label>
+                        <div class="col-md-10">
+                            <input type="text" name="code" lay-verify="privilegeCode" autocomplete="off" placeholder="请输入权限编码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>权限名称</label>
+                        <div class="col-md-10">
+                            <input type="text" name="name" lay-verify="privilegeName" autocomplete="off" placeholder="请输入权限名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="addPrivilege">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改字典模态框 -->
+<div class="modal fade bs-example-modal-lg" id="editPrivilegeDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="editPrivilegeTitle">修改权限信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="editPrivilegeForm" lay-filter="editPrivilegeForm">
+                    <input type="hidden" name="privilegeId" class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>权限编码</label>
+                        <div class="col-md-10">
+                            <input type="text" name="code" lay-verify="privilegeCode" autocomplete="off" placeholder="请输入权限编码" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>权限名称</label>
+                        <div class="col-md-10">
+                            <input type="text" name="name" lay-verify="privilegeName" autocomplete="off" placeholder="请输入权限名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editPrivilege">更新</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 字典子项列表模态框 -->
+<div class="modal fade bs-example-modal-lg" id="privilegeUriListDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="privilegeUriListTitle">URI项</h4>
+            </div>
+            <div class="modal-body">
+                <!-- privilege uri table -->
+                <table class="layui-hide" id="privilegeUri" lay-filter="privilegeUri"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加字典子项模态框 -->
+<div class="modal fade bs-example-modal-lg" id="addPrivilegeUriDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="addPrivilegeUriTitle">添加URI项</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="addPrivilegeUriForm" lay-filter="addPrivilegeUriForm">
+                    <input type="hidden" name="privilegeId" class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>选择URI</label>
+                        <div class="col-md-10">
+                            <select name="uriId" id="addUriId">
+                                <option value="123">保存</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="addPrivilegeUri">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改字典子项模态框 -->
+<div class="modal fade bs-example-modal-lg" id="editPrivilegeUriDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="editPrivilegeUriTitle">修改URI项</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="editPrivilegeUriForm" lay-filter="editPrivilegeUriForm">
+                    <input type="hidden" name="privilegeId" class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>选择URI</label>
+                        <div class="col-md-10">
+                            <select name="uriId" id="editUriId">
+                                <option value="123">保存</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editPrivilegeUri">更新</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

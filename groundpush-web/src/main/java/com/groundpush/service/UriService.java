@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.Uri;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -62,4 +63,6 @@ public interface UriService {
      * @return
      */
     Boolean del(Integer uriId);
+
+    List<Uri> getUriALL();
 }

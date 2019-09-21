@@ -1,9 +1,15 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
+import com.groundpush.core.model.PrivilegeUri;
 import com.groundpush.core.model.Uri;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:
@@ -30,4 +36,32 @@ public interface PrivilegeUriMapper {
 
     @Select(" select distinct u.* from t_uri u inner join t_privilege_uri pu on pu.uri_id = u.uri_id  inner join t_role_privilege rp on rp.privilege_id = pu.privilege_id  inner join t_role_user ur on ur.role_id = rp.role_id inner join t_user usr on usr.user_id=ur.user_id where usr.login_no=#{loginNo} ")
     List<Uri> queryUriByLoginNo(String loginNo);
+
+    @Select("select pu.*,u.uri_name uriName,u.uri_pattern uriPattern from t_privilege_uri pu join t_uri u on pu.uri_id = u.uri_id   where pu.privilege_id = #{privilegeId} ")
+    Page<PrivilegeUri> queryPrivilegeUriAll(PrivilegeUri privilegeUri);
+
+    @Insert(" insert into t_privilege_uri(privilege_id, uri_id,status, created_by, created_time, last_modified_by, last_modified_time ) values (#{privilegeId},#{uriId},#{status},#{createdBy},current_timestamp,#{lastModifiedBy},current_timestamp) ")
+    Integer insert(PrivilegeUri privilegeUri);
+
+    @Update({
+            "<script>",
+            " update t_privilege_uri set  ",
+            " <if test='privilegeId != null'> privilege_id=#{privilegeId},  </if> ",
+            " <if test='uriId != null'> uri_id=#{uriId},  </if> ",
+            " <if test='status != null'> status=#{status},  </if> ",
+            " <if test='lastModifiedBy != null'> last_modified_by=#{lastModifiedBy},  </if> ",
+            " last_modified_time = CURRENT_TIMESTAMP ",
+            "where privilege_id=#{privilegeId}",
+            "</script>"
+    })
+    Integer update(PrivilegeUri privilegeUri);
+
+    @Select("select * from t_privilege_uri where privilege_id = #{privilegeId} and uri_id = #{uriId}")
+    Optional<PrivilegeUri> getPrivilegeUri(PrivilegeUri privilegeUri);
+
+    @Select("select * from t_privilege_uri where privilege_id = #{privilegeId} and uri_id = #{uriId}")
+    List<PrivilegeUri> getPrivilegeUriList(PrivilegeUri privilegeUri);
+
+    @Delete("delete from t_privilege_uri where privilege_id = #{privilegeId} and uri_id = #{uriId}")
+    Integer del(PrivilegeUri privilegeUri);
 }

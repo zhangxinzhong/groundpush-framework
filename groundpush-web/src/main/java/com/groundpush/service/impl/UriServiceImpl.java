@@ -71,4 +71,9 @@ public class UriServiceImpl implements UriService {
     public Boolean del(Integer uriId) {
         return uriMapper.del(uriId) > 0 ? true : false;
     }
+
+    @Override
+    public List<Uri> getUriALL() {
+        return uriMapper.getUriAll();
+    }
 }

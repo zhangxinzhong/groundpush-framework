@@ -34,8 +34,8 @@ public interface PrivilegeMapper {
     @Select(" select a.* from t_privilege a ")
     Page<Privilege> queryAllPrivileges();
 
-    @Select(" select * from t_privilege ")
-    Optional<Privilege> getPrivilege(Integer id);
+    @Select(" select * from t_privilege where privilege_id = #{id}")
+    Optional<Privilege> getPrivilege(@Param("id") Integer id);
 
     @Delete("delete from t_privilege where privilege_id = #{privilegeId}")
     Integer del(@Param("privilegeId") Integer privilegeId);
