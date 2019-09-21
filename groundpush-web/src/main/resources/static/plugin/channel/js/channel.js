@@ -246,10 +246,10 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
  * 上传数据
  * @param data
  */
-let channelId = 0;
-
-function upDataEvent(data, form) {
-    channelId = data.channelId;
+let channelId=0,taskId=0;
+function upDataEvent(data,form){
+    channelId=data.channelId;
+    taskId=data.taskId;
     $('#upFileShow').val('');
     // initPageData(form);
     initImportTab(form, [])
@@ -264,90 +264,90 @@ function upDataEvent(data, form) {
  * 初始化页面数据(暂时未用到)
  */
 function initPageData(form) {
-    let response = callInterface('get', '/channel/getExcelTitle', {page: 0, limit: 20}, false);
-    let option = '<option value="{value}">{text}</option>';
-    let tmpCache = option.format({value: ' ', text: '请选择'});
+    let response = callInterface('get', '/channel/getExcelTitle',{page:0,limit:20}, false);
+    let option='<option value="{value}">{text}</option>';
+    let tmpCache=option.format({value:' ',text:'请选择'});
     if (response.code == 200) {
-        $.each(response.data.rows, function (i, res) {
-            tmpCache += option.format({
-                value: res.channelId, text: res.companyName
+        $.each(response.data.rows,function (i,res) {
+            tmpCache+=option.format({
+                value:res.channelId,text:res.companyName
             })
         });
     }
 
     $('#channelName').empty().append(tmpCache);
-    form.render('select', 'resInfo');
+    form.render('select','resInfo');
 }
 
 /**
  * 初始化表格
  */
-function initImportTab(form, excelTitle) {
-    let basicData = {
-        execlTitle: excelTitle,
-        tabTitle: ['序号', '系统标题', '映射类型', '数据标题'],
-        dataType: [{key: 1, value: '文字'}, {key: 2, value: '数字'}, {key: 3, value: '价格'}],
-        pushTitle: [{key: 1, value: '推广编号'}, {key: 2, value: '产生时间'}, {key: 3, value: '是否有效'}, {key: 4, value: '失败原因'}],
+function initImportTab(form,excelTitle){
+    let basicData={
+        execlTitle:excelTitle,
+        tabTitle:['序号','系统标题','映射类型','数据标题'],
+        dataType:[{key:1,value:'文字'},{key:2,value:'数字'},{key:3,value:'价格'}],
+        pushTitle:[{key:1,value:'推广编号'},{key:2,value:'产生时间'},{key:3,value:'是否有效'},{key:4,value:'失败原因'}],
     };
 
-    let elemtHtml = {
-        thead: '<thead>{text}</thead>',
-        tbody: '<tbody>{text}</tbody>',
-        tr: '<tr>{text}</tr>',
-        td: '<td align="{pos}" width="20%">{text}</td>',
-        select: '<select lay-filter="importTab">{text}</select>',
-        option: '<option value="{value}">{text}</option>',
-        laber: '<laber key="{key}" class="{cls}">{value}</laber>'
+    let elemtHtml={
+        thead:'<thead>{text}</thead>',
+        tbody:'<tbody>{text}</tbody>',
+        tr:'<tr>{text}</tr>',
+        td:'<td align="{pos}" width="20%">{text}</td>',
+        select:'<select lay-filter="importTab">{text}</select>',
+        option:'<option value="{value}">{text}</option>',
+        laber:'<laber key="{key}" class="{cls}">{value}</laber>'
     };
 
-    let commodFun = {
-        dataToHtml: function (data) {
+    let commodFun={
+        dataToHtml:function (data) {
             //保证下拉列表第一个参数为请选择
-            let tmpCache = elemtHtml.option.format({
-                value: ' ', text: '请选择'
+            let tmpCache=elemtHtml.option.format({
+                value: ' ',text: '请选择'
             });
 
-            if (data) {
-                $.each(data, function (i, res) {
-                    if (typeof (res) == 'string') {
-                        res = JSON.parse(res);
+            if(data){
+                $.each(data,function (i,res) {
+                    if(typeof(res)=='string'){
+                        res=JSON.parse(res);
                     }
                     //创建option下拉
-                    tmpCache += elemtHtml.option.format({
-                        value: res.key, text: res.value
+                    tmpCache+=elemtHtml.option.format({
+                        value: res.key,text: res.value
                     });
                 });
 
                 //创建select元素，并添加option节点
-                tmpCache = elemtHtml.select.format({
+                tmpCache=elemtHtml.select.format({
                     text: tmpCache
                 });
             }
 
             return elemtHtml.td.format({
                 text: elemtHtml.laber.format({
-                    key: ' ', value: '请选择', cls: 'tabTrTd'
-                }) + tmpCache,
+                    key: ' ',value: '请选择',cls: 'tabTrTd'
+                })+tmpCache,
                 pos: 'left'
             });
         }
     };
 
-    let tabObj, bufferHtml = '', cols = new Array(basicData.tabTitle.length);
-    (tabObj = $('#mapping-tab')).empty();
+    let tabObj,bufferHtml='',cols=new Array(basicData.tabTitle.length);
+    (tabObj=$('#mapping-tab')).empty();
 
     //添加表格标题
-    $.each(basicData.tabTitle, function (i, res) {
-        bufferHtml += elemtHtml.td.format({
-            pos: 'center', text: res
+    $.each(basicData.tabTitle,function (i,res) {
+        bufferHtml+=elemtHtml.td.format({
+            pos:'center',text: res
         });
     });
 
     tabObj.append(elemtHtml.thead.format({text: bufferHtml}));
 
     //添加表格数据
-    bufferHtml = '';
-    $.each(basicData.pushTitle, function (i, res) {
+    bufferHtml='';
+    $.each(basicData.pushTitle,function (i,res) {
         /**
          * 表格数据结构为,以一行为例
          * <tr>
@@ -375,72 +375,73 @@ function initImportTab(form, excelTitle) {
          *
          */
 
-        let rowHtml = '';
+        let rowHtml='';
         //序号
-        rowHtml += elemtHtml.td.format({pos: 'center', text: (i + 1)});
+        rowHtml+=elemtHtml.td.format({pos:'center',text:(i+1)});
 
         //内部标题
-        rowHtml += elemtHtml.td.format({
-            pos: 'center',
+        rowHtml+=elemtHtml.td.format({
+            pos:'center',
             text: elemtHtml.laber.format({
-                key: res.key, value: res.value, cls: ' '
+                key: res.key,value: res.value,cls: ' '
             })
         });
 
         //数据类型
-        rowHtml += commodFun.dataToHtml(basicData.dataType);
+        rowHtml+=commodFun.dataToHtml(basicData.dataType);
 
         //渠道标题
-        rowHtml += commodFun.dataToHtml(basicData.execlTitle);
+        rowHtml+=commodFun.dataToHtml(basicData.execlTitle);
 
         //添加行数据进入队列
-        bufferHtml += elemtHtml.tr.format({text: rowHtml});
+        bufferHtml+=elemtHtml.tr.format({text: rowHtml});
     });
 
-    tabObj.append(elemtHtml.tbody.format({text: bufferHtml}));
+    tabObj.append(elemtHtml.tbody.format({text:bufferHtml}));
 
-    form.render('select', 'resInfo');
+    form.render('select','resInfo');
 }
 
 /**
  * 导入数据窗口导入按钮事件
  */
-function importEvent() {
-    try {
-        let formData = new FormData();
+function importEvent(){
+    try{
+        let formData=new FormData();
 
-        let tmpArray = [];
-        $.each($('#mapping-tab tbody').find('tr'), function (i, tr) {
-            let laberObj = $(tr).find('laber');
-            let tmpCache = {
-                sysType: $(laberObj[0]).attr('key'),
-                dataType: $(laberObj[1]).attr('key'),
-                excelType: $(laberObj[2]).attr('key')
+        let tmpArray=[];
+        $.each($('#mapping-tab tbody').find('tr'),function (i,tr) {
+            let laberObj=$(tr).find('laber');
+            let tmpCache={
+                sysType:$(laberObj[0]).attr('key'),
+                dataType:$(laberObj[1]).attr('key'),
+                excelType:$(laberObj[2]).attr('key')
             };
 
-            let alertTitle = $(laberObj[0]).text();
-            if (tmpCache.dataType == ' ') {
-                throw new Error('字段“' + alertTitle + '”映射类型不能为空！');
+            let alertTitle=$(laberObj[0]).text();
+            if(tmpCache.dataType==' '){
+                throw new Error('字段“'+alertTitle+'”映射类型不能为空！');
             }
 
-            if (tmpCache.excelType == ' ') {
-                throw new Error('字段“' + alertTitle + '”数据标题不能为空！');
+            if(tmpCache.excelType==' '){
+                throw new Error('字段“'+alertTitle+'”数据标题不能为空！');
             }
 
             tmpArray.push(tmpCache);
         });
 
-        formData.append('file', $excelFile);
-        formData.append('mapping', JSON.stringify(tmpArray));
-        formData.append('channelId', channelId);
-        let response = callInterface('post', '/channel/importExcelData', formData, false, false);
-        if (response.code == 200) {
+        formData.append('file',$excelFile);
+        formData.append('mapping',JSON.stringify(tmpArray));
+        formData.append('channelId',channelId);
+        formData.append('taskId',!taskId?0:taskId);
+        let response=callInterface('post', '/channel/importExcelData',formData, false,false);
+        if(response.code==200){
             $('#upDataDialog').modal("hide");
             throw new Error('导入成功!');
-        } else {
-            throw new Error('导入失败' + response.message)
+        }else{
+            throw new Error('导入失败'+response.message)
         }
-    } catch (errors) {
+    }catch(errors){
         showAlert(errors.message);
     }
 }

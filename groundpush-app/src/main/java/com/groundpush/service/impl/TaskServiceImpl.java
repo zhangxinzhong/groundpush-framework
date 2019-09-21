@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -173,6 +174,9 @@ public class TaskServiceImpl implements TaskService {
             taskCustomMap.put(taskCustomCount.getTaskId(),taskCustomCount.getCustomPopCount());
         }
         for (Task task : list) {
+            BigDecimal ownerRatio =  task.getOwnerRatio();
+            BigDecimal amount = task.getAmount();
+            task.setAppAmount(amount.multiply(ownerRatio.divide(new BigDecimal(100))).setScale(2,BigDecimal.ROUND_FLOOR));
             Integer taskPerson = taskMap.get(task.getTaskId());
             if(taskPerson != null){
                 task.setTaskPerson(taskPerson.toString());

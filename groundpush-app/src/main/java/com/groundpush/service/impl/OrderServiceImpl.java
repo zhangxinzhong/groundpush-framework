@@ -95,8 +95,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer  pageSize) {
         PageHelper.startPage(pageNumber,pageSize);
-        return orderMapper.queryOrder(order);
+        Page<Order> orders = orderMapper.queryOrder(order);
+        return setOrderSurDay(orders);
     }
+
+    private  Page<Order> setOrderSurDay(Page<Order> page){
+        for(Order order : page){
+            dateUtils.getIntervalDays(order.getCreatedTime(),order.getAuditDuration());
+        }
+        return page;
+    }
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -123,13 +132,14 @@ public class OrderServiceImpl implements OrderService {
                 throw  new BusinessException(ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorCode(), ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorMessage());
             }
         }
-        Integer type = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())?Constants.L_O_U_T1:Constants.L_O_U_T2;
+        Integer type = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())?Constants.LOAD_RESULT_T1:Constants.LOAD_RESULT_T2;
 
         OrderLog orderLog = new OrderLog();
         orderLog.setOrderId(condition.getOrderId());
         orderLog.setUnqiueCode(condition.getUniqueCode());
         orderLog.setType(type);
-        orderLog.setImgUrl(condition.getImgUrl());
+        orderLog.setFilePath(condition.getFilePath());
+        orderLog.setFileName(condition.getFileName());
         orderUploadLogService.createOrderUploadLog(orderLog);
 
 
@@ -138,12 +148,12 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 生成订单号
-     * yyyyMMddHHmmssSSS+orderid
+     * MddHHmmssSSS+orderid
      * @return
      */
     private String generateOrderNoByOrderId(Integer orderId){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-        StringBuffer stringBuffer = new StringBuffer().append(LocalDateTime.now().format(dtf)).append(String.format("%07d", orderId));
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MddHHmmssSSS");
+        StringBuffer stringBuffer = new StringBuffer().append(LocalDateTime.now().format(dtf)).append(String.format("%06d", orderId));
         Order order = orderMapper.queryOrderByOrderNo(stringBuffer.toString());
         if(order != null){
             throw new BusinessException(ExceptionEnum.ORDERNO_EXISTS.getErrorCode(), ExceptionEnum.ORDERNO_EXISTS.getErrorMessage());

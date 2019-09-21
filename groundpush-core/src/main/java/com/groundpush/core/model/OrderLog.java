@@ -44,8 +44,10 @@ public class OrderLog implements Serializable {
     @ApiModelProperty("上传类型 1:任务结果集上传 2：申诉上传")
     private Integer type;
 
-    @ApiModelProperty("上传图片url")
-    private String imgUrl;
+    @ApiModelProperty("文件url")
+    private String filePath;
 
+    @ApiModelProperty("文件名称 oss key")
+    private String fileName;
 
 }

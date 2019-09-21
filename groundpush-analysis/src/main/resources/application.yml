@@ -37,6 +37,9 @@ mybatis:
     default-statement-timeout: 30
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+# 渠道数据映射内部规则格式为：{key:1,value:'人员编号'},{key:2,value:'产生时间'},{key:3,value:'是否有效'},{key:4,value:'失败原因'}
 groundpush:
   channel:
     path: /tmp/channel
+    mapping_filed: uniqueCode,produceTime,isEffective,failureResult
+  virt_user_id: 5

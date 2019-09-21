@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.View;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -285,5 +286,8 @@ public class Task implements Serializable {
     @ApiParam("任务用户已用订单")
     @JsonView(SimpleTaskView.class)
     private String customPopCount;
+
+    @ApiModelProperty("app任务列表金额 任务金额*完成人分成百分比")
+    private BigDecimal appAmount;
 
 }

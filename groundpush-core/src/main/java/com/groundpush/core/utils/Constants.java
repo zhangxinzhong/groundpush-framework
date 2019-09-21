@@ -219,10 +219,21 @@ public class Constants {
     /**
      * 订单结果接上传类型  1：上传结果集
      */
-    public static final Integer L_O_U_T1 = 1;
+    public static final Integer LOAD_RESULT_T1 = 1;
 
     /**
      * 订单结果接上传类型  1：申诉上传结果集
      */
+    public static final Integer LOAD_RESULT_T2 = 2;
     public static final Integer L_O_U_T2 = 2;
+
+    /**
+     * 用户隐私
+     */
+    public static final String CUSTOMER_PRIVACY = "privacy";
+
+    /**
+     * 用户协议
+     */
+    public static final String CUSTOMER_PROTOCOL = "protocol";
 }

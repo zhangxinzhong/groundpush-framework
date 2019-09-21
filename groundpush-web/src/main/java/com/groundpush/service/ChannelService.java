@@ -52,11 +52,12 @@ public interface ChannelService {
     /**
      * 添加渠道数据
      * @param channelId
+     * @param taskId
      * @param fileName
      * @param mapping
      * @return
      */
-    Integer addChannelData(Integer channelId, String fileName, String mapping, InputStream inputStream) throws IOException;
+    Integer addChannelData(Integer channelId, Integer taskId,String fileName, String mapping, InputStream inputStream) throws IOException;
 
     /**
      * 获取所有的公司列表信息

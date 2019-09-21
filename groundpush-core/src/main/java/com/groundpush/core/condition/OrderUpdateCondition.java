@@ -27,8 +27,11 @@ public class OrderUpdateCondition {
     @NotNull(message = "订单唯一标识不可为空")
     private String uniqueCode;
 
-    @ApiModelProperty(value = "图片url")
-    private String imgUrl;
+    @ApiModelProperty(value = "文件访问url")
+    private String  filePath;
+
+    @ApiModelProperty(value = "文件名称")
+    private String  fileName;
 
     @ApiModelProperty(value = "订单id")
     private Integer orderId;

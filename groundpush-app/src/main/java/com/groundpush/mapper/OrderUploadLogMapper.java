@@ -14,8 +14,8 @@ public interface OrderUploadLogMapper {
     @Insert({
             "<script>",
             " insert into ",
-            " t_order_log(order_id,created_time,unqiue_code,type) ",
-            " values (#{orderId},current_timestamp,#{unqiueCode},#{type})",
+            " t_order_log(order_id,created_time,unqiue_code,type,file_path,file_name) ",
+            " values (#{orderId},current_timestamp,#{unqiueCode},#{type},#{filePath},#{fileName})",
             "</script>",
     })
     void createOrderUploadLog(OrderLog or);

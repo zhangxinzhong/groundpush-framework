@@ -67,7 +67,6 @@ public class Order implements Serializable {
 
     private LocalDateTime lastModifiedTime;
 
-
     /**
      * 审核原因
      */
@@ -81,13 +80,13 @@ public class Order implements Serializable {
     /**
      * 任务id
      */
-    @NotNull(message = "任务编号不可为空")
+    @NotNull(message = "任务编号")
     private Integer taskId;
 
     /**
      * 客户编号
      */
-    @NotNull(message = "客户编号不可为空")
+    @NotNull(message = "客户编号")
     private Integer customerId;
 
 
@@ -101,12 +100,14 @@ public class Order implements Serializable {
     private Integer bonusType;
 
 
-    @ApiModelProperty("缩略图不可为空")
+    @ApiModelProperty("缩略图")
     private String iconUri;
 
 
-    @ApiModelProperty("任务标题不可为空")
+    @ApiModelProperty("任务标题")
     private String title;
 
+    @ApiModelProperty("任务审核期")
+    private Integer auditDuration;
 
 }

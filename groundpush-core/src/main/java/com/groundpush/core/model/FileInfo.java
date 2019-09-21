@@ -18,7 +18,6 @@ import java.util.List;
  */
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class FileInfo implements Serializable {
 
@@ -40,14 +39,11 @@ public class FileInfo implements Serializable {
     @JsonView(View.class)
     private String unqiueCode;
 
-    public FileInfo(String filePath,String fileName){
+    public FileInfo(String unqiueCode,String filePath,String fileName){
         this.filePath = filePath;
         this.fileName = fileName;
     }
 
-    public FileInfo(String unqiueCode){
-        this.unqiueCode = unqiueCode;
-    }
 
 
 }
