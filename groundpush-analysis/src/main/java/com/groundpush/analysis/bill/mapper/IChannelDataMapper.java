@@ -1,10 +1,9 @@
 package com.groundpush.analysis.bill.mapper;
 
 import com.groundpush.analysis.bill.model.ChannelData;
+import com.groundpush.analysis.bill.model.ChannelExcel;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderBonus;
-import com.groundpush.core.model.Task;
-import com.groundpush.core.model.TaskUri;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -26,8 +25,8 @@ public interface IChannelDataMapper {
      * 获取所有渠道数据文件
      * @return
      */
-    @Select("select id,channel_id,file_name,mapping,create_time from t_channel_data where is_use=0")
-    List<ChannelData> queryAllChannelData();
+    @Select("select id,channel_id,file_name,mapping,create_time from t_channel_excel where is_use=0")
+    List<ChannelExcel> queryAllChannelData();
 
     /**
      * 更新订单状态
@@ -60,4 +59,13 @@ public interface IChannelDataMapper {
     @Insert("insert into t_order_bonus(order_id, customer_id, customer_bonus, bonus_type, status, created_time)values (#{orderId},#{customerId},#{customerBonus},#{bonusType},#{status},current_timestamp)")
     @Options(useGeneratedKeys = true,keyProperty = "bonusId")
     Integer addVirtUserOderBonus(OrderBonus orderBonus);
+
+    /**
+     * 添加渠道数据
+     * @param channelData
+     * @return
+     */
+    @Insert("insert into t_channel_data(channel_id,task_id,unique_code,channel_time,is_effective,is_exist_order,description) " +
+            "values(#{channelId},#{taskId},#{uniqueCode},#{channelTime},#{isEffective},#{isExistOrder},#{description})")
+    Integer addChannelData(ChannelData channelData);
 }

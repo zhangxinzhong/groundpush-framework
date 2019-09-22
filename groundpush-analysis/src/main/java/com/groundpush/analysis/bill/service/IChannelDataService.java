@@ -1,10 +1,9 @@
 package com.groundpush.analysis.bill.service;
 
 import com.groundpush.analysis.bill.model.ChannelData;
+import com.groundpush.analysis.bill.model.ChannelExcel;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderBonus;
-import com.groundpush.core.model.Task;
-import com.groundpush.core.model.TaskUri;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ public interface IChannelDataService {
      * 获取所有的渠道数据
      * @return
      */
-    List<ChannelData> queryChannelDataAll();
+    List<ChannelExcel> queryChannelDataAll();
 
     /**
      * 更新订单状态
@@ -55,4 +54,11 @@ public interface IChannelDataService {
      * @return
      */
     Integer addVirtUserOderBonus(OrderBonus orderBonus);
+
+    /**
+     * 添加渠道数据
+     * @param channelData
+     * @return
+     */
+    Integer addChannelData(ChannelData channelData);
 }

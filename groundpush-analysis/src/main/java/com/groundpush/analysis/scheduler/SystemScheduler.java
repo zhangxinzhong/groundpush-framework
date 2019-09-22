@@ -1,12 +1,8 @@
 package com.groundpush.analysis.scheduler;
 
 import com.groundpush.analysis.bill.model.ChannelData;
+import com.groundpush.analysis.bill.model.ChannelExcel;
 import com.groundpush.analysis.bill.service.IChannelDataService;
-import com.groundpush.core.exception.BusinessException;
-import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.core.model.Order;
-import com.groundpush.core.model.OrderBonus;
-import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.ExcelTools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,11 +14,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -54,7 +48,7 @@ public class SystemScheduler {
     public void getJttUserInfo() {
         count=0L;
         String startTime= LocalDateTime.now().toString();
-        List<ChannelData> cdmArray=channelDataService.queryChannelDataAll();
+        List<ChannelExcel> cdmArray=channelDataService.queryChannelDataAll();
         if(cdmArray.size()>0){
             ExcelTools excelTools=ExcelTools.getInstance();
             cdmArray.forEach(cdm->{
@@ -70,31 +64,47 @@ public class SystemScheduler {
                             String uniqueCode=String.valueOf(analysisResult.get("uniqueCode"));
                             String failureResult=String.valueOf(analysisResult.get("failureResult"));
                             Integer resStatus=Integer.parseInt(String.valueOf(analysisResult.get("isEffective")));
+                            boolean isExistOrder=true;
                             if(channelDataService.updateOrderStatus(uniqueCode,resStatus,failureResult)<=0){
-                                Map<String,Object> task=channelDataService.queryTaskByTaskId(cdm.getTaskId());
-                                Order order=new Order();
-                                order.setOrderNo(String.valueOf(System.nanoTime()));
-                                order.setChannelUri(String.valueOf(task.get("uri")));
-                                order.setUniqueCode(uniqueCode);
-                                order.setType(Constants.ORDER_STATUS_SUCCESS);
-                                order.setSettlementStatus(resStatus);
-                                order.setRemark(failureResult);
-                                Integer orderId=channelDataService.addVirtUserOrder(order);
-                                if(orderId<=0){
-                                    log.error("虚拟用户订单添加失败");
-                                }else {
-                                    OrderBonus orderBonus=new OrderBonus();
-                                    orderBonus.setOrderId(orderId);
-                                    orderBonus.setCustomerId(virtUserId);
-                                    orderBonus.setCustomerBonus(((BigDecimal) task.get("ownerRatio")).
-                                            multiply(new BigDecimal(100)).setScale(0,
-                                            RoundingMode.HALF_UP));
-                                    orderBonus.setBonusType(Constants.TASK_FINISH_CUSTOMER);
-                                    orderBonus.setStatus(1);//未知状态
-                                    Integer orderBonusId=channelDataService.addVirtUserOderBonus(orderBonus);
-                                    log.info(MessageFormat.format("虚拟用户订单分成添加{0}!",orderBonusId>0?"成功":"失败"));
-                                }
+                                isExistOrder=false;
+//                                Map<String,Object> task=channelDataService.queryTaskByTaskId(cdm.getTaskId());
+//                                Order order=new Order();
+//                                order.setOrderNo(String.valueOf(System.nanoTime()));
+//                                order.setChannelUri(String.valueOf(task.get("uri")));
+//                                order.setUniqueCode(uniqueCode);
+//                                order.setType(Constants.ORDER_STATUS_SUCCESS);
+//                                order.setSettlementStatus(resStatus);
+//                                order.setRemark(failureResult);
+//                                Integer orderId=channelDataService.addVirtUserOrder(order);
+//                                if(orderId<=0){
+//                                    log.error("虚拟用户订单添加失败");
+//                                }else {
+//                                    OrderBonus orderBonus=new OrderBonus();
+//                                    orderBonus.setOrderId(orderId);
+//                                    orderBonus.setCustomerId(virtUserId);
+//                                    orderBonus.setCustomerBonus(((BigDecimal) task.get("ownerRatio")).
+//                                            multiply(new BigDecimal(100)).setScale(0,
+//                                            RoundingMode.HALF_UP));
+//                                    orderBonus.setBonusType(Constants.TASK_FINISH_CUSTOMER);
+//                                    orderBonus.setStatus(1);//未知状态
+//                                    Integer orderBonusId=channelDataService.addVirtUserOderBonus(orderBonus);
+//                                    log.info(MessageFormat.format("虚拟用户订单分成添加{0}!",orderBonusId>0?"成功":"失败"));
+//                                }
                             }
+
+                            ChannelData channelData=new ChannelData();
+                            channelData.setChannelId(cdm.getChannelId());
+                            channelData.setTaskId(cdm.getTaskId());
+                            channelData.setUniqueCode(uniqueCode);
+                            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                            try{
+                                channelData.setChannelTime(sdf.parse(String.valueOf(analysisResult.get("produceTime"))));
+                            }catch (Exception e){}
+                            channelData.isEffective(Boolean.valueOf(String.valueOf(analysisResult.get("isEffective"))));
+                            channelData.setDescription(String.valueOf(analysisResult.get("failureResult")));
+                            channelData.setExistOrder(isExistOrder);
+
+                            channelDataService.addChannelData(channelData);
                             count++;
                         }
                     });

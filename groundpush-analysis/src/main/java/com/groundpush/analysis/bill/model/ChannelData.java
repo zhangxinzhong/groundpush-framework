@@ -1,6 +1,7 @@
 package com.groundpush.analysis.bill.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * .
@@ -9,16 +10,20 @@ import java.io.Serializable;
  *
  * @author luzq
  * @version 1.0
- * @createDate 2019-09-19 11:12
+ * @createDate 2019-09-22 20:59
  * @since JDK  1.8
  */
 public class ChannelData implements Serializable {
     private int id;
     private int channelId;
     private int taskId;
-    private String fileName;
-    private String mapping;
-    private String createTime;
+    private String uniqueCode;
+    private Date channelTime;
+    private boolean isEffective;
+    private boolean isExistOrder;
+    private String description;
+    private Date createTime;
+    private byte isShow;
 
     public int getId() {
         return id;
@@ -26,14 +31,6 @@ public class ChannelData implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
     }
 
     public int getChannelId() {
@@ -44,27 +41,67 @@ public class ChannelData implements Serializable {
         this.channelId = channelId;
     }
 
-    public String getFileName() {
-        return fileName;
+    public int getTaskId() {
+        return taskId;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
-    public String getMapping() {
-        return mapping;
+    public String getUniqueCode() {
+        return uniqueCode;
     }
 
-    public void setMapping(String mapping) {
-        this.mapping = mapping;
+    public void setUniqueCode(String uniqueCode) {
+        this.uniqueCode = uniqueCode;
     }
 
-    public String getCreateTime() {
+    public Date getChannelTime() {
+        return channelTime;
+    }
+
+    public void setChannelTime(Date channelTime) {
+        this.channelTime = channelTime;
+    }
+
+    public boolean isEffective(Boolean isEffective) {
+        return this.isEffective;
+    }
+
+    public void setEffective(boolean effective) {
+        isEffective = effective;
+    }
+
+    public boolean isExistOrder() {
+        return isExistOrder;
+    }
+
+    public void setExistOrder(boolean existOrder) {
+        isExistOrder = existOrder;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public byte getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(byte isShow) {
+        this.isShow = isShow;
     }
 }
