@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Channel;
+import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.ExcelUtils;
@@ -66,7 +67,8 @@ public class ChannelController {
     @ResponseBody
     public JsonResp addChannel(@Valid @RequestBody Channel channel, BindingResult bindingResult) {
         try {
-            channel.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            Optional<LoginUserInfo> user = sessionUtils.getLogin();
+            channel.setCreatedBy(user.isPresent()?user.get().getUser().getUserId():null);
             channelService.createChannel(channel);
             return JsonResp.success();
         } catch (Exception e) {

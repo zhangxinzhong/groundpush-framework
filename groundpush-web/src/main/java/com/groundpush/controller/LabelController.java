@@ -70,7 +70,7 @@ public class LabelController {
             if (bindingResult.hasErrors()) {
                 throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
             }
-            label.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            label.setCreatedBy(sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser().getUserId():null);
             labelService.createLabel(label);
             return JsonResp.success();
         } catch (Exception e) {

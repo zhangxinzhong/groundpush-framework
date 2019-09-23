@@ -3,8 +3,11 @@ package com.groundpush.controller;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.FileInfo;
 import com.groundpush.core.utils.BaiduTesseractUtil;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.OSSUnit;
 import com.groundpush.core.utils.StringUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,22 +36,37 @@ public class TaskResultUploadController {
     private StringUtils stringUtils;
 
     @ApiOperation("app任务结果上传(正常上传)：上传附件、图片识别")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "上传文件MultipartFile",name = "file",required = true,paramType = "upload",dataType = "file"),
+            @ApiImplicitParam(value = "上传文件status(1:图像识别 2:上传图片 3:上传头像)",name = "status",required = true,paramType = "upload",dataType = "Integer")
+
+    })
     @PostMapping
     public JsonResp fileUploadIden(@RequestParam MultipartFile file,
+                                        @RequestParam(value = "status",required = true) Integer status,
                                         @RequestParam(value = "filePath",required = false)String filePath,
                                         @RequestParam(value = "fileName",required = false)String fileName) throws Exception {
 
             String uniqueCode = null;
+            String ossFilePath = null;
+            String ossFileName = null;
             try {
-                if(stringUtils.isNotBlank(filePath) && stringUtils.isNotBlank(fileName)){
-                    OSSUnit.delFile(fileName);
-                    log.info("删除oss文件");
+
+                if(Constants.UPLOAD_STATUS_1.equals(status)){
+                    uniqueCode = baiduTesseractUtil.imageToUniqueCode(1,file.getBytes());
+                    log.info("获取唯一识别码："+ uniqueCode);
+                }else{
+                    if(stringUtils.isNotBlank(filePath) && stringUtils.isNotBlank(fileName)){
+                        OSSUnit.delFile(fileName);
+                        log.info("删除oss文件");
+                    }
+                    Map<String, Object> map = OSSUnit.upload(file);
+                    ossFilePath = String.valueOf(map.get("filePath"));
+                    ossFileName = String.valueOf(map.get("fileName"));
+                    log.info("上传文件到oss");
                 }
-                Map<String, Object> map = OSSUnit.upload(file);
-                log.info("上传文件到oss");
-                uniqueCode = baiduTesseractUtil.imageToUniqueCode(1,file.getBytes());
-                log.info("获取唯一识别码："+ uniqueCode);
-                return JsonResp.success(new FileInfo(uniqueCode,String.valueOf(map.get("filePath")),String.valueOf(map.get("fileName"))));
+
+                return JsonResp.success(new FileInfo(uniqueCode,ossFilePath,ossFileName));
             } catch (Exception e) {
                 log.error(e.toString(),e);
                 throw e;

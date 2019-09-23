@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:角色管理模块
@@ -85,7 +86,7 @@ public class RoleController {
             if (bindingResult.hasErrors()) {
                 throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
             }
-            role.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            role.setCreatedBy(sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser().getUserId():null);
             roleService.addRole(role);
             return JsonResp.success();
         } catch (Exception e) {
@@ -128,7 +129,7 @@ public class RoleController {
             if (bindingResult.hasErrors()) {
                 throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
             }
-            role.setLastModifiedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            role.setLastModifiedBy(sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser().getUserId():null);
             roleService.updateRole(role);
             return JsonResp.success();
         } catch (Exception e) {
@@ -148,7 +149,7 @@ public class RoleController {
     public JsonResp addRoleUser(@RequestBody UpmAddCondition upmAddCondition) {
         try {
             upmAddCondition.setStatus(Constants.STATUS_VAILD);
-            upmAddCondition.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            upmAddCondition.setCreatedBy(sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser().getUserId():null);
             roleService.addRoleUser(upmAddCondition);
             return JsonResp.success();
         } catch (Exception e) {
@@ -167,7 +168,8 @@ public class RoleController {
     public JsonResp addPrivilege(@RequestBody UpmAddCondition upmAddCondition) {
         try {
             upmAddCondition.setStatus(Constants.STATUS_VAILD);
-            upmAddCondition.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            Optional<LoginUserInfo> user = sessionUtils.getLogin();
+            upmAddCondition.setCreatedBy(user.isPresent()?user.get().getUser().getUserId():null);
             roleService.addPrivilege(upmAddCondition);
             return JsonResp.success();
         } catch (Exception e) {
@@ -186,7 +188,8 @@ public class RoleController {
     public JsonResp addRoleMenu(@RequestBody UpmAddCondition upmAddCondition) {
         try {
             upmAddCondition.setStatus(Constants.STATUS_VAILD);
-            upmAddCondition.setCreatedBy(sessionUtils.getLoginUserInfo().getUser().getUserId());
+            Optional<LoginUserInfo> user = sessionUtils.getLogin();
+            upmAddCondition.setCreatedBy(user.isPresent()?user.get().getUser().getUserId():null);
             roleService.addRoleMenu(upmAddCondition);
             return JsonResp.success();
         } catch (Exception e) {

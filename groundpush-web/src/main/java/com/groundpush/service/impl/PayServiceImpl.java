@@ -66,7 +66,7 @@ public class PayServiceImpl implements PayService {
                 throw new BusinessException(String.format(ExceptionEnum.ORDER_BONUS_SUCCESS_NOT_EXISTS.getErrorMessage(), orderPay.getTaskId()));
             }
             // 获取当前登录用户
-            User user = sessionUtils.getLoginUserInfo().getUser();
+            User user = sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser():null;
             for (OrderBonus orderBonus : orderBonuses) {
                 orderPay(orderBonus, user);
             }
