@@ -86,7 +86,7 @@ public class UriController {
     @ApiOperation("Uri删除")
     @RequestMapping("/del")
     @ResponseBody
-    public JsonResp delUri(Model model, @RequestBody Uri uri) {
+    public JsonResp delUri(Model model,Uri uri) {
         try {
             uriService.del(uri.getUriId());
             return JsonResp.success();
