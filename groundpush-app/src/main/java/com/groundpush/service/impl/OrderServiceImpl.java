@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
             //根据任务计算结果分成
             orderBonusService.generateOrderBonus(OrderBonusVo.builder().orderId(orderId).customerId(order.getCustomerId()).taskId(order.getTaskId()).build());
         }catch (BusinessException e) {
-            log.error(e.getCode(),e.getMesssage(),e);
+            log.error(e.getCode(),e.getMessage(),e);
             throw e;
         }catch (Exception e){
             log.error(e.getMessage(),e);

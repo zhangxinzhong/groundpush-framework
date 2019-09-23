@@ -1,15 +1,19 @@
 package com.groundpush.core.aop;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.model.OperationLog;
 import com.groundpush.core.model.Order;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +26,9 @@ import java.util.Map;
 @Aspect
 @Component
 public class LogAspect {
+
+    @Resource
+    private ObjectMapper objectMapper;
 
     /**
      * 此处的切点是注解的方式，也可以用包名的方式达到相同的效果
@@ -63,11 +70,11 @@ public class LogAspect {
         System.out.println("方法异常时执行.....");
     }
 
-    private void addOperationLog(JoinPoint joinPoint,long time){
+    private void addOperationLog(JoinPoint joinPoint,long time) throws JsonProcessingException {
         MethodSignature signature = (MethodSignature)joinPoint.getSignature();
         OperationLog operationLog = new OperationLog();
         operationLog.setRunTime(time);
-        operationLog.setArgs(JSON.toJSONString(joinPoint.getArgs()));
+        operationLog.setArgs(objectMapper.writeValueAsString(joinPoint.getArgs()));
         operationLog.setMethod(signature.getDeclaringTypeName() + "." + signature.getName());
         operationLog.setOperId("操作人ID");
         OperationLogDetail annotation = signature.getMethod().getAnnotation(OperationLogDetail.class);
@@ -102,7 +109,6 @@ public class LogAspect {
             for (Map.Entry<Object, Object> entry : map.entrySet()) {
                 Object k = entry.getKey();
                 Object v = entry.getValue();
-                detail = detail.replace("{{" + k + "}}", JSON.toJSONString(v));
             }
         }catch (Exception e){
             e.printStackTrace();

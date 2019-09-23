@@ -62,7 +62,7 @@ public class TaskCollectServiceImpl implements TaskCollectService {
 
             taskCollectMapper.createTaskCollect(taskCollect);
         }catch (BusinessException e) {
-            log.error(e.getMesssage(),e);
+            log.error(e.getMessage(),e);
             throw e;
         }
 
