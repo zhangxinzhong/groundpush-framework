@@ -9,16 +9,17 @@ public class BusinessException extends RuntimeException {
 
     private String code;
 
-    private String messsage;
+    private String message;
 
-    public BusinessException(String messsage) {
-        this.messsage = messsage;
+    public BusinessException(String message) {
+        this.message = message;
     }
 
 
-    public BusinessException(String code, String messsage) {
-        super(messsage);
+    public BusinessException(String code, String message) {
+        super(message);
         this.code = code;
+        this.message = message;
     }
 
     public String getCode() {
@@ -29,11 +30,12 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public String getMesssage() {
-        return messsage;
+    @Override
+    public String getMessage() {
+        return message;
     }
 
-    public void setMesssage(String messsage) {
-        this.messsage = messsage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

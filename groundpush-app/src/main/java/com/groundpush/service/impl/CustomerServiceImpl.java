@@ -109,13 +109,15 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
     public void createCustomer(Customer customer) {
 
         try {
-            if (StringUtils.isBlank(customer.getInviteCode())) {
-                customer.setInviteCode(uniqueCode.getCode());
-            }
+
             if (StringUtils.isBlank(customer.getNickName())) {
                 customer.setNickName(generateNickName());
             }
             customerMapper.createCustomer(customer);
+            if (StringUtils.isBlank(customer.getInviteCode())) {
+                String inviteCode = uniqueCode.getNewCode(customer.getCustomerId());
+                customerMapper.updateCustomerInviteCode(inviteCode,customer.getCustomerId());
+            }
             // 创建账号信息
             CustomerLoginAccount customerLoginAccount = CustomerLoginAccount.builder().customerId(customer.getCustomerId()).type(customer.getType()).loginNo(customer.getLoginNo()).build();
             customerLoginAccountService.createCustomerLoginAccount(customerLoginAccount);

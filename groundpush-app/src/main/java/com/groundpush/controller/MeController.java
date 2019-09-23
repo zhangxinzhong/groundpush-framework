@@ -6,6 +6,7 @@ import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.Customer;
 import com.groundpush.service.CustomerService;
+import com.groundpush.utils.OauthLoginUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +16,11 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -32,25 +36,16 @@ import java.util.Optional;
 public class MeController {
 
     @Resource
-    private CustomerService customerService;
+    private OauthLoginUtils oauthLoginUtils;
 
     @GetMapping
-    public JsonResp getCurrentUser(Authentication authentication) {
+    public JsonResp getCurrentUser() {
         try {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            log.error("login Customer info：{}", userDetails);
-            String mobileNo = userDetails.getUsername();
-            log.error("login Customer mobile：{}", mobileNo);
-            if (StringUtils.isBlank(mobileNo)) {
-                throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getClass().toString());
+            Optional<Customer> customerOptional = oauthLoginUtils.getLogin();
+            if (customerOptional.isPresent()) {
+                return JsonResp.success(customerOptional.get());
             }
-
-            Optional<Customer> customerOptional = customerService.queryCustomerByMobile(mobileNo);
-            if (!customerOptional.isPresent()) {
-                throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getClass().toString());
-            }
-
-            return JsonResp.success(customerService.getCustomer(customerOptional.get().getCustomerId()));
+            throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getClass().toString());
 
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);

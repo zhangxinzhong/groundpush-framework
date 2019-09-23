@@ -245,4 +245,20 @@ public class Constants {
      * 订单类型为推广任务 2
      */
     public static final Integer ORDER_TYPE_2 = 2;
+
+    /**
+     * 图像识别
+     */
+    public static final Integer UPLOAD_STATUS_1 = 1;
+
+
+    /**
+     *上传图片
+     */
+    public static final Integer UPLOAD_STATUS_2 = 2;
+
+    /**
+     *上传头像
+     */
+    public static final Integer UPLOAD_STATUS_3 = 3;
 }

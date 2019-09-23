@@ -97,10 +97,10 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> loadMenuByLoginUser() {
-        LoginUserInfo loginUserInfo = sessionUtils.getLoginUserInfo();
+        Optional<LoginUserInfo> optional = sessionUtils.getLogin();
 
-        if (loginUserInfo != null && loginUserInfo.getUser() != null) {
-            return menuMapper.queryMenuByLoginUser(loginUserInfo.getUser().getUserId());
+        if (optional.isPresent()) {
+            return menuMapper.queryMenuByLoginUser(optional.get().getUser().getUserId());
         }
 
         return Collections.EMPTY_LIST;

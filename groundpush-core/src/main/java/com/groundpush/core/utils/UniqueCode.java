@@ -93,6 +93,32 @@ public class UniqueCode {
         return uniqueId.toString();
     }
 
+    public  String getNewCode(Integer customerId){
+        StringBuffer  strBuffer = new StringBuffer();
+        Random random = new Random();
+        //定义一个固定的0~9的取值字母数组
+        String[] fixedArr = {"a", "b", "c", "d", "e", "f", "g","h", "i", "g"};
+        //定义排除fixedArr的取值字母数组
+        String[] randomArr = {"h", "i", "g", "k", "l", "m", "n","o", "p", "q", "r", "s", "t","u", "v", "w", "x", "y", "z"};
+        //获取id所有位数上的值并依次获取 fixedArr中对应的字母最高不超过8位
+        for(byte  bt : customerId.toString().getBytes()){
+                    if(strBuffer.length() <= 8){
+                strBuffer.append(fixedArr[Integer.parseInt(String.valueOf((char)bt))]);
+            }
+        }
+        //若生成字符小于8位 需要用随机数获取randomArr字母表中字符以补全
+        if(strBuffer.length() < 8){
+             Integer i = 8 - strBuffer.length();
+             for(int j = 0; j < i  ;j ++){
+                 strBuffer.append(randomArr[random.nextInt(16)]);
+             }
+        }
+        return strBuffer.toString().toUpperCase();
+    }
+
+
+
+
     /**
      * 生成订单号
      * yyyyMMddHHmmssSSS+主键

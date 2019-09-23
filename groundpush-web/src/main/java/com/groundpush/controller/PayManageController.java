@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Optional;
 
 
 /**
@@ -64,7 +65,7 @@ public class PayManageController {
     public JsonResp getTaskOrderlist(Integer page, Integer limit) {
 
         try {
-            Page<TaskOrderList> pageAudit  = auditLogService.findAllPayTaskOrderList(page,limit,sessionUtils.getLoginUserInfo().getUser().getUserId());
+            Page<TaskOrderList> pageAudit  = auditLogService.findAllPayTaskOrderList(page,limit,sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser().getUserId():null);
             return JsonResp.success(new PageResult(pageAudit));
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -79,9 +80,12 @@ public class PayManageController {
     public JsonResp addAuditLog(@RequestBody @Valid AuditLog auditLog) {
 
         try {
-            LoginUserInfo info = sessionUtils.getLoginUserInfo();
-            auditLog.setUserId(info.getUser().getUserId());
-            auditLog.setCreatedBy(info.getUser().getUserId());
+            Optional<LoginUserInfo> optional =  sessionUtils.getLogin();
+            if(optional.isPresent()){
+                LoginUserInfo info = optional.get();
+                auditLog.setUserId(info.getUser().getUserId());
+                auditLog.setCreatedBy(info.getUser().getUserId());
+            }
             auditLogService.addAuditLog(auditLog);
             return JsonResp.success();
         } catch (Exception e) {
