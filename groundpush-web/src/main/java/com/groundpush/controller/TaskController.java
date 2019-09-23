@@ -168,4 +168,98 @@ public class TaskController {
         }
         return resultMap;
     }
+
+    //临时数据--省份
+    @RequestMapping(value = "/getShengFen")
+    @ResponseBody
+    public Map<String, Object> getShengFen() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            List<String> shengFenList = new ArrayList<String>();
+            shengFenList.add("北京");
+            shengFenList.add("上海");
+            shengFenList.add("河北省");
+            shengFenList.add("河南省");
+            shengFenList.add("湖北省");
+            shengFenList.add("湖南省");
+            shengFenList.add("广东省");
+            shengFenList.add("山西省");
+            shengFenList.add("陕西省");
+            shengFenList.add("甘肃省");
+            shengFenList.add("内蒙省");
+            shengFenList.add("新疆省");
+            shengFenList.add("四川省");
+            shengFenList.add("浙江省");
+            shengFenList.add("江苏省");
+            shengFenList.add("辽宁省");
+            shengFenList.add("安徽省");
+            shengFenList.add("黑龙江省");
+            //组合适数据
+            List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+            for (String labelName : shengFenList) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("labelName", labelName);
+                mapList.add(map);
+            }
+            resultMap.put("dataList", mapList);
+            resultMap.put("code", "200");
+        } catch (Exception e) {
+            resultMap.put("msg", "获取省份信息列表失败！");
+            resultMap.put("code", "500");
+            log.error(e.toString(), e);
+            throw e;
+        }
+        return resultMap;
+    }
+
+    //临时数据--市区
+    @RequestMapping(value = "/getShiQu")
+    @ResponseBody
+    public Map<String, Object> getShiQu() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            List<String> shengShiQuList = new ArrayList<String>();
+            shengShiQuList.add("北京");
+            shengShiQuList.add("上海");
+            shengShiQuList.add("邢台");
+            shengShiQuList.add("承德");
+            shengShiQuList.add("保定");
+            shengShiQuList.add("沧州");
+            shengShiQuList.add("廊坊");
+            shengShiQuList.add("邯郸");
+            shengShiQuList.add("广州");
+            shengShiQuList.add("深圳");
+            shengShiQuList.add("武汉");
+            shengShiQuList.add("长沙");
+            shengShiQuList.add("西安");
+            shengShiQuList.add("汕头");
+            shengShiQuList.add("达州");
+            shengShiQuList.add("郑州");
+            shengShiQuList.add("南京");
+            shengShiQuList.add("涨州");
+            shengShiQuList.add("汉中");
+            shengShiQuList.add("台州");
+            shengShiQuList.add("晋州");
+            shengShiQuList.add("大连");
+            shengShiQuList.add("丽水");
+            shengShiQuList.add("石家庄");
+            shengShiQuList.add("秦皇岛");
+            shengShiQuList.add("其其哈尔");
+            //组合适数据
+            List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+            for (String labelName : shengShiQuList) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("labelName", labelName);
+                mapList.add(map);
+            }
+            resultMap.put("dataList", mapList);
+            resultMap.put("code", "200");
+        } catch (Exception e) {
+            resultMap.put("msg", "获取市区信息列表失败！");
+            resultMap.put("code", "500");
+            log.error(e.toString(), e);
+            throw e;
+        }
+        return resultMap;
+    }
 }

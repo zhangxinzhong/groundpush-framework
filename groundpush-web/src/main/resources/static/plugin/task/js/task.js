@@ -60,7 +60,7 @@ function provinceLoad(provinces) {
         labelIdList = provinces.split(",");
     }
     $.ajax({
-        url: "/label/getLabelAll",
+        url: "/task/getShengFen",
         async: false,
         type: "POST",
         dataType: 'json',
@@ -103,7 +103,7 @@ function locationLoad(locations) {
         labelIdList = locations.split(",");
     }
     $.ajax({
-        url: "/label/getLabelAll",
+        url: "/task/getShiQu",
         async: false,
         type: "POST",
         dataType: 'json',

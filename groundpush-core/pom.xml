@@ -147,6 +147,16 @@
             <version>2.2.1</version>
         </dependency>
 
+        <!-- spring-boot aop依赖配置引入 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
         <!-- POI相关 -->
         <dependency>
             <groupId>org.apache.poi</groupId>

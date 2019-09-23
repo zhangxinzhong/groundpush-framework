@@ -1,6 +1,7 @@
 package com.groundpush.service;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.model.Privilege;
 import com.groundpush.core.model.Uri;
 
@@ -26,6 +27,7 @@ public interface PrivilegeService {
 
     Page<Privilege> queryAllPrivileges(Integer page, Integer limit);
 
+    @OperationLogDetail
     Page<Privilege> queryTaskAll(Privilege privilege, Integer nowPage, Integer pageSize);
 
     Boolean insert(Privilege privilege);
