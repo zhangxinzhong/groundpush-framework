@@ -17,7 +17,6 @@ import java.util.Optional;
  * @date: 2019-09-10 下午5:04
  */
 @Component
-@ConditionalOnMissingBean(LoginUtils.class)
 public class SessionUtils extends  LoginUtils<LoginUserInfo> {
 
     /**
@@ -26,7 +25,6 @@ public class SessionUtils extends  LoginUtils<LoginUserInfo> {
      */
     @Override
     public Optional<LoginUserInfo> getLogin() {
-
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         LoginUserInfo login =  (LoginUserInfo) session.getAttribute(Constants.SESSION_LOGIN_USER_INFO);
         if(login == null){

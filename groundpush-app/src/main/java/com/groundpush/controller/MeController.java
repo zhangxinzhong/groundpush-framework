@@ -38,9 +38,6 @@ public class MeController {
     @Resource
     private OauthLoginUtils oauthLoginUtils;
 
-    @Resource
-    private CustomerService customerService;
-
     @GetMapping
     public JsonResp getCurrentUser() {
         try {
