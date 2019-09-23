@@ -51,7 +51,7 @@ public class PrivilegeUriController {
     @ApiOperation("权限URI关联表保存服务")
     @RequestMapping("/save")
     @ResponseBody
-    public JsonResp savePrivilegeUri(Model model, @RequestBody PrivilegeUri privilegeUri) {
+    public JsonResp savePrivilegeUri(@RequestBody PrivilegeUri privilegeUri) {
         try {
             privilegeUriService.save(privilegeUri);
             return JsonResp.success();

@@ -53,9 +53,9 @@ public class PayManageController {
 
     @ApiOperation(value = "跳转支付管理")
     @RequestMapping("/toPay")
-    public String toLabel(Model model) {
+    public String toLabel() {
 
-        return "/pay/pay";
+        return "pay/pay";
     }
 
 

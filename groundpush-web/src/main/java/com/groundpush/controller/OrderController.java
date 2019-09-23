@@ -37,7 +37,7 @@ public class OrderController {
     @ApiOperation(value = "跳转订单管理")
     @GetMapping("toOrder")
     public String toOrder(){
-        return "/order/order";
+        return "order/order";
     }
 
 

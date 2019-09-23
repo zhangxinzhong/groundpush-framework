@@ -40,9 +40,9 @@ public class LabelController {
     private SessionUtils sessionUtils;
 
     @RequestMapping("/toLabel")
-    public String toLabel(Model model) {
+    public String toLabel() {
 
-        return "/label/label";
+        return "label/label";
     }
 
 

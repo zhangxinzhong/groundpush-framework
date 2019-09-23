@@ -52,14 +52,14 @@ public class TaskController {
     private TaskAttributeService taskAttributeService;
 
     @RequestMapping("/toTaskList")
-    public String getTaskList(Model model) {
-        return "/task/task";
+    public String getTaskList() {
+        return "task/task";
     }
 
 
     @RequestMapping("/save")
     @ResponseBody
-    public JsonResp saveTask(Model model, @RequestBody Task task) {
+    public JsonResp saveTask(@RequestBody Task task) {
         try {
             taskService.save(task);
             return JsonResp.success();

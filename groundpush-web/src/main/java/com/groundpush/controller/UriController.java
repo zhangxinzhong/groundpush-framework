@@ -33,8 +33,8 @@ public class UriController {
     private UriService uriService;
 
     @RequestMapping("/toUriList")
-    public String toUriList(Model model) {
-        return "/uri/uri";
+    public String toUriList() {
+        return "uri/uri";
     }
 
     /**

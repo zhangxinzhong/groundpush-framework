@@ -52,7 +52,7 @@ public class RoleController {
 
     @GetMapping("/toRole")
     public String toRole() {
-        return "/role/role";
+        return "role/role";
     }
 
 

@@ -32,8 +32,8 @@ public class PrivilegeController {
     private PrivilegeService privilegeService;
 
     @RequestMapping("/toPrivilegeList")
-    public String toPrivilegeList(Model model) {
-        return "/privilege/privilege";
+    public String toPrivilegeList() {
+        return "privilege/privilege";
     }
 
     /**
@@ -56,7 +56,7 @@ public class PrivilegeController {
     @ApiOperation("权限保存服务")
     @RequestMapping("/save")
     @ResponseBody
-    public JsonResp savePrivilege(Model model, @RequestBody Privilege privilege) {
+    public JsonResp savePrivilege(@RequestBody Privilege privilege) {
         try {
             privilegeService.save(privilege);
             return JsonResp.success();

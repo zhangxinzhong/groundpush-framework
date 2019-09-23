@@ -23,9 +23,6 @@ public class HomeController {
     @Resource
     private MenuService menuService;
 
-    @Resource
-    private SessionUtils sessionUtils;
-
     @RequestMapping("/home")
     public String home() {
         return "home/home";
