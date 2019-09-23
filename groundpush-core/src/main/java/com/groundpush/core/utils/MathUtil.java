@@ -65,7 +65,7 @@ public class MathUtil {
         if (null == v2) {
             v2 = BigDecimal.ONE;
         }
-        return v1.multiply(v2);
+        return v1.multiply(v2).setScale(2,BigDecimal.ROUND_UP);
     }
 
     /**

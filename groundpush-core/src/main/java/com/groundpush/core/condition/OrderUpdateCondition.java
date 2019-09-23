@@ -7,8 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * OrderUpdateCondition
@@ -21,9 +21,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderUpdateCondition {
+public class OrderUpdateCondition implements Serializable {
 
 
+    @ApiModelProperty(value = "订单唯一标识")
     @NotNull(message = "订单唯一标识不可为空")
     private String uniqueCode;
 

@@ -45,13 +45,13 @@ public class TaskResultUploadController {
                     log.info("删除oss文件");
                 }
                 Map<String, Object> map = OSSUnit.upload(file);
-                log.info("上传oss文件");
+                log.info("上传文件到oss");
                 uniqueCode = baiduTesseractUtil.imageToUniqueCode(1,file.getBytes());
                 log.info("获取唯一识别码："+ uniqueCode);
-                return JsonResp.success(new FileInfo(uniqueCode!=null?"unqiuecode_123456":uniqueCode,String.valueOf(map.get("filePath")),String.valueOf(map.get("fileName"))));
+                return JsonResp.success(new FileInfo(uniqueCode,String.valueOf(map.get("filePath")),String.valueOf(map.get("fileName"))));
             } catch (Exception e) {
                 log.error(e.toString(),e);
-                return JsonResp.success(new FileInfo("unqiuecode_123456",filePath,fileName));
+                throw e;
             }
     }
 }

@@ -2,11 +2,10 @@ package com.groundpush.analysis.bill.service.impl;
 
 import com.groundpush.analysis.bill.mapper.IChannelDataMapper;
 import com.groundpush.analysis.bill.model.ChannelData;
+import com.groundpush.analysis.bill.model.ChannelExcel;
 import com.groundpush.analysis.bill.service.IChannelDataService;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderBonus;
-import com.groundpush.core.model.Task;
-import com.groundpush.core.model.TaskUri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class ChannelDataServiceImpl implements IChannelDataService {
     private IChannelDataMapper channelDataDao;
 
     @Override
-    public List<ChannelData> queryChannelDataAll() {
+    public List<ChannelExcel> queryChannelDataAll() {
         return channelDataDao.queryAllChannelData();
     }
 
@@ -51,5 +50,10 @@ public class ChannelDataServiceImpl implements IChannelDataService {
     @Override
     public Integer addVirtUserOderBonus(OrderBonus orderBonus) {
         return channelDataDao.addVirtUserOderBonus(orderBonus);
+    }
+
+    @Override
+    public Integer addChannelData(ChannelData channelData) {
+        return channelDataDao.addChannelData(channelData);
     }
 }

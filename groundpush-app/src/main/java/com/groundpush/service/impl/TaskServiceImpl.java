@@ -8,6 +8,7 @@ import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskLabel;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.MathUtil;
 import com.groundpush.mapper.TaskAttributeMapper;
 import com.groundpush.mapper.TaskLabelMapper;
 import com.groundpush.mapper.TaskMapper;
@@ -174,9 +175,8 @@ public class TaskServiceImpl implements TaskService {
             taskCustomMap.put(taskCustomCount.getTaskId(),taskCustomCount.getCustomPopCount());
         }
         for (Task task : list) {
-            BigDecimal ownerRatio =  task.getOwnerRatio();
             BigDecimal amount = task.getAmount();
-            task.setAppAmount(amount.multiply(ownerRatio.divide(new BigDecimal(100))).setScale(2,BigDecimal.ROUND_FLOOR));
+            task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
             Integer taskPerson = taskMap.get(task.getTaskId());
             if(taskPerson != null){
                 task.setTaskPerson(taskPerson.toString());

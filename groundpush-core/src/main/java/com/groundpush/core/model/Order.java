@@ -110,4 +110,27 @@ public class Order implements Serializable {
     @ApiModelProperty("任务审核期")
     private Integer auditDuration;
 
+    @ApiModelProperty("任务金额")
+    private BigDecimal amount;
+
+    @ApiModelProperty("完成人分成")
+    private BigDecimal ownerRatio;
+
+    @ApiModelProperty("推广人分成比")
+    private BigDecimal spreadRatio;
+
+    @ApiModelProperty("订单金额")
+    private String appAmount;
+
+    @ApiModelProperty("简略标题")
+    private String briefTitle;
+
+    @ApiModelProperty("示例图片")
+    private String exampleImg;
+
+    @ApiModelProperty("剩余间隔时间")
+    private Integer intervalDays;
+
+    @ApiModelProperty("是否显示重新上传按钮")
+    private Boolean hasReUpload;
 }
