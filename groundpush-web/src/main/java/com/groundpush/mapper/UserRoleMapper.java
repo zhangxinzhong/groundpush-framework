@@ -1,6 +1,7 @@
 package com.groundpush.mapper;
 
 import com.groundpush.core.model.Role;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -19,5 +20,5 @@ public interface UserRoleMapper {
      * @return
      */
     @Select(" select r.* from t_role r inner join t_role_user ur on ur.role_id  = r.role_id where ur.user_id=#{userId} ")
-    List<Role> queryRoleByUserId(Integer userId);
+    List<Role> queryRoleByUserId(@Param("userId") Integer userId);
 }

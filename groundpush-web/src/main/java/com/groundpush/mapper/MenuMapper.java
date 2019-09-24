@@ -3,10 +3,7 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.MenuQueryCondition;
 import com.groundpush.core.model.Menu;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +54,7 @@ public interface MenuMapper {
      * @param menuId
      */
     @Delete(" delete from t_menu where menu_id=#{menuId} ")
-    void deleteMenu(Integer menuId);
+    void deleteMenu(@Param("menuId") Integer menuId);
 
     /**
      * 通过code 查询菜单
@@ -66,7 +63,7 @@ public interface MenuMapper {
      * @return
      */
     @Select(" select * from t_menu where status = 1 and code=#{code}")
-    Optional<Menu> queryMenuByCode(String code);
+    Optional<Menu> queryMenuByCode(@Param("code") String code);
 
     /**
      * 查询最大条数+1，用于设置菜单seq
@@ -91,7 +88,7 @@ public interface MenuMapper {
      * @return
      */
     @Select(" select * from t_menu where menu_id=#{menuId} ")
-    Optional<Menu> getById(Integer menuId);
+    Optional<Menu> getById(@Param("menuId") Integer menuId);
 
     /**
      * 通过用户编号查询菜单
@@ -100,10 +97,10 @@ public interface MenuMapper {
      */
 
     @Select(" select * from t_menu t inner join t_role_menu rm on rm.menu_id = t.menu_id inner join t_role_user ru on ru.role_id = rm.role_id where ru.user_id=#{userId} ")
-    List<Menu> queryMenuByLoginUser(Integer userId);
+    List<Menu> queryMenuByLoginUser(@Param("userId") Integer userId);
 
     @Select(" select count(0)  from t_role_menu a where a.menu_id = #{menuId} ")
-    Integer findRoleMenuByMenuId(Integer menuId);
+    Integer findRoleMenuByMenuId(@Param("menuId") Integer menuId);
 
 
 }

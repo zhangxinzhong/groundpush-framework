@@ -3,10 +3,7 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.PrivilegeUri;
 import com.groundpush.core.model.Uri;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,15 +24,15 @@ public interface PrivilegeUriMapper {
     @Select({
             "<script>",
                 " select r.* from t_uri r inner join t_privilege_uri pu on pu.uri_id=r.uri_id where r.status=0 and pu.status =0 and pu.privilege_id in ",
-                "<foreach collection='list' item='privilegeId' open='(' separator=',' close=')'>",
+                "<foreach collection='privilegeIds' item='privilegeId' open='(' separator=',' close=')'>",
                     "#{privilegeId}",
                 "</foreach>",
             "</script>"
     })
-    List<Uri> queryUriByPrivilegeId(List<Integer> privilegeIds);
+    List<Uri> queryUriByPrivilegeId(@Param("privilegeIds") List<Integer> privilegeIds);
 
     @Select(" select distinct u.* from t_uri u inner join t_privilege_uri pu on pu.uri_id = u.uri_id  inner join t_role_privilege rp on rp.privilege_id = pu.privilege_id  inner join t_role_user ur on ur.role_id = rp.role_id inner join t_user usr on usr.user_id=ur.user_id where usr.login_no=#{loginNo} ")
-    List<Uri> queryUriByLoginNo(String loginNo);
+    List<Uri> queryUriByLoginNo(@Param("loginNo") String loginNo);
 
     @Select("select pu.*,u.uri_name uriName,u.uri_pattern uriPattern from t_privilege_uri pu join t_uri u on pu.uri_id = u.uri_id   where pu.privilege_id = #{privilegeId} ")
     Page<PrivilegeUri> queryPrivilegeUriAll(PrivilegeUri privilegeUri);
@@ -73,7 +70,7 @@ public interface PrivilegeUriMapper {
     Integer batchInsertPriUri(PrivilegeUri privilegeUri);
 
     @Delete("delete from t_privilege_uri where privilege_id = #{privilegeId} ")
-    Integer delByPriId(Integer privilegeId);
+    Integer delByPriId(@Param("privilegeId") Integer privilegeId);
 
     @Delete("delete from t_privilege_uri where privilege_id = #{privilegeId} and uri_id = #{uriId}")
     Integer del(PrivilegeUri privilegeUri);

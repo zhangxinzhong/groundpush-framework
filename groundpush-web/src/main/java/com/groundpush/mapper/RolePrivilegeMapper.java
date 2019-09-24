@@ -1,6 +1,7 @@
 package com.groundpush.mapper;
 
 import com.groundpush.core.model.Privilege;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -25,5 +26,5 @@ public interface RolePrivilegeMapper {
                     "</foreach>",
             "</script>"
     })
-    List<Privilege> queryPrivilegeByRoleIds(List roleIds);
+    List<Privilege> queryPrivilegeByRoleIds(@Param("roleIds") List roleIds);
 }

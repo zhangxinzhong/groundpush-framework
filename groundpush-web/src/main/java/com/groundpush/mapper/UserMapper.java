@@ -91,5 +91,5 @@ public interface UserMapper {
     void createUser(User user);
 
     @Select(" select count(1) from t_role_user a where a.user_id = #{userId} ")
-    Integer findRoleUserByUserId(Integer userId);
+    Integer findRoleUserByUserId(@Param("userId") Integer userId);
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.model.AuditLog;
 import com.groundpush.core.model.TaskOrderList;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDateTime;
@@ -54,7 +55,7 @@ public interface AuditLogMapper {
            "    d.task_id,d.created_time ",
            "</script>"
    })
-   Page<TaskOrderList> getAllPayTaskOrderList(Integer userId);
+   Page<TaskOrderList> getAllPayTaskOrderList(@Param("userId") Integer userId);
 
 
    @Insert({
@@ -75,8 +76,8 @@ public interface AuditLogMapper {
    void createAuditLog(AuditLog auditLog);
 
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') and audit_status = 1 ")
-   List<AuditLog> getAuditPassList(Integer taskId,Date orderTime);
+   List<AuditLog> getAuditPassList(@Param("taskId") Integer taskId,@Param("orderTime") Date orderTime);
 
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ")
-   List<AuditLog> getAuditListByTaskIdAndTime(Integer taskId, Date orderTime);
+   List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") Date orderTime);
 }
