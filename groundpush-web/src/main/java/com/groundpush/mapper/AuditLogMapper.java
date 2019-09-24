@@ -16,7 +16,8 @@ public interface AuditLogMapper {
 
 
    /**
-    * 获取支付管理中 任务订单审核列表
+    * 分页查询支付管理中 任务订单审核列表
+    * @param userId
     */
    @Select({
            "<script>",
@@ -58,6 +59,10 @@ public interface AuditLogMapper {
    Page<TaskOrderList> getAllPayTaskOrderList(@Param("userId") Integer userId);
 
 
+   /**
+    * 创建订单记录
+    * @param auditLog
+    */
    @Insert({
            "<script>",
            " insert into t_audit_log(created_time,order_time,task_id,audit_status,audit_opinion,status,remark,user_id,created_by) ",
@@ -75,9 +80,21 @@ public interface AuditLogMapper {
    })
    void createAuditLog(AuditLog auditLog);
 
+   /**
+    * 通过任务id和订单时间获取订单记录
+    * @param taskId
+    * @param orderTime
+    * @return
+    */
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') and audit_status = 1 ")
    List<AuditLog> getAuditPassList(@Param("taskId") Integer taskId,@Param("orderTime") Date orderTime);
 
+   /**
+    *  通过任务id和订单时间获取订单记录
+    * @param taskId
+    * @param orderTime
+    * @return
+    */
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ")
    List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") Date orderTime);
 }

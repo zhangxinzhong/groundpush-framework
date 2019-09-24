@@ -156,18 +156,33 @@ public interface RoleUserPrivilegeMenuMapper {
     Integer findAllUpmsByRoleId(@Param("roleId") Integer roleId);
 
 
+    /**
+     * 获取关联某个角色的所有用户id
+     * @param roleId
+     * @return
+     */
     @Select({"<script>",
             " select b.user_id  from t_user b where b.user_id in ",
             " (select c.user_id from t_role_user c where c.role_id = #{roleId}) ",
             "</script>"})
     List<Integer> findAllUserIdsByRoleId(@Param("roleId") Integer roleId);
 
+    /**
+     * 获取关联某个角色的所有权限id
+     * @param roleId
+     * @return
+     */
     @Select({"<script>",
             " select b.privilege_id  from t_privilege b where b.privilege_id in ",
             " (select c.privilege_id from t_role_privilege c where c.role_id = #{roleId}) ",
             "</script>"})
     List<Integer> findAllPriIdsByRoleId(@Param("roleId") Integer roleId);
 
+    /**
+     * 获取关联某个角色的所有菜单id
+     * @param roleId
+     * @return
+     */
     @Select({"<script>",
             " select b.menu_id from t_menu b where b.menu_id in ",
             " (select c.menu_id from t_role_menu c where c.role_id = #{roleId}) ",

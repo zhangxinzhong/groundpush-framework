@@ -68,9 +68,21 @@ public interface ChannelMapper {
     @Select(" select * from t_channel where channel_id=#{channelId}")
     Optional<Channel> queryChannelById(@Param("channelId") Integer channelId);
 
+    /**
+     * 添加渠道数据相关excel表信息
+     * @param channelId
+     * @param taskId
+     * @param fileName
+     * @param mapping
+     * @return
+     */
     @Insert("insert into t_channel_excel(channel_id,task_id,file_name,mapping) values(#{channelId},#{taskId},#{fileName},#{mapping})")
     Integer addChannelData(@Param("channelId") Integer channelId,@Param("taskId") Integer taskId, @Param("fileName")String fileName, @Param("mapping")String mapping);
 
+    /**
+     * 获取所有渠道
+     * @return
+     */
     @Select(" select * from t_channel")
     List<Channel> getChannelAll();
 

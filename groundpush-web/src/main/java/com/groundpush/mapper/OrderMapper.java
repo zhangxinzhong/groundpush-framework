@@ -119,9 +119,22 @@ public interface OrderMapper {
     void updateOrderNoByOrderId(Order order);
 
 
+    /**
+     * 通过任务id和时间修改订单状态
+     * @param status
+     * @param orderTime
+     * @param taskId
+     */
     @Update("  update  t_order b set b.status=#{status}  where  DATE_FORMAT(b.created_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') AND b.order_id in (SELECT a.order_id FROM t_order_task_customer a where a.task_id = #{taskId})  ")
     void updateOrderStatusByTaskIdAndTime(@Param("status") Integer status, @Param("orderTime") Date orderTime, @Param("taskId") Integer taskId);
 
+    /**
+     * 通过任务、时间、状态分页查询所有订单列表
+     * @param taskId
+     * @param orderTime
+     * @param flag
+     * @return
+     */
     @Select({
             "<script>",
             " select ",
@@ -144,6 +157,11 @@ public interface OrderMapper {
     Page<OrderList> queryOrderListByTaskIdAndOrderId(@Param("taskId") Integer taskId, @Param("orderTime") Date orderTime, @Param("flag") Integer flag);
 
 
+    /**
+     * 通过关键字以订单或客户昵称分页查询所有订单
+     * @param key
+     * @return
+     */
     @Select({
             "<script>",
             " select ",
@@ -168,6 +186,10 @@ public interface OrderMapper {
     Page<Order> queryOrderByKeys(@Param("key") String key);
 
 
+    /**
+     * 修改订单
+     * @param order
+     */
     @Update({
             "<script>",
             " update t_order set  ",

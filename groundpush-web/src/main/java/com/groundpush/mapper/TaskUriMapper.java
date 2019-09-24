@@ -16,9 +16,19 @@ import java.util.Optional;
  */
 public interface TaskUriMapper {
 
+    /**
+     * 通过任务id删除与uri之间的关联
+     * @param taskId
+     * @return
+     */
     @Delete(" delete from t_task_uri where task_id = #{taskId} ")
     Integer del(@Param("taskId") int taskId);
 
+    /**
+     * 添加任务与uri的关联
+     * @param taskUris
+     * @return
+     */
     @Insert({
             "<script>",
             " insert into t_task_uri (uri, created_by,created_time, last_modified_by, last_modified_time, task_id) ",
