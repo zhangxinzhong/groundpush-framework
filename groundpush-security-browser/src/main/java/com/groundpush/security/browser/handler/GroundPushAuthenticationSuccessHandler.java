@@ -2,6 +2,7 @@ package com.groundpush.security.browser.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.security.core.exception.ValidateCodeException;
@@ -45,7 +46,7 @@ public class GroundPushAuthenticationSuccessHandler extends SavedRequestAwareAut
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(JsonResp.success(authentication)));
         } else {
-            throw new ValidateCodeException("获取登录用户信息失败");
+            throw new ValidateCodeException(ExceptionEnum.USER_NOT_EXISTS.getErrorCode(), ExceptionEnum.USER_NOT_EXISTS.getErrorMessage());
         }
 
     }

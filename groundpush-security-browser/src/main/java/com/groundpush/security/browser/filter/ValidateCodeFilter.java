@@ -38,12 +38,12 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
-            if(StringUtils.equalsIgnoreCase("/authentication/form", request.getRequestURI()) && StringUtils.equalsIgnoreCase("post", request.getMethod())){
+        try {
+            if (StringUtils.equalsIgnoreCase("/authentication/form", request.getRequestURI()) && StringUtils.equalsIgnoreCase("post", request.getMethod())) {
                 log.info("进入图片验证码filter");
-                validateCode(request,response);
+                validateCode(request, response);
             }
-        }catch (ValidateCodeException e){
+        } catch (ValidateCodeException e) {
             groundPushAuthenticationFailHandler.onAuthenticationFailure(request, response, e);
             return;
         }
@@ -53,28 +53,28 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
     }
 
-    private void validateCode(HttpServletRequest request,HttpServletResponse response) throws ValidateCodeException {
+    private void validateCode(HttpServletRequest request, HttpServletResponse response) throws ValidateCodeException {
         ImageCode imageCode = (ImageCode) sessionValidateCodeRepository.get(new ServletWebRequest(request, response), ValidateCodeType.IMAGE);
         String valiCode = request.getParameter("imageCode");
 
-        if(imageCode == null){
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
+        if (imageCode == null) {
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
         }
 
         //验证码不为空
-        if(StringUtils.isBlank(imageCode.getCode()) || StringUtils.isBlank(valiCode)){
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
+        if (StringUtils.isBlank(imageCode.getCode()) || StringUtils.isBlank(valiCode)) {
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
         }
 
         //比对过期时间
         LocalDateTime currentDate = LocalDateTime.now();
-        if(imageCode.getExpireTime().isBefore(currentDate)){
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorMessage());
+        if (imageCode.getExpireTime().isBefore(currentDate)) {
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorCode(), ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorMessage());
         }
 
         //验证码不匹配
-        if(!StringUtils.equalsIgnoreCase(imageCode.getCode(),valiCode)){
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorMessage());
+        if (!StringUtils.equalsIgnoreCase(imageCode.getCode(), valiCode)) {
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorMessage());
         }
         //删除图片验证码
         sessionValidateCodeRepository.remove(new ServletWebRequest(request, response), ValidateCodeType.IMAGE);

@@ -35,7 +35,7 @@ public class SendSms {
     public void sendSms(String code, String mobileNo) {
 
         if (StringUtils.isBlank(code)) {
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
         }
         log.info("开始发送验证码：{} ,当前时间：{}", code, LocalDateTime.now());
         DefaultProfile profile = DefaultProfile.getProfile(securityProperties.getSms().getSmsRegionId(), securityProperties.getSms().getSmsAccessKeyId(), securityProperties.getSms().getAccessKeySecret());
@@ -65,10 +65,10 @@ public class SendSms {
             log.info("验证码发送完成,当前时间：{} 。 响应：{}", LocalDateTime.now(), response.getData());
         } catch (ServerException e) {
             log.error(e.getMessage(), e);
-            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
+            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorCode(), ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         } catch (ClientException e) {
             log.error(e.getMessage(), e);
-            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
+            throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorCode(), ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         }
     }
 }

@@ -23,6 +23,7 @@ public enum ExceptionEnum {
     ,EXCEPTION_UNKNOWN_LOGIN_TYPE("O0000", "未知的登录方式！")
     , TASK_NOT_EXISTS("T10001", "任务不存在")
     , TASK_NOT_AMOUNT("T10002", "任务没有分红")
+    ,TASK_COLLECT_EXCEPTION("T10003", "任务已经收藏，不可重复收藏！")
     , ORDER_CREATE_ORDER_FAIL("O20001", "订单创建失败，系统异常请联系管理员！")
     , ORDER_IS_EXPIRE("O20002", "订单已经过期不可删除")
     , ORDER_NOT_EXISTS("O20003", "订单不存在")
@@ -54,7 +55,7 @@ public enum ExceptionEnum {
     , USER_AND_DEL_ERROR("U70003", "此用户与角色关联不可删除，与角色解绑后才可删除！")
     , MENU_AND_DEL_ERROR("M80001", "此菜单与角色关联不可删除，与角色解绑后才可删除！")
     , PRI_AND_DEL_ERROR("PR90001","此权限与角色关联不可删除，与角色解绑后才可删除！")
-    ,TASK_COLLECT_EXCEPTION("CO1001", "任务已经收藏，不可重复收藏！");
+    ;
 
 
     private String errorCode;
