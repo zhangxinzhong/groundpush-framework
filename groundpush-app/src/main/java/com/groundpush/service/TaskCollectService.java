@@ -41,6 +41,6 @@ public interface TaskCollectService {
      * @param taskId
      * @return
      */
-    Optional<TaskCollect> queryCollectsByTaskId(Integer taskId);
+    Optional<TaskCollect> queryCollectsByTaskId(Integer taskId,Integer customerId);
 
 }

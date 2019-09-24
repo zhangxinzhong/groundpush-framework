@@ -82,8 +82,8 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     }
 
     @Override
-    public Optional<TaskCollect> queryCollectsByTaskId(Integer taskId) {
-        return taskCollectMapper.queryCollectsByTaskId(taskId);
+    public Optional<TaskCollect> queryCollectsByTaskId(Integer taskId,Integer customerId) {
+        return taskCollectMapper.queryCollectsByTaskId(taskId,customerId);
     }
 
 }
