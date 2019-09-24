@@ -63,13 +63,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> getTask(Integer id) {
+    public Optional<Task> getTask(Integer id,Integer taskType) {
         Optional<Task> optionalTask = taskMapper.getTask(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             //任务添加属性
             addTaskAttr(task);
 
+            if(taskType != null){
+                //获取 任务申请详情页面 或 任务推广页面 金额
+                BigDecimal ratio = Constants.TASK_TYPE_1.equals(taskType)?task.getOwnerRatio():task.getSpreadRatio();
+                task.setAppAmount(MathUtil.multiply(MathUtil.divide(ratio, Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
+            }
             return Optional.of(task);
         }
         return Optional.empty();
@@ -135,7 +140,7 @@ public class TaskServiceImpl implements TaskService {
             task.setGetTaskAttributesSet(addTaskAttributeToSet(getTasks));
             // 申请任务 添加属性到map中方便app端使用
             task.setSpreadTaskAttributesSet(addTaskAttributeToSet(spreadTasks));
-            //
+
         }
 
     }

@@ -46,7 +46,7 @@ public class TaskCollectServiceImpl implements TaskCollectService {
 
 
             //验证任务是否存在
-            Optional<Task> optionalTask = taskService.getTask(taskCollect.getTaskId());
+            Optional<Task> optionalTask = taskService.getTask(taskCollect.getTaskId(),null);
             if(!optionalTask.isPresent()){
                 throw new BusinessException(ExceptionEnum.TASK_NOT_EXISTS.getErrorCode(), ExceptionEnum.TASK_NOT_EXISTS.getErrorMessage());
             }

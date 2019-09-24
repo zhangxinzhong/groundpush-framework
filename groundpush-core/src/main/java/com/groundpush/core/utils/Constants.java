@@ -247,4 +247,15 @@ public class Constants {
      *上传头像
      */
     public static final Integer UPLOAD_STATUS_3 = 3;
+
+    /**
+     *任务类型  申请1
+     */
+    public static final Integer TASK_TYPE_1 = 1;
+
+
+    /**
+     *任务类型  推广2
+     */
+    public static final Integer TASK_TYPE_2 = 2;
 }
