@@ -39,4 +39,12 @@ public interface OrderService {
      */
     void updateOrderData(Order order);
 
+    /**
+     * 修改订单状态
+     * @param uniqueCode 渠道方订单唯一标识
+     * @param settlementStatus 订单状态
+     * @param remark 渠道方失败原因
+     * @return
+     */
+    Integer updateOrderByUniqueCode(String uniqueCode, Integer settlementStatus, String remark);
 }

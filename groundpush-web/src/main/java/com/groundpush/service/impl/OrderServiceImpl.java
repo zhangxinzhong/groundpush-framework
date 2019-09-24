@@ -44,4 +44,8 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateOrderData(order);
     }
 
+    @Override
+    public Integer updateOrderByUniqueCode(String uniqueCode, Integer settlementStatus, String remark) {
+        return orderMapper.updateOrderByUniqueCode(uniqueCode,settlementStatus,remark);
+    }
 }

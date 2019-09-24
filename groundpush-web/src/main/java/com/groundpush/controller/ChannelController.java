@@ -7,14 +7,22 @@ import com.google.gson.JsonObject;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Channel;
+import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.ExcelTools;
 import com.groundpush.core.utils.ExcelUtils;
 import com.groundpush.core.utils.SessionUtils;
+import com.groundpush.service.ChannelDataService;
 import com.groundpush.service.ChannelService;
+import com.groundpush.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,19 +31,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Slf4j
 @Controller
 @RequestMapping("/channel")
 public class ChannelController {
 
+    @Value("${groundpush.channel.mapping_filed}")
+    private String mappingFiled;
+
     @Resource
     private ChannelService channelService;
 
+    @Resource
+    private OrderService orderService;
+
+    @Resource
+    private ChannelDataService channelDataService;
 
     @Resource
     private SessionUtils sessionUtils;
@@ -68,7 +83,7 @@ public class ChannelController {
     public JsonResp addChannel(@Valid @RequestBody Channel channel, BindingResult bindingResult) {
         try {
             Optional<LoginUserInfo> user = sessionUtils.getLogin();
-            channel.setCreatedBy(user.isPresent()?user.get().getUser().getUserId():null);
+            channel.setCreatedBy(user.isPresent() ? user.get().getUser().getUserId() : null);
             channelService.createChannel(channel);
             return JsonResp.success();
         } catch (Exception e) {
@@ -137,9 +152,38 @@ public class ChannelController {
     @ApiOperation(value = "导入数据")
     @RequestMapping(value = "/importExcelData", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId,Integer taskId) throws Exception {
+    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId, Integer taskId) throws Exception {
         try {
-            return JsonResp.success(channelService.addChannelData(channelId,taskId, file.getOriginalFilename(), mapping, file.getInputStream()));
+            ExcelTools excelTools = ExcelTools.getInstance();
+            final Object[] title = excelTools.getExcelTitle();
+            excelTools.openExcel(file.getInputStream()).setRowResult(100, (sheetName, countRow, resultCount, result) -> {
+                List<ChannelData> cds = new ArrayList<>();
+                result.stream().forEach(channel -> {
+                    Object[] excelRowData = channel;
+                    if (!StringUtils.equals(String.valueOf(excelRowData[0]), String.valueOf(title[0]))) {
+                        Map<String, Object> analysisResult = analysisSingletData(channel, mapping);
+                        String uniqueCode = String.valueOf(analysisResult.get("uniqueCode"));
+                        String failureResult = String.valueOf(analysisResult.get("failureResult"));
+                        Integer resStatus = Integer.parseInt(String.valueOf(analysisResult.get("isEffective")));
+                        boolean isExistOrder = true;
+                        if (orderService.updateOrderByUniqueCode(uniqueCode, resStatus, failureResult) <= 0) {
+                            isExistOrder = false;
+                        }
+
+                        ChannelData channelData = new ChannelData();
+                        channelData.setChannelId(channelId);
+                        channelData.setTaskId(taskId);
+                        channelData.setUniqueCode(uniqueCode);
+                        channelData.setExistOrder(isExistOrder);
+                        channelData.setChannelTime(LocalDateTime.parse(String.valueOf(analysisResult.get("produceTime"))));
+                        channelData.setEffective(Boolean.valueOf(String.valueOf(analysisResult.get("isEffective"))));
+                        channelData.setDescription(String.valueOf(analysisResult.get("failureResult")));
+                        cds.add(channelData);
+                    }
+                });
+                channelDataService.createChannelData(cds);
+            });
+            return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
@@ -150,7 +194,7 @@ public class ChannelController {
     @RequestMapping(value = "/getChannelAll")
     @ResponseBody
     @JsonView(Channel.OutChannelView.class)
-    public Map<String, Object>  getChannelAll() {
+    public Map<String, Object> getChannelAll() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             List<Channel> channelList = channelService.getChannelAll();
@@ -165,5 +209,25 @@ public class ChannelController {
             throw e;
         }
         return resultMap;
+    }
+
+    /**
+     * 处理单条数据
+     *
+     * @param result  单条数据
+     * @param mapping 映射关系
+     * @return
+     */
+    private Map<String, Object> analysisSingletData(Object[] result, String mapping) {
+        Map<String, Object> res = new LinkedHashMap<>();
+
+        /** excel数据映射到系统内部关系 */
+        JSONArray mappingRelation = new JSONArray(mapping);
+        String[] mFiled = mappingFiled.split(",");
+        mappingRelation.forEach(obj -> {
+            JSONObject mappingObj = (JSONObject) obj;
+            res.put(mFiled[mappingObj.getInt("sysType") - 1], result[mappingObj.getInt("excelType")]);
+        });
+        return res;
     }
 }
