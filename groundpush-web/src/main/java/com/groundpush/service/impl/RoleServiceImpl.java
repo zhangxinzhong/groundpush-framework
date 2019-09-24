@@ -57,21 +57,32 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void addRoleUser(UpmAddCondition upmAddCondition) {
         rupmMapper.delRoleUser(upmAddCondition.getRoleId());
-        rupmMapper.addRoleUser(upmAddCondition);
+        List<Integer> ids = upmAddCondition.getIds();
+        if(ids != null && ids.size() > 0){
+            rupmMapper.addRoleUser(upmAddCondition);
+        }
+
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addPrivilege(UpmAddCondition upmAddCondition) {
         rupmMapper.delRolePrivilege(upmAddCondition.getRoleId());
-        rupmMapper.addPrivilege(upmAddCondition);
+        List<Integer> ids = upmAddCondition.getIds();
+        if(ids != null && ids.size() > 0){
+            rupmMapper.addPrivilege(upmAddCondition);
+        }
+
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addRoleMenu(UpmAddCondition upmAddCondition) {
         rupmMapper.delRoleMenu(upmAddCondition.getRoleId());
-        rupmMapper.addRoleMenu(upmAddCondition);
+        List<Integer> ids = upmAddCondition.getIds();
+        if(ids != null && ids.size() > 0){
+            rupmMapper.addRoleMenu(upmAddCondition);
+        }
     }
 
 

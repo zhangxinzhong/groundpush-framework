@@ -2,9 +2,11 @@ package com.groundpush.controller;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Privilege;
 import com.groundpush.core.model.PrivilegeUri;
+import com.groundpush.core.utils.SessionUtils;
 import com.groundpush.service.PrivilegeService;
 import com.groundpush.service.PrivilegeUriService;
 import io.swagger.annotations.ApiModel;
@@ -32,6 +34,9 @@ public class PrivilegeUriController {
     @Resource
     private PrivilegeUriService privilegeUriService;
 
+    @Resource
+    private SessionUtils sessionUtils;
+
     /**
      * 分页查询权限
      */
@@ -53,7 +58,9 @@ public class PrivilegeUriController {
     @ResponseBody
     public JsonResp savePrivilegeUri(@RequestBody PrivilegeUri privilegeUri) {
         try {
-            privilegeUriService.save(privilegeUri);
+            Optional<LoginUserInfo> optional = sessionUtils.getLogin();
+            privilegeUri.setCreatedBy(optional.isPresent()?optional.get().getUser().getUserId():null);
+            privilegeUriService.batchSave(privilegeUri);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);

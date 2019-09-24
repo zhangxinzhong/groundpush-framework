@@ -15,6 +15,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,15 +50,11 @@ public class PrivilegeUriServiceImpl implements PrivilegeUriService {
     }
 
     @Override
-    public Boolean save(PrivilegeUri privilegeUri) {
-        Boolean result = true;
-        List<PrivilegeUri> privilegeUriList = privilegeUriMapper.getPrivilegeUriList(privilegeUri);
-        if (privilegeUriList != null && privilegeUriList.size() > 0) {
-            result = this.update(privilegeUri);
-        }else{
-            result = this.insert(privilegeUri);
+    public void batchSave(PrivilegeUri privilegeUri) {
+        privilegeUriMapper.delByPriId(privilegeUri.getPrivilegeId());
+        if(privilegeUri.getIds() != null && privilegeUri.getIds().size() > 0){
+            privilegeUriMapper.batchInsertPriUri(privilegeUri);
         }
-        return result;
     }
 
     @Override

@@ -62,6 +62,19 @@ public interface PrivilegeUriMapper {
     @Select("select * from t_privilege_uri where privilege_id = #{privilegeId} and uri_id = #{uriId}")
     List<PrivilegeUri> getPrivilegeUriList(PrivilegeUri privilegeUri);
 
+    @Select({
+            "<script>",
+            " insert into t_privilege_uri(privilege_id, uri_id,status, created_by, created_time) values ",
+            "<foreach collection='ids' item='id' open='(' close=')' separator='),('>",
+            "#{privilegeId},#{id},#{status},#{createdBy},current_timestamp",
+            "</foreach>",
+            "</script>"
+    })
+    Integer batchInsertPriUri(PrivilegeUri privilegeUri);
+
+    @Delete("delete from t_privilege_uri where privilege_id = #{privilegeId} ")
+    Integer delByPriId(Integer privilegeId);
+
     @Delete("delete from t_privilege_uri where privilege_id = #{privilegeId} and uri_id = #{uriId}")
     Integer del(PrivilegeUri privilegeUri);
 }

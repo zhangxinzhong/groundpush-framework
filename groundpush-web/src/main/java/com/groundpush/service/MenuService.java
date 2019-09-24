@@ -65,4 +65,12 @@ public interface MenuService {
      * @return
      */
     List<Menu> loadMenuByLoginUser();
+
+
+    /**
+     * 判断是否可删除菜单
+     * @param menuId
+     * @return
+     */
+    Boolean findRoleMenuByMenuId(Integer menuId);
 }

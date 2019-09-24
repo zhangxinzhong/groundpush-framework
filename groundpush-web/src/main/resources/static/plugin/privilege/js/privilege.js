@@ -2,6 +2,8 @@ layui.use(['table', 'form', 'layer'], function () {
     var table = layui.table;
     var form = layui.form;
     var layer = layui.layer;
+    var ids = [];
+    var myLinkData;
 
     //自定义验证规则
     form.verify({
@@ -106,13 +108,15 @@ layui.use(['table', 'form', 'layer'], function () {
                     parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                         if (!Utils.isEmpty(res)) {
                             return {
-
                                 "code": res.code, //解析接口状态
                                 "msg": res.message, //解析提示文本
                                 "count": res.data.total, //解析数据长度
                                 "data": res.data.rows //解析数据列表
                             };
                         }
+                    }
+                    ,done: function(res, curr, count){
+                       $("#modalPrivilegeId").val(data.privilegeId);
                     }
                 });
             }, reloadPrivilegeUriTable: function () {
@@ -140,7 +144,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     if (rep.code == '200') {
                         eventListener.hideEditPrivilegeDialog();
                         eventListener.reloadPrivilegeTable();
-                        layer.msg('权限添加成功');
+                        layer.msg('权限修改成功');
                     }
                 }, function (rep) {
                     layer.msg(rep.message);
@@ -163,17 +167,17 @@ layui.use(['table', 'form', 'layer'], function () {
                 Utils.deleteAjax("/privilege/del", {privilegeId: data.privilegeId}, function (rep) {
                     if (rep.code == '200') {
                         eventListener.reloadPrivilegeTable();
-                        layer.msg("字典删除成功");
+                        layer.msg("权限删除成功");
                     }
                 }, function (rep) {
                     layer.msg(rep.message);
                 });
             }, savePrivilegeUri: function (data) {
-                Utils.postAjax("/privilegeUri/save", JSON.stringify(data.field), function (rep) {
+                Utils.postAjax("/privilegeUri/save", JSON.stringify(data), function (rep) {
                     if (rep.code == '200') {
                         eventListener.hideAddPrivilegeUriDialog();
                         eventListener.reloadPrivilegeUriTable();
-                        layer.msg('URI添加成功');
+                        layer.msg('权限URI添加成功');
                     }
 
 
@@ -185,7 +189,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     if (rep.code == '200') {
                         eventListener.hideEditPrivilegeUriDialog();
                         eventListener.reloadPrivilegeUriTable();
-                        layer.msg('URI修改成功');
+                        layer.msg('权限URI修改成功');
                     }
                 }, function (rep) {
                     layer.msg(rep.message);
@@ -210,7 +214,7 @@ layui.use(['table', 'form', 'layer'], function () {
                 Utils.deleteAjax("/privilegeUri/del", data, function (rep) {
                     if (rep.code == '200') {
                         eventListener.reloadPrivilegeUriTable();
-                        layer.msg("数据字典项删除成功");
+                        layer.msg("权限uri删除成功");
                     }
                 }, function (rep) {
                     layer.msg(rep.message);
@@ -238,55 +242,62 @@ layui.use(['table', 'form', 'layer'], function () {
                 $('#privilegeUriListDialog').modal('show');
             }
             ,
-            showAddPrivilegeUriDialog: function () {
-                Utils.getAjax("/uri/getUriALL", "", function (rep) {
-                        if (rep.code == '200') {
-                            var uriHtml = "";
-                            var dataList = rep.dataList;
-                            for(var i in dataList){
-                                uriHtml += '<option value="'+dataList[i].uriId+'">'+dataList[i].uriName+'</option>';
-                            }
-                            $("#addUriId").html(uriHtml);
-                            $('#addPrivilegeUriDialog').modal('show');
-                            layui.form.render('select');
-                        }
-                    }, function (rep) {
-                        layer.msg(rep.msg);
-                    }
-                );
-            }
-            ,
-            hideAddPrivilegeUriDialog: function () {
-                $('#addPrivilegeUriDialog').modal('hide');
-                $('#addPrivilegeUriForm')[0].reset();
-            }
-            ,
-            showEditPrivilegeUriDialog: function (uriId) {
-                Utils.getAjax("/uri/getUriALL", "", function (rep) {
-                        if (rep.code == '200') {
-                            var uriHtml = "";
-                            var dataList = rep.dataList;
-                            for(var i in dataList){
-                                if(uriId == dataList[i].uriId){
-                                    uriHtml += '<option value="'+dataList[i].uriId+'" selected>'+dataList[i].uriName+'</option>';
-                                }else{
-                                    uriHtml += '<option value="'+dataList[i].uriId+'">'+dataList[i].uriName+'</option>';
-                                }
-                            }
-                            $("#editUriId").html(uriHtml);
-                            $('#editPrivilegeUriDialog').modal('show');
-                            layui.form.render('select');
-                        }
-                    }, function (rep) {
-                        layer.msg(rep.msg);
-                    }
-                );
-            }
-            ,
-            hideEditPrivilegeUriDialog: function () {
-                $('#editPrivilegeUriDialog').modal('hide');
-            }
+            showAddPrivilegeUriDialog: function (data) {
+                $('#privilegeUriDialog').modal('show');
 
+
+                table.render({
+                    elem: '#addPrivilegeUri'
+                    , url: '/uri/getUriALL'
+                    , toolbar: "#toolbarUri"
+                    , title: 'addPrivilegeUri-data'
+                    , totalRow: true
+                    , cols: [[
+                          {type:'checkbox' , width: 100}
+                        , {field: 'uriId', title: 'ID', width: 160, sort: true}
+                        , {field: 'uriName', title: 'URI名称', width: 200}
+                        , {field: 'uriPattern', title: 'URI地址', width: 200}
+                        , {field: 'createdTime', title: '创建时间', width: 200,
+                            templet: function(d){
+                                 return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss");
+                            }
+                        }]]
+                    , response:
+                        {
+                            statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                        }
+                    ,
+                    parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                        if(!Utils.isEmpty(res)){
+                            var datas = res.dataList;
+                            var newDatas = [];
+                            ids = [];
+                            for(var i in datas){
+                                if(datas[i].privilegeId != undefined && datas[i].privilegeId != null && data.privilegeId == datas[i].privilegeId){
+                                    datas[i].LAY_CHECKED = true;
+                                    ids.push(datas[i].uriId);
+                                }else{
+                                    datas[i].LAY_CHECKED = false;
+                                }
+                                newDatas.push(datas[i]);
+                            }
+                            myLinkData = newDatas;
+                            return {
+                                "code": res.code, //解析接口状态
+                                "msg": res.msg != undefined && res.msg != null? res.msg:'', //解析提示文本
+                                "count": newDatas.length, //解析数据长度
+                                "data": newDatas //解析数据列表
+                            };
+                        }
+                    }
+                    ,done: function(res, curr, count){
+                        $("#uriPrivilegeId").val(data.privilegeId);
+                    }
+                });
+            }
+            ,hideAddPrivilegeUriDialog: function () {
+                $('#privilegeUriDialog').modal('hide');
+            }
 
         }
     ;
@@ -331,8 +342,9 @@ layui.use(['table', 'form', 'layer'], function () {
     });
 
     table.on('toolbar(privilegeUri)', function (obj) {
-        var data = obj.data;
+        var data = {};
         if (obj.event === 'showPrivilegeUriDialog') {
+            data.privilegeId = $("#modalPrivilegeId").val();
             eventListener.showAddPrivilegeUriDialog(data);
         }
     });
@@ -345,16 +357,22 @@ layui.use(['table', 'form', 'layer'], function () {
         return false;
     });
 
-//保存字典
+    //保存字典
     form.on('submit(editPrivilege)', function (data) {
         eventListener.editPrivilege(data);
         //屏蔽表单提交
         return false;
     });
 
-//保存字典子项
-    form.on('submit(addPrivilegeUri)', function (data) {
-        eventListener.savePrivilegeUri(data);
+   //保存权限uri
+    table.on('toolbar(addPrivilegeUri)', function (data) {
+        var datas = {};
+        if(data.event === 'priUriSubmit'){
+            datas.privilegeId = $("#uriPrivilegeId").val();
+            datas.ids = ids;
+            datas.status = 1;
+            eventListener.savePrivilegeUri(datas);
+        }
         //屏蔽表单提交
         return false;
     });
@@ -362,6 +380,43 @@ layui.use(['table', 'form', 'layer'], function () {
 //修改字典子项
     form.on('submit(editPrivilegeUri)', function (data) {
         eventListener.editPrivilegeUri(data);
+        //屏蔽表单提交
+        return false;
+    });
+
+
+    table.on('checkbox(addPrivilegeUri)',function (obj) {
+        if(obj.type == 'all') {
+            if(obj.checked){
+                // 复选框全选切换
+                myLinkData.forEach(function(item) {
+                    var id = item.uriId;
+                    if(ids.indexOf(id) == -1){
+                        ids.push(id);
+                    }
+                });
+            }else{
+                myLinkData.forEach(function(item) {
+                    var id = item.uriId;
+                    if(ids.indexOf(id) > -1){
+                        ids.splice(ids.indexOf(id),1);
+                    }
+                });
+            }
+
+        } else if(obj.type == 'one') {
+            // 单行复选框切换（当单行和全选同时 选中行数据解决采用行监听事件获取 ）
+            var id = obj.data.uriId;
+            if(obj.checked){
+                if(ids.indexOf(id) == -1){
+                    ids.push(id);
+                }
+            }else{
+                if(ids.indexOf(id) > -1){
+                    ids.splice(ids.indexOf(id),1);
+                }
+            }
+        }
         //屏蔽表单提交
         return false;
     });

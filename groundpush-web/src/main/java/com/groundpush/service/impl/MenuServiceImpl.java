@@ -105,4 +105,10 @@ public class MenuServiceImpl implements MenuService {
 
         return Collections.EMPTY_LIST;
     }
+
+    @Override
+    public Boolean findRoleMenuByMenuId(Integer menuId){
+        return menuMapper.findRoleMenuByMenuId(menuId) > 0?true:false;
+    }
+
 }

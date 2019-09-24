@@ -101,4 +101,9 @@ public interface MenuMapper {
 
     @Select(" select * from t_menu t inner join t_role_menu rm on rm.menu_id = t.menu_id inner join t_role_user ru on ru.role_id = rm.role_id where ru.user_id=#{userId} ")
     List<Menu> queryMenuByLoginUser(Integer userId);
+
+    @Select(" select count(0)  from t_role_menu a where a.menu_id = #{menuId} ")
+    Integer findRoleMenuByMenuId(Integer menuId);
+
+
 }

@@ -61,4 +61,12 @@ public interface UserService {
      * @param userId 用户编号
      */
     void deleteUser(Integer userId);
+
+
+    /**
+     * 判断用户是否可删除
+     * @param userId
+     * @return
+     */
+    Boolean findRoleUserByUserId(Integer userId);
 }

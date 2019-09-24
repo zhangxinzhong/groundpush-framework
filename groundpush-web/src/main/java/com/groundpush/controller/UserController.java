@@ -6,6 +6,8 @@ import java.util.Optional;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.UserQueryCondition;
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.User;
@@ -64,6 +66,10 @@ public class UserController {
     @DeleteMapping
     @ResponseBody
     public JsonResp deleteUser(@RequestParam Integer userId) {
+        Boolean bool = userService.findRoleUserByUserId(userId);
+        if(bool){
+            throw new BusinessException(ExceptionEnum.USER_AND_DEL_ERROR.getErrorCode(), ExceptionEnum.USER_AND_DEL_ERROR.getErrorMessage());
+        }
         userService.deleteUser(userId);
         return JsonResp.success();
     }

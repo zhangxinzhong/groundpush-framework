@@ -42,7 +42,7 @@ public interface TaskAttributeMapper {
             "<script>",
                 " insert into t_task_attribute (task_id, name, content, type, seq, created_by, created_time,label_type,row_type) ",
                 "values",
-                "<foreach collection='list' item='taskAttribute' open='(' close=')' separator='),('>",
+                "<privilegeUriDialog collection='list' item='taskAttribute' open='(' close=')' separator='),('>",
                     "#{taskAttribute.taskId},#{taskAttribute.name},#{taskAttribute.content},#{taskAttribute.type},#{taskAttribute.seq},#{taskAttribute.createdBy},#{taskAttribute.createdTime},#{taskAttribute.labelType},#{taskAttribute.rowType}",
                 "</foreach>",
             "</script>"

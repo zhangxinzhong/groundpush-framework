@@ -10,6 +10,8 @@ package com.groundpush.core.exception;
  * SMS 表示  短信验证码 序号从：O50001 开始
  * P 表示 支付  序号从：O60001 开始
  * U 表示 user 序号从：070001 开始
+ * M 表示 menu 序号从：080001 开始
+ * PR 表示 privilege权限 序号从：090001 开始
  * CO 表示 taskCollect（任务收藏） 序号从：CO1001 开始
  * Excetion 表示系统级异常 序号从：O0000 开始
  * @author: zhangxinzhong
@@ -49,6 +51,9 @@ public enum ExceptionEnum {
     , PAY_TYPE_UNKNOWN("P60002", "未知的支付类型")
     , USER_NOT_EXISTS("U70001", "用户不存在")
     , USER_AND_PASSWORD_ERROR("U70002", "用户名或密码错误")
+    , USER_AND_DEL_ERROR("U70003", "此用户与角色关联不可删除，与角色解绑后才可删除！")
+    , MENU_AND_DEL_ERROR("M80001", "此菜单与角色关联不可删除，与角色解绑后才可删除！")
+    , PRI_AND_DEL_ERROR("PR90001","此权限与角色关联不可删除，与角色解绑后才可删除！")
     ,TASK_COLLECT_EXCEPTION("CO1001", "任务已经收藏，不可重复收藏！");
 
 

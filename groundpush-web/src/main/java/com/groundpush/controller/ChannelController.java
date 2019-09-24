@@ -41,7 +41,7 @@ public class ChannelController {
     private SessionUtils sessionUtils;
 
     @RequestMapping("/toChannel")
-    public String toLabel() {
+    public String toChannel(Model model) {
 
         return "channel/channel";
     }
