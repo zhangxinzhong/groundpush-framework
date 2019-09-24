@@ -81,5 +81,5 @@ public interface DictMapper {
      * @return
      */
     @Select(" select * from t_dict where code=#{code} ")
-    Optional<Dict> getByCode(String code);
+    Optional<Dict> getByCode(@Param("code") String code);
 }

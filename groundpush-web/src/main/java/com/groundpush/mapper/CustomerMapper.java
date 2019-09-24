@@ -3,10 +3,7 @@ package com.groundpush.mapper;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.vo.CustomerVo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +21,7 @@ public interface CustomerMapper {
      * @return
      */
     @Select(" select * from t_customer where FIND_IN_SET(customer_id,fn_recursive_query_customer(#{customerId})) ")
-    List<Customer> recursiveQueryCustomer(Integer customerId);
+    List<Customer> recursiveQueryCustomer(@Param("customerId") Integer customerId);
 
     /**
      * 通过customerid 查询客户
@@ -32,7 +29,7 @@ public interface CustomerMapper {
      * @return
      */
     @Select(" select * from t_customer where customer_id=#{customerId} ")
-    Optional<Customer> getCustomer(Integer customerId);
+    Optional<Customer> getCustomer(@Param("customerId") Integer customerId);
 
     /**
      * 更新客户基本信息
@@ -71,7 +68,7 @@ public interface CustomerMapper {
      * @return
      */
     @Select(" select * from t_customer c where c.invite_code=#{inviteCode} ")
-    Optional<Customer> queryCustomerByInviteCode(String inviteCode);
+    Optional<Customer> queryCustomerByInviteCode(@Param("inviteCode") String inviteCode);
 
     /**
      * 通过loginNO查询用户
@@ -79,5 +76,5 @@ public interface CustomerMapper {
      * @return
      */
     @Select(" select c.* from t_customer c inner join t_customer_account ca on ca.customer_id= c.customer_id where ca.login_no = #{loginNo} ")
-    Optional<Customer> queryCustomerByLoginNo(String loginNo);
+    Optional<Customer> queryCustomerByLoginNo(@Param("loginNo") String loginNo);
 }

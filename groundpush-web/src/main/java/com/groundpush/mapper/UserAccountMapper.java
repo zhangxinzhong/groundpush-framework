@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.groundpush.core.model.UserAccount;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -21,7 +22,7 @@ public interface UserAccountMapper {
      * @return
      */
     @Select(" select * from t_user_account where user_id=#{userId} ")
-    Optional<UserAccount> getUserAccountByUserId(Integer userId);
+    Optional<UserAccount> getUserAccountByUserId(@Param("userId") Integer userId);
 
     /**
      * 创建用户账号
@@ -37,5 +38,5 @@ public interface UserAccountMapper {
      * @param userId 用户编号
      */
     @Update("  update t_user_account set status=0 where user_id = #{userId} ")
-    void deleteUserAccount(Integer userId);
+    void deleteUserAccount(@Param("userId") Integer userId);
 }

@@ -202,10 +202,7 @@
                                 <option value="1">是</option>
                             </select>
                         </div>
-
-                        <input type="hidden" name="taskAttributes" id="taskAttributes">
                     </form>
-
                     <form>
                         <div class="row" id="allTaskDiv" style="margin-top: 15px">
                             <div class="col-lg-6" id="MyTask" style="border-right:1px solid #000">
@@ -333,17 +330,6 @@
         obj.parent().find(".uploadExcel").click();
     }
 
-    //组表单json串
-    var DataDeal = {
-        //将从form中通过$('#refer').serialize()获取的值转成json
-        formToJson: function (data) {
-            data = data.replace(/&/g, "\",\"");
-            data = data.replace(/=/g, "\":\"");
-            data = "{\"" + data + "\"}";
-            return data;
-        }
-    };
-
     //跳转不同任务
     function selectType(object) {
         $(".selectType").each(function (index, oneType) {
@@ -390,8 +376,6 @@
             }
             params.push(obj);
         })
-        var jsonParamsData = JSON.stringify(params);
-        $("#taskAttributes").val(jsonParamsData);
         //获取标签内容
         var selectLabelIds = $('#selectLabelIds').selectpicker('val');
         $("#labelIds").val(selectLabelIds);
@@ -402,17 +386,37 @@
         var locations = $('#locations').selectpicker('val');
         $("#location").val(locations);
         //获取表单内容项转成JSON
-        var dataCollect = $('#submitTask').serialize();
-        dataCollect = decodeURIComponent(dataCollect, true);//防止中文乱码
-        var jsondata = DataDeal.formToJson(dataCollect);//转化为json
-        jsondata = jsondata.replace('"[', '[');
-        jsondata = jsondata.replace(']"', ']');
+        var jsondata = {};//转化为json
+        jsondata["taskId"] = $("#thisTaskId").val();
+        jsondata["imgUri"] = $("#imgUri").val();
+        jsondata["iconUri"] = $("#iconUri").val();
+        jsondata["exampleImg"] = $("#exampleImg").val();
+        jsondata["title"] = $("#title").val();
+        jsondata["briefTitle"] = $("#briefTitle").val();
+        jsondata["labelIds"] = $("#labelIds").val();
+        jsondata["selectLabelIds"] = $("#selectLabelIds").val();
+        jsondata["source"] = $("#source").val();
+        jsondata["province"] = $("#province").val();
+        jsondata["location"] = $("#location").val();
+        jsondata["amount"] = $("#amount").val();
+        jsondata["spreadTotal"] = $("#spreadTotal").val();
+        jsondata["handlerNum"] = $("#handlerNum").val();
+        jsondata["auditDuration"] = $("#auditDuration").val();
+        jsondata["expendTime"] = $("#expendTime").val();
+        jsondata["completeOdds"] = $("#completeOdds").val();
+        jsondata["ownerRatio"] = $("#ownerRatio").val();
+        jsondata["spreadRatio"] = $("#spreadRatio").val();
+        jsondata["leaderRatio"] = $("#leaderRatio").val();
+        jsondata["isResult"] = $("#isResult").val();
+        jsondata["taskAttributes"] = params;
+        var jsonParamsData = JSON.stringify(jsondata);
+
         console.log("-------------------------------------------")
-        console.log(jsondata);
+        console.log(jsonParamsData);
         console.log("---------------------------------------------")
 
         //提交校验
-        var verifyResult = verify(jsondata);
+        var verifyResult = verify(jsonParamsData);
         if (!verifyResult)
             return;
         //如果校验通过则提交表单
@@ -422,7 +426,7 @@
             type: "POST",
             contentType: 'application/json',
             dataType: 'json',
-            data: jsondata,
+            data: jsonParamsData,
             success: function (data) {
                 loadTaskData();
                 $("#myModal").modal('hide');

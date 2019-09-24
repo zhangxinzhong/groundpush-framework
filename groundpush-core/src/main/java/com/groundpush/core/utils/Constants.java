@@ -166,21 +166,7 @@ public class Constants {
      * 客户昵称
      */
     public static final String CUSTOMER_NIKE_NAME = "路客";
-    /**
-     * t_role_user_privilege_menu  type字段
-     * 用户关联
-     */
-    public static final Integer ROLE_LINK_TYPE_USER = 1;
-    /**
-     * t_role_user_privilege_menu  type字段
-     * 权限关联
-     */
-    public static final Integer ROLE_LINK_TYPE_PRIVILEGE = 2;
-    /**
-     * t_role_user_privilege_menu  type字段
-     * 菜单关联
-     */
-    public static final Integer ROLE_LINK_TYPE_MENU = 3;
+
 
     public static final String ALIPAY = "支付宝";
 
@@ -261,4 +247,15 @@ public class Constants {
      *上传头像
      */
     public static final Integer UPLOAD_STATUS_3 = 3;
+
+    /**
+     *任务类型  申请1
+     */
+    public static final Integer TASK_TYPE_1 = 1;
+
+
+    /**
+     *任务类型  推广2
+     */
+    public static final Integer TASK_TYPE_2 = 2;
 }

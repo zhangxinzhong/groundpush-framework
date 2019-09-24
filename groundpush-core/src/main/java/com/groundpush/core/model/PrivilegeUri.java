@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 权限uri 关联
@@ -33,5 +34,8 @@ public class PrivilegeUri implements Serializable {
     //非数据库字段
     private String uriName;
     private String uriPattern;
+
+    //**************所有uri的id list 非数据库字段**************************//
+    private List<Integer> ids;
 
 }

@@ -3,6 +3,7 @@ package com.groundpush.mapper;
 import com.groundpush.core.model.OrderBonus;
 import com.groundpush.vo.OrderPayVo;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public interface OrderBonusMapper {
      * @return
      */
     @Select(" select * from t_order_bonus where order_id= #{orderId} ")
-    List<OrderBonus> queryOrderBonusByOrderId(Integer orderId);
+    List<OrderBonus> queryOrderBonusByOrderId(@Param("orderId") Integer orderId);
 
     /**
      * 通过任务、订单创建时间、状态查询此任务下订单，用于计算分成

@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.groundpush.core.model.CustomerAccount;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -22,7 +23,7 @@ public interface CustomerAccountMapper {
      * @return
      */
     @Select(" select * from t_customer_account where customer_id= #{customerId} ")
-    Optional<CustomerAccount> getCustomerAccount(Integer customerId);
+    Optional<CustomerAccount> getCustomerAccount(@Param("customerId") Integer customerId);
 
     /**
      * 更新客户账号

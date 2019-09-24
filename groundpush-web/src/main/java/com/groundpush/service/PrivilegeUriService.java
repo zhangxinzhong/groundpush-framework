@@ -21,7 +21,7 @@ public interface PrivilegeUriService {
 
     Boolean update(PrivilegeUri privilegeUri);
 
-    Boolean save(PrivilegeUri privilegeUri);
+    void batchSave(PrivilegeUri privilegeUri);
 
     Optional<PrivilegeUri> getPrivilegeUri(PrivilegeUri privilegeUri);
 

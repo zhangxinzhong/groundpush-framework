@@ -35,7 +35,7 @@ public interface TaskService {
      * @param id
      * @return
      */
-    Optional<Task> getTask(Integer id);
+    Optional<Task> getTask(Integer id,Integer taskType);
 
     Boolean save(Task task);
 }

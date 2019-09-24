@@ -30,4 +30,7 @@ public class Uri {
     private Integer lastModifiedBy;
     @JsonIgnore
     private Date lastModifiedTime;
+
+    //**********************非数据库字段**********************
+    private Integer privilegeId;
 }

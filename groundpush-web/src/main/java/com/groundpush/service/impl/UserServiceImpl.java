@@ -120,4 +120,9 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
         userMapper.deleteUser(userId);
         userAccountMapper.deleteUserAccount(userId);
     }
+
+    @Override
+    public Boolean findRoleUserByUserId(Integer userId) {
+        return userMapper.findRoleUserByUserId(userId) > 0 ? true:false;
+    }
 }

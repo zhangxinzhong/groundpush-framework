@@ -3,6 +3,7 @@ package com.groundpush.mapper;
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.model.CustomerLoginAccount;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -59,5 +60,5 @@ public interface CustomerLoginAccountMapper {
      * @return
      */
     @Select(" select * from t_customer_login_account ca where ca.login_no=#{loginNo} ")
-    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(String loginNo);
+    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(@Param("loginNo") String loginNo);
 }

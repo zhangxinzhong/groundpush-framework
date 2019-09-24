@@ -34,7 +34,7 @@ public class TaskPopController {
     @ApiOperation("推广任务详情Poplist")
     @GetMapping
     public JsonResp getTaskPopCounts(@RequestParam(value = "customerId") Integer customerId, @PageableDefault(page = 1,size =5)Pageable pageable) {
-        log.error("推广任务详情列表 获取"+customerId+"已推广list");
+        log.info("推广任务详情列表 获取"+customerId+"已推广list");
         Page<TaskPopListCount> list = orderService.queryPopListByCustomerId(customerId,pageable);
         return JsonResp.success(new PageResult(list));
     }

@@ -21,7 +21,7 @@ public interface PrivilegeMapper {
      * @return
      */
     @Select(" select p.* from t_privilege p inner join t_role_privilege rp on rp.privilege_id = p.privilege_id  inner join t_role_user ur on ur.role_id = rp.role_id where ur.user_id = #{userId} ")
-    List<Privilege> queryPrivilegeByUserId(Integer userId);
+    List<Privilege> queryPrivilegeByUserId(@Param("userId") Integer userId);
 
     /**
      * 查询所有权限
@@ -55,4 +55,7 @@ public interface PrivilegeMapper {
 
     @Insert(" insert into t_privilege(name, code,status, created_by, created_time, last_modified_by, last_modified_time ) values (#{name},#{code},#{status},#{createdBy},current_timestamp,#{lastModifiedBy},current_timestamp) ")
     Integer insert(Privilege privilege);
+
+    @Select(" select count(1) from t_privilege a left join t_role_privilege b on a.privilege_id = b.privilege_id where b.privilege_id = #{privilegeId} ")
+    Integer findRolePriByPriId(@Param("privilegeId") Integer privilegeId);
 }
