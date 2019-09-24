@@ -102,21 +102,16 @@ public class UriController {
     @GetMapping
     @ResponseBody
     @RequestMapping("/getUriALL")
-    public Map<String,Object> getUriALL() {
-        Map<String,Object> resultMap = new HashMap<String,Object>();
+    public JsonResp getUriALL() {
+
         try {
             List<Uri> uriList = uriService.getUriALL();
-            if(uriList!=null && uriList.size()>0){
-                resultMap.put("code","200");
-                resultMap.put("dataList",uriList);
-            }
+            return JsonResp.success(uriList);
         } catch (Exception e) {
-            resultMap.put("code","500");
-            resultMap.put("msg","获取URI失败请联系管理员！");
             log.error(e.toString(), e);
             throw e;
         }
-        return resultMap;
+
     }
 
 }

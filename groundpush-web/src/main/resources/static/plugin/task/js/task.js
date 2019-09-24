@@ -68,7 +68,7 @@ function provinceLoad(provinces) {
             var code = data.code;
             if (code == "200") {
                 var labelHtml = "";
-                var dataList = data.dataList;
+                var dataList = data.data;
                 for (var i in dataList) {
                     var labelName = dataList[i].labelName;
                     var isLabelOk = false;
@@ -86,7 +86,7 @@ function provinceLoad(provinces) {
                 }
                 $("#provinces").html(labelHtml);
             } else {
-                var msg = data.msg;
+                var msg = data.message;
                 alert(msg);
             }
         }
@@ -111,7 +111,7 @@ function locationLoad(locations) {
             var code = data.code;
             if (code == "200") {
                 var labelHtml = "";
-                var dataList = data.dataList;
+                var dataList = data.data;
                 for (var i in dataList) {
                     var labelName = dataList[i].labelName;
                     var isLabelOk = false;
@@ -129,7 +129,7 @@ function locationLoad(locations) {
                 }
                 $("#locations").html(labelHtml);
             } else {
-                var msg = data.msg;
+                var msg = data.message;
                 alert(msg);
             }
         }
@@ -196,7 +196,7 @@ function uploadExcel(classCodes) {
             var code = res.code;
             if (code == "200") {
             } else {
-                var msg = res.msg;
+                var msg = res.message;
                 alert(msg)
             }
         }
@@ -234,13 +234,13 @@ function attributeFileUpload(labelClass, valueClass) {
             console.log(res);
             var code = res.code;
             if (code == "200") {
-                var fileData = res.fileData;
+                var fileData = res.data.fileData;
                 var filePath = fileData.filePath;
                 //var fileName = fileData.fileName;
                 $(labelClass).attr('src', filePath);
                 $(valueClass).val(filePath);
             } else {
-                var msg = res.msg;
+                var msg = res.message;
                 alert(msg)
             }
         }

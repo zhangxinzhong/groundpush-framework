@@ -269,22 +269,24 @@ layui.use(['table', 'form', 'layer'], function () {
                     ,
                     parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                         if(!Utils.isEmpty(res)){
-                            var datas = res.dataList;
+                            var datas = res.data;
                             var newDatas = [];
                             ids = [];
-                            for(var i in datas){
-                                if(datas[i].privilegeId != undefined && datas[i].privilegeId != null && data.privilegeId == datas[i].privilegeId){
-                                    datas[i].LAY_CHECKED = true;
-                                    ids.push(datas[i].uriId);
-                                }else{
-                                    datas[i].LAY_CHECKED = false;
+                            if(datas != undefined && datas.length > 0){
+                                for(var i in datas){
+                                    if(datas[i].privilegeId != undefined && datas[i].privilegeId != null && data.privilegeId == datas[i].privilegeId){
+                                        datas[i].LAY_CHECKED = true;
+                                        ids.push(datas[i].uriId);
+                                    }else{
+                                        datas[i].LAY_CHECKED = false;
+                                    }
+                                    newDatas.push(datas[i]);
                                 }
-                                newDatas.push(datas[i]);
                             }
                             myLinkData = newDatas;
                             return {
                                 "code": res.code, //解析接口状态
-                                "msg": res.msg != undefined && res.msg != null? res.msg:'', //解析提示文本
+                                "msg": res.message, //解析提示文本
                                 "count": newDatas.length, //解析数据长度
                                 "data": newDatas //解析数据列表
                             };

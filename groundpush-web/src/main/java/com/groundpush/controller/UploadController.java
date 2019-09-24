@@ -36,9 +36,8 @@ public class UploadController {
     @GetMapping
     @ResponseBody
     @RequestMapping("/uploadFile")
-    public Map<String, Object> uploadFile(@RequestParam MultipartFile file) {
-        //返回数据
-        Map<String, Object> result = new HashMap<String, Object>();
+    public JsonResp uploadFile(@RequestParam MultipartFile file) {
+
         try {
             //返回文件访问路径
             Map<String,Object> fileMap = new HashMap<String, Object>();
@@ -46,15 +45,11 @@ public class UploadController {
             if (file != null && file.getSize() > 0) {
                 fileMap = OSSUnit.upload(file);
             }
-            result.put("code", "200");
-            result.put("msg", "成功");
-            result.put("fileData", fileMap);
+            return JsonResp.success(fileMap);
         } catch (Exception e) {
-            result.put("code", "500");
-            result.put("msg", "上传错误请联系工作人员");
             log.error(e.toString(), e);
             throw e;
         }
-        return result;
+
     }
 }
