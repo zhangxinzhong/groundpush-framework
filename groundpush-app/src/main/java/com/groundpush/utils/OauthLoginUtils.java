@@ -4,6 +4,7 @@ import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.utils.LoginUtils;
+import com.groundpush.security.oauth.model.CustomerDetail;
 import com.groundpush.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,28 +27,23 @@ import java.util.Optional;
  */
 @Slf4j
 @Component
-public class OauthLoginUtils extends LoginUtils<Customer> {
-    @Resource
-    private CustomerService customerService;
+public class OauthLoginUtils extends LoginUtils<CustomerDetail> {
 
     @Override
-    public Optional<Customer> getLogin() {
+    public Optional<CustomerDetail> getLogin() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) request.getUserPrincipal();
         log.info("oAuth2Authentication：{}", oAuth2Authentication);
-        User loginUser = (User) oAuth2Authentication.getPrincipal();
-        log.info("login Customer info：{}", loginUser);
-        String mobileNo = loginUser.getUsername();
+        CustomerDetail loginCustomer = (CustomerDetail) oAuth2Authentication.getPrincipal();
+        log.info("login Customer info：{}", loginCustomer);
+        String mobileNo = loginCustomer.getUsername();
         log.info("login Customer mobile：{}", mobileNo);
         if (StringUtils.isBlank(mobileNo)) {
             throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorMessage());
         }
 
-        Optional<Customer> customerOptional = customerService.queryCustomerByMobile(mobileNo);
-        if (customerOptional.isPresent()) {
-            return customerOptional;
-        }
-        throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getClass().toString());
+
+        return Optional.of(loginCustomer);
 
     }
 }

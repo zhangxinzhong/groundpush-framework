@@ -70,7 +70,7 @@ public class ValidateController {
             ValidateCode validateCode = validateCodeRepository.get(request, ValidateCodeType.SMS);
             if (validateCode != null) {
                 if(validateCode.getExpireTime().isAfter(LocalDateTime.now())){
-                    return JsonResp.failure(ExceptionEnum.VALIDATE_CODE_UNEXPIRED.getErrorMessage());
+                    return JsonResp.failure(ExceptionEnum.VALIDATE_CODE_UNEXPIRED.getErrorCode(),ExceptionEnum.VALIDATE_CODE_UNEXPIRED.getErrorMessage());
                 }
             }
             ValidateCode smsCode = validateCodeGenerator.generate(request);

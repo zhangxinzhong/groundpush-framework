@@ -8,6 +8,7 @@ import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.pay.exception.PayException;
+import com.groundpush.pay.exception.PayExceptionEnum;
 import com.groundpush.pay.model.AliPayRequest;
 import com.groundpush.pay.model.AliPayResponse;
 import com.groundpush.pay.properties.AliPayProperties;
@@ -58,7 +59,7 @@ public class GroundPushAliPay {
             AliPayResponse aliPayResponse = AliPayResponse.builder().code(response.getCode()).message(response.getMsg()).subCode(response.getSubCode()).subMessage(response.getSubMsg()).outBizNo(response.getOutBizNo()).OrderId(response.getOrderId()).payDate(LocalDateTime.now()).build();
             // 只有状态是10000 支付时间不为空 证明提现成功
             if (!ALI_PAY_SUCCESS_CODE.equalsIgnoreCase(aliPayResponse.getCode()) && aliPayResponse.getPayDate() != null) {
-                throw new PayException(aliPayResponse.getSubMessage());
+                throw new PayException(aliPayResponse.getCode(), aliPayResponse.getSubMessage());
             }
             return Optional.of(aliPayResponse);
         } catch (PayException e) {
@@ -66,10 +67,10 @@ public class GroundPushAliPay {
             throw e;
         } catch (AlipayApiException e) {
             log.error(e.getMessage(), e);
-            throw new PayException("提现失败");
+            throw new PayException(PayExceptionEnum.PAY_EXCETPION.getErrorCode(), PayExceptionEnum.PAY_EXCETPION.getErrorMessage());
         } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
-            throw new PayException("提现失败");
+            throw new PayException(PayExceptionEnum.PAY_EXCETPION.getErrorCode(), PayExceptionEnum.PAY_EXCETPION.getErrorMessage());
         }
     }
 }

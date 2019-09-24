@@ -31,7 +31,7 @@ public class GroundPushAppExceptionHandler {
     @ResponseBody
     @ExceptionHandler(BusinessException.class)
     public JsonResp businessException(BusinessException e) {
-        log.error(e.getMessage(),e);
+        log.error(e.getMessage(), e);
         return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
@@ -44,8 +44,8 @@ public class GroundPushAppExceptionHandler {
     @ResponseBody
     @ExceptionHandler(SystemException.class)
     public JsonResp systemException(SystemException e) {
-        log.error(e.getMessage(),e);
-        return JsonResp.failure(e.getMessage());
+        log.error(e.getMessage(), e);
+        return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
     /**
@@ -57,8 +57,8 @@ public class GroundPushAppExceptionHandler {
     @ResponseBody
     @ExceptionHandler(ValidateCodeException.class)
     public JsonResp validateCodeException(ValidateCodeException e) {
-        log.error(e.getMessage(),e);
-        return JsonResp.failure(e.getMessage());
+        log.error(e.getMessage(), e);
+        return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
     /**
@@ -70,8 +70,8 @@ public class GroundPushAppExceptionHandler {
     @ResponseBody
     @ExceptionHandler(PayException.class)
     public JsonResp payException(PayException e) {
-        log.error(e.getMessage(),e);
-        return JsonResp.failure(e.getMessage());
+        log.error(e.getMessage(), e);
+        return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
     /**
@@ -99,8 +99,8 @@ public class GroundPushAppExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public JsonResp exception(Exception e) {
-        log.error(e.getMessage(),e);
-        return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorMessage());
+        log.error(e.getMessage(), e);
+        return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
     }
 
 
