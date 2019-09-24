@@ -2,6 +2,7 @@ package com.groundpush.service;
 
 import com.groundpush.core.model.Customer;
 import com.groundpush.security.core.repository.ObjectRepository;
+import com.groundpush.security.oauth.model.CustomerDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -31,12 +32,14 @@ public class MobileDetailsService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String mobile) throws UsernameNotFoundException {
+    public CustomerDetail loadUserByUsername(String mobile) throws UsernameNotFoundException {
         log.info("-- exec [MobileDetailsService] loadUserByUsername", mobile);
         Optional<Customer> optionalCustomer = customerRepository.queryOrCreate(mobile);
         if (optionalCustomer.isPresent()) {
             log.info("login customer:{}", optionalCustomer.get());
-            return new User(mobile, bCryptPasswordEncoder.encode(mobile), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMI"));
+
+            return new CustomerDetail(optionalCustomer.get(), mobile, bCryptPasswordEncoder.encode(mobile), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
+
         }
         log.error("customer not exist");
         throw new UsernameNotFoundException("mobile: " + mobile + " do not exist!");

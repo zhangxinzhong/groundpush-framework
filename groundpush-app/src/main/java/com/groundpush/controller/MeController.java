@@ -5,6 +5,7 @@ import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.Customer;
+import com.groundpush.security.oauth.model.CustomerDetail;
 import com.groundpush.service.CustomerService;
 import com.groundpush.utils.OauthLoginUtils;
 import io.swagger.annotations.ApiOperation;
@@ -41,9 +42,9 @@ public class MeController {
     @GetMapping
     public JsonResp getCurrentUser() {
         try {
-            Optional<Customer> customerOptional = oauthLoginUtils.getLogin();
-            if (customerOptional.isPresent()) {
-                return JsonResp.success(customerOptional.get());
+            Optional<CustomerDetail> customerDetailOptional = oauthLoginUtils.getLogin();
+            if (customerDetailOptional.isPresent()) {
+                return JsonResp.success(customerDetailOptional.get());
             }
             throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getClass().toString());
 
