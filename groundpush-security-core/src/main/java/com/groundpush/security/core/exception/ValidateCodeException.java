@@ -10,18 +10,29 @@ import org.springframework.security.core.AuthenticationException;
  */
 public class ValidateCodeException extends AuthenticationException {
 
-    private String errorMessage;
+    private String code;
+    private String message;
 
-    public ValidateCodeException(String message) {
+    public ValidateCodeException(String code, String message) {
         super(message);
-        this.errorMessage = message;
+        this.code = code;
+        this.message = message;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getCode() {
+        return code;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

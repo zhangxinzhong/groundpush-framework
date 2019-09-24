@@ -41,7 +41,7 @@ public class GroundPushWebExceptionHandler {
     @ResponseBody
     @ExceptionHandler(SystemException.class)
     public JsonResp systemException(SystemException e) {
-        return JsonResp.failure(e.getMessage());
+        return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
     /**
@@ -54,7 +54,7 @@ public class GroundPushWebExceptionHandler {
     @ExceptionHandler(Exception.class)
     public JsonResp exception(Exception e) {
         log.error(e.toString(), e);
-        return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorMessage());
+        return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
     }
 
     /**

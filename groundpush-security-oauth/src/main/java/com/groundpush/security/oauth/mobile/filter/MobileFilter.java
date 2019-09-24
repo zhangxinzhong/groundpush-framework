@@ -83,11 +83,11 @@ public class MobileFilter extends OncePerRequestFilter {
 
         //验证码登录
         if (StringUtils.isNotBlank(valiCode) && StringUtils.isNotBlank(deviceId)) {
-            try{
+            try {
                 smsValidateCodeCalibrator.checkSmsValidateCode(new ServletWebRequest(request, response));
                 log.info("客户通过手机号验证码方式登录进入应用，loginNo: {}，设备号：{}", mobileNo, deviceId);
-            }catch (ValidateCodeException e){
-                log.error(e.toString(),e);
+            } catch (ValidateCodeException e) {
+                log.error(e.toString(), e);
                 throw e;
             }
 
@@ -96,17 +96,17 @@ public class MobileFilter extends OncePerRequestFilter {
             //通过调用阿里云解密手机号码
             JsonResp jsonResp = oneClickLoginProcessor.checkMobile(accessToken);
             if (!StringUtils.equalsIgnoreCase(jsonResp.getMessage(), Constants.IS_OK)) {
-                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
+                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorCode(), ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
             }
 
             if (jsonResp.getData() == null) {
-                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
+                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorCode(), ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
             }
 
             mobileNo = (String) jsonResp.getData();
 
             if (mobileNo.length() != Integer.valueOf(11)) {
-                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
+                throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorCode(), ExceptionEnum.VALIDATE_CODE_ONE_CLICK_LOGIN_NOT_MATCH.getErrorMessage());
             }
             request.setAttribute("mobileNo", mobileNo);
 
@@ -117,7 +117,7 @@ public class MobileFilter extends OncePerRequestFilter {
             log.info("客户通过一键登录进入应用，loginNo: {}", optionalCustomer);
         } else {
             log.info("未知的登录方式， valiCode:{} ,accessToken:{} ,mobileNo:{},deviceId:{}", valiCode, accessToken, mobileNo, deviceId);
-            throw new ValidateCodeException(ExceptionEnum.EXCEPTION_UNKNOWN_LOGIN_TYPE.getErrorMessage());
+            throw new ValidateCodeException(ExceptionEnum.EXCEPTION_UNKNOWN_LOGIN_TYPE.getErrorCode(), ExceptionEnum.EXCEPTION_UNKNOWN_LOGIN_TYPE.getErrorMessage());
         }
     }
 }

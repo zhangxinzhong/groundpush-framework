@@ -36,23 +36,23 @@ public class SmsValidateCodeCalibrator {
 
         ValidateCode validateCode = validateCodeRepository.get(request, ValidateCodeType.SMS);
         if (validateCode == null) {
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
         }
 
         //验证码不为空
         if (StringUtils.isBlank(validateCode.getCode()) || StringUtils.isBlank(valiCode)) {
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
         }
 
         //比对过期时间
         LocalDateTime currentDate = LocalDateTime.now();
         if (validateCode.getExpireTime().isBefore(currentDate)) {
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorMessage());
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorCode(), ExceptionEnum.VALIDATE_CODE_EXPIRE.getErrorMessage());
         }
 
         //验证码不匹配
         if (!StringUtils.equalsIgnoreCase(validateCode.getCode(), valiCode)) {
-            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorMessage());
+            throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorMessage());
         }
 
         log.info("短信校验码通过，验证码: {}", valiCode);
