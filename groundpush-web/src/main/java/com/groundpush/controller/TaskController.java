@@ -137,9 +137,7 @@ public class TaskController {
     //上传任务URL
     @RequestMapping("/uploadExcel")
     @ResponseBody
-    public Map<String, Object> uploadExcel(@RequestParam MultipartFile file, Integer taskId) throws IOException, InvalidFormatException {
-        //返回数据
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    public JsonResp uploadExcel(@RequestParam MultipartFile file, Integer taskId) throws IOException, InvalidFormatException {
         try {
             //先删除任务相关的URL
             taskUriService.del(taskId);
@@ -158,22 +156,18 @@ public class TaskController {
                 }
                 taskUriService.save(taskUriList);
             });
-            resultMap.put("code", "200");
-            resultMap.put("msg", "成功");
         } catch (Exception e) {
-            resultMap.put("code", "500");
-            resultMap.put("msg", "上传错误请联系工作人员");
             log.error(e.toString(), e);
             throw e;
         }
-        return resultMap;
+        return JsonResp.success();
     }
 
     //临时数据--省份
     @RequestMapping(value = "/getShengFen")
     @ResponseBody
-    public Map<String, Object> getShengFen() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    public JsonResp getShengFen() {
+        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
         try {
             List<String> shengFenList = new ArrayList<String>();
             shengFenList.add("北京");
@@ -195,28 +189,26 @@ public class TaskController {
             shengFenList.add("安徽省");
             shengFenList.add("黑龙江省");
             //组合适数据
-            List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+
             for (String labelName : shengFenList) {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("labelName", labelName);
                 mapList.add(map);
             }
-            resultMap.put("dataList", mapList);
-            resultMap.put("code", "200");
+            return JsonResp.success(mapList);
         } catch (Exception e) {
-            resultMap.put("msg", "获取省份信息列表失败！");
-            resultMap.put("code", "500");
             log.error(e.toString(), e);
             throw e;
         }
-        return resultMap;
+
     }
 
     //临时数据--市区
     @RequestMapping(value = "/getShiQu")
     @ResponseBody
-    public Map<String, Object> getShiQu() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    public JsonResp getShiQu() {
+        //组合适数据
+        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
         try {
             List<String> shengShiQuList = new ArrayList<String>();
             shengShiQuList.add("北京");
@@ -245,21 +237,17 @@ public class TaskController {
             shengShiQuList.add("石家庄");
             shengShiQuList.add("秦皇岛");
             shengShiQuList.add("其其哈尔");
-            //组合适数据
-            List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+
             for (String labelName : shengShiQuList) {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("labelName", labelName);
                 mapList.add(map);
             }
-            resultMap.put("dataList", mapList);
-            resultMap.put("code", "200");
+            return JsonResp.success(mapList);
         } catch (Exception e) {
-            resultMap.put("msg", "获取市区信息列表失败！");
-            resultMap.put("code", "500");
             log.error(e.toString(), e);
             throw e;
         }
-        return resultMap;
+
     }
 }
