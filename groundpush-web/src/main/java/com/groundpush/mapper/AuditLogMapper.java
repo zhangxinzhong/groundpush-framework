@@ -51,7 +51,7 @@ public interface AuditLogMapper {
            "    left join t_order c on a.order_id = c.order_id",
            "    left join t_channel e on b.source = e.channel_id",
            "  ) d",
-           "    where not exists (select   concat(f.task_id,'_',f.order_time)  from t_audit_log f where f.user_id = #{userid}) ",
+           "    where not exists (select   concat(f.task_id,'_',f.order_time)  from t_audit_log f where f.user_id = #{userId}) ",
            "    group by",
            "    d.task_id,d.created_time ",
            "</script>"
