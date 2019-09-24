@@ -10,7 +10,8 @@ import java.util.Optional;
 public interface LabelMapper {
 
     /**
-     * 获取标签列表
+     * 分页获取标签列表
+     * @return
      */
     @Select(" select * from t_label where status = 1 order by  sort desc,created_time desc ")
     Page<Label> getLabel();
@@ -68,7 +69,7 @@ public interface LabelMapper {
     Optional<Label> queryLabelById(@Param("labelId") Integer labelId);
 
     /**
-     *
+     * 获取所有标签
      * @return
      */
     @Select(" select * from t_label")

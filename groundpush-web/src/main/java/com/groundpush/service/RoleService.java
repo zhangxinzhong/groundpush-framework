@@ -17,6 +17,8 @@ public interface RoleService {
 
     /**
      * 查询所有分页
+     * @param page
+     * @param limit
      * @return
      */
     Page<Role> queryAllRoles(Integer page,Integer limit);
@@ -63,7 +65,8 @@ public interface RoleService {
 
     /**
      *通过roleId 获取所有关联用户
-     *
+     * @param roleId
+     * @param limit
      * @param roleId
      * @return
      */
@@ -73,7 +76,8 @@ public interface RoleService {
 
     /**
      *通过roleId 获取所有关联权限
-     *
+     * @param roleId
+     * @param limit
      * @param roleId
      * @return
      */
@@ -81,7 +85,8 @@ public interface RoleService {
 
     /**
      *通过roleId 获取所有关联权限
-     *
+     * @param roleId
+     * @param limit
      * @param roleId
      * @return
      */

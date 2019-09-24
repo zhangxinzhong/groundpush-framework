@@ -18,6 +18,10 @@ import java.util.List;
 public interface RoleUserPrivilegeMenuMapper {
 
 
+    /**
+     * 添加角色与用户关联
+     * @param upmAddCondition
+     */
     @Insert({"<script>",
             " insert into t_role_user(user_id,role_id,status,created_by,created_time) values ",
             "<foreach collection='ids' item='id' open='(' close=')' separator='),('>",
@@ -26,6 +30,10 @@ public interface RoleUserPrivilegeMenuMapper {
             "</script>"})
     void addRoleUser(UpmAddCondition upmAddCondition);
 
+    /**
+     * 添加角色与权限关联
+     * @param upmAddCondition
+     */
     @Insert({"<script>",
             " insert into t_role_privilege(privilege_id,role_id,status,created_by,created_time) values ",
             "<foreach collection='ids' item='id' open='(' close=')' separator='),('>",
@@ -35,6 +43,10 @@ public interface RoleUserPrivilegeMenuMapper {
     void addPrivilege(UpmAddCondition upmAddCondition);
 
 
+    /**
+     * 添加角色与菜单关联
+     * @param upmAddCondition
+     */
     @Insert({"<script>",
             " insert into t_role_menu(menu_id,role_id,status,created_by,created_time) values ",
             "<foreach collection='ids' item='id' open='(' close=')' separator='),('>",
@@ -43,15 +55,32 @@ public interface RoleUserPrivilegeMenuMapper {
             "</script>"})
     void addRoleMenu(UpmAddCondition upmAddCondition);
 
+    /**
+     * 删除角色与用户关联
+     * @param roleId
+     */
     @Delete("delete from t_role_user where  role_id = #{roleId}")
     void delRoleUser(@Param("roleId") Integer roleId);
 
+    /**
+     * 删除角色与权限关联
+     * @param roleId
+     */
     @Delete("delete from t_role_privilege where  role_id = #{roleId}")
     void delRolePrivilege(@Param("roleId") Integer roleId);
 
+    /**
+     * 删除角色与菜单关联
+     * @param roleId
+     */
     @Delete("delete from t_role_menu where  role_id = #{roleId}")
     void delRoleMenu(@Param("roleId") Integer roleId);
 
+    /**
+     * 分页查询角色与用户关联
+     * @param roleId
+     * @return
+     */
     @Select({"<script>",
             " select b.user_id,",
                     " b.login_no,",
@@ -69,6 +98,11 @@ public interface RoleUserPrivilegeMenuMapper {
             "</script>"})
     Page<User> findAllUsersByRoleId(@Param("roleId") Integer roleId);
 
+    /**
+     * 分页查询角色与权限关联
+     * @param roleId
+     * @return
+     */
     @Select({"<script>",
             " select b.privilege_id,",
                     "b.name,",
@@ -83,6 +117,11 @@ public interface RoleUserPrivilegeMenuMapper {
             "</script>"})
     Page<Privilege> findAllPrivilegesByRoleId(@Param("roleId") Integer roleId);
 
+    /**
+     * 分页查询角色与菜单关联
+     * @param roleId
+     * @return
+     */
     @Select({"<script>",
             " select ",
             "b.menu_id,",
@@ -101,6 +140,11 @@ public interface RoleUserPrivilegeMenuMapper {
             "</script>"})
     Page<Menu> findAllMenusByRoleId(@Param("roleId") Integer roleId);
 
+    /**
+     * 查询角色与用户、权限、角色关联总数
+     * @param roleId
+     * @return
+     */
     @Select({"<script>",
             " select sum(b.counts) from (",
             " select count(1) counts from  t_role_user a where a.role_id = #{roleId}",

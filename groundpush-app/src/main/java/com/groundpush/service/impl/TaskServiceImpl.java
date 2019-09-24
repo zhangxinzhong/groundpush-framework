@@ -163,7 +163,8 @@ public class TaskServiceImpl implements TaskService {
         return Collections.EMPTY_SET;
     }
 
-    private Page<Task> addCount(Integer customId,Page<Task> list){
+    @Override
+    public Page<Task> addCount(Integer customId,Page<Task> list){
         List<Integer> taskIds  = new ArrayList<>();
         for(Task task:list){
             taskIds.add(task.getTaskId());

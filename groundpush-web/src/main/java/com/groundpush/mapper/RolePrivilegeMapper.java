@@ -26,5 +26,5 @@ public interface RolePrivilegeMapper {
                     "</foreach>",
             "</script>"
     })
-    List<Privilege> queryPrivilegeByRoleIds(@Param("roleIds") List roleIds);
+    List<Privilege> queryPrivilegeByRoleIds(List roleIds);
 }

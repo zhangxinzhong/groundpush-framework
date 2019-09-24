@@ -13,6 +13,7 @@ import com.groundpush.service.PrivilegeService;
 import com.groundpush.service.RoleService;
 import com.groundpush.service.UserService;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -61,6 +62,7 @@ public class RoleController {
      *
      * @return
      */
+    @ApiOperation("查询所有分页")
     @RequestMapping("/queryAllRoles")
     @ResponseBody
     public JsonResp queryAllRoles(Integer page, Integer limit) {
@@ -79,6 +81,7 @@ public class RoleController {
      *
      * @param role
      */
+    @ApiOperation("添加角色")
     @RequestMapping("/addRole")
     @ResponseBody
     public JsonResp addRole(@RequestBody @Valid Role role, BindingResult bindingResult) {
@@ -100,6 +103,7 @@ public class RoleController {
      *
      * @param roleId
      */
+    @ApiOperation("删除角色")
     @RequestMapping("/delRole")
     @ResponseBody
     public JsonResp delRole(@RequestParam(value = "roleId") Integer roleId) {
@@ -122,6 +126,7 @@ public class RoleController {
      *
      * @param role
      */
+    @ApiOperation("修改角色")
     @RequestMapping("/updateRole")
     @ResponseBody
     public JsonResp updateRole(@RequestBody @Valid Role role, BindingResult bindingResult) {
@@ -144,6 +149,7 @@ public class RoleController {
      *
      * @param upmAddCondition
      */
+    @ApiOperation("添加角色用户关联")
     @PostMapping("/addRoleUser")
     @ResponseBody
     public JsonResp addRoleUser(@RequestBody UpmAddCondition upmAddCondition) {
@@ -163,6 +169,7 @@ public class RoleController {
      *
      * @param upmAddCondition
      */
+    @ApiOperation("添加角色权限关联")
     @PostMapping("/addPrivilege")
     @ResponseBody
     public JsonResp addPrivilege(@RequestBody UpmAddCondition upmAddCondition) {
@@ -183,6 +190,7 @@ public class RoleController {
      *
      * @param upmAddCondition
      */
+    @ApiOperation("添加关联权限")
     @PostMapping("/addRoleMenu")
     @ResponseBody
     public JsonResp addRoleMenu(@RequestBody UpmAddCondition upmAddCondition) {
@@ -205,6 +213,7 @@ public class RoleController {
      * @param roleId
      * @return
      */
+    @ApiOperation("获取所有关联用户")
     @RequestMapping("/findUsersByRoleId")
     @ResponseBody
     public JsonResp findUsersByRoleId(@RequestParam(value = "roleId", required = true) Integer roleId, Integer page, Integer limit) {
@@ -225,6 +234,7 @@ public class RoleController {
      * @param roleId
      * @return
      */
+    @ApiOperation("获取所有关联权限")
     @RequestMapping("/findPrivilegesByRoleId")
     @ResponseBody
     public JsonResp findPrivilegesByRoleId(@RequestParam(value = "roleId", required = true) Integer roleId, Integer page, Integer limit) {
@@ -244,6 +254,7 @@ public class RoleController {
      * @param roleId
      * @return
      */
+    @ApiOperation("获取所有关联权限")
     @RequestMapping("/findMenusByRoleId")
     @ResponseBody
     public JsonResp findMenusByRoleId(@RequestParam(value = "roleId", required = true) Integer roleId, Integer page, Integer limit) {
@@ -264,6 +275,7 @@ public class RoleController {
      * @param page
      * @return
      */
+    @ApiOperation("查询所有用户分页")
     @RequestMapping("/queryAllUsersPages")
     @ResponseBody
     public JsonResp queryAllUsersPages(Integer limit, Integer page) {
@@ -283,6 +295,7 @@ public class RoleController {
      * @param page
      * @return
      */
+    @ApiOperation("查询所有菜单分页")
     @RequestMapping("/queryAllMenusPages")
     @ResponseBody
     public JsonResp queryAllMenusPages(MenuQueryCondition menuQueryCondition, Integer limit, Integer page) {
@@ -303,6 +316,7 @@ public class RoleController {
      * @param page
      * @return
      */
+    @ApiOperation("查询所有权限分页")
     @RequestMapping("/queryAllPrivilegePages")
     @ResponseBody
     public JsonResp queryAllPrivilegePages(Integer limit, Integer page) {

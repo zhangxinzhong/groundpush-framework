@@ -38,4 +38,13 @@ public interface TaskService {
     Optional<Task> getTask(Integer id,Integer taskType);
 
     Boolean save(Task task);
+
+
+    /**
+     * 设置参与人
+     * @param customId
+     * @param list
+     * @return
+     */
+    public Page<Task> addCount(Integer customId,Page<Task> list);
 }
