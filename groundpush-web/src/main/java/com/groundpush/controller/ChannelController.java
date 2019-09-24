@@ -10,10 +10,7 @@ import com.groundpush.core.model.Channel;
 import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.PageResult;
-import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.ExcelTools;
-import com.groundpush.core.utils.ExcelUtils;
-import com.groundpush.core.utils.SessionUtils;
+import com.groundpush.core.utils.*;
 import com.groundpush.service.ChannelDataService;
 import com.groundpush.service.ChannelService;
 import com.groundpush.service.OrderService;
@@ -31,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -54,6 +52,9 @@ public class ChannelController {
 
     @Resource
     private SessionUtils sessionUtils;
+
+    @Resource
+    private DateUtils dateUtils;
 
     @RequestMapping("/toChannel")
     public String toChannel(Model model) {
@@ -178,7 +179,8 @@ public class ChannelController {
                         channelData.setTaskId(taskId);
                         channelData.setUniqueCode(uniqueCode);
                         channelData.setExistOrder(isExistOrder);
-                        channelData.setChannelTime(LocalDateTime.parse(String.valueOf(analysisResult.get("produceTime"))));
+                        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+                        channelData.setChannelTime(dateUtils.transToLocalDateTime(String.valueOf(analysisResult.get("produceTime"))));
                         channelData.setEffective(Boolean.valueOf(String.valueOf(analysisResult.get("isEffective"))));
                         channelData.setDescription(String.valueOf(analysisResult.get("failureResult")));
                         cds.add(channelData);

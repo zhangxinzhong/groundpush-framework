@@ -6,6 +6,7 @@ import com.groundpush.service.ChannelDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 public class ChannelDataServiceImpl implements ChannelDataService {
 
+    @Resource
     private ChannelDataMapper channelDataMapper;
 
 

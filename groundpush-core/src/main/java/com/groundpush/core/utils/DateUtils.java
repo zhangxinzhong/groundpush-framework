@@ -2,7 +2,10 @@ package com.groundpush.core.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -68,5 +71,12 @@ public class DateUtils {
         Duration duration = java.time.Duration.between(startTime,endTime);
         return duration.toDays();
     }
+
+    public LocalDateTime transToLocalDateTime(String dateTime){
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime ldt = LocalDateTime.parse(dateTime,df);
+        return ldt;
+    }
+
 
 }
