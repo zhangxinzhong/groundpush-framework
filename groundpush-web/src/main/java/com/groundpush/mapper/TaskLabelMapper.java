@@ -39,12 +39,27 @@ public interface TaskLabelMapper {
     @Select(" select * from t_task_label t where t.tl_id=#{tlId}  ")
     Optional<TaskLabel> getTaskLabel(@Param("tlId") Integer tlId);
 
+    /**
+     * 获取标签关联的list
+     * @param label
+     * @return
+     */
     @Select(" select * from t_task_label t where t.label_id = #{labelId}  ")
     List<TaskLabel> getTaskLabelByLabelId(Label label);
 
+    /**
+     * 删除某个任务标签的关联
+     * @param taskId
+     * @return
+     */
     @Delete(" delete from t_task_label where task_id = #{taskId} ")
     Integer deleteTaskLabelByTaskId(@Param("taskId") Integer taskId);
 
+    /**
+     * 通过任务id获取所有任务标签关联
+     * @param taskId
+     * @return
+     */
     @Select(" select * from t_task_label t where t.task_id = #{taskId}  ")
     List<TaskLabel> getTaskLabelByTaskId(@Param("taskId") Integer taskId);
 }

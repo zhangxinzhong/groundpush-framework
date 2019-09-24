@@ -51,6 +51,11 @@ public interface TaskAttributeMapper {
     })
     Integer createTaskAttribute(List<TaskAttribute> taskAttributes);
 
+    /**
+     * 通过任务id获取所有对应任务属性
+     * @param taskId
+     * @return
+     */
     @Select(" select * from t_task_attribute ta where ta.task_id = #{taskId} ")
     List<TaskAttribute> getTaskAttributeListByTaskId(@Param("taskId") Integer taskId);
 }

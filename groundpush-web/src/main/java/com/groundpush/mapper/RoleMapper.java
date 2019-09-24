@@ -11,6 +11,10 @@ import org.apache.ibatis.annotations.*;
  */
 public interface RoleMapper {
 
+    /**
+     * 分页查询角色
+     * @return
+     */
     @Select({
             "<script>",
             " select ",
@@ -25,6 +29,10 @@ public interface RoleMapper {
     })
     Page<Role> queryAllRoles();
 
+    /**
+     * 添加角色
+     * @param role
+     */
     @Insert({
             "<script>",
             " insert into t_role ",
@@ -34,6 +42,10 @@ public interface RoleMapper {
     })
     void addRole(Role role);
 
+    /**
+     * 修改角色
+     * @param role
+     */
     @Update({
             "<script>",
             " update t_role ",
@@ -46,6 +58,10 @@ public interface RoleMapper {
     })
     void updateRole(Role role);
 
+    /**
+     * 删除角色
+     * @param roleId
+     */
     @Delete(" delete from t_role where role_id = #{roleId} ")
     void delRole(@Param("roleId") Integer roleId);
 
