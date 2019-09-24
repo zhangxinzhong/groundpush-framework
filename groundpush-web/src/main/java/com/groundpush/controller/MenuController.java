@@ -3,6 +3,8 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.MenuQueryCondition;
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.Menu;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.service.MenuService;
@@ -69,6 +71,10 @@ public class MenuController {
     @RequestMapping("/del")
     @ResponseBody
     public JsonResp deleteMenu(@Valid @NotNull Integer menuId) {
+        Boolean bool = menuService.findRoleMenuByMenuId(menuId);
+        if(bool){
+            throw new BusinessException(ExceptionEnum.MENU_AND_DEL_ERROR.getErrorCode(), ExceptionEnum.MENU_AND_DEL_ERROR.getErrorMessage());
+        }
         menuService.deleteMenu(menuId);
         return JsonResp.success();
     }

@@ -48,6 +48,6 @@ public interface UriMapper {
     @Delete("delete from t_uri where uri_id = #{uriId}")
     Integer del(@Param("uriId") Integer uriId);
 
-    @Select(" select * from t_uri ")
+    @Select(" select a.*,b.privilege_id from t_uri a left join t_privilege_uri b on a.uri_id = b.uri_id ")
     List<Uri> getUriAll();
 }

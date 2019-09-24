@@ -21,21 +21,28 @@ public interface TaskMapper {
      */
     @Select({
             "<script>",
-            " (select t1.*, ",
+            " select l.* from ( ",
+            // 根据条件查出所有任务
+            "(",
+            " select t1.*, ",
             " (SELECT  GROUP_CONCAT(b.label_name) FROM t_label b LEFT JOIN t_task_label c on b.label_id = c.label_id where b.type = 0 and c.task_id = t1.task_id) label_name",
-            "  from t_task t1 where t1.status=1   ",
+            "  from t_task t1 left join t_task_label tl on t1.task_id = tl.task_id where t1.status=1   ",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
-            " <if test='type != null and type != \"\"'> and t1.type in (#{type})  </if> ",
-            " <if test='sort != null'> order by #{sort}  </if>) ",
+            " <if test='type != null and type != \"\"'> and tl.label_id = #{type}  </if> ",
+            ")",
+            // 若有location则以地址查询 与所有任务结合
             " <if test='location != null and location != \"\" '>  ",
-            " union ( select t2.*,",
+            " union ( ",
+            " select t2.*,",
             " (SELECT  GROUP_CONCAT(b.label_name) FROM t_label b LEFT JOIN t_task_label c on b.label_id = c.label_id where b.type = 0 and c.task_id = t2.task_id) label_name ",
-            " from t_task t2 where 1=1 ",
+            " from t_task t2 left join t_task_label tl on t2.task_id = tl.task_id  where t2.status=1  ",
             " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='location != null and location != \"\"'> and  FIND_IN_SET(#{location},t2.location) </if>",
-            " <if test='type != null and type != \"\"'> and t2.type in (#{type})  </if> ",
-            " <if test='sort != null'> order by #{sort}  </if>) ",
+            " <if test='type != null and type != \"\"'> and tl.label_id = #{type} </if> ",
+            " ) ",
             " </if> ",
+            "  ) l ",
+            " <if test='sort != null'> order by ${sort}  </if> ",
             "</script>"
     })
     Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition);

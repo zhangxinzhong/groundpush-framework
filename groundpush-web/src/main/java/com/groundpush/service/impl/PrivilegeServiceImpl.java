@@ -100,5 +100,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return privilegeMapper.del(privilegeId) > 0 ? true : false;
     }
 
+    @Override
+    public Boolean findRolePriByPriId(Integer privilegeId){
+
+        return privilegeMapper.findRolePriByPriId(privilegeId) > 0?true:false;
+    }
 
 }

@@ -89,4 +89,7 @@ public interface UserMapper {
     @Insert(" insert into t_user (login_no, name, name_pinyin, mobile_no, work_email, status, photo, created_time) values (#{loginNo},#{name},#{namePinyin},#{mobileNo},#{workEmail},1,#{photo},current_timestamp) ")
     @Options(useGeneratedKeys = true, keyProperty = "userId")
     void createUser(User user);
+
+    @Select(" select count(1) from t_role_user a where a.user_id = #{userId} ")
+    Integer findRoleUserByUserId(Integer userId);
 }

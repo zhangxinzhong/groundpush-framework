@@ -3,6 +3,8 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Privilege;
 import com.groundpush.service.PrivilegeService;
@@ -87,6 +89,11 @@ public class PrivilegeController {
     @ResponseBody
     public JsonResp delPrivilege(Model model,@RequestParam("privilegeId") Integer privilegeId) {
         try {
+            Boolean bool = privilegeService.findRolePriByPriId(privilegeId);
+            if(bool){
+                throw new BusinessException(ExceptionEnum.PRI_AND_DEL_ERROR.getErrorCode(), ExceptionEnum.PRI_AND_DEL_ERROR.getErrorMessage());
+            }
+
             privilegeService.del(privilegeId);
             return JsonResp.success();
         } catch (Exception e) {

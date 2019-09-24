@@ -39,4 +39,6 @@ public interface PrivilegeService {
     Optional<Privilege> getPrivilege(Integer id);
 
     Boolean del(Integer privilegeId);
+
+    Boolean findRolePriByPriId(Integer privilegeId);
 }

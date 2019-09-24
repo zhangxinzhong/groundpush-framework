@@ -279,11 +279,11 @@ layui.use('table', function () {
 
 
 
-    var viewUser = [{field: 'loginNo', title: '登录名', width: 200, sort: true},
-    {field: 'name', title: '用户名', width: 200},
-    {field: 'namePinyin', title: '用户名全拼', width: 200},
-    {field: 'createdName', title: '创建人', width: 200},
-    {field: 'createdTime', title: '创建时间', width: 200,templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}];
+    var viewUser = [{field: 'loginNo', title: '登录名', width: 260, sort: true},
+    {field: 'name', title: '用户名', width: 260},
+    {field: 'namePinyin', title: '用户名全拼', width: 260},
+    {field: 'createdName', title: '创建人', width: 260},
+    {field: 'createdTime', title: '创建时间', width: 240,templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}];
 
    var viewPrivilege = [{field: 'name', title: '权限名称', width: 260, sort: true},
     {field: 'code', title: '权限编码', width: 260},
