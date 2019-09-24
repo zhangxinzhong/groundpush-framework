@@ -155,8 +155,9 @@ public class ChannelController {
     public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId, Integer taskId) throws Exception {
         try {
             ExcelTools excelTools = ExcelTools.getInstance();
+            excelTools.openExcel(file.getInputStream());
             final Object[] title = excelTools.getExcelTitle();
-            excelTools.openExcel(file.getInputStream()).setRowResult(100, (sheetName, countRow, resultCount, result) -> {
+            excelTools.setRowResult(100, (sheetName, countRow, resultCount, result) -> {
                 List<ChannelData> cds = new ArrayList<>();
                 result.stream().forEach(channel -> {
                     Object[] excelRowData = channel;
@@ -164,7 +165,9 @@ public class ChannelController {
                         Map<String, Object> analysisResult = analysisSingletData(channel, mapping);
                         String uniqueCode = String.valueOf(analysisResult.get("uniqueCode"));
                         String failureResult = String.valueOf(analysisResult.get("failureResult"));
-                        Integer resStatus = Integer.parseInt(String.valueOf(analysisResult.get("isEffective")));
+                        //@author hss @date 2019-09-24 将xls中是否有效改为“是”=1 “否”或null=0
+                        String isEffective = String.valueOf(analysisResult.get("isEffective"));
+                        Integer resStatus = Constants.XLS_IS_EFFECTIVE_VAILD_TEXT.equals(isEffective)?Constants.XLS_IS_EFFECTIVE_VAILD:Constants.XLS_IS_EFFECTIVE_INVAILD;
                         boolean isExistOrder = true;
                         if (orderService.updateOrderByUniqueCode(uniqueCode, resStatus, failureResult) <= 0) {
                             isExistOrder = false;

@@ -37,6 +37,7 @@ public interface LabelService {
     /**
      * 获取某个标签内容
      * @param labelId
+     * @return
      */
     Optional<Label> queryById(Integer labelId);
 

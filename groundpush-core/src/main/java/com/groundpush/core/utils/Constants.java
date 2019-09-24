@@ -249,13 +249,34 @@ public class Constants {
     public static final Integer UPLOAD_STATUS_3 = 3;
 
     /**
-     *任务类型  申请1
+     *任务类型  申请1 用于app
      */
     public static final Integer TASK_TYPE_1 = 1;
 
 
     /**
-     *任务类型  推广2
+     *任务类型  推广2 用于app
      */
     public static final Integer TASK_TYPE_2 = 2;
+
+    /**
+     *渠道文件导入 是否有效字段  1表示有效
+     */
+    public static final Integer  XLS_IS_EFFECTIVE_VAILD = 1;
+
+    /**
+     *渠道文件导入 是否有效字段  0表示无效
+     */
+    public static final Integer  XLS_IS_EFFECTIVE_INVAILD = 0;
+
+    /**
+     *渠道文件导入 是否有效字段 文字表示
+     */
+    public static final String  XLS_IS_EFFECTIVE_VAILD_TEXT = "是";
+
+    /**
+     *渠道文件导入 是否有效字段  文字表示
+     */
+    public static final String  XLS_IS_EFFECTIVE_INVAILD_TEXT = "否";
+
 }

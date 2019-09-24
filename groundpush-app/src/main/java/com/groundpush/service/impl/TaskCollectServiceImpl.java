@@ -39,6 +39,8 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     @Resource
     private CustomerService customerService;
 
+
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void createTaskCollect(TaskCollect taskCollect) {
@@ -78,7 +80,8 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     @Override
     public Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize) {
         PageHelper.startPage(pageNumber,pageSize);
-        return taskCollectMapper.queryTaskCollect(taskQueryCondition);
+        Page<Task> task = taskCollectMapper.queryTaskCollect(taskQueryCondition);
+        return taskService.addCount(taskQueryCondition.getCustomerId(),task);
     }
 
     @Override
