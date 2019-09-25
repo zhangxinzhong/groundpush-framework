@@ -9,6 +9,7 @@ import com.groundpush.core.model.OperationLog;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskLabel;
+import com.groundpush.core.repository.OperationLogRepository;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.mapper.OperationLogMapper;
 import com.groundpush.mapper.TaskAttributeMapper;
@@ -31,7 +32,7 @@ import java.util.Optional;
  * @date: 2019-08-26 下午1:19
  */
 @Service
-public class OperationLogServiceImpl implements OperationLogService {
+public class OperationLogServiceImpl implements OperationLogService, OperationLogRepository {
 
     @Resource
     private OperationLogMapper operationLogMapper;
@@ -48,4 +49,8 @@ public class OperationLogServiceImpl implements OperationLogService {
         return operationLogMapper.insert(operationLog) > 0 ? true : false;
     }
 
+    @Override
+    public void createOperationLog(OperationLog operationLog) {
+        operationLogMapper.insert(operationLog);
+    }
 }

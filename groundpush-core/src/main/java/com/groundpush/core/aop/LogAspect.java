@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.model.*;
+import com.groundpush.core.repository.OperationLogRepository;
 import com.groundpush.core.utils.LoginUtils;
 import com.groundpush.core.utils.SessionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,6 +26,7 @@ import java.util.Optional;
  * @author hengquan
  * @date 2019/9/21
  */
+@Slf4j
 @Aspect
 @Component
 public class LogAspect {
@@ -34,8 +37,8 @@ public class LogAspect {
     private LoginUtils loginUtils;
     @Resource
     private SessionUtils sessionUtils;
-    //@Resource
-    //private OperationLogService operationLogService;
+    @Resource
+    private OperationLogRepository operationLogRepository;
 
     /**
      * 此处的切点是注解的方式，也可以用包名的方式达到相同的效果
@@ -113,8 +116,9 @@ public class LogAspect {
                 operationLog.setCreatedBy(user.getUserId());
             }
         }
-        //TODO 这里保存日志
-        System.out.println("记录日志:" + operationLog.toString());
+        // 这里保存日志
+        log.info("记录日志:{}", operationLog.toString());
+        operationLogRepository.createOperationLog(operationLog);
     }
 
 }
