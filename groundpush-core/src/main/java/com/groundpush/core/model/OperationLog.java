@@ -1,15 +1,13 @@
 package com.groundpush.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
 /**
@@ -23,16 +21,11 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OperationLog implements Serializable {
-    private String operationLogId;
-    private LocalDateTime createTime;
+    private String logId;
     /**
-     * 日志等级
+     * 创建时间
      */
-    private Integer level;
-    /**
-     * 被操作的对象
-     */
-    private String operationUnit;
+    private DateTimeLiteralExpression.DateTime createdTime;
     /**
      * 方法名
      */
@@ -44,7 +37,7 @@ public class OperationLog implements Serializable {
     /**
      * 操作人id
      */
-    private String operId;
+    private Integer createdBy;
     /**
      * 日志描述
      */
@@ -56,11 +49,9 @@ public class OperationLog implements Serializable {
     /**
      * 方法运行时间
      */
-    private Long runTime;
+    private String runTime;
     /**
-     * 方法返回值
+     * 类型（0-APP，1-PC）
      */
-    private String returnValue;
-
-
+    private Integer type;
 }

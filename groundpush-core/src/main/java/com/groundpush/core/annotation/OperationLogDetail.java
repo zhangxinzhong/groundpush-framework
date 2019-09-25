@@ -1,7 +1,6 @@
 package com.groundpush.core.annotation;
 
 import com.groundpush.core.enums.OperationType;
-import com.groundpush.core.enums.OperationUnit;
 
 import java.lang.annotation.*;
 
@@ -11,29 +10,19 @@ import java.lang.annotation.*;
  * @author weiwenjun
  * @date 2018/9/12
  */
-//@OperationLogDetail(detail = "通过手机号[{{tel}}]获取用户名",level = 3,operationUnit = OperationUnit.USER,operationType = OperationType.SELECT)
+//@OperationLogDetail(operationType = OperationType.TASK_ADD,type = 1)
 @Documented
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OperationLogDetail {
 
     /**
-     * 方法描述,可使用占位符获取参数:{{tel}}
+     * 操作类型(enum)
      */
-    String detail() default "";
+    OperationType operationType() default OperationType.DEFAULTLOG;
 
     /**
-     * 日志等级:自己定，此处分为1-9
+     * 类型（0-APP，1-PC）
      */
-    int level() default 0;
-
-    /**
-     * 操作类型(enum):主要是select,insert,update,delete
-     */
-    OperationType operationType() default OperationType.UNKNOWN;
-
-    /**
-     * 被操作的对象(此处使用enum):可以是任何对象，如表名(user)，或者是工具(redis)
-     */
-    OperationUnit operationUnit() default OperationUnit.UNKNOWN;
+    int type() default 0;
 }

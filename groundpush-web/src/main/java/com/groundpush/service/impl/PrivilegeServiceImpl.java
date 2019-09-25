@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.enums.OperationType;
-import com.groundpush.core.enums.OperationUnit;
 import com.groundpush.core.model.Privilege;
 import com.groundpush.core.model.Uri;
 import com.groundpush.mapper.PrivilegeMapper;
@@ -60,7 +59,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return privilegeMapper.queryAllPrivileges();
     }
 
-    @OperationLogDetail
     @Override
     public Page<Privilege> queryTaskAll(Privilege privilege, Integer nowPage, Integer pageSize) {
         PageHelper.startPage(nowPage, pageSize);
