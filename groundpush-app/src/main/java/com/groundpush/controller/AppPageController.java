@@ -33,7 +33,7 @@ public class AppPageController {
             return "/app/user_privacy";
         }
 
-        return "page";
+        return "error";
 
     }
 }
