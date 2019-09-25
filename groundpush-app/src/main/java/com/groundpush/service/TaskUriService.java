@@ -18,4 +18,10 @@ public interface TaskUriService {
      * @return
      */
     Optional<TaskUri> queryValidTaskUriByTaskId(Integer taskId);
+
+    /**
+     * 修改uri
+     * @param taskUri
+     */
+    void updateTaskUri(TaskUri taskUri);
 }

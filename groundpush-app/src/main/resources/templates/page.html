@@ -11,11 +11,13 @@
     <meta name="format-detection" content="telephone=no">
     <style>
         body {
-            height: 100%;width: 100%;
+            height: 100%;
+            width: 100%;
             background: url('/img/erweimashixiao.png');
-            background-size:cover;
+            background-size: cover;
         }
-        .show_font{
+
+        .show_font {
             font-size: 20px;
             font-family: cursive;
             margin-top: 60%;
@@ -23,10 +25,9 @@
         }
     </style>
     <script type="text/javascript">
-        var uri =  '[[${uri}]]';
-        var bool = '[[${bool}]]';
-        if(bool == 'true'){
-            location.href=uri;
+        let uri = '[[${uri}]]';
+        if (uri != '' && uri != undefined && uri != null) {
+            location.href = uri;
         }
     </script>
 
@@ -34,8 +35,7 @@
 <style>
 
 </style>
-<body >
-<p th:if="${bool != null and  !bool}" class="show_font" >二维码已失效！</p>
-<p th:if="${bool == null}" class="show_font" >路径跳转错误！</p>
+<body>
+<p th:if="${errorMsg != null}" class="show_font" th:text="${errorMsg}"></p>
 </body>
 </html>

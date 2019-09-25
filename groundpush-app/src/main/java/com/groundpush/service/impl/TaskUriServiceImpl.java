@@ -25,4 +25,9 @@ public class TaskUriServiceImpl implements TaskUriService {
     public Optional<TaskUri> queryValidTaskUriByTaskId(Integer taskId) {
         return taskUriMapper.queryAllByTaskId(taskId);
     }
+
+    @Override
+    public void updateTaskUri(TaskUri taskUri) {
+        taskUriMapper.updateTaskUri(taskUri);
+    }
 }
