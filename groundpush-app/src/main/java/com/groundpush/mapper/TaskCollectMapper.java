@@ -40,12 +40,23 @@ public interface TaskCollectMapper {
      */
     @Select({
             "<script>",
-            " select ls.* from (",
-            " ( select t1.* from  t_task t1 left join t_task_collect tc on tc.task_id=t1.task_id  where tc.customer_id=#{customerId}  ",
+            " select ls.*, ",
+            //今日您剩余推广次数
+            " (SELECT ls.spread_total-count(1) FROM t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id WHERE a.type = 2  AND b.task_id = ls.task_id AND DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) sur_pop_count, ",
+            //任务参与人
+            " (select count(1) from (SELECT a.customer_id,a.task_id FROM  t_order_task_customer  a LEFT JOIN  t_order b ON a.order_id = b.order_id WHERE b.type = 2  AND DATE_FORMAT(b.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') group by a.customer_id,a.task_id ) c where c.task_id = ls.task_id) task_person, ",
+            //查询所有次要标签 以 label1,label2,label3,label4
+            " (SELECT  GROUP_CONCAT(b.label_name) FROM t_label b LEFT JOIN t_task_label c on b.label_id = c.label_id where b.type = 0 and c.task_id = ls.task_id) label_name",
+            " from (",
+            " ( ",
+            " select t1.* ",
+            " from  t_task t1 left join t_task_collect tc on tc.task_id=t1.task_id  where tc.customer_id=#{customerId}  ",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
             ")",
             " <if test='location != null and location != \"\" '> ",
-            " union ( select t2.* from  t_task t2 left join t_task_collect tc on tc.task_id=t2.task_id    where  tc.customer_id=#{customerId} ",
+            " union (",
+            " select t2.* ",
+            " from  t_task t2 left join t_task_collect tc on tc.task_id=t2.task_id    where  tc.customer_id=#{customerId} ",
             " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
             " and FIND_IN_SET(#{location},t2.location) )",
             "  </if> ",

@@ -41,10 +41,9 @@ public interface TaskService {
 
 
     /**
-     * 设置参与人
-     * @param customId
+     * 设置完成人分成
      * @param list
      * @return
      */
-    public Page<Task> addCount(Integer customId,Page<Task> list);
+    public Page<Task> addCount(Page<Task> list);
 }
