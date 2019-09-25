@@ -20,8 +20,8 @@ public class OrderTaskCustomerServiceImpl implements OrderTaskCustomerService {
     private  OrderTaskCustomerMapper orderTaskCustomerMapper;
 
     @Override
-    public List<OrderTaskCustomer>  findOrderByTaskId(Integer taskId) {
-        List<OrderTaskCustomer>   tasks = orderTaskCustomerMapper.findOrderByTaskId(taskId);
+    public List<OrderTaskCustomer>  findOrderByTaskId(Integer taskId,Integer customerId) {
+        List<OrderTaskCustomer>   tasks = orderTaskCustomerMapper.findOrderByTaskId(taskId,customerId);
         return tasks;
     }
 
