@@ -25,7 +25,7 @@ public interface ChannelExcelMapper {
      *
      * @return
      */
-    @Select("select id,channel_id,file_name,mapping,create_time from t_channel_excel where is_use=0")
+    @Select("select * from t_channel_excel where is_use=0")
     List<ChannelExcel> queryAllChannelExcel();
 
 

@@ -6,6 +6,7 @@ import com.groundpush.core.condition.ChannelDataQueryCondition;
 import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.ChannelExcel;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.ExcelTools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -52,6 +54,8 @@ public class SystemScheduler {
     public void getJttUserInfo() {
         count = 0;
         String startTime = LocalDateTime.now().toString();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         List<ChannelExcel> cdmArray = channelExcelService.queryChannelExcelAll();
         if (cdmArray.size() > 0) {
             ExcelTools excelTools = ExcelTools.getInstance();
@@ -81,9 +85,9 @@ public class SystemScheduler {
                                     try {
                                         ChannelData cd = ChannelData.builder().channelId(cdm.getChannelId()).taskId(cdm.getTaskId())
                                                 .uniqueCode(uniqueCode)
-                                                .isEffective(Boolean.parseBoolean(String.valueOf(analysisResult.get("isEffective"))))
+                                                .isEffective(Constants.XLS_IS_EFFECTIVE_VAILD_TEXT.equals(isEffective)?Boolean.TRUE:Boolean.FALSE)
                                                 .description(String.valueOf(analysisResult.get("failureResult")))
-                                                .channelTime(LocalDateTime.parse(String.valueOf(analysisResult.get("produceTime"))))
+                                                .channelTime(LocalDateTime.parse(String.valueOf(analysisResult.get("produceTime")),df))
                                                 .isExistOrder(isExistOrder).build();
                                         cds.add(cd);
                                     } catch (Exception e) {
