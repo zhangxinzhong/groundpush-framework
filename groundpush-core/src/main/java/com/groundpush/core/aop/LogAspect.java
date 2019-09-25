@@ -97,7 +97,7 @@ public class LogAspect {
             OperationType detailType = OperationType.valueOf(operationType);
             String detail = detailType.getValue();
             //存日志类型描述
-            operationLog.setDescribe(detail);
+            operationLog.setOperationDetail(detail);
             //获取类型（0-APP，1-PC）
             int type = annotation.type();
             //存类型

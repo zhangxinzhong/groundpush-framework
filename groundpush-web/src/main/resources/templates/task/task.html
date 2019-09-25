@@ -70,30 +70,30 @@
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">&emsp;封&emsp;面&emsp;图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px;height: 200px" id="imgFMT"
+                                <img style="margin-left: -10px;width: 360px;height: 200px" id="imgFMT"
                                      src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
                                      onerror="excptionUrl(this)">
-                                <br><label>上传封面图片</label>
+                                <br><label>上传封面图片(推荐尺寸：360*200)</label>
                             </div>
                             <input type="hidden" name="imgUri" id="imgUri">
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">&emsp;缩&emsp;略&emsp;图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px;height: 200px" id="imgSLT"
+                                <img style="margin-left: -10px;width: 90px;height: 75px" id="imgSLT"
                                      src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
                                      onerror="excptionUrl(this)">
-                                <br><label>上传缩略图片</label>
+                                <br><label>上传缩略图片(推荐尺寸：90*75)</label>
                             </div>
                             <input type="hidden" name="iconUri" id="iconUri">
                         </div>
                         <div class="row panel-heading">
                             <label class="btn col-lg-1">&emsp;示&emsp;例&emsp;图：</label>
                             <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px;height: 200px" id="imgZST"
+                                <img style="margin-left: -10px;width: 160px;height: 95px" id="imgZST"
                                      src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
                                      onerror="excptionUrl(this)">
-                                <br><label>上传示例图片</label>
+                                <br><label>上传示例图片(推荐尺寸：160*95)</label>
                             </div>
                             <input type="hidden" name="exampleImg" id="exampleImg">
                         </div>
@@ -512,8 +512,8 @@
                             //阶段标头内容
                             var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
                                 '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskText(this)">添加文本</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskImage(this)">添加图片</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="MyTask" onclick="addTaskText(this)">添加文本</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="MyTask" onclick="addTaskImage(this)">添加图片</a>\n' +
                                 '                                        <a style="margin-left: 5px;" class="btn btn-danger col-lg-2" onclick="delThisLabelRow(this)">删除该阶段</a>\n' +
                                 '                                    </div>';
                             //阶段内容
@@ -540,8 +540,8 @@
                             //阶段标头内容
                             var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
                                 '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskText(this)">添加文本</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="' + type + '" onclick="addTaskImage(this)">添加图片</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="GeneralizeTask" onclick="addTaskText(this)">添加文本</a>\n' +
+                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="GeneralizeTask" onclick="addTaskImage(this)">添加图片</a>\n' +
                                 '                                        <a style="margin-left: 5px;" class="btn btn-danger col-lg-2" onclick="delThisLabelRow(this)">删除该阶段</a>\n' +
                                 '                                    </div>';
                             //阶段内容
@@ -694,7 +694,7 @@
                 '                <option value="6">保存二维码</option>' +
                 '                </select>' +
                 '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n';
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">\n';
             if (createUri == 0) {
                 ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
                 '</span>';
@@ -715,7 +715,7 @@
                 '                <option value="6" selected>保存二维码</option>' +
                 '                </select>' +
                 '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n';
+                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">\n';
             if (createUri == 0) {
                 ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
                 '</span>';
@@ -733,7 +733,7 @@
                 '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
                 '                <option value="7" selected>图片</option>' +
                 '                </select>' +
-                '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="' + content + '" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
+                '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="' + content + '" style="margin-left: 5px;width:350px; height: 400px;display:inline" onerror="excptionUrl(this)" />' +
                 '                <input type="hidden" class="' + valueClass + ' content" name="content" value="' + content + '" />' +
                 '                <input type="hidden" class="imgCode" name="imgCode" value="' + imgCode + '" />';
             //把这些KEY和VAL记住

@@ -235,7 +235,7 @@ function attributeFileUpload(labelClass, valueClass) {
             var code = res.code;
             if (code == "200") {
                 var fileData = res.data.fileData;
-                var filePath = fileData.filePath;
+                var filePath = res.data.filePath;
                 //var fileName = fileData.fileName;
                 $(labelClass).attr('src', filePath);
                 $(valueClass).val(filePath);
@@ -328,7 +328,7 @@ function addTaskImage(object) {
         '                <select name="rowType" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
         '<option value="7">图片</option>' +
         '</select>' +
-        '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:55%; height: 200px;display:inline" onerror="excptionUrl(this)" />' +
+        '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png" style="margin-left: 5px;width:350px; height: 400px;display:inline" onerror="excptionUrl(this)" />' +
         '                <input type="hidden" class="' + valueClass + ' content" name="content" value="" />' +
         '                <input type="hidden" class="imgCode" name="imgCode" value="' + timestamp + '" />' +
         '                <a class="btn btn-danger btn col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +

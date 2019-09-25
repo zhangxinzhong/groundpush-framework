@@ -41,7 +41,7 @@ public class OperationLog implements Serializable {
     /**
      * 日志描述
      */
-    private String describe;
+    private String operationDetail;
     /**
      * 操作类型
      */
