@@ -91,12 +91,12 @@ layui.use('table', function () {
                                  , totalRow: true
                                  , where:{'taskId':data.taskId,'orderTime':layui.util.toDateString(data.createdTime, "yyyy-MM-dd"),flag:data.flag}
                                  , cols: [[
-                                       {field: 'title', title: '任务名称', width: 200, sort: true}
-                                     , {field: 'orderNo', title: '订单号', width: 200}
-                                     , {field: 'nickName', title: '客户', width: 200}
-                                     , {field: 'customerBonus', title: '订单分成', width: 200}
-                                     , {field: '', title: '订单分成类型', width: 200,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
-
+                                       {field: 'title', title: '任务名称', width: 180, sort: true}
+                                     , {field: 'orderNo', title: '订单号', width: 280}
+                                     , {field: 'nickName', title: '客户', width: 100}
+                                     , {field: 'customerBonus', title: '订单分成', width: 100}
+                                     , {field: '', title: '订单分成类型', width: 150,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
+                                     , {field: 'createdTime', title: '订单创建时间', width: 180,templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
                                  ]]
                                  ,
                                  page: true,curr:1, limit: Global.PAGE_SISE

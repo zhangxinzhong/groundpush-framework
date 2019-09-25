@@ -48,6 +48,7 @@ public class GetKeyController {
         if(stringUtils.isNotBlank(key)){
             redisUtils.set(key,key,dateUtils.getIntervalSecond());
         }
+        log.info("生成二维码扫描跳转key：{}",key);
         return JsonResp.success(new AppCodeKey(aesUtils.ecodes(key,Constants.APP_AES_KEY)));
     }
 

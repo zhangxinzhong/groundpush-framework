@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -39,6 +40,8 @@ public class OrderList implements Serializable {
     @ApiModelProperty("分成类型：完成人、推广人、团队领导")
     private Integer bonusType;
 
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createdTime;
 
 
 }

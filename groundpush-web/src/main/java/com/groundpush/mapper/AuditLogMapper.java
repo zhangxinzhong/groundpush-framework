@@ -50,10 +50,12 @@ public interface AuditLogMapper {
            "    left join t_task b on a.task_id = b.task_id",
            "    left join t_order c on a.order_id = c.order_id",
            "    left join t_channel e on b.source = e.channel_id",
+           "    where c.order_id is not null",
            "  ) d",
-           "    where not exists (select   concat(f.task_id,'_',f.order_time)  from t_audit_log f where f.user_id = #{userId}) ",
+           "    where not exists (select  concat(f.task_id,'_',f.order_time)  from t_audit_log f where f.user_id = #{userId}) ",
            "    group by",
            "    d.task_id,d.created_time ",
+           "    order by d.created_time desc ",
            "</script>"
    })
    Page<TaskOrderList> getAllPayTaskOrderList(@Param("userId") Integer userId);

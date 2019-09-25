@@ -7,6 +7,7 @@ import com.groundpush.core.model.AuditLog;
 import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskOrderList;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.DateUtils;
 import com.groundpush.mapper.AuditLogMapper;
 import com.groundpush.mapper.OrderMapper;
 import com.groundpush.service.AuditLogService;
@@ -25,6 +26,9 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     @Resource
     private OrderMapper orderMapper;
+
+    @Resource
+    private DateUtils dateUtils;
 
     @Override
     public Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit,Integer userId) {
@@ -71,7 +75,8 @@ public class AuditLogServiceImpl implements AuditLogService {
     @Override
     public Page<OrderList> queryOrderListByTaskIdAndOrderId(OrderListQueryCondition condition) {
         PageHelper.startPage(condition.getPage(), condition.getLimit());
-        return orderMapper.queryOrderListByTaskIdAndOrderId(condition.getTaskId(),condition.getOrderTime(),condition.getFlag());
+        String orderTime = dateUtils.transToString(condition.getOrderTime());
+        return orderMapper.queryOrderListByTaskIdAndOrderId(condition.getTaskId(),orderTime,condition.getFlag());
     }
 
 

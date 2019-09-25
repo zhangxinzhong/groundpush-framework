@@ -72,10 +72,25 @@ public class DateUtils {
         return duration.toDays();
     }
 
+    /**
+     * 日期字符串格式转LocalDateTime
+     * @param dateTime
+     * @return
+     */
     public LocalDateTime transToLocalDateTime(String dateTime){
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime ldt = LocalDateTime.parse(dateTime,df);
         return ldt;
+    }
+
+    /**
+     * 日期转字符串格式 yyyy-MM-dd HH:mm:ss
+     * @param dateTime
+     * @return
+     */
+    public String transToString(Date dateTime){
+        DateFormat df =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return df.format(dateTime);
     }
 
 

@@ -51,6 +51,7 @@ public class ToPathController {
     @ApiOperation("页面跳转uri")
     @GetMapping
     public String toPage(@Valid  ToPathCondition toPathCondition,BindingResult bindingResult,Model model) {
+        log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}",toPathCondition.getCustomId(),toPathCondition.getTaskId(),toPathCondition.getType(),toPathCondition.getKey());
         String key = aesUtils.dcodes(toPathCondition.getKey(),Constants.APP_AES_KEY);
         String obj = (String)redisUtils.get(key);
         boolean bool = true;
@@ -68,6 +69,7 @@ public class ToPathController {
             }
             redisUtils.del(key);
         }else{
+            log.info("跳转页面已失效或缺少参数");
             bool = false;
         }
         model.addAttribute("uri",taskUri!=null?taskUri.get().getUri():null);

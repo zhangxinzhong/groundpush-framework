@@ -142,7 +142,8 @@ public interface OrderMapper {
             " a.order_no, ",
             " d.nick_name, ",
             " e.customer_bonus,",
-            " e.bonus_type ",
+            " e.bonus_type, ",
+            " a.created_time ",
             " from ",
             " t_order a ",
             " left join t_order_task_customer b on b.order_id = a.order_id ",
@@ -152,9 +153,10 @@ public interface OrderMapper {
             " where b.task_id =#{taskId} and DATE_FORMAT(a.created_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ",
             " <if test='flag == 2'> and a.settlement_status = 1 </if>",
             " <if test='flag == 3'> and a.settlement_status &lt;&gt; 1 </if>",
+            " order by a.created_time desc",
             "</script>"
     })
-    Page<OrderList> queryOrderListByTaskIdAndOrderId(@Param("taskId") Integer taskId, @Param("orderTime") Date orderTime, @Param("flag") Integer flag);
+    Page<OrderList> queryOrderListByTaskIdAndOrderId(@Param("taskId") Integer taskId, @Param("orderTime") String orderTime, @Param("flag") Integer flag);
 
 
     /**
