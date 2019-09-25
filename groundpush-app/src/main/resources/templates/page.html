@@ -24,18 +24,46 @@
             margin-left: 35%;
         }
     </style>
-    <script type="text/javascript">
-        let uri = '[[${uri}]]';
-        if (uri != '' && uri != undefined && uri != null) {
-            location.href = uri;
-        }
-    </script>
+
 
 </head>
 <style>
 
 </style>
 <body>
+
+<!--分享引导框开始-->
+<div id="guide_box" style="display:none;background:#000;width:100%;height:auto;" >
+    <img src="/img/wx_1.png"  width="100%" height="100%">
+</div>
+
+
 <p th:if="${errorMsg != null}" class="show_font" th:text="${errorMsg}"></p>
+<script type="text/javascript">
+    function is_weixn(){
+        let ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/micromessenger/i)=="micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    let isWx = is_weixn();
+    let uri = '[[${uri}]]';
+    if (uri != '' && uri != undefined && uri != null) {
+            if(isWx){
+                let href = location.href
+                if(href.match(/againPath/i) == 'againPath'){
+                    document.getElementById("guide_box").style.display = "block";
+                }else{
+                    location.href = '/againPath?backUrl='+uri;
+                }
+            }else{
+                location.href = uri;
+            }
+    }
+
+</script>
 </body>
 </html>

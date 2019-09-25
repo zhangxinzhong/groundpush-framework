@@ -5,10 +5,7 @@ import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskUri;
-import com.groundpush.core.utils.AesUtils;
-import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.RedisUtils;
-import com.groundpush.core.utils.StringUtils;
+import com.groundpush.core.utils.*;
 import com.groundpush.service.OrderService;
 import com.groundpush.service.TaskUriService;
 import io.swagger.annotations.ApiModel;
@@ -49,14 +46,18 @@ public class ToPathController {
     @Resource
     private TaskUriService taskUriService;
 
+    @Resource
+    private UniqueCode uniqueCode;
+
 
     @ApiOperation("页面跳转uri")
     @GetMapping
-    public String toPage(@Valid ToPathCondition toPathCondition, BindingResult bindingResult, Model model) {
+    public String toPage(@Valid ToPathCondition toPathCondition, BindingResult bindingResult,Model model) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
         log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}", toPathCondition.getCustomId(), toPathCondition.getTaskId(), toPathCondition.getType(), toPathCondition.getKey());
+
         String key = aesUtils.dcodes(toPathCondition.getKey(), Constants.APP_AES_KEY);
         String obj = (String) redisUtils.get(key);
         if (stringUtils.isNotBlank(obj) && obj.equals(key)) {
@@ -67,9 +68,7 @@ public class ToPathController {
                 // 使用完url 后需要把最后修改时间改成今天
                 taskUriService.updateTaskUri(taskUriOptional.get());
             }
-
             redisUtils.del(key);
-
         } else {
             log.info("跳转页面失败,key 不匹配");
             model.addAttribute("errorMsg", "二维码已失效！");

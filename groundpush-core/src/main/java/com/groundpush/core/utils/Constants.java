@@ -279,4 +279,20 @@ public class Constants {
      */
     public static final String  XLS_IS_EFFECTIVE_INVAILD_TEXT = "否";
 
+    /**
+     * 用于微信页面跳转
+     *
+     */
+    public static final  String WX_PAGE_TOKEN = "wx_token_";
+
+    /**
+     * 微信二次跳转页面过期时间 单位秒
+     */
+    public static final Integer WX_TOKEN_TIMEOUT = 60;
+
+    /**
+     * 微信二次跳转页面加密key
+     */
+    public static final  String WX_AES_TOKEN = "wxAesToken";
+
 }

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @author: zhangxinzhong
  * @date: 2019-08-26 上午11:15
  */
-@ApiModel(value = "任务查询条件")
+@ApiModel(value = "页面跳转条件")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
