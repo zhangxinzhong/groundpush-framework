@@ -25,6 +25,6 @@ public interface OrderTaskCustomerMapper {
      * 根据taskId查询出所有关联订单
      * @param taskId
      */
-    @Select(" SELECT a.* FROM t_order_task_customer a where a.task_id = #{taskId} ")
-    List<OrderTaskCustomer> findOrderByTaskId(@Param("taskId") Integer taskId);
+    @Select(" SELECT a.* FROM t_order_task_customer a where a.task_id = #{taskId} and a.customer_id = #{customerId} ")
+    List<OrderTaskCustomer> findOrderByTaskId(@Param("taskId") Integer taskId,@Param("customerId") Integer customerId);
 }

@@ -52,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
         Page<Task> pageTask = taskMapper.queryTaskAll(taskQueryCondition);
-        return pageTask.size() > 0 ? addCount(taskQueryCondition.getCustomerId(), pageTask) : pageTask;
+        return pageTask.size() > 0 ? addCount(pageTask) : pageTask;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -162,41 +162,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<Task> addCount(Integer customId, Page<Task> list) {
-        List<Integer> taskIds = new ArrayList<>();
-        for (Task task : list) {
-            taskIds.add(task.getTaskId());
-        }
-        List<TaskListCount> taskCounts = orderService.queryCountByTaskId(taskIds);
-        Map<Integer, Integer> taskMap = new HashMap<>();
-        for (TaskListCount count : taskCounts) {
-            taskMap.put(count.getTaskId(), count.getTaskPerson());
-        }
-
-        List<TaskListCount> taskCustomCounts = orderService.queryCountByCustomIdTaskId(customId, taskIds);
-        Map<Integer, Integer> taskCustomMap = new HashMap<>();
-        for (TaskListCount taskCustomCount : taskCustomCounts) {
-            taskCustomMap.put(taskCustomCount.getTaskId(), taskCustomCount.getCustomPopCount());
-        }
+    public Page<Task> addCount(Page<Task> list) {
         for (Task task : list) {
             BigDecimal amount = task.getAmount();
             task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
-            Integer taskPerson = taskMap.get(task.getTaskId());
-            if (taskPerson != null) {
-                task.setTaskPerson(taskPerson.toString());
-                task.setSurNumber(String.valueOf(task.getSpreadTotal() - taskPerson));
-            } else {
-                task.setSurNumber(String.valueOf(task.getSpreadTotal()));
-                task.setTaskPerson("0");
-            }
-            Integer customPopCount = taskCustomMap.get(task.getTaskId());
-            if (customPopCount != null) {
-                task.setSurPopCount(String.valueOf(task.getHandlerNum() - customPopCount));
-            } else {
-                task.setSurPopCount("0");
-            }
+            task.setSurNumber(String.valueOf((task.getSpreadTotal() / task.getHandlerNum()) - Integer.valueOf(task.getTaskPerson())));
         }
-
         return list;
     }
 }

@@ -81,7 +81,7 @@ public class TaskCollectServiceImpl implements TaskCollectService {
     public Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize) {
         PageHelper.startPage(pageNumber,pageSize);
         Page<Task> task = taskCollectMapper.queryTaskCollect(taskQueryCondition);
-        return taskService.addCount(taskQueryCondition.getCustomerId(),task);
+        return taskService.addCount(task);
     }
 
     @Override
