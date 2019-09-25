@@ -52,16 +52,16 @@ public class TaskController {
     @JsonView({Task.SimpleTaskView.class})
     @GetMapping
     public JsonResp queryTask(TaskQueryCondition taskCondition,
-                              @RequestParam(value = "pageNumber",required = false,defaultValue = "1") Integer pageNumber,
-                              @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer  pageSize) {
-        //todo 将任务类型list合并到任务list接口中
+                              @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
+                              @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
+        //将任务类型list合并到任务list接口中
         List<Label> list = labelService.getLabelByType(Constants.TYPE_ONE);
-        //todo customerid 不为空 且 类型为空收藏
+        //customerid 不为空 且 类型为空收藏
         if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), Constants.TASK_TYPE_COLLECT)) {
-            Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageNumber,pageSize);
+            Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageNumber, pageSize);
             return JsonResp.success(new PageResultModel(taskCollect, list));
         }
-        Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageNumber,pageSize);
+        Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageNumber, pageSize);
         return JsonResp.success(new PageResultModel(tasks, list));
     }
 
@@ -69,15 +69,17 @@ public class TaskController {
     @ResponseBody
     @GetMapping("/{id:\\d+}")
     @JsonView(Task.DetailTaskView.class)
-    public JsonResp getTask(@PathVariable Integer id,@RequestParam(value = "customerId") Integer customerId,@RequestParam(value = "taskType") Integer taskType) {
+    public JsonResp getTask(@PathVariable Integer id, @RequestParam(value = "customerId") Integer customerId, @RequestParam(value = "taskType") Integer taskType) {
         //获取任务数据
-        Optional<Task> optionalTask = taskService.getTask(id,taskType);
-        Task task = optionalTask.isPresent() ? optionalTask.get() : null;
-        //todo 添加任务中是否有订单判断
-        List<OrderTaskCustomer> list = orderTaskCustomerService.findOrderByTaskId(task.getTaskId());
-        task.setHasOrder(list != null && list.size() > 0 ? true : false);
-        Optional<TaskCollect> taskCollect = taskCollectService.queryCollectsByTaskId(task.getTaskId(),customerId);
-        task.setHasCollect(taskCollect.isPresent());
-        return JsonResp.success(task);
+        Optional<Task> optionalTask = taskService.getTask(id, taskType);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            //添加任务中是否有订单判断
+            task.setHasOrder(orderTaskCustomerService.findOrderByTaskId(task.getTaskId()).size() > 0 ? true : false);
+            task.setHasCollect(taskCollectService.queryCollectsByTaskId(task.getTaskId(), customerId).isPresent());
+            return JsonResp.success(task);
+        }
+        return JsonResp.success();
+
     }
 }

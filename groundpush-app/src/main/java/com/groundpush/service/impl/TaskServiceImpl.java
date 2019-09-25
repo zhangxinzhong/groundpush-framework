@@ -49,10 +49,10 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize) {
+    public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
         Page<Task> pageTask = taskMapper.queryTaskAll(taskQueryCondition);
-        return pageTask.size() >0?addCount(taskQueryCondition.getCustomerId(),pageTask):pageTask;
+        return pageTask.size() > 0 ? addCount(taskQueryCondition.getCustomerId(), pageTask) : pageTask;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -63,18 +63,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> getTask(Integer id,Integer taskType) {
+    public Optional<Task> getTask(Integer id, Integer taskType) {
         Optional<Task> optionalTask = taskMapper.getTask(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
+            //获取 任务申请详情页面 或 任务推广页面 金额
+            BigDecimal ratio = Constants.TASK_TYPE_1.equals(taskType) ? task.getOwnerRatio() : task.getSpreadRatio();
+            task.setAppAmount(MathUtil.multiply(MathUtil.divide(ratio, Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
+
             //任务添加属性
             addTaskAttr(task);
-
-            if(taskType != null){
-                //获取 任务申请详情页面 或 任务推广页面 金额
-                BigDecimal ratio = Constants.TASK_TYPE_1.equals(taskType)?task.getOwnerRatio():task.getSpreadRatio();
-                task.setAppAmount(MathUtil.multiply(MathUtil.divide(ratio, Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
-            }
             return Optional.of(task);
         }
         return Optional.empty();
@@ -158,43 +156,43 @@ public class TaskServiceImpl implements TaskService {
                     taskAttrMap.put(mapKey, listTaskAttribute);
                 }
             }
-            return new LinkedHashSet<> (taskAttrMap.values());
+            return new LinkedHashSet<>(taskAttrMap.values());
         }
         return Collections.EMPTY_SET;
     }
 
     @Override
-    public Page<Task> addCount(Integer customId,Page<Task> list){
-        List<Integer> taskIds  = new ArrayList<>();
-        for(Task task:list){
+    public Page<Task> addCount(Integer customId, Page<Task> list) {
+        List<Integer> taskIds = new ArrayList<>();
+        for (Task task : list) {
             taskIds.add(task.getTaskId());
         }
         List<TaskListCount> taskCounts = orderService.queryCountByTaskId(taskIds);
-        Map<Integer,Integer> taskMap = new HashMap<>();
-        for(TaskListCount  count: taskCounts){
-            taskMap.put(count.getTaskId(),count.getTaskPerson());
+        Map<Integer, Integer> taskMap = new HashMap<>();
+        for (TaskListCount count : taskCounts) {
+            taskMap.put(count.getTaskId(), count.getTaskPerson());
         }
 
-        List<TaskListCount> taskCustomCounts = orderService.queryCountByCustomIdTaskId(customId,taskIds);
-        Map<Integer,Integer> taskCustomMap = new HashMap<>();
+        List<TaskListCount> taskCustomCounts = orderService.queryCountByCustomIdTaskId(customId, taskIds);
+        Map<Integer, Integer> taskCustomMap = new HashMap<>();
         for (TaskListCount taskCustomCount : taskCustomCounts) {
-            taskCustomMap.put(taskCustomCount.getTaskId(),taskCustomCount.getCustomPopCount());
+            taskCustomMap.put(taskCustomCount.getTaskId(), taskCustomCount.getCustomPopCount());
         }
         for (Task task : list) {
             BigDecimal amount = task.getAmount();
             task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
             Integer taskPerson = taskMap.get(task.getTaskId());
-            if(taskPerson != null){
+            if (taskPerson != null) {
                 task.setTaskPerson(taskPerson.toString());
-                task.setSurNumber(String.valueOf(task.getSpreadTotal()-taskPerson));
-            }else{
+                task.setSurNumber(String.valueOf(task.getSpreadTotal() - taskPerson));
+            } else {
                 task.setSurNumber(String.valueOf(task.getSpreadTotal()));
                 task.setTaskPerson("0");
             }
-            Integer customPopCount =  taskCustomMap.get(task.getTaskId());
-            if(customPopCount != null){
-                task.setSurPopCount(String.valueOf(task.getHandlerNum()-customPopCount));
-            }else{
+            Integer customPopCount = taskCustomMap.get(task.getTaskId());
+            if (customPopCount != null) {
+                task.setSurPopCount(String.valueOf(task.getHandlerNum() - customPopCount));
+            } else {
                 task.setSurPopCount("0");
             }
         }
