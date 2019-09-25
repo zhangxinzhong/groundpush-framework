@@ -2,21 +2,15 @@ package com.groundpush.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Channel;
-import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.utils.*;
-import com.groundpush.service.ChannelDataService;
 import com.groundpush.service.ChannelService;
-import com.groundpush.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -45,16 +36,8 @@ public class ChannelController {
     private ChannelService channelService;
 
     @Resource
-    private OrderService orderService;
-
-    @Resource
-    private ChannelDataService channelDataService;
-
-    @Resource
     private SessionUtils sessionUtils;
 
-    @Resource
-    private DateUtils dateUtils;
 
     @RequestMapping("/toChannel")
     public String toChannel(Model model) {
@@ -155,40 +138,7 @@ public class ChannelController {
     @ResponseBody
     public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId, Integer taskId) throws Exception {
         try {
-            ExcelTools excelTools = ExcelTools.getInstance();
-            excelTools.openExcel(file.getInputStream());
-            final Object[] title = excelTools.getExcelTitle();
-            excelTools.setRowResult(100, (sheetName, countRow, resultCount, result) -> {
-                List<ChannelData> cds = new ArrayList<>();
-                result.stream().forEach(channel -> {
-                    Object[] excelRowData = channel;
-                    if (!StringUtils.equals(String.valueOf(excelRowData[0]), String.valueOf(title[0]))) {
-                        Map<String, Object> analysisResult = analysisSingletData(channel, mapping);
-                        String uniqueCode = String.valueOf(analysisResult.get("uniqueCode"));
-                        String failureResult = String.valueOf(analysisResult.get("failureResult"));
-                        //@author hss @date 2019-09-24 将xls中是否有效改为“是”=1 “否”或null=0
-                        String isEffective = String.valueOf(analysisResult.get("isEffective"));
-                        Integer resStatus = Constants.XLS_IS_EFFECTIVE_VAILD_TEXT.equals(isEffective)?Constants.XLS_IS_EFFECTIVE_VAILD:Constants.XLS_IS_EFFECTIVE_INVAILD;
-                        boolean isExistOrder = true;
-                        if (orderService.updateOrderByUniqueCode(uniqueCode, resStatus, failureResult) <= 0) {
-                            isExistOrder = false;
-                        }
-
-                        ChannelData channelData = new ChannelData();
-                        channelData.setChannelId(channelId);
-                        channelData.setTaskId(taskId);
-                        channelData.setUniqueCode(uniqueCode);
-                        channelData.setExistOrder(isExistOrder);
-                        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-                        channelData.setChannelTime(dateUtils.transToLocalDateTime(String.valueOf(analysisResult.get("produceTime"))));
-                        channelData.setEffective(Boolean.valueOf(String.valueOf(analysisResult.get("isEffective"))));
-                        channelData.setDescription(String.valueOf(analysisResult.get("failureResult")));
-                        cds.add(channelData);
-                    }
-                });
-                channelDataService.createChannelData(cds);
-            });
-            return JsonResp.success();
+            return JsonResp.success(channelService.addChannelData(channelId,taskId,file.getOriginalFilename(),mapping,file.getInputStream()));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
