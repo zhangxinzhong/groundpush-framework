@@ -75,7 +75,7 @@ public class TaskController {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             //添加任务中是否有订单判断
-            task.setHasOrder(orderTaskCustomerService.findOrderByTaskId(task.getTaskId()).size() > 0 ? true : false);
+            task.setHasOrder(orderTaskCustomerService.findOrderByTaskId(task.getTaskId(),customerId).size() > 0 ? true : false);
             task.setHasCollect(taskCollectService.queryCollectsByTaskId(task.getTaskId(), customerId).isPresent());
             return JsonResp.success(task);
         }

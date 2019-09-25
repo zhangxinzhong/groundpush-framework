@@ -20,7 +20,7 @@ import java.util.Optional;
 @Service
 public class ChannelServiceImpl implements ChannelService {
     @Value("${groundpush.channel.path}")
-    private String channelDataFilePath="/tmp/channel";
+    private String channelDataFilePath = "/tmp/channel";
     @Resource
     private ChannelMapper channelMapper;
 
@@ -43,7 +43,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Optional<Channel> queryById(Integer channelId) {
-        Optional<Channel>  optional = channelMapper.queryChannelById(channelId);
+        Optional<Channel> optional = channelMapper.queryChannelById(channelId);
         return optional;
     }
 
@@ -54,19 +54,19 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Integer addChannelData(Integer channelId, Integer taskId, String fileName, String mapping, InputStream inputStream) throws IOException {
-        File file=new File(channelDataFilePath);
-        if(!file.exists()){
+        File file = new File(channelDataFilePath);
+        if (!file.exists()) {
             file.mkdirs();
         }
-        String path=file.getPath()+File.separator+fileName;
-        FileOutputStream fileOutputStream=new FileOutputStream(new File(path));
-        byte[] bytes=new byte[1024];
-        while (inputStream.read(bytes)!=-1){
+        String path = file.getPath() + File.separator + fileName;
+        FileOutputStream fileOutputStream = new FileOutputStream(new File(path));
+        byte[] bytes = new byte[1024];
+        while (inputStream.read(bytes) != -1) {
             fileOutputStream.write(bytes);
         }
         fileOutputStream.close();
         inputStream.close();
-        return channelMapper.addChannelData(channelId,taskId,fileName, mapping);
+        return channelMapper.addChannelData(channelId, taskId, fileName, mapping);
     }
 
     @Override
