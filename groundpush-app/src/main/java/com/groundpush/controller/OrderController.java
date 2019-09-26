@@ -46,7 +46,7 @@ public class OrderController {
         return JsonResp.success();
     }
 
-    @ApiOperation(value = "订单申诉")
+    @ApiOperation(value = "任务结果集、订单申诉")
     @PutMapping
     public JsonResp updateOrder(@Valid @RequestBody OrderUpdateCondition condition, BindingResult bindingResult) {
         //TODO 此接口需要在渠道建立后在进行补充

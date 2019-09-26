@@ -91,4 +91,12 @@ public interface OrderService {
      * @return
      */
     Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId);
+
+    /**
+     * 查询未上传结果的订单
+     * @param taskId
+     * @param customerId
+     * @return
+     */
+    List<Order> queryUnResultOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId);
 }

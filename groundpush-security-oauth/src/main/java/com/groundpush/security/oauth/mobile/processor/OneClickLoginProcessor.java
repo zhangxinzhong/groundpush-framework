@@ -44,14 +44,17 @@ public class OneClickLoginProcessor {
             request.setAccessToken(accessToken);
 
             GetMobileResponse response = client.getAcsResponse(request);
+            log.info("一键登录返回参数：{},{},{}", response.getRequestId(), response.getCode(), response.getMessage());
             if (StringUtils.equalsIgnoreCase(response.getMessage(), Constants.IS_OK)) {
                 return JsonResp.success(response.getGetMobileResultDTO().getMobile());
             }
         } catch (ServerException e) {
             log.error(e.toString(), e);
+            log.error("ErrCode: {}  ErrMsg: {} RequestId: {}", e.getErrCode(), e.getErrCode(), e.getRequestId());
             throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
 
         } catch (ClientException e) {
+            log.error(e.toString(), e);
             log.error("ErrCode: {}  ErrMsg: {} RequestId: {}", e.getErrCode(), e.getErrCode(), e.getRequestId());
             throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         }

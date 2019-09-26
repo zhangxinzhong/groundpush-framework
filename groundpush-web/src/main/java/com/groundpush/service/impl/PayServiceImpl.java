@@ -8,7 +8,7 @@ import com.groundpush.core.model.OrderBonus;
 import com.groundpush.core.model.User;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
-import com.groundpush.core.utils.SessionUtils;
+import com.groundpush.utils.SessionUtils;
 import com.groundpush.mapper.OrderBonusMapper;
 import com.groundpush.mapper.OrderMapper;
 import com.groundpush.service.AuditLogService;

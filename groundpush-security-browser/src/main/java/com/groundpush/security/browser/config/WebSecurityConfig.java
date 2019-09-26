@@ -109,4 +109,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //解决不允许显示在iframe的问题
         http.headers().frameOptions().disable();
     }
+
+
+    public static void main(String[] args) {
+        String pass = "admin";
+        BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+        String hashPass = bcryptPasswordEncoder.encode(pass);
+        System.out.println(hashPass);
+
+        boolean f = bcryptPasswordEncoder.matches("admin",hashPass);
+        System.out.println(f);
+    }
 }

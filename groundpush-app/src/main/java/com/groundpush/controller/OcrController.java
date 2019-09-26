@@ -26,9 +26,9 @@ import java.util.Map;
  */
 @Slf4j
 @ApiModel(value = "app任务结果上传(正常上传)、任务申诉页面")
-@RequestMapping("/taskResultUpload")
+@RequestMapping("/ocrUpload")
 @RestController
-public class TaskResultUploadController {
+public class OcrController {
 
     @Resource
     private BaiduTesseractUtil baiduTesseractUtil;
@@ -38,7 +38,7 @@ public class TaskResultUploadController {
     @ApiOperation("app任务结果上传(正常上传)：上传附件、图片识别")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "上传文件MultipartFile",name = "file",required = true,paramType = "upload",dataType = "file"),
-            @ApiImplicitParam(value = "上传文件status(1:图像识别 2:上传图片 3:上传头像)",name = "status",required = true,paramType = "upload",dataType = "Integer")
+            @ApiImplicitParam(value = "上传文件status(1:图像识别 2:上传图片 3:上传头像)",name = "status",required = true,paramType = "status",dataType = "Integer")
 
     })
     @PostMapping

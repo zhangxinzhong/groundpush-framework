@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
+import com.groundpush.core.condition.OrderUpdateCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @description:  订单mapper
+ * @description: 订单mapper
  * @author: zhangxinzhong
  * @date: 2019-08-27 下午7:08
  */
@@ -20,6 +21,7 @@ public interface OrderMapper {
 
     /**
      * 通过订单编号查询订单
+     *
      * @param orderId
      * @return
      */
@@ -28,6 +30,7 @@ public interface OrderMapper {
 
     /**
      * 删除订单
+     *
      * @param orderId
      */
     @Delete(" delete from t_order where order_id=#{orderId} ")
@@ -35,6 +38,7 @@ public interface OrderMapper {
 
     /**
      * 分页查询订单
+     *
      * @param order
      * @return
      */
@@ -52,23 +56,26 @@ public interface OrderMapper {
 
     /**
      * 更新订单结果
+     *
      * @param orderId
      * @param uniqueCode
      */
     @Update(" update t_order t set t.unique_code=#{uniqueCode} where t.order_id=#{orderId} ")
-    void updateOrderUniqueCode(@Param("orderId") Integer orderId,@Param("uniqueCode") String uniqueCode);
+    void updateOrderUniqueCode(@Param("orderId") Integer orderId, @Param("uniqueCode") String uniqueCode);
 
     /**
      * 创建订单
+     *
      * @param order
      * @return
      */
     @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, type, settlement_amount, settlement_status, created_time)values (#{orderNo},#{channelUri},#{uniqueCode},#{status},#{type},#{settlementAmount},#{settlementStatus},current_timestamp) ")
-    @Options(useGeneratedKeys = true,keyProperty = "orderId")
+    @Options(useGeneratedKeys = true, keyProperty = "orderId")
     Integer createOrder(Order order);
 
     /**
      * 查询最大的orderid
+     *
      * @return
      */
     @Select(" select max(t.order_id) from t_order t ")
@@ -76,6 +83,7 @@ public interface OrderMapper {
 
     /**
      * 通过任务号查询任务是否存在
+     *
      * @param orderNo
      * @return
      */
@@ -84,6 +92,7 @@ public interface OrderMapper {
 
     /**
      * 修改订单
+     *
      * @param order
      */
 
@@ -99,6 +108,7 @@ public interface OrderMapper {
 
     /**
      * 查询订单通过客户编号
+     *
      * @param customerId
      * @return
      */
@@ -107,6 +117,7 @@ public interface OrderMapper {
 
     /**
      * 修改订单号(订单创建完成后刷新订单号)
+     *
      * @param order
      */
     @Update(" update t_order set order_no=#{orderNo} where order_id=#{orderId} ")
@@ -120,7 +131,7 @@ public interface OrderMapper {
             " left join t_order_task_customer b on a.order_id = b.order_id ",
             " where  date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.task_id in ",
             "<foreach collection='taskIds' item='taskId' open='(' separator=',' close=')'>",
-               "#{taskId}",
+            "#{taskId}",
             "</foreach>",
             " group by b.task_id ",
             "</script>"
@@ -141,7 +152,7 @@ public interface OrderMapper {
             " group by b.task_id,b.customer_id ",
             "</script>"
     })
-    List<TaskListCount> queryCountByCustomIdTaskId(@Param("customId") Integer customId,@Param("taskIds") List<Integer> taskIds);
+    List<TaskListCount> queryCountByCustomIdTaskId(@Param("customId") Integer customId, @Param("taskIds") List<Integer> taskIds);
 
     @Select({
             "<script>",
@@ -169,7 +180,7 @@ public interface OrderMapper {
             " WHERE b.customer_id = #{customerId} AND d.type = 2 and b.task_id = #{taskId} ",
             "</script>"
     })
-    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(@Param("customerId") Integer customerId,@Param("taskId") Integer taskId);
+    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
 
 
     @Select({
@@ -179,9 +190,19 @@ public interface OrderMapper {
             " FROM ",
             " t_order a ",
             " LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id ",
-            " WHERE a.type = 2 AND b.task_id = #{taskId} AND b.customer_id = #{customerId}",
+            " WHERE a.type = #{taskType} AND b.task_id = #{taskId} AND b.customer_id = #{customerId}",
             " AND a.unique_code IS NULL LIMIT 0,1 ",
             "</script>"
     })
-    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(@Param("customerId") Integer customerId,@Param("taskId") Integer taskId);
+    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(OrderUpdateCondition condition);
+
+    /**
+     * 查询未上传结果集的订单
+     *
+     * @param taskId
+     * @param customerId
+     * @return
+     */
+    @Select(" select o.* from t_order_task_customer otc inner join t_task t on t.task_id=otc.task_id inner join t_order o on o.order_id = otc.order_id where otc.task_id=${taskId} and o.type=${customerId} and o.unique_code is null ")
+    List<Order> queryUnResultOrderByTaskIdAndCustomerId(@Param("taskId") Integer taskId, @Param("customerId") Integer customerId);
 }

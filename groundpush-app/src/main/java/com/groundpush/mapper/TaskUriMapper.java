@@ -21,9 +21,11 @@ public interface TaskUriMapper {
      */
     @Select({
             "<script>",
-            " (select a.task_uri_id, a.created_by, a.created_time, a.last_modified_by, a.last_modified_time, a.task_id, a.uri from t_task_uri a where a.task_id = #{taskId} and TO_DAYS(NOW()) - TO_DAYS(a.last_modified_time) > 0  limit 1)  ",
+            " select c.* from (",
+            " (select a.task_uri_id, a.created_by, a.created_time, a.last_modified_by, a.last_modified_time, a.task_id, a.uri from t_task_uri a where a.task_id = #{taskId} and TO_DAYS(NOW()) - TO_DAYS(a.last_modified_time) > 0 )  ",
             " union ",
-            " (select a.task_uri_id, a.created_by, a.created_time, a.last_modified_by, a.last_modified_time, a.task_id, a.uri from t_task_uri a where a.task_id = #{taskId} and TO_DAYS(a.created_time) - TO_DAYS(a.last_modified_time) = 0 limit 1) ",
+            " (select a.task_uri_id, a.created_by, a.created_time, a.last_modified_by, a.last_modified_time, a.task_id, a.uri from t_task_uri a where a.task_id = #{taskId} and TO_DAYS(a.created_time) - TO_DAYS(a.last_modified_time) = 0 ) ",
+            ") c  order by c.last_modified_time asc limit 1",
             "</script>"
     })
     Optional<TaskUri> queryAllByTaskId(@Param("taskId") Integer taskId);

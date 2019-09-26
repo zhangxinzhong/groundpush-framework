@@ -7,7 +7,6 @@ import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.model.*;
 import com.groundpush.core.repository.OperationLogRepository;
 import com.groundpush.core.utils.LoginUtils;
-import com.groundpush.core.utils.SessionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -36,8 +35,6 @@ public class LogAspect {
     private ObjectMapper objectMapper;
     @Resource
     private LoginUtils loginUtils;
-    @Resource
-    private SessionUtils sessionUtils;
     @Resource
     private OperationLogRepository operationLogRepository;
 
@@ -123,7 +120,7 @@ public class LogAspect {
                 //存创建人ID
                 operationLog.setCreatedBy(customer.getCustomerId());
             } else {
-                Optional<LoginUserInfo> login = sessionUtils.getLogin();
+                Optional<LoginUserInfo> login = loginUtils.getLogin();
                 LoginUserInfo loginUserInfo = login.get();
                 User user = loginUserInfo.getUser();
                 //存创建人ID

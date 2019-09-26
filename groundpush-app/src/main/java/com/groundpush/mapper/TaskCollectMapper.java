@@ -61,7 +61,7 @@ public interface TaskCollectMapper {
             " and FIND_IN_SET(#{location},t2.location) )",
             "  </if> ",
             " ) ls ",
-            " <if test='sort != null'> order by #{sort} </if> ",
+            " <if test='sort != null'> order by ${sort} </if> ",
             "</script>"
     })
     Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition);

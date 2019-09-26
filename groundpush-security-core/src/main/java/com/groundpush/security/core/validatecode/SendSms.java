@@ -65,9 +65,11 @@ public class SendSms {
             log.info("验证码发送完成,当前时间：{} 。 响应：{}", LocalDateTime.now(), response.getData());
         } catch (ServerException e) {
             log.error(e.getMessage(), e);
+            log.error("ErrCode: {}  ErrMsg: {} RequestId: {}", e.getErrCode(), e.getErrCode(), e.getRequestId());
             throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorCode(), ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         } catch (ClientException e) {
             log.error(e.getMessage(), e);
+            log.error("ErrCode: {}  ErrMsg: {} RequestId: {}", e.getErrCode(), e.getErrCode(), e.getRequestId());
             throw new SystemException(ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorCode(), ExceptionEnum.VALIDATE_CODE_EXCEPTION.getErrorMessage());
         }
     }

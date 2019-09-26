@@ -65,6 +65,7 @@ public class MobileFilter extends OncePerRequestFilter {
                 validateCode(request, response);
             }
         } catch (ValidateCodeException e) {
+            log.error(e.toString(), e);
             tokenAuthenticationFailHander.onAuthenticationFailure(request, response, e);
             return;
         }

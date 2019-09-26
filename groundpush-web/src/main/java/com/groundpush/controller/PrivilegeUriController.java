@@ -4,16 +4,13 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.PageResult;
-import com.groundpush.core.model.Privilege;
 import com.groundpush.core.model.PrivilegeUri;
-import com.groundpush.core.utils.SessionUtils;
-import com.groundpush.service.PrivilegeService;
+import com.groundpush.utils.SessionUtils;
 import com.groundpush.service.PrivilegeUriService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

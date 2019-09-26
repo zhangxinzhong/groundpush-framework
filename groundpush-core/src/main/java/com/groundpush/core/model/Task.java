@@ -291,4 +291,11 @@ public class Task implements Serializable {
     @JsonView(SimpleTaskView.class)
     private String appAmount;
 
+    /**
+     * 是否需要上传订单结果
+     */
+    @ApiModelProperty("是否需要上传订单结果")
+    @JsonView(SimpleTaskView.class)
+    private boolean hasOrderResult;
+
 }

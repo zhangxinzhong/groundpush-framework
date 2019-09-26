@@ -7,7 +7,7 @@ import com.groundpush.core.condition.UpmAddCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.SessionUtils;
+import com.groundpush.utils.SessionUtils;
 import com.groundpush.service.MenuService;
 import com.groundpush.service.PrivilegeService;
 import com.groundpush.service.RoleService;

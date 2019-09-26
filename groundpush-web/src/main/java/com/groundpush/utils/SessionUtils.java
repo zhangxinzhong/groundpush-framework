@@ -1,7 +1,9 @@
-package com.groundpush.core.utils;
+package com.groundpush.utils;
 
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.User;
+import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.LoginUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
@@ -17,7 +19,7 @@ import java.util.Optional;
  * @date: 2019-09-10 下午5:04
  */
 @Component
-public class SessionUtils extends  LoginUtils<LoginUserInfo> {
+public class SessionUtils extends LoginUtils<LoginUserInfo> {
 
     /**
      * 获取登录用户session
