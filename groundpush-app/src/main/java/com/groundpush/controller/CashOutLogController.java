@@ -2,6 +2,7 @@ package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.CashOutLogQueryCondition;
+import com.groundpush.core.model.PageResult;
 import com.groundpush.service.CashOutLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +27,8 @@ public class CashOutLogController {
     private CashOutLogService cashOutLogService;
 
     @GetMapping
-    public JsonResp queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition, @PageableDefault(page = 1,size =20) Pageable pageable){
-        return JsonResp.success(cashOutLogService.queryCashOutLog(cashOutLogQueryCondition,pageable));
+    public JsonResp queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition){
+        return JsonResp.success(new PageResult(cashOutLogService.queryCashOutLog(cashOutLogQueryCondition)));
     }
 
 }

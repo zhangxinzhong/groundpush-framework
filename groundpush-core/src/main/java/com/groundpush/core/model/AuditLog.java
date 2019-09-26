@@ -30,10 +30,10 @@ public class AuditLog {
     private Integer auditId;
 
     @ApiModelProperty("创建时间")
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     @ApiModelProperty("修改时间")
-    private Date modifyTime;
+    private LocalDateTime modifyTime;
 
     @ApiModelProperty("创建人id")
     private Integer createdBy;

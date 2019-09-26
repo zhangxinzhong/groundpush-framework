@@ -2,12 +2,11 @@ package com.groundpush.service.impl;
 
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.core.model.CustomerAccount;
-import com.groundpush.core.model.Order;
-import com.groundpush.core.model.OrderBonus;
-import com.groundpush.core.model.User;
+import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
+import com.groundpush.mapper.ChannelDataMapper;
+import com.groundpush.mapper.OrderTaskCustomerMapper;
 import com.groundpush.utils.SessionUtils;
 import com.groundpush.mapper.OrderBonusMapper;
 import com.groundpush.mapper.OrderMapper;
@@ -15,11 +14,13 @@ import com.groundpush.service.AuditLogService;
 import com.groundpush.service.CustomerAccountService;
 import com.groundpush.service.PayService;
 import com.groundpush.vo.OrderPayVo;
+import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +39,11 @@ public class PayServiceImpl implements PayService {
     private OrderMapper orderMapper;
 
     @Resource
+    private OrderTaskCustomerMapper orderTaskCustomerMapper;
+
+    @Resource
+    private ChannelDataMapper channelDataMapper;
+    @Resource
     private DateUtils dateUtils;
 
     @Resource
@@ -49,6 +55,8 @@ public class PayServiceImpl implements PayService {
     @Resource
     private SessionUtils sessionUtils;
 
+
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void pay(OrderPayVo orderPay) {
@@ -57,6 +65,10 @@ public class PayServiceImpl implements PayService {
 //        if(!auditLogService.isAuditPass(orderPay.getTaskId(), orderPay.getOrderCreateDate())){
 //            throw new BusinessException(ExceptionEnum.ORDER_NOT_AUDIT.getErrorCode(),ExceptionEnum.ORDER_NOT_AUDIT.getErrorMessage());
 //        }
+
+        //将渠道数据关联的失效订单绑定到虚拟账户
+        batchOrder(orderPay.getTaskId());
+
         //todo 此处需要优化，若订单量大会产生问题
         // 通过任务ID、订单成功状态和订单时间查询此任务所有生效订单及客户 此处需要通过2个状态：订单状态和渠道方订单状态
         try {
@@ -96,6 +108,27 @@ public class PayServiceImpl implements PayService {
             log.error(e.toString(), e);
             throw e;
         }
+    }
 
+
+    private void batchOrder(Integer taskId){
+        //获取所有失效的渠道数据
+        List<ChannelData> channelDatas = channelDataMapper.findAllDataByExistTaskId(taskId);
+        if(channelDatas != null && channelDatas.size() > 0){
+            for(ChannelData channelData:channelDatas){
+                Order order = Order.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID).type(Constants.ORDER_TYPE_3)
+                        .taskId(taskId).status(Constants.ORDER_STATUS_SUCCESS).settlementStatus(Constants.ORDER_STATUS_SUCCESS)
+                        .settlementAmount(channelData.getAmount()).uniqueCode(channelData.getUniqueCode()).build();
+                //创建虚拟订单
+                orderMapper.createOrder(order);
+                //创建虚拟用户与虚拟订单关联记录
+                orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID)
+                        .orderId(order.getOrderId()).taskId(taskId).build());
+                //创建虚拟订单分成记录
+                orderBonusMapper.createSimpleOrderBonus(OrderBonus.builder().orderId(order.getOrderId()).customerBonus(channelData.getAmount())
+                        .bonusType(Constants.TASK_VIRTUAL_CUSTOMER).customerId(Constants.VIRTUAL_CUSTOMER_ID).status(Constants.STATUS_VAILD).build());
+            }
+            channelDataMapper.batchUpdateChannel(channelDatas);
+        }
     }
 }

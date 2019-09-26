@@ -1,5 +1,6 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.CashOutLogQueryCondition;
 import com.groundpush.core.model.CashOutLog;
@@ -26,8 +27,8 @@ public class CashOutLogServiceImpl implements CashOutLogService {
     private CashOutLogMapper cashOutLogMapper;
 
     @Override
-    public List<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public Page<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition) {
+        PageHelper.startPage(cashOutLogQueryCondition.getPageNumber(), cashOutLogQueryCondition.getPageSize());
         return cashOutLogMapper.queryCashOutLog(cashOutLogQueryCondition);
     }
 

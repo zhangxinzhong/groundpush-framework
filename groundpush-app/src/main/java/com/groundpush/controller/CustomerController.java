@@ -53,15 +53,7 @@ public class CustomerController {
         return JsonResp.success();
     }
 
-    @ApiOperation(value = "邀请列表")
-    @GetMapping
-    public JsonResp queryCustomer(@Valid CustomerQueryCondition customerQueryCondition, BindingResult bindingResult, @PageableDefault(page = 1, size = 20) Pageable pageable) {
-        if (bindingResult.hasErrors()) {
-            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
-        }
-        List<Customer> customers = customerService.queryCustomer(customerQueryCondition, pageable);
-        return JsonResp.success(customers);
-    }
+
 
     @ApiOperation(value = "创建客户")
     @PostMapping

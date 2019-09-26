@@ -25,4 +25,10 @@ public class CashOutLogQueryCondition implements Serializable {
     @ApiModelProperty(value = "客户编号不可为空")
     @NotNull(message = "客户编号不可为空")
     private Integer customerId;
+
+    @ApiModelProperty(value = "当前页")
+    private Integer pageNumber;
+
+    @ApiModelProperty(value = "页数")
+    private Integer pageSize;
 }

@@ -2,6 +2,8 @@ package com.groundpush.mapper;
 
 import com.groundpush.core.model.ChannelData;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -33,4 +35,18 @@ public interface ChannelDataMapper {
             "</script>"
     })
     void createChannelData(List<ChannelData> cds);
+
+
+    @Select("select a.*,(select b.amount from t_task b where b.task_id = a.task_id) amount from t_channel_data a  where a.is_exist_order=0 and a.task_id = #{taskId}")
+    List<ChannelData> findAllDataByExistTaskId(Integer taskId);
+
+    @Update({
+            "<script>",
+            " update t_channel_data  set is_exist_order = 1  where id in",
+            "<foreach collection='list' item='channelData' open='(' close=')' separator=''>",
+             "#{channelData.id}",
+            "</foreach>",
+            "</script>"
+    })
+    void batchUpdateChannel(List<ChannelData> channelDatas);
 }

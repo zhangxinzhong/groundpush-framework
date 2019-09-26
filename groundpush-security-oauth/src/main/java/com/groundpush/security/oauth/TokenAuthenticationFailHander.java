@@ -2,6 +2,8 @@ package com.groundpush.security.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.security.core.exception.ValidateCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -28,8 +30,14 @@ public class TokenAuthenticationFailHander extends SimpleUrlAuthenticationFailur
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        String message = exception.getMessage();
+        String code = ExceptionEnum.EXCEPTION.getErrorCode();
+        if(exception instanceof ValidateCodeException) {
+            code = ((ValidateCodeException) exception).getCode();
+            message = exception.getMessage();
+        }
+
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(JsonResp.failure(exception.getMessage())));
+        response.getWriter().write(objectMapper.writeValueAsString(JsonResp.failure(code,message)));
     }
 }
