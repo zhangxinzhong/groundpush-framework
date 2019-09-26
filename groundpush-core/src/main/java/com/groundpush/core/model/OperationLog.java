@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 /**
@@ -25,7 +25,7 @@ public class OperationLog implements Serializable {
     /**
      * 创建时间
      */
-    private DateTimeLiteralExpression.DateTime createdTime;
+    private LocalDateTime createdTime;
     /**
      * 方法名
      */
@@ -54,4 +54,8 @@ public class OperationLog implements Serializable {
      * 类型（0-APP，1-PC）
      */
     private Integer type;
+    /**
+     * 异常描述
+     */
+    private String exceptionDetail;
 }

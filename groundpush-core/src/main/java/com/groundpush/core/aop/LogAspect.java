@@ -9,6 +9,7 @@ import com.groundpush.core.repository.OperationLogRepository;
 import com.groundpush.core.utils.LoginUtils;
 import com.groundpush.core.utils.SessionUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -47,27 +48,36 @@ public class LogAspect {
     public void logAnnotation() {
     }
 
-
     @Before(value = "logAnnotation()")
     public void doBeforeAdvice(JoinPoint joinPoint) throws Throwable {
-        System.out.println("进去前置任务");
+        log.info("进去前置任务");
         //当前时间
         long time = System.currentTimeMillis();
         try {
             //方法执行完成后增加日志
-            addOperationLog(joinPoint, time);
+            addOperationLog(joinPoint, time, null);
         } catch (Exception e) {
-            System.out.println("LogAspect 操作失败：" + e.getMessage());
+            log.info("LogAspect 操作失败：{}", e.getMessage());
             e.printStackTrace();
+            throwss(joinPoint,e);
         }
     }
 
     /**
      * 后置异常通知
      */
-    @AfterThrowing("logAnnotation()")
-    public void throwss(JoinPoint jp) {
-        System.out.println("方法异常时执行.....");
+    @AfterThrowing(pointcut = "logAnnotation()", throwing = "exception")
+    public void throwss(JoinPoint joinPoint, Exception exception) throws Throwable {
+        log.info("方法异常时执行");
+        //当前时间
+        long time = System.currentTimeMillis();
+        try {
+            //方法执行完成后增加日志
+            addOperationLog(joinPoint, time, exception);
+        } catch (Exception e) {
+            log.info("LogAspect 操作失败：{}", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -77,7 +87,7 @@ public class LogAspect {
      * @param time
      * @throws JsonProcessingException
      */
-    private void addOperationLog(JoinPoint joinPoint, long time) throws JsonProcessingException {
+    private void addOperationLog(JoinPoint joinPoint, long time, Exception exception) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         OperationLog operationLog = new OperationLog();
         //存运行时间
@@ -86,6 +96,10 @@ public class LogAspect {
         operationLog.setArgs(objectMapper.writeValueAsString(joinPoint.getArgs()));
         //存方法名
         operationLog.setMethod(signature.getDeclaringTypeName() + "." + signature.getName());
+        //存异常描述
+        if (exception != null) {
+            operationLog.setExceptionDetail(exception.toString());
+        }
         //获取自定义注解类里面的参数
         OperationLogDetail annotation = signature.getMethod().getAnnotation(OperationLogDetail.class);
         if (annotation != null) {

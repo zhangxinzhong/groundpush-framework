@@ -23,6 +23,6 @@ public interface OperationLogMapper {
     @Select(" select * from t_operation_log ")
     Page<OperationLog> queryOperationLogAll(OperationLog operationLog);
 
-    @Insert(" insert into t_operation_log(method, args,created_by, operation_detail, operation_type, run_time, type, created_time) values (#{method},#{args},#{createdBy},#{operationDetail},#{operationType},#{runTime},#{type},current_timestamp) ")
+    @Insert(" insert into t_operation_log(method, args,created_by, operation_detail, operation_type, run_time, type,exception_detail, created_time) values (#{method},#{args},#{createdBy},#{operationDetail},#{operationType},#{runTime},#{type},#{exceptionDetail},current_timestamp) ")
     Integer insert(OperationLog operationLog);
 }
