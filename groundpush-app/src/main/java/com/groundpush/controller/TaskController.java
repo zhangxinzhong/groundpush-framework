@@ -6,10 +6,7 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.*;
 import com.groundpush.core.utils.Constants;
-import com.groundpush.service.LabelService;
-import com.groundpush.service.OrderTaskCustomerService;
-import com.groundpush.service.TaskCollectService;
-import com.groundpush.service.TaskService;
+import com.groundpush.service.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +33,18 @@ public class TaskController {
 
     @Resource
     private TaskService taskService;
+
     @Resource
     private LabelService labelService;
+
     @Resource
     private TaskCollectService taskCollectService;
+
     @Resource
     private OrderTaskCustomerService orderTaskCustomerService;
 
+    @Resource
+    private OrderService orderService;
 
     /**
      * 分页查询任务
@@ -75,7 +77,8 @@ public class TaskController {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             //添加任务中是否有订单判断
-            task.setHasOrder(orderTaskCustomerService.findOrderByTaskId(task.getTaskId(),customerId).size() > 0 ? true : false);
+            task.setHasOrderResult(orderService.queryUnResultOrderByTaskIdAndCustomerId(id, customerId).size() > 0 ? false : true);
+            task.setHasOrder(orderTaskCustomerService.findOrderByTaskId(task.getTaskId(), customerId).size() > 0 ? true : false);
             task.setHasCollect(taskCollectService.queryCollectsByTaskId(task.getTaskId(), customerId).isPresent());
             return JsonResp.success(task);
         }

@@ -56,11 +56,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void createOrder(Order order) {
-        try{
+        try {
             //保存订单
             orderMapper.createOrder(order);
             Integer orderId = order.getOrderId();
-            if(orderId == null || order.getTaskId() == null || order.getCustomerId() == null){
+            if (orderId == null || order.getTaskId() == null || order.getCustomerId() == null) {
                 throw new BusinessException(ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorCode(), ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorMessage());
             }
             //生成订单号 并更新订单
@@ -70,11 +70,11 @@ public class OrderServiceImpl implements OrderService {
             orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().orderId(orderId).taskId(order.getTaskId()).customerId(order.getCustomerId()).build());
             //根据任务计算结果分成
             orderBonusService.generateOrderBonus(OrderBonusVo.builder().orderId(orderId).customerId(order.getCustomerId()).taskId(order.getTaskId()).build());
-        }catch (BusinessException e) {
-            log.error(e.getCode(),e.getMessage(),e);
+        } catch (BusinessException e) {
+            log.error(e.getCode(), e.getMessage(), e);
             throw e;
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -84,10 +84,10 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(Integer orderId) {
         //1.通过订单id获取订单
         Optional<Order> optionalOrder = orderMapper.getOrder(orderId);
-        if(optionalOrder.isPresent()){
+        if (optionalOrder.isPresent()) {
             //通过验证订单创建时间 只可删除24小时内订单
             boolean isExpire = LocalDateTime.now().plusHours(Constants.ORDER_OVER_TIME).isBefore(LocalDateTime.now());
-            if(!isExpire){
+            if (!isExpire) {
                 throw new BusinessException(ExceptionEnum.ORDER_IS_EXPIRE.getErrorCode(), ExceptionEnum.ORDER_IS_EXPIRE.getErrorMessage());
             }
             orderMapper.deleteOrder(orderId);
@@ -95,23 +95,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer  pageSize) {
-        PageHelper.startPage(pageNumber,pageSize);
+    public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer pageSize) {
+        PageHelper.startPage(pageNumber, pageSize);
         Page<Order> orders = orderMapper.queryOrder(order);
         return setOrderSurDay(orders);
     }
 
-    private  Page<Order> setOrderSurDay(Page<Order> page){
-        for(Order order : page){
-            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus())?dateUtils.getIntervalDays(order.getCreatedTime(),order.getAuditDuration()):0L;
+    private Page<Order> setOrderSurDay(Page<Order> page) {
+        for (Order order : page) {
+            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) : 0L;
             order.setIntervalDays(days.intValue());
-            Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())?dateUtils.plusMinutesTime(order.getCreatedTime()):false;
+            Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? dateUtils.plusMinutesTime(order.getCreatedTime()) : false;
             order.setHasReUpload(reUpload);
             dateUtils.plusMinutesTime(order.getCreatedTime());
             BigDecimal amount = order.getAmount();
-            if(Constants.ORDER_TYPE_1.equals(order.getType())){
+            if (Constants.ORDER_TYPE_1.equals(order.getType())) {
                 order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
-            }else {
+            } else {
                 order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getSpreadRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
             }
         }
@@ -123,28 +123,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateOrderUniqueCode(OrderUpdateCondition condition) {
         Optional<Order> optionalOrder = null;
-        if(condition.getTaskId() != null){
+        if (condition.getTaskId() != null) {
             //通过任务id和客户id获取未提交结果集的某一个订单
-            optionalOrder = orderMapper.queryCodeNullOrderByCustomerIdAndTaskId(condition.getCustomerId(),condition.getTaskId());
-        }else{
+            optionalOrder = orderMapper.queryCodeNullOrderByCustomerIdAndTaskId(condition.getCustomerId(), condition.getTaskId());
+        } else {
             //通过订单id获取订单
             optionalOrder = orderMapper.getOrder(condition.getOrderId());
         }
 
 
-        if(!optionalOrder.isPresent()){
-            throw  new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
+        if (!optionalOrder.isPresent()) {
+            throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }
 
-        Order  order = optionalOrder.get();
+        Order order = optionalOrder.get();
         //判断是否为任务结果集上传
-        if(Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())){
+        if (Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())) {
             boolean bool = dateUtils.plusMinutesTime(order.getCreatedTime());
-            if(!bool){
-                throw  new BusinessException(ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorCode(), ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorMessage());
+            if (!bool) {
+                throw new BusinessException(ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorCode(), ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorMessage());
             }
         }
-        Integer type = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())?Constants.LOAD_RESULT_T1:Constants.LOAD_RESULT_T2;
+        Integer type = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? Constants.LOAD_RESULT_T1 : Constants.LOAD_RESULT_T2;
 
         OrderLog orderLog = new OrderLog();
         orderLog.setOrderId(condition.getOrderId());
@@ -155,19 +155,20 @@ public class OrderServiceImpl implements OrderService {
         orderUploadLogService.createOrderUploadLog(orderLog);
 
 
-        orderMapper.updateOrderUniqueCode(order.getOrderId(),condition.getUniqueCode());
+        orderMapper.updateOrderUniqueCode(order.getOrderId(), condition.getUniqueCode());
     }
 
     /**
      * 生成订单号
      * MddHHmmssSSS+orderid
+     *
      * @return
      */
-    private String generateOrderNoByOrderId(Integer orderId){
+    private String generateOrderNoByOrderId(Integer orderId) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MddHHmmssSSS");
         StringBuffer stringBuffer = new StringBuffer().append(LocalDateTime.now().format(dtf)).append(String.format("%06d", orderId));
         Order order = orderMapper.queryOrderByOrderNo(stringBuffer.toString());
-        if(order != null){
+        if (order != null) {
             throw new BusinessException(ExceptionEnum.ORDERNO_EXISTS.getErrorCode(), ExceptionEnum.ORDERNO_EXISTS.getErrorMessage());
         }
         return stringBuffer.toString();
@@ -190,19 +191,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<TaskListCount> queryCountByCustomIdTaskId(Integer customId, List<Integer> taskIds) {
-        return orderMapper.queryCountByCustomIdTaskId(customId,taskIds);
+        return orderMapper.queryCountByCustomIdTaskId(customId, taskIds);
     }
 
     @Override
-    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId,Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
+    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId, Pageable pageable) {
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         return orderMapper.queryPopListByCustomerId(customerId);
     }
 
     @Override
     public Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId) {
-        return orderMapper.queryPutResultByCustomerIdAndTaskId(customerId,taskId);
+        return orderMapper.queryPutResultByCustomerIdAndTaskId(customerId, taskId);
     }
 
-
+    @Override
+    public List<Order> queryUnResultOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId) {
+        return orderMapper.queryUnResultOrderByTaskIdAndCustomerId(taskId, customerId);
+    }
 }
