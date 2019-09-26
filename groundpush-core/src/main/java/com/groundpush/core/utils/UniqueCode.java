@@ -155,4 +155,16 @@ public class UniqueCode {
     }
 
 
+    /**
+     * 前缀+时间戳+随机数
+     *
+     * @return
+     */
+    public String getPageToken() {
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        StringBuffer stringBuffer = new StringBuffer().append(Constants.CODE_KEY_PREFIX).append(currentTime.substring(7,currentTime.length()-1)).append(RandomStringUtils.randomNumeric(4));
+        currentTime = null;
+        return stringBuffer.toString();
+    }
+
 }

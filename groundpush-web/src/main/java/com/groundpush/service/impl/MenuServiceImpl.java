@@ -6,7 +6,7 @@ import com.groundpush.core.condition.MenuQueryCondition;
 import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.Menu;
 import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.SessionUtils;
+import com.groundpush.utils.SessionUtils;
 import com.groundpush.mapper.MenuMapper;
 import com.groundpush.service.MenuService;
 import org.springframework.stereotype.Service;
