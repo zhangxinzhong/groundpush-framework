@@ -1,5 +1,6 @@
 package com.groundpush.service;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.vo.CustomerVo;
@@ -33,7 +34,7 @@ public interface CustomerService {
      * @param customerQueryCondition
      * @return
      */
-    List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition);
+    Page<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition);
 
     /**
      * 创建客户信息

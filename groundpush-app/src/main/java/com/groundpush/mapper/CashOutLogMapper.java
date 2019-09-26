@@ -1,5 +1,6 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CashOutLogQueryCondition;
 import com.groundpush.core.model.CashOutLog;
 import org.apache.ibatis.annotations.Insert;
@@ -23,7 +24,7 @@ public interface CashOutLogMapper {
      * @return
      */
     @Select(" select * from t_cashout_log t where t.customer_id=#{customerId} ")
-    List<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition);
+    Page<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition);
 
     /**
      * 创建提现记录

@@ -128,7 +128,7 @@ public class PayServiceImpl implements PayService {
                 orderBonusMapper.createSimpleOrderBonus(OrderBonus.builder().orderId(order.getOrderId()).customerBonus(channelData.getAmount())
                         .bonusType(Constants.TASK_VIRTUAL_CUSTOMER).customerId(Constants.VIRTUAL_CUSTOMER_ID).status(Constants.STATUS_VAILD).build());
             }
-
+            channelDataMapper.batchUpdateChannel(channelDatas);
         }
     }
 }

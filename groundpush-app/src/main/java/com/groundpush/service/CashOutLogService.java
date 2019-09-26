@@ -1,5 +1,6 @@
 package com.groundpush.service;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CashOutLogQueryCondition;
 import com.groundpush.core.model.CashOutLog;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +17,9 @@ public interface CashOutLogService {
     /**
      * 分页查询提现记录
      * @param cashOutLogQueryCondition
-     * @param pageable
      * @return
      */
-    List<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition, Pageable pageable);
+    Page<CashOutLog> queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition);
 
     /**
      * 创建提现记录

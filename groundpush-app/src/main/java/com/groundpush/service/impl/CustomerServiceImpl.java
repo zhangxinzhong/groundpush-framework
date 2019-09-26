@@ -1,5 +1,6 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.condition.CustomerQueryCondition;
@@ -99,7 +100,7 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
     }
 
     @Override
-    public List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition) {
+    public Page<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition) {
         PageHelper.startPage(customerQueryCondition.getPageNumber(), customerQueryCondition.getPageSize());
         return customerMapper.queryCustomer(customerQueryCondition);
     }

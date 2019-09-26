@@ -1,9 +1,11 @@
 package com.groundpush.controller;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Customer;
+import com.groundpush.core.model.PageResult;
 import com.groundpush.service.CustomerService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +42,7 @@ public class CustomerInviteController {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        List<Customer> customers = customerService.queryCustomer(customerQueryCondition);
-        return JsonResp.success(customers);
+        Page<Customer> customers = customerService.queryCustomer(customerQueryCondition);
+        return JsonResp.success(new PageResult(customers));
     }
 }

@@ -1,5 +1,6 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.vo.CustomerVo;
@@ -57,7 +58,7 @@ public interface CustomerMapper {
      * @return
      */
     @Select(" select * from t_customer c where c.parent_id=#{customerId} ")
-    List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition);
+    Page<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition);
 
     /**
      * 新增客户
