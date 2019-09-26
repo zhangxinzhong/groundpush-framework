@@ -43,4 +43,7 @@ public class OrderUpdateCondition implements Serializable {
     @ApiModelProperty(value = "客户id")
     private Integer customerId;
 
+    @ApiModelProperty(value = "任务类型 1：申请 2：推广")
+    private Integer taskType;
+
 }

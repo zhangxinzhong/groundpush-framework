@@ -124,8 +124,8 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrderUniqueCode(OrderUpdateCondition condition) {
         Optional<Order> optionalOrder = null;
         if (condition.getTaskId() != null) {
-            //通过任务id和客户id获取未提交结果集的某一个订单
-            optionalOrder = orderMapper.queryCodeNullOrderByCustomerIdAndTaskId(condition.getCustomerId(), condition.getTaskId());
+            //通过任务类型、任务id和客户id获取未提交结果集的某一个订单
+            optionalOrder = orderMapper.queryCodeNullOrderByCustomerIdAndTaskId(condition);
         } else {
             //通过订单id获取订单
             optionalOrder = orderMapper.getOrder(condition.getOrderId());

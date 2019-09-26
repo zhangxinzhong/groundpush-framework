@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
+import com.groundpush.core.condition.OrderUpdateCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
@@ -189,11 +190,11 @@ public interface OrderMapper {
             " FROM ",
             " t_order a ",
             " LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id ",
-            " WHERE a.type = 2 AND b.task_id = #{taskId} AND b.customer_id = #{customerId}",
+            " WHERE a.type = #{taskType} AND b.task_id = #{taskId} AND b.customer_id = #{customerId}",
             " AND a.unique_code IS NULL LIMIT 0,1 ",
             "</script>"
     })
-    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
+    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(OrderUpdateCondition condition);
 
     /**
      * 查询未上传结果集的订单

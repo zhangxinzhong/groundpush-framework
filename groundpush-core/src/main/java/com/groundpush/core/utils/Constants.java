@@ -295,4 +295,15 @@ public class Constants {
      */
     public static final  String WX_AES_TOKEN = "wxAesToken";
 
+    /**
+     * app任务类型 1表示申请
+     */
+    public static final Integer APP_TASK_TYPE1 = 1;
+
+    /**
+     * app任务类型 2表示推广
+     */
+    public static final Integer APP_TASK_TYPE2 = 2;
+
+
 }

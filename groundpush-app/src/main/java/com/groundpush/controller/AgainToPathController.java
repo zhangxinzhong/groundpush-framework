@@ -30,17 +30,6 @@ import javax.validation.Valid;
 @Controller
 public class AgainToPathController {
 
-    @Resource
-    private RedisUtils redisUtils;
-
-    @Resource
-    private AesUtils aesUtils;
-
-    @Resource
-    private StringUtils stringUtils;
-
-    @Resource
-    private UniqueCode uniqueCode;
 
     @ApiOperation("用于微信的二次跳转")
     @GetMapping
