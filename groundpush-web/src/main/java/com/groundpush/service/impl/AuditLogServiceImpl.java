@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class AuditLogServiceImpl implements AuditLogService {
     }
 
     @Override
-    public Boolean isAuditPass(Integer taskId, Date orderTime){
+    public Boolean isAuditPass(Integer taskId, LocalDateTime orderTime){
         List<AuditLog> list = auditLogMapper.getAuditPassList(taskId,orderTime);
         return list != null && list.size() >= 2?true:false;
     }

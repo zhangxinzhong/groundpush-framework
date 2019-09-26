@@ -75,6 +75,16 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
     public void updateCustomer(CustomerVo customerVo) {
         try {
             if (StringUtils.isNotBlank(customerVo.getInviteCode())) {
+
+                //验证邀请码是否与本邀请码相同
+                Optional<Customer> optionalCustomer = customerMapper.getCustomer(customerVo.getCustomerId());
+                if(optionalCustomer.isPresent()){
+                    if(customerVo.getInviteCode().equals(optionalCustomer.get().getInviteCode())){
+                        throw new BusinessException(ExceptionEnum.CUSTOMER_REPETITION_INVITE.getErrorCode()
+                                ,ExceptionEnum.CUSTOMER_REPETITION_INVITE.getErrorMessage());
+                    }
+                }
+
                 //若客户进行更改parentId 需验证客户是否存在订单 和父客户是否存在
                 Optional<Customer> parentCustomer = customerMapper.queryCustomerByInviteCode(customerVo.getInviteCode());
                 if (!parentCustomer.isPresent()) {
