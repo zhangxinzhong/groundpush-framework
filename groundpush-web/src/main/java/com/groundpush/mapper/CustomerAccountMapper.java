@@ -31,6 +31,6 @@ public interface CustomerAccountMapper {
      * @param build
      */
 
-    @Update(" update t_user_account set amount=#{amount} where customer_id=#{customerId} ")
+    @Update(" update t_customer_account set amount=#{amount} where customer_id=#{customerId} ")
     void updateCustomerAccount(CustomerAccount build);
 }

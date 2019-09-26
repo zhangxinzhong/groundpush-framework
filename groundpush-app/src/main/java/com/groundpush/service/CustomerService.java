@@ -31,10 +31,9 @@ public interface CustomerService {
     /**
      *  查询客户信息
      * @param customerQueryCondition
-     * @param pageable
      * @return
      */
-    List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition, Pageable pageable);
+    List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition);
 
     /**
      * 创建客户信息

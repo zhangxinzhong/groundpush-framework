@@ -2,6 +2,7 @@ package com.groundpush.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
+import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderList;
 import org.apache.ibatis.annotations.*;
@@ -222,4 +223,6 @@ public interface OrderMapper {
             "</script>"
     })
     Integer updateOrderByUniqueCode(@Param("uniqueCode") String uniqueCode, @Param("settlementStatus") Integer settlementStatus, @Param("remark") String remark);
+
+
 }

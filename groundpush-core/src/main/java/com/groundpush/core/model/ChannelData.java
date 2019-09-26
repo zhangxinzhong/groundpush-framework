@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -66,4 +67,10 @@ public class ChannelData implements Serializable {
     private LocalDateTime createTime;
 
 
+    //******************* 非数据库映射字段***********************
+
+    /**
+     * 任务金额
+     */
+    private BigDecimal amount;
 }

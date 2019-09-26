@@ -99,8 +99,8 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
     }
 
     @Override
-    public List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public List<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition) {
+        PageHelper.startPage(customerQueryCondition.getPageNumber(), customerQueryCondition.getPageSize());
         return customerMapper.queryCustomer(customerQueryCondition);
     }
 

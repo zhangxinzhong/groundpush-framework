@@ -1,5 +1,7 @@
 package com.groundpush.core.utils;
 
+import io.swagger.models.auth.In;
+
 import java.math.BigDecimal;
 
 /**
@@ -44,6 +46,11 @@ public class Constants {
      * 团队领导
      */
     public static final Integer TASK_LEADER_CUSTOMER = 3;
+
+    /**
+     * 虚拟用户
+     */
+    public static final Integer TASK_VIRTUAL_CUSTOMER = 4;
 
     /**
      * 百分比
@@ -233,6 +240,11 @@ public class Constants {
     public static final Integer ORDER_TYPE_2 = 2;
 
     /**
+     * 订单类型为虚拟用户 3
+     */
+    public static final Integer ORDER_TYPE_3 = 3;
+
+    /**
      * 图像识别
      */
     public static final Integer UPLOAD_STATUS_1 = 1;
@@ -295,15 +307,11 @@ public class Constants {
      */
     public static final  String WX_AES_TOKEN = "wxAesToken";
 
-    /**
-     * app任务类型 1表示申请
-     */
-    public static final Integer APP_TASK_TYPE1 = 1;
+
+
 
     /**
-     * app任务类型 2表示推广
+     * 虚拟账户id
      */
-    public static final Integer APP_TASK_TYPE2 = 2;
-
-
+    public static final Integer VIRTUAL_CUSTOMER_ID = 1;
 }

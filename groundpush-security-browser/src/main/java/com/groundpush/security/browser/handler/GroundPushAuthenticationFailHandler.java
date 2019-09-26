@@ -34,6 +34,7 @@ public class GroundPushAuthenticationFailHandler extends SimpleUrlAuthentication
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("登录失败");
         log.error(exception.getMessage(), exception);
+        String code = ExceptionEnum.EXCEPTION.getErrorCode();
         String message = ExceptionEnum.EXCEPTION.getErrorMessage();
         if (exception instanceof UsernameNotFoundException) {
             message = ExceptionEnum.USER_NOT_EXISTS.getErrorMessage();
@@ -41,10 +42,10 @@ public class GroundPushAuthenticationFailHandler extends SimpleUrlAuthentication
             message = ExceptionEnum.USER_AND_PASSWORD_ERROR.getErrorMessage();
         } else if (exception instanceof ValidateCodeException) {
             message = exception.getMessage();
+            code = ((ValidateCodeException) exception).getCode();
         }
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(JsonResp.failure(message)));
+        response.getWriter().write(objectMapper.writeValueAsString(JsonResp.failure(code,message)));
 
     }
 }
