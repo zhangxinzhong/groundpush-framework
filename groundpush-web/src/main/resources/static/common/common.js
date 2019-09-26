@@ -12,6 +12,7 @@ window.onload = function () {
             rootPath + 'plugin/layui/layui.all.js',
             rootPath + 'plugin/bootstrap/js/bootstrap.min.js',
             rootPath + 'utils/utils.js',
+            rootPath + 'utils/city.js',
             rootPath + 'global/global.js',
             'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js'
         ],

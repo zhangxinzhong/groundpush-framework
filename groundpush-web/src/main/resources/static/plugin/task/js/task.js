@@ -8,9 +8,31 @@ $(function () {
     //加载省份内容
     provinceLoad("");
     //加载位置内容
-    locationLoad("");
+    locationLoad("", "");
     $(".selectpicker").selectpicker('refresh');
+    //测试
+    testshengshi();
 })
+
+function testshengshi() {
+    console.log(CityInfo);
+    console.log("-------------------------")
+    console.log("省")
+    for (var x in CityInfo) {
+        console.log(CityInfo[x].label);
+    }
+    console.log("市")
+    for (var x in CityInfo) {
+        var shengLabel = CityInfo[x].label;
+        if (shengLabel == "云南省" || shengLabel == "河北省") {
+            var shiChildren = CityInfo[x].children;
+            console.log(shiChildren);
+            for (var y in shiChildren) {
+                console.log(shiChildren[y].label);
+            }
+        }
+    }
+}
 
 //加载标签内容
 function labelLoad(labelIds) {
@@ -59,81 +81,71 @@ function provinceLoad(provinces) {
     if (provinces != undefined && provinces.length != 0) {
         labelIdList = provinces.split(",");
     }
-    $.ajax({
-        url: "/task/getShengFen",
-        async: false,
-        type: "POST",
-        dataType: 'json',
-        success: function (data) {
-            var code = data.code;
-            if (code == "200") {
-                var labelHtml = "";
-                var dataList = data.data;
-                for (var i in dataList) {
-                    var labelName = dataList[i].labelName;
-                    var isLabelOk = false;
-                    for (var y in labelIdList) {
-                        if (labelIdList[y] == labelName) {
-                            isLabelOk = true;
-                            break;
-                        }
-                    }
-                    if (isLabelOk) {
-                        labelHtml += '<option value="' + labelName + '" selected>' + labelName + '</option>';
-                    } else {
-                        labelHtml += '<option value="' + labelName + '" >' + labelName + '</option>';
-                    }
-                }
-                $("#provinces").html(labelHtml);
-            } else {
-                var msg = data.message;
-                alert(msg);
+    //遍历省份信息
+    var labelHtml = "";
+    for (var x in CityInfo) {
+        var labelName = CityInfo[x].label;
+        console.log(labelName);
+        var isLabelOk = false;
+        for (var y in labelIdList) {
+            if (labelIdList[y] == labelName) {
+                isLabelOk = true;
+                break;
             }
         }
-    });
+        if (isLabelOk) {
+            labelHtml += '<option value="' + labelName + '" selected>' + labelName + '</option>';
+        } else {
+            labelHtml += '<option value="' + labelName + '" >' + labelName + '</option>';
+        }
+    }
+    $("#provinces").html(labelHtml);
     //加载下拉列表内容
     $("#provinces").selectpicker('refresh');
     $("#provinces").selectpicker('render');
 }
 
 //加载位置信息--市
-function locationLoad(locations) {
+function locationLoad(selProvinces, locations) {
+    //已选择的省
+    var provinceList = "";
+    if (selProvinces != undefined && selProvinces.length != 0) {
+        provinceList = selProvinces.split(",");
+    }
+    //需要回显的值-市
     var labelIdList = "";
     if (locations != undefined && locations.length != 0) {
         labelIdList = locations.split(",");
     }
-    $.ajax({
-        url: "/task/getShiQu",
-        async: false,
-        type: "POST",
-        dataType: 'json',
-        success: function (data) {
-            var code = data.code;
-            if (code == "200") {
-                var labelHtml = "";
-                var dataList = data.data;
-                for (var i in dataList) {
-                    var labelName = dataList[i].labelName;
+    //遍历所有省
+    var labelHtml = "";
+    for (var x in CityInfo) {
+        var sheng = CityInfo[x];
+        var shengLabel = CityInfo[x].label;
+        for (var y in provinceList) {
+            if (provinceList[y] == shengLabel) {
+                var shiChildren = sheng.children;
+                console.log(shiChildren);
+                for (var z in shiChildren) {
+                    var shiLabel = shiChildren[z].label;
+                    //组页面
                     var isLabelOk = false;
-                    for (var y in labelIdList) {
-                        if (labelIdList[y] == labelName) {
+                    for (var v in labelIdList) {
+                        if (labelIdList[v] == shiLabel) {
                             isLabelOk = true;
                             break;
                         }
                     }
                     if (isLabelOk) {
-                        labelHtml += '<option value="' + labelName + '" selected>' + labelName + '</option>';
+                        labelHtml += '<option value="' + shiLabel + '" selected>' + shiLabel + '</option>';
                     } else {
-                        labelHtml += '<option value="' + labelName + '" >' + labelName + '</option>';
+                        labelHtml += '<option value="' + shiLabel + '" >' + shiLabel + '</option>';
                     }
                 }
-                $("#locations").html(labelHtml);
-            } else {
-                var msg = data.message;
-                alert(msg);
             }
         }
-    });
+    }
+    $("#locations").html(labelHtml);
     //加载下拉列表内容
     $("#locations").selectpicker('refresh');
     $("#locations").selectpicker('render');
@@ -260,7 +272,7 @@ function addTaskText(object) {
     var labelIndex = obj.parent().attr("labelIndex");
     var html = '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelIndex + '" class="row labelRowDiv">\n' +
         '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号">\n' +
-        '                <select name="rowType" class="rowType form-control col-lg-3" typeMsg="'+ type +'" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
+        '                <select name="rowType" class="rowType form-control col-lg-3" typeMsg="' + type + '" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
         '                <option value="1">标题</option>' +
         '                <option value="2">内容</option>' +
         '                <option value="3">URL</option>' +
