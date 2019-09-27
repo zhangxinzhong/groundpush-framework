@@ -129,7 +129,7 @@
                             <select class="selectpicker form-control col-lg-3" name="provinces" id="provinces" multiple
                                     style="width:21%;display:inline;margin-left: 5px"
                                     data-title="点击选择省份（可多选）" data-width="21%" data-live-search="true"
-                                    data-live-search-placeholder="搜索" data-actions-box="true">
+                                    data-live-search-placeholder="搜索" data-actions-box="true" onchange="selectProvince()" >
                             </select>
                             <input type="hidden" name="location" id="location">
                             <select class="selectpicker form-control col-lg-3" name="locations" id="locations" multiple
@@ -488,7 +488,7 @@
                         //加载省份内容
                         provinceLoad(dataMsg.province);
                         //加载位置内容
-                        locationLoad(dataMsg.province,dataMsg.location);
+                        locationLoad(dataMsg.province,dataMsg.location,2);
                         //子表数据
                         var taskAttributes = dataMsg.taskAttributes;
                         //定义两部分的页面值

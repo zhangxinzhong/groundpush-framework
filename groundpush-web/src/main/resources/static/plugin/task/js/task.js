@@ -5,34 +5,9 @@ $(function () {
     channelLoad();
     //加载标签内容
     labelLoad("");
-    //加载省份内容
-    provinceLoad("");
-    //加载位置内容
-    locationLoad("", "");
+    //加载刷新
     $(".selectpicker").selectpicker('refresh');
-    //测试
-    testshengshi();
 })
-
-function testshengshi() {
-    console.log(CityInfo);
-    console.log("-------------------------")
-    console.log("省")
-    for (var x in CityInfo) {
-        console.log(CityInfo[x].label);
-    }
-    console.log("市")
-    for (var x in CityInfo) {
-        var shengLabel = CityInfo[x].label;
-        if (shengLabel == "云南省" || shengLabel == "河北省") {
-            var shiChildren = CityInfo[x].children;
-            console.log(shiChildren);
-            for (var y in shiChildren) {
-                console.log(shiChildren[y].label);
-            }
-        }
-    }
-}
 
 //加载标签内容
 function labelLoad(labelIds) {
@@ -106,16 +81,27 @@ function provinceLoad(provinces) {
 }
 
 //加载位置信息--市
-function locationLoad(selProvinces, locations) {
+//selProvinces--已选择的省
+//locations--已选择的市
+//参数类型：1-数组，2-字符串
+function locationLoad(selProvinces, locations,paramType) {
     //已选择的省
     var provinceList = "";
-    if (selProvinces != undefined && selProvinces.length != 0) {
-        provinceList = selProvinces.split(",");
+    if(paramType == 1){
+        provinceList = selProvinces;
+    }else if(paramType == 2){
+        if (selProvinces != undefined && selProvinces.length != 0) {
+            provinceList = selProvinces.split(",");
+        }
     }
     //需要回显的值-市
     var labelIdList = "";
-    if (locations != undefined && locations.length != 0) {
-        labelIdList = locations.split(",");
+    if(paramType == 1){
+        labelIdList = locations;
+    }else if(paramType == 2){
+        if (locations != undefined && locations.length != 0) {
+            labelIdList = locations.split(",");
+        }
     }
     //遍历所有省
     var labelHtml = "";
@@ -149,6 +135,16 @@ function locationLoad(selProvinces, locations) {
     //加载下拉列表内容
     $("#locations").selectpicker('refresh');
     $("#locations").selectpicker('render');
+}
+
+//选择省的时候加载市--保存已选择的
+function  selectProvince() {
+    //获取省的内容
+    var provinces = $('#provinces').selectpicker('val');
+    //获取城市内容
+    var locations = $('#locations').selectpicker('val');
+    //加载
+    locationLoad(provinces,locations,1);
 }
 
 //加载公司内容
