@@ -89,7 +89,7 @@ public interface AuditLogMapper {
     * @return
     */
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') and audit_status = 1 ")
-   List<AuditLog> getAuditPassList(@Param("taskId") Integer taskId,@Param("orderTime") Date orderTime);
+   List<AuditLog> getAuditPassList(@Param("taskId") Integer taskId,@Param("orderTime") LocalDateTime orderTime);
 
    /**
     *  通过任务id和订单时间获取订单记录
@@ -98,5 +98,5 @@ public interface AuditLogMapper {
     * @return
     */
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ")
-   List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") Date orderTime);
+   List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") LocalDateTime orderTime);
 }

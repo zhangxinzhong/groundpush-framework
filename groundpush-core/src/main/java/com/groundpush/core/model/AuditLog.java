@@ -45,7 +45,7 @@ public class AuditLog {
     @ApiModelProperty("订单时间")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     @ApiModelProperty("审核状态（1：审核通过 2：审核不通过）")
     private Integer auditStatus;

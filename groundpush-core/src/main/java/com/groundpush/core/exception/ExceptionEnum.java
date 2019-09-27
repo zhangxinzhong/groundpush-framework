@@ -36,6 +36,7 @@ public enum ExceptionEnum {
     , CUSTOMER_NOT_EXISTS("C30001", "客户不存在")
     , CREATE_CUSTOMER_ERROR("C30002", "创建客户失败，请联系管理员！")
     , CUSTOMER_EXISTS_ORDER("C30003", "客户已经存在订单，不可更改推广人")
+    , CUSTOMER_REPETITION_INVITE("C30004", "邀请码与本人客户邀请码重复！")
     , CUSTOMER_ACCOUNT_EXISTS("CA40001", "客户账号已存在")
 
     , CUSTOMER_LOGIN_ACCOUNT_NOT_EXISTS("CA40003", "客户账号不存在")

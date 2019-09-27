@@ -127,7 +127,7 @@ public interface OrderMapper {
      * @param taskId
      */
     @Update("  update  t_order b set b.status=#{status}  where  DATE_FORMAT(b.created_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') AND b.order_id in (SELECT a.order_id FROM t_order_task_customer a where a.task_id = #{taskId})  ")
-    void updateOrderStatusByTaskIdAndTime(@Param("status") Integer status, @Param("orderTime") Date orderTime, @Param("taskId") Integer taskId);
+    void updateOrderStatusByTaskIdAndTime(@Param("status") Integer status, @Param("orderTime") LocalDateTime orderTime, @Param("taskId") Integer taskId);
 
     /**
      * 通过任务、时间、状态分页查询所有订单列表
