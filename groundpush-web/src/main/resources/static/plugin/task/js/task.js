@@ -60,7 +60,6 @@ function provinceLoad(provinces) {
     var labelHtml = "";
     for (var x in CityInfo) {
         var labelName = CityInfo[x].label;
-        console.log(labelName);
         var isLabelOk = false;
         for (var y in labelIdList) {
             if (labelIdList[y] == labelName) {
@@ -111,7 +110,6 @@ function locationLoad(selProvinces, locations,paramType) {
         for (var y in provinceList) {
             if (provinceList[y] == shengLabel) {
                 var shiChildren = sheng.children;
-                console.log(shiChildren);
                 for (var z in shiChildren) {
                     var shiLabel = shiChildren[z].label;
                     //组页面
@@ -200,7 +198,6 @@ function uploadExcel(classCodes) {
         },
         done: function (res) {
             layer.closeAll('loading'); //关闭loading
-            console.log(res);
             var code = res.code;
             if (code == "200") {
             } else {
@@ -228,7 +225,6 @@ function attributeFileUpload(labelClass, valueClass) {
         url: '/upload/uploadFile',//上传接口
         size: '5024',
         before: function (obj) {
-            console.log(obj);
             //预读本地文件示例，不支持ie8
             obj.preview(function (index, file, result) {
                 $(labelClass).attr('src', result); //图片链接（base64）
@@ -239,7 +235,6 @@ function attributeFileUpload(labelClass, valueClass) {
             //"tableName": "hl_kj"//往后台传数据用的
         },
         done: function (res) {
-            console.log(res);
             var code = res.code;
             if (code == "200") {
                 var fileData = res.data.fileData;
@@ -367,12 +362,7 @@ function addJieDuan(type) {
     } else {
         labelRowSize = $("#MyTaskContentDiv .labelRow").size();
     }
-    var labelRowIndex = 0;
-    if (labelRowSize == 0) {
-        labelRowIndex = 1;
-    } else {
-        labelRowIndex = labelRowSize + 1;
-    }
+    var labelRowIndex = labelRowSize;
 
     var html = "";
     html += '<div labelIndex="' + labelRowIndex + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
@@ -409,7 +399,7 @@ function delThisLabelRow(object) {
 //刷新底部默认排序
 function defuletSort() {
     $("#MyTaskContentDiv .labelRow").each(function (index, object) {
-        var num = parseInt(index + 1);
+        var num = parseInt(index);
         //遍历子项
         var labelIndex = $(object).attr("labelIndex");
         $("#MyTaskContentDiv .labelRowDiv").each(function (keyIndex, value) {

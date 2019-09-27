@@ -260,7 +260,6 @@
             success: function (data) {
                 var code = data.code;
                 var dataList = data.data.rows;
-                console.log(data);
                 if (code == "200") {
                     //加载分页项
                     compoundPage(data.data);
@@ -318,11 +317,6 @@
                         uploadExcelArray.push("." + uploadExcel);
                     }
                     $("#loadTaskData").html(tableHtml);
-                    //让这个上传按钮可以监听的到
-                    console.log("==================================================");
-                    console.log(uploadExcelArray);
-                    console.log("==========================================");
-                    //uploadExcel(".uploadExcel");
                 }
             }
         })
@@ -415,10 +409,6 @@
         jsondata["taskAttributes"] = params;
         var jsonParamsData = JSON.stringify(jsondata);
 
-        console.log("-------------------------------------------")
-        console.log(jsonParamsData);
-        console.log("---------------------------------------------")
-
         //提交校验
         var verifyResult = verify(jsonParamsData);
         if (!verifyResult)
@@ -451,7 +441,6 @@
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     var code = data.code;
                     if (code == "200") {
                         //基础数据
@@ -513,7 +502,7 @@
                         //我的任务编辑部分
                         var MyTaskContentDivHtml = "";
                         for (var i in taskAttributes) {
-                            var num = parseInt(i) + 1;
+                            var num = parseInt(i);
                             //阶段标头内容
                             var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
                                 '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
@@ -524,7 +513,6 @@
                             //阶段内容
                             var TaskMsgHtml = "";
                             //所属阶段的内容
-                            console.log("查看返回的结果：" + $("#generalizeTaskHtml").html());
                             $("#myTaskHtml .labelRowDiv").each(function (dataIndex, dataMsg) {
                                 var onLabelIndex = $(dataMsg).attr("onLabelIndex");
                                 if (onLabelIndex == num) {
@@ -541,7 +529,7 @@
                         //推广任务编辑部分
                         var GeneralizeTaskContentDivHtml = "";
                         for (var i in taskAttributes) {
-                            var num = parseInt(i) + 1;
+                            var num = parseInt(i);
                             //阶段标头内容
                             var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
                                 '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
