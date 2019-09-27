@@ -4,7 +4,7 @@ spring:
   datasource:
     name: druid_source
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://106.2.172.227:3306/groundpush?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://106.2.172.227:3306/groundpush?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
     username: groundpush
     password: groundpush
     hikari:

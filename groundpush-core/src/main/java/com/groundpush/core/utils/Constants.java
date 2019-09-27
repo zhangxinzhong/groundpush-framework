@@ -321,4 +321,13 @@ public class Constants {
     public static final Boolean CHANNEL_DATA_VAILD = true;
 
 
+    /**
+     * 支付类型  微信
+     */
+    public static final Integer PAY_TYPE_WEIXIN = 2;
+
+    /**
+     * 支付类型  微信
+     */
+    public static final Integer PAY_TYPE_ALIPAY = 3;
 }

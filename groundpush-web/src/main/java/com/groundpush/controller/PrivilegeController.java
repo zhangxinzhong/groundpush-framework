@@ -45,9 +45,9 @@ public class PrivilegeController {
     @ResponseBody
     @ApiOperation("权限查询服务")
     @RequestMapping("/getPrivilegePageList")
-    public JsonResp queryPrivilege(Privilege privilege, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+    public JsonResp queryPrivilege(Privilege privilege,@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
         try {
-            Page<Privilege> privileges = privilegeService.queryTaskAll(privilege, nowPage, pageSize);
+            Page<Privilege> privileges = privilegeService.queryTaskAll(privilege, page, limit);
             return JsonResp.success(new PageResult(privileges));
         } catch (Exception e) {
             log.error(e.toString(), e);

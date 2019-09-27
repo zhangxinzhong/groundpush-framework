@@ -5,6 +5,7 @@ import com.groundpush.analysis.service.ChannelExcelService;
 import com.groundpush.core.model.ChannelExcel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ChannelExcelServiceImpl implements ChannelExcelService {
     @Resource
     private ChannelExcelMapper channelExcelMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateChannelExcel(ChannelExcel cdm) {
         channelExcelMapper.updateChannelExcel(cdm);

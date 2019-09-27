@@ -9,6 +9,7 @@ import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderBonus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,14 +33,14 @@ public class ChannelDataServiceImpl implements ChannelDataService {
     private ChannelDataMapper channelDataMapper;
 
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer updateOrderStatus(String uniqueCode, int status, String failureResult) {
         return channelDataMapper.updateOrderStatus(uniqueCode, status, failureResult);
     }
 
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer addChannelData(List<ChannelData> cds) {
 
@@ -50,5 +51,10 @@ public class ChannelDataServiceImpl implements ChannelDataService {
     @Override
     public Optional<ChannelData> getChannelDataByUniqueCode(ChannelDataQueryCondition build) {
         return channelDataMapper.getChannelDataByUniqueCode(build);
+    }
+
+    @Override
+    public void addOrder(Order build) {
+        channelDataMapper.addOrder(build);
     }
 }

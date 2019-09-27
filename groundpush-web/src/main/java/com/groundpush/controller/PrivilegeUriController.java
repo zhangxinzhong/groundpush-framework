@@ -40,9 +40,9 @@ public class PrivilegeUriController {
     @ResponseBody
     @ApiOperation("权限URI关联表查询服务")
     @GetMapping("/{privilegeId:\\d+}/getPrivilegeUriList")
-    public JsonResp getPrivilegeUriPageList(PrivilegeUri privilegeUri, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+    public JsonResp getPrivilegeUriPageList(PrivilegeUri privilegeUri, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
         try {
-            Page<PrivilegeUri> privilegeUris = privilegeUriService.queryPrivilegeUriAll(privilegeUri, nowPage, pageSize);
+            Page<PrivilegeUri> privilegeUris = privilegeUriService.queryPrivilegeUriAll(privilegeUri, page, limit);
             return JsonResp.success(new PageResult(privilegeUris));
         } catch (Exception e) {
             log.error(e.toString(), e);
