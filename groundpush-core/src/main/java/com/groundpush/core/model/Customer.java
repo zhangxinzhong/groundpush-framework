@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -104,5 +105,9 @@ public class Customer implements Serializable {
     @ApiModelProperty(value = "客户账户信息")
     @JsonView(DetailCustomerView.class)
     private CustomerAccount customerAccounts;
+
+
+    @ApiModelProperty(value = "分成金额")
+    private BigDecimal bonusAmount;
 
 }
