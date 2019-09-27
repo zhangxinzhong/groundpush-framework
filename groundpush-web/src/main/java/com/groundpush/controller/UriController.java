@@ -44,9 +44,9 @@ public class UriController {
     @ResponseBody
     @ApiOperation("Uri查询服务")
     @RequestMapping("/getUriPageList")
-    public JsonResp queryTask(Uri uri, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+    public JsonResp queryTask(Uri uri, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
         try {
-            Page<Uri> uris = uriService.queryTaskAll(uri, nowPage, pageSize);
+            Page<Uri> uris = uriService.queryTaskAll(uri, page, limit);
             return JsonResp.success(new PageResult(uris));
         } catch (Exception e) {
             log.error(e.toString(), e);
