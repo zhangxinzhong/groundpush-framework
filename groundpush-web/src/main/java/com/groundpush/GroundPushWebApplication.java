@@ -25,33 +25,6 @@ import java.time.format.DateTimeFormatter;
 @SpringBootApplication
 @EnableTransactionManagement
 public class GroundPushWebApplication {
-    @Value("${baidu.app_id:16102182}")
-    private String APP_ID;
-
-    @Value("${baidu.api_key:AQbWfrqvlcEq0waukUUEGDXE}")
-    private String API_KEY;
-
-    @Value("${baidu.secret_key:I0X3uUqSd14ioD4YlpLAqFZYTq98RYmt}")
-    private String SECRET_KEY;
-
-    @Bean
-    public BaiduTesseractUtil baiduTesseractUtil(){
-        return new BaiduTesseractUtil(APP_ID, API_KEY, SECRET_KEY);
-    }
-
-    @Bean
-    public ObjectMapper serializingObjectMapper() {
-        JavaTimeModule module = new JavaTimeModule();
-        LocalDateTimeDeserializer localDateTimeDeserializer = new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer);
-        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json()
-                .modules(module)
-                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .build();
-        return objectMapper;
-
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(GroundPushWebApplication.class, args);
     }

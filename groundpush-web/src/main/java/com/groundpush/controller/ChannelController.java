@@ -93,7 +93,7 @@ public class ChannelController {
         }
     }
 
-    @ApiOperation(value = "删除标签")
+    @ApiOperation(value = "删除渠道")
     @RequestMapping(value = "/delChannel", method = RequestMethod.POST)
     @ResponseBody
     public JsonResp delChannel(@RequestBody Channel channel) {
@@ -108,7 +108,7 @@ public class ChannelController {
     }
 
 
-    @ApiOperation(value = "查询某个标签")
+    @ApiOperation(value = "查询某个渠道详情 ")
     @RequestMapping(value = "/detailChannel", method = RequestMethod.GET)
     @ResponseBody
     @JsonView(Channel.AllChannelView.class)

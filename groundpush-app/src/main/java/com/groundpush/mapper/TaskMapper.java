@@ -22,12 +22,10 @@ public interface TaskMapper {
     @Select({
             "<script>",
             " select t.*, ",
-
             //今日您剩余推广次数
-            " (SELECT t.spread_total-count(1) FROM t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id WHERE a.type = 2  AND b.task_id = t.task_id AND DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) sur_pop_count, ",
+            " (SELECT t.handler_num-count(1) FROM t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id WHERE a.type = 2 AND b.customer_id = #{customerId} AND DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') AND b.task_id = t.task_id ) sur_pop_count, ",
             //任务参与人
-            " (select count(1) from (SELECT a.customer_id,a.task_id FROM  t_order_task_customer  a LEFT JOIN  t_order b ON a.order_id = b.order_id WHERE b.type = 2 AND DATE_FORMAT(b.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') group by a.customer_id,a.task_id ) c where c.task_id = t.task_id ) task_person, ",
-
+            " (SELECT count(1) FROM  t_order_task_customer  a LEFT JOIN  t_order b ON a.order_id = b.order_id WHERE b.type = 2 AND a.task_id = t.task_id AND DATE_FORMAT(b.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) task_person, ",
             //查询所有次要标签 以 label1,label2,label3,label4
             " (SELECT  GROUP_CONCAT(b.label_name) FROM t_label b LEFT JOIN t_task_label c on b.label_id = c.label_id where b.type = 0 and c.task_id = t.task_id) label_name",
             " from ( ",

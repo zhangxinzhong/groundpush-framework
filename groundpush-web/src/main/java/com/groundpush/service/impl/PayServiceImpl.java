@@ -100,7 +100,7 @@ public class PayServiceImpl implements PayService {
     public void orderPay(OrderBonus orderBonus, User user) {
         try {
             //根据订单分成修改客户账号金额
-            customerAccountService.updateCustomerAccountAmountByCustomerId(CustomerAccount.builder().customerId(orderBonus.getCustomerId()).amount(orderBonus.getCustomerBonus()).build());
+            customerAccountService.updateCustomerAccountAmountByCustomerId(CustomerAccount.builder().customerId(orderBonus.getCustomerId()).amount(orderBonus.getBonusAmount()).build());
             //支付成功后，将订单状态（status）修改为已支付
             Order order = Order.builder().orderId(orderBonus.getOrderId()).status(Constants.ORDER_STATUS_PAY_SUCCESS).lastModifiedBy(user.getUserId()).build();
             orderMapper.updateOrder(order);
@@ -125,7 +125,7 @@ public class PayServiceImpl implements PayService {
                 orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID)
                         .orderId(order.getOrderId()).taskId(taskId).build());
                 //创建虚拟订单分成记录
-                orderBonusMapper.createSimpleOrderBonus(OrderBonus.builder().orderId(order.getOrderId()).customerBonus(channelData.getAmount())
+                orderBonusMapper.createSimpleOrderBonus(OrderBonus.builder().orderId(order.getOrderId()).bonusAmount(channelData.getAmount())
                         .bonusType(Constants.TASK_VIRTUAL_CUSTOMER).customerId(Constants.VIRTUAL_CUSTOMER_ID).status(Constants.STATUS_VAILD).build());
             }
             channelDataMapper.batchUpdateChannel(channelDatas);

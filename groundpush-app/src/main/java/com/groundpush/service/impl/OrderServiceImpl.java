@@ -122,6 +122,10 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateOrderUniqueCode(OrderUpdateCondition condition) {
+
+
+
+
         Optional<Order> optionalOrder = null;
         if (condition.getTaskId() != null) {
             //通过任务类型、任务id和客户id获取未提交结果集的某一个订单
@@ -131,12 +135,18 @@ public class OrderServiceImpl implements OrderService {
             optionalOrder = orderMapper.getOrder(condition.getOrderId());
         }
 
-
+        //验证订单是否存在
         if (!optionalOrder.isPresent()) {
             throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }
-
         Order order = optionalOrder.get();
+        condition.setTaskId(order.getTaskId());
+        List<Order> orders = orderMapper.findOrderByUnqiuCode(condition);
+        if(orders != null && orders.size() > 0){
+            throw new BusinessException(ExceptionEnum.ORDER_UNIQUECODE.getErrorCode(), ExceptionEnum.ORDER_UNIQUECODE.getErrorMessage());
+        }
+
+
         //判断是否为任务结果集上传
         if (Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())) {
             boolean bool = dateUtils.plusMinutesTime(order.getCreatedTime());

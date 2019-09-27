@@ -43,7 +43,7 @@ public interface CustomerMapper {
             " <if test='imgUri != null'> c.img_uri =#{imgUri},  </if> ",
             " <if test='nickName != null'> c.nick_name =#{nickName},  </if> ",
             " <if test='parentId != null'> c.parent_id =#{parentId},  </if> ",
-            " <if test='inviteCode != null'> c.invite_code =#{inviteCode},  </if> ",
+            " <if test='inviteCode != null and inviteCode != \"\"'> c.invite_code =#{inviteCode},  </if> ",
             " c.last_modified_time= current_timestamp where c.customer_id=#{customerId} ",
             "</script>"
     })

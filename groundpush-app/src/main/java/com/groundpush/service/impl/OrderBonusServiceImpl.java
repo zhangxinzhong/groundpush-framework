@@ -126,15 +126,16 @@ public class OrderBonusServiceImpl implements OrderBonusService {
                 log.info("计算任务申请...");
                 //计算任务完成人分成
                 log.info("订单号：{} 的完成人分成：{}", orderId, taskFinishCustBonus);
-                list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_FINISH_CUSTOMER).customerBonus(taskFinishCustBonus).build());
+                list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId)
+                        .bonusType(Constants.TASK_FINISH_CUSTOMER).bonusAmount(taskFinishCustBonus).bonusCustomerId(taskOperCust.getParentId()).build());
                 //计算推广人分成
                 Optional<Customer> taskSpreadCustOptional = customerMapper.getCustomer(taskOperCust.getParentId());
                 if (taskSpreadCustOptional.isPresent()) {
                     Customer spreadCust = taskSpreadCustOptional.get();
                     log.info("订单号：{} 的推广人分成：{}", orderId, taskSpreadCustBonus);
-                    list.add(OrderBonus.builder().customerId(spreadCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).customerBonus(taskSpreadCustBonus).build());
+                    list.add(OrderBonus.builder().customerId(spreadCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).bonusAmount(taskSpreadCustBonus).bonusCustomerId(spreadCust.getParentId()).build());
                     //计算团队领导分成
-                    generateCustomerBonus(order, taskLeaderCustBonus, Constants.TASK_LEADER_CUSTOMER, taskOperCust, list);
+                    generateCustomerBonus(order, taskLeaderCustBonus, Constants.TASK_LEADER_CUSTOMER, spreadCust, list);
                 } else {
                     log.info("客户编号：{} 的推广人为空,订单编号：{}", taskOperCust.getCustomerId(), orderId);
                 }
@@ -142,7 +143,7 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             } else if (Constants.SPREAD_TASK_ATTRIBUTE.equals(order.getType())) {
                 log.info("计算任务推广...");
                 //计算推广人分成
-                list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).customerBonus(taskSpreadCustBonus).build());
+                list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).bonusAmount(taskSpreadCustBonus).bonusCustomerId(taskOperCust.getParentId()).build());
                 log.info("订单号：{} 的推广人分成：{}", orderId, taskSpreadCustBonus);
                 //计算团队领导分成
                 generateCustomerBonus(order, taskLeaderCustBonus, Constants.TASK_LEADER_CUSTOMER, taskOperCust, list);
@@ -189,7 +190,7 @@ public class OrderBonusServiceImpl implements OrderBonusService {
         if (customerOptional.isPresent()) {
             Customer customer = customerOptional.get();
             log.info("订单号：{} 的团队领导分成：{}", order.getOrderId(), bonusAmount);
-            orderBonuses.add(OrderBonus.builder().customerId(customer.getCustomerId()).orderId(order.getOrderId()).bonusType(bonusType).customerBonus(bonusAmount).build());
+            orderBonuses.add(OrderBonus.builder().customerId(customer.getCustomerId()).orderId(order.getOrderId()).bonusType(bonusType).bonusAmount(bonusAmount).build());
         } else {
             log.info("订单号：{} 的团队领导不存在：{}", order.getOrderId(), cust.toString());
         }
