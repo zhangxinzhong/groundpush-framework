@@ -57,7 +57,7 @@ public interface CustomerMapper {
      * @param customerQueryCondition
      * @return
      */
-    @Select(" select c.*,(select d.bonus_amount from t_order_bonus  d where b.order_id = d.order_id and d.customer_id=b.bonus_customer_id) bonus_amount  from t_customer c left join t_order_bonus b on c.customer_id = b.customer_id and b.bonus_customer_id = c.parent_id where c.parent_id =#{customerId} ")
+    @Select(" select c.*,ifnull((select d.bonus_amount from t_order_bonus  d where b.order_id = d.order_id and d.customer_id=b.bonus_customer_id),0) bonus_amount  from t_customer c left join t_order_bonus b on c.customer_id = b.customer_id and b.bonus_customer_id = c.parent_id where c.parent_id =#{customerId} ")
     Page<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition);
 
     /**
