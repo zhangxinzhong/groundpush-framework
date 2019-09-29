@@ -112,7 +112,7 @@ layui.use('table', function () {
         ,showOrderBonusList:function (data) {
             table.render({
                 elem: '#orderBonus'
-                , url: '/payManage/queryOrderList'
+                , url: '/order/queryOrderBonus'
                 , toolbar: true
                 , title: 'orderBonus-data'
                 , totalRow: true
@@ -135,8 +135,7 @@ layui.use('table', function () {
                         return {
                             "code": res.code, //解析接口状态
                             "msg": res.message, //解析提示文本
-                            "count": res.data.total, //解析数据长度
-                            "data": res.data.rows //解析数据列表
+                            "data": res.data //解析数据列表
                         };
                     }
                 }
