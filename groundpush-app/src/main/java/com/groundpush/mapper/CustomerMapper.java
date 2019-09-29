@@ -50,7 +50,7 @@ public interface CustomerMapper {
     void updateCustomer(CustomerVo customer);
 
     @Update(" update  t_customer c set  c.invite_code =#{inviteCode},c.last_modified_time= current_timestamp where c.customer_id=#{customerId} ")
-    void updateCustomerInviteCode(String inviteCode,Integer customerId);
+    void updateCustomerInviteCode(@Param("inviteCode") String inviteCode,@Param("customerId") Integer customerId);
 
     /**
      * 分页查询客户邀请列表
