@@ -9,6 +9,7 @@ import com.groundpush.core.model.TaskOrderList;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description: 支付管理 审核日志记录
@@ -21,7 +22,7 @@ public interface AuditLogService {
      * 获取支付管理中 任务订单审核列表
      * @return
      */
-    Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit,Integer userId);
+    Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit);
 
     /**
      * 添加审核日志
@@ -45,6 +46,8 @@ public interface AuditLogService {
      */
     Page<OrderList> queryOrderListByTaskIdAndOrderId(OrderListQueryCondition condition);
 
+
+    // Optional<AuditLog> findAuditiLongByTaskIdOrderTimeserId(AuditLog auditLog);
 
 
 }

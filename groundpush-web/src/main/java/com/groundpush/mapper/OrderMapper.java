@@ -96,7 +96,7 @@ public interface OrderMapper {
             "<script>",
             " update t_order set  ",
             " <if test='status != null'>  status =#{status},  </if> ",
-            " <if test='lastModifiedBy != null'> and last_modified_by =#{lastModifiedBy},  </if> ",
+            " <if test='lastModifiedBy != null'> last_modified_by =#{lastModifiedBy},  </if> ",
             " last_modified_time= current_timestamp where order_id=#{orderId} ",
             "</script>"
     })

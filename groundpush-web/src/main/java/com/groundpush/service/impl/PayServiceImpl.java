@@ -67,12 +67,14 @@ public class PayServiceImpl implements PayService {
         }
 
         //将渠道数据关联的失效订单绑定到虚拟账户
-        batchOrder(orderPay.getTaskId());
+        batchOrder(orderPay);
 
         //todo 此处需要优化，若订单量大会产生问题
         // 通过任务ID、订单成功状态和订单时间查询此任务所有生效订单及客户 此处需要通过2个状态：订单状态和渠道方订单状态
         try {
-            orderPay = OrderPayVo.builder().startDateTime(dateUtils.getMinOfDay(orderPay.getOrderCreateDate())).endDateTime(dateUtils.getMaxOfDay(orderPay.getOrderCreateDate())).orderStatus(Constants.ORDER_STATUS_SUCCESS).build();
+            orderPay.setStartDateTime(dateUtils.getMinOfDay(orderPay.getOrderCreateDate()));
+            orderPay.setEndDateTime(dateUtils.getMaxOfDay(orderPay.getOrderCreateDate()));
+            orderPay.setOrderStatus(Constants.ORDER_STATUS_SUCCESS);
             List<OrderBonus> orderBonuses = orderBonusMapper.queryOrderByTaskIdAndOrderCreateTimeAndStatus(orderPay);
             if (orderBonuses == null || orderBonuses.size() == 0) {
                 throw new BusinessException(String.format(ExceptionEnum.ORDER_BONUS_SUCCESS_NOT_EXISTS.getErrorMessage(), orderPay.getTaskId()));
@@ -111,19 +113,19 @@ public class PayServiceImpl implements PayService {
     }
 
 
-    private void batchOrder(Integer taskId){
+    private void batchOrder(OrderPayVo orderPay){
         //获取所有失效的渠道数据
-        List<ChannelData> channelDatas = channelDataMapper.findAllDataByExistTaskId(taskId);
+        List<ChannelData> channelDatas = channelDataMapper.findAllDataByExistTaskId(orderPay.getTaskId(),orderPay.getOrderCreateDate());
         if(channelDatas != null && channelDatas.size() > 0){
             for(ChannelData channelData:channelDatas){
                 Order order = Order.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID).type(Constants.ORDER_TYPE_3)
-                        .taskId(taskId).status(Constants.ORDER_STATUS_SUCCESS).settlementStatus(Constants.ORDER_STATUS_SUCCESS)
+                        .taskId(orderPay.getTaskId()).status(Constants.ORDER_STATUS_SUCCESS).settlementStatus(Constants.ORDER_STATUS_SUCCESS)
                         .settlementAmount(channelData.getAmount()).uniqueCode(channelData.getUniqueCode()).build();
                 //创建虚拟订单
                 orderMapper.createOrder(order);
                 //创建虚拟用户与虚拟订单关联记录
                 orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID)
-                        .orderId(order.getOrderId()).taskId(taskId).build());
+                        .orderId(order.getOrderId()).taskId(orderPay.getTaskId()).build());
                 //创建虚拟订单分成记录
                 orderBonusMapper.createSimpleOrderBonus(OrderBonus.builder().orderId(order.getOrderId()).bonusAmount(channelData.getAmount())
                         .bonusType(Constants.TASK_VIRTUAL_CUSTOMER).customerId(Constants.VIRTUAL_CUSTOMER_ID).status(Constants.STATUS_VAILD).build());
