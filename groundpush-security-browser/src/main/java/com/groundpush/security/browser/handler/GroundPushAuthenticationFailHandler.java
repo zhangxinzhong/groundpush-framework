@@ -44,6 +44,7 @@ public class GroundPushAuthenticationFailHandler extends SimpleUrlAuthentication
             message = exception.getMessage();
             code = ((ValidateCodeException) exception).getCode();
         }
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(JsonResp.failure(code,message)));
 
