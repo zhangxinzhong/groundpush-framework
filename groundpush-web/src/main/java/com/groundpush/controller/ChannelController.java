@@ -157,6 +157,9 @@ public class ChannelController {
             if (channelList != null && channelList.size() > 0) {
                 resultMap.put("dataList", channelList);
                 resultMap.put("code", "200");
+            }else{
+                resultMap.put("msg", "渠道列表为空！");
+                resultMap.put("code", "500");
             }
         } catch (Exception e) {
             resultMap.put("msg", "获取公司信息列表失败！");
