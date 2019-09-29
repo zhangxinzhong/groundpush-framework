@@ -1,13 +1,13 @@
--- 初始化两个超级管理员  admin、kitty
+-- 初始化两个超级管理员  admin、manager
 insert into t_user(login_no, name, name_pinyin, mobile_no, work_email, status, photo, created_by, created_time, last_modified, last_modified_time) values('admin','admin','admin','13888888888','admin@zhongdi.com',1,null,null,current_timestamp,null,null);
-insert into t_user(login_no, name, name_pinyin, mobile_no, work_email, status, photo, created_by, created_time, last_modified, last_modified_time) values('kitty','kitty','kitty','13999999999','kitty@zhongdi.com',1,null,null,current_timestamp,null,null);
+insert into t_user(login_no, name, name_pinyin, mobile_no, work_email, status, photo, created_by, created_time, last_modified, last_modified_time) values('manager','manager','manager','13999999999','manager@zhongdi.com',1,null,null,current_timestamp,null,null);
 
 -- 添加虚拟用户
 insert into t_customer(parent_id, nick_name, img_uri, status, invite_code, reputation, created_time) values (null,'virtual',null,1,null,null,current_timestamp);
 insert into t_customer_login_account (customer_id, login_no, name, password, type, created_time) values (1,'virtual',13333333333,null,1,current_timestamp);
 insert into t_customer_account(customer_id,created_time) values (1,current_timestamp);
 
--- 添加admin、kitty 相关密码账户信息
+-- 添加admin、manager 相关密码账户信息
 insert into t_user_account(user_id, password, status, password_error_count, history_password, last_login_time, unlock_time, created_time, last_modified_time)values (1,'$2a$10$XK3KZVZ7jnOWEelQ4k7KMuANHn8.7Pxk43xXwkKwpzANnZ3U2cMzC',0,0,null,null,null,null,null);
 insert into t_user_account(user_id, password, status, password_error_count, history_password, last_login_time, unlock_time, created_time, last_modified_time)values (2,'$2a$10$YBRQ5001G0gGZ0BQluB61eCmJx.s1.qFFFLfamceWNZEGaC3Pg7pO',0,0,null,null,null,null,null);
 
