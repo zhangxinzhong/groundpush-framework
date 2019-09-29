@@ -46,7 +46,7 @@ public class MeController {
             if (customerDetailOptional.isPresent()) {
                 return JsonResp.success(customerDetailOptional.get());
             }
-            throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getClass().toString());
+            throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorMessage());
 
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
