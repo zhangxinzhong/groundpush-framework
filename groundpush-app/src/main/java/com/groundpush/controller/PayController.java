@@ -3,6 +3,7 @@ package com.groundpush.controller;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.CashOutLog;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.pay.model.AliPayResponse;
 import com.groundpush.service.CashOutLogService;
 import com.groundpush.service.CustomerAccountService;
@@ -36,13 +37,13 @@ public class PayController {
 
     @PostMapping
     public JsonResp pay(@Valid @RequestBody PayVo pay, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
         Optional<AliPayResponse> aliPayResponseOptional = customerAccountService.pay(pay);
-        if(aliPayResponseOptional.isPresent()){
+        if (aliPayResponseOptional.isPresent()) {
             AliPayResponse aliPayResponse = aliPayResponseOptional.get();
-            cashOutLogService.updateCashOutLogByOutBizNo(CashOutLog.builder().OrderId(aliPayResponse.getOrderId()).outBizNo(aliPayResponse.getOutBizNo()).payDate(aliPayResponse.getPayDate()).build());
+            cashOutLogService.updateCashOutLogByOutBizNo(CashOutLog.builder().amount(pay.getAmount()).customerId(pay.getCustomerId()).type(pay.getPayType()).OrderId(aliPayResponse.getOrderId()).outBizNo(aliPayResponse.getOutBizNo()).payDate(aliPayResponse.getPayDate()).build());
         }
         return JsonResp.success();
 

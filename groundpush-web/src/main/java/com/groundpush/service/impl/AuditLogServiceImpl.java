@@ -41,7 +41,7 @@ public class AuditLogServiceImpl implements AuditLogService {
     @Override
     public void addAuditLog(AuditLog auditLog){
         auditLogMapper.createAuditLog(auditLog);
-        List<AuditLog> list = auditLogMapper.getAuditListByTaskIdAndTime(auditLog.getTaskId(),auditLog.getOrderTime());
+        List<AuditLog> list = auditLogMapper.getAuditListByTaskIdAndTime(auditLog.getTaskId(),dateUtils.localDateTimetransToString(auditLog.getOrderTime(),"yyyy-MM-dd"));
         //为0不操作
         int isUpdate = 0;
         if(list != null && list.size() > 0){
@@ -62,14 +62,14 @@ public class AuditLogServiceImpl implements AuditLogService {
                 //通过审核数大于等于2时表示审核通过 小于2表示审核中
                 isUpdate = num >= 2?Constants.ORDER_STATUS_SUCCESS:Constants.ORDER_STATUS_REVIEW;
             }
-            orderMapper.updateOrderStatusByTaskIdAndTime(isUpdate,auditLog.getOrderTime(),auditLog.getTaskId());
+            orderMapper.updateOrderStatusByTaskIdAndTime(isUpdate,dateUtils.localDateTimetransToString(auditLog.getOrderTime(),"yyyy-MM-dd"),auditLog.getTaskId());
         }
 
     }
 
     @Override
     public Boolean isAuditPass(Integer taskId, LocalDateTime orderTime){
-        List<AuditLog> list = auditLogMapper.getAuditPassList(taskId,orderTime);
+        List<AuditLog> list = auditLogMapper.getAuditPassList(taskId,dateUtils.localDateTimetransToString(orderTime,"yyyy-MM-dd"));
         return list != null && list.size() >= 2?true:false;
     }
 

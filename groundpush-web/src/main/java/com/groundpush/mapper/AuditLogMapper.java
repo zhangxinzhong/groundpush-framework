@@ -22,11 +22,11 @@ public interface AuditLogMapper {
    @Select({
            "<script>",
            " select  ",
-           " concat(d.task_id,'_',d.created_time) task_id_time,",
            " d.company_name,",
            " d.task_id,",
            " d.title,",
            " d.created_time,",
+           " sum(d.has_pay) has_pay,",
            " count(d.order_id) order_count,",
            " ifnull(sum(d.settlement_amount),0) order_amount, ",
            " sum(d.success_order) success_order,",
@@ -40,6 +40,7 @@ public interface AuditLogMapper {
            "       b.title,",
            "       a.order_id,",
            "       c.settlement_amount,",
+           "       if(c.status = 5,1,0) has_pay,",
            "       if(c.settlement_status = 1,1,0) success_order,",
            "       if(c.settlement_status = 1,ifnull(c.settlement_amount,0),0) success_amount,",
            "       if(c.settlement_status &lt;&gt; 1,1,0) fail_order, ",
@@ -52,7 +53,7 @@ public interface AuditLogMapper {
            "    left join t_channel e on b.source = e.channel_id",
            "    where c.order_id is not null",
            "  ) d",
-           "    where not exists (select  concat(f.task_id,'_',f.order_time)  from t_audit_log f where f.user_id = #{userId}) ",
+           "    where concat(d.task_id,'_',d.created_time) not in (select  concat(f.task_id,'_',date_format(f.order_time, '%Y-%m-%d')) task_id_time  from t_audit_log f where f.user_id = #{userId}) ",
            "    group by",
            "    d.task_id,d.created_time ",
            "    order by d.created_time desc ",
@@ -89,7 +90,7 @@ public interface AuditLogMapper {
     * @return
     */
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') and audit_status = 1 ")
-   List<AuditLog> getAuditPassList(@Param("taskId") Integer taskId,@Param("orderTime") LocalDateTime orderTime);
+   List<AuditLog> getAuditPassList(@Param("taskId") Integer taskId,@Param("orderTime") String orderTime);
 
    /**
     *  通过任务id和订单时间获取订单记录
@@ -98,5 +99,5 @@ public interface AuditLogMapper {
     * @return
     */
    @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ")
-   List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") LocalDateTime orderTime);
+   List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") String orderTime);
 }

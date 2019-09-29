@@ -94,4 +94,15 @@ public class DateUtils {
     }
 
 
+
+
+    /**
+     * 日期转字符串格式 yyyy-MM-dd HH:mm:ss
+     * @param dateTime
+     * @return
+     */
+    public String localDateTimetransToString(LocalDateTime dateTime,String format){
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(format);
+        return df.format(dateTime);
+    }
 }

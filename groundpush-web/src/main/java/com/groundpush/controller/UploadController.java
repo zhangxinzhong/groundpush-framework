@@ -1,19 +1,14 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.core.model.Task;
-import com.groundpush.core.utils.OSSUnit;
+import com.groundpush.core.utils.OssUtils;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +25,9 @@ import java.util.Map;
 @Controller
 public class UploadController {
 
+    @Resource
+    private OssUtils ossUtils;
+
     /**
      * 上传
      */
@@ -43,7 +41,7 @@ public class UploadController {
             Map<String,Object> fileMap = new HashMap<String, Object>();
             // 获取文件并上传
             if (file != null && file.getSize() > 0) {
-                fileMap = OSSUnit.upload(file);
+                fileMap = ossUtils.upload(file);
             }
             return JsonResp.success(fileMap);
         } catch (Exception e) {

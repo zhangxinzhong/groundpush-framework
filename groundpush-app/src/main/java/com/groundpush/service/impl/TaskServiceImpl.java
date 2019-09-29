@@ -166,7 +166,7 @@ public class TaskServiceImpl implements TaskService {
         for (Task task : list) {
             BigDecimal amount = task.getAmount();
             task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
-            task.setSurNumber(String.valueOf((task.getSpreadTotal() / task.getHandlerNum()) - Integer.valueOf(task.getTaskPerson())));
+            task.setSurNumber(String.valueOf(task.getSpreadTotal() - Integer.valueOf(task.getTaskPerson())));
         }
         return list;
     }

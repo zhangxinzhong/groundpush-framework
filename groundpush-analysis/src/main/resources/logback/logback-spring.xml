@@ -5,11 +5,11 @@
 <!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
 <configuration scan="true" scanPeriod="10 seconds">
     <!--设置系统日志目录-->
-    <property name="LOG_PATH" value="/var/log/web"/>
+    <property name="LOG_PATH" value="/var/log/analysis"/>
     <!-- 获取应用启动端口号-->
     <springProperty scope="context" name="WEB_PORT" source="server.port"/>
     <!-- 设置应用名称-->
-    <property name="APP_NAME" value="groundpush-web"/>
+    <property name="APP_NAME" value="groundpush-analysis"/>
 
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->

@@ -18,7 +18,7 @@ public interface OrderBonusMapper {
      *创建订单分红
      * @param orderBonus
      */
-    @Insert(" insert into t_order_bonus (order_id, customer_id, customer_bonus, bonus_type, status, created_time) values (#{orderId},#{customerId},#{customerBonus},#{bonusType},#{status},current_timestamp) ")
+    @Insert(" insert into t_order_bonus (order_id, customer_id, bonus_amount, bonus_type, status, created_time) values (#{orderId},#{customerId},#{bonusAmount},#{bonusType},#{status},current_timestamp) ")
     void createSimpleOrderBonus(OrderBonus orderBonus);
 
     /**
@@ -27,9 +27,9 @@ public interface OrderBonusMapper {
      */
     @Insert({
         "<script>",
-            " insert into t_order_bonus (order_id, customer_id, customer_bonus, bonus_type, status, created_time) values ",
+            " insert into t_order_bonus (order_id, customer_id, bonus_amount, bonus_type, status, created_time) values ",
             "<foreach collection='list' item='orderBonuse' open='(' close=')' separator='),('>",
-                "#{orderBonuse.orderId},#{orderBonuse.customerId},#{orderBonuse.customerBonus},#{orderBonuse.bonusType},2,current_timestamp",
+                "#{orderBonuse.orderId},#{orderBonuse.customerId},#{orderBonuse.bonusAmount},#{orderBonuse.bonusType},2,current_timestamp",
             "</foreach>",
         "</script>"
     })

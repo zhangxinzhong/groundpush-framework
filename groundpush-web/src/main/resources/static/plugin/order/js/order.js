@@ -49,7 +49,7 @@ layui.use('table', function () {
                             }
                        }
                     , {field: 'nickName', title: '客户', width: 100}
-                    , {field: 'customerBonus', title: '订单分成', width: 100}
+                    , {field: 'bonusAmount', title: '订单分成', width: 100}
                     , {field: '', title: '订单分成类型', width: 150,
                           templet: function(d){
                                return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导');

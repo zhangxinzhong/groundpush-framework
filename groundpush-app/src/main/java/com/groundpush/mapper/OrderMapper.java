@@ -25,7 +25,7 @@ public interface OrderMapper {
      * @param orderId
      * @return
      */
-    @Select(" select * from t_order where order_id=#{orderId} ")
+    @Select(" select a.*,b.task_id from t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id where order_id=#{orderId} ")
     Optional<Order> getOrder(@Param("orderId") Integer orderId);
 
     /**
@@ -186,7 +186,7 @@ public interface OrderMapper {
     @Select({
             "<script>",
             " SELECT ",
-            " a.* ",
+            " a.*,b.task_id ",
             " FROM ",
             " t_order a ",
             " LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id ",
@@ -205,4 +205,7 @@ public interface OrderMapper {
      */
     @Select(" select o.* from t_order_task_customer otc inner join t_task t on t.task_id=otc.task_id inner join t_order o on o.order_id = otc.order_id where otc.task_id=${taskId} and o.type=${customerId} and o.unique_code is null ")
     List<Order> queryUnResultOrderByTaskIdAndCustomerId(@Param("taskId") Integer taskId, @Param("customerId") Integer customerId);
+
+    @Select(" select a.* from t_order a left join t_order_task_customer b on a.order_id= b.order_id where  a.unique_code = #{uniqueCode} and b.task_id = #{taskId}  and DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ")
+    List<Order>  findOrderByUnqiuCode(OrderUpdateCondition condition);
 }

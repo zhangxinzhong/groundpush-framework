@@ -54,7 +54,7 @@ public class PayVo implements Serializable {
     /**
      * 支付宝转账单据号，成功一定返回，失败可能不返回也可能返回。
      */
-    private String OrderId;
+    private String Id;
 
     /**
      * 支付时间：格式为yyyy-MM-dd HH:mm:ss，仅转账成功返回。

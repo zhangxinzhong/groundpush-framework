@@ -36,7 +36,7 @@ public class OrderBonus {
     /**
      * 客户分成
      */
-    private BigDecimal customerBonus;
+    private BigDecimal bonusAmount;
 
     /**
      * 分成类型：完成人、推广人、团队领导
@@ -52,4 +52,9 @@ public class OrderBonus {
      * 创建时间
      */
     private LocalDateTime createdTime;
+
+    /**
+     * 推广人id
+     */
+    private Integer bonusCustomerId;
 }

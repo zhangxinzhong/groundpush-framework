@@ -43,21 +43,21 @@ public interface CustomerMapper {
             " <if test='imgUri != null'> c.img_uri =#{imgUri},  </if> ",
             " <if test='nickName != null'> c.nick_name =#{nickName},  </if> ",
             " <if test='parentId != null'> c.parent_id =#{parentId},  </if> ",
-            " <if test='inviteCode != null'> c.invite_code =#{inviteCode},  </if> ",
+            " <if test='inviteCode != null and inviteCode != \"\"'> c.invite_code =#{inviteCode},  </if> ",
             " c.last_modified_time= current_timestamp where c.customer_id=#{customerId} ",
             "</script>"
     })
     void updateCustomer(CustomerVo customer);
 
     @Update(" update  t_customer c set  c.invite_code =#{inviteCode},c.last_modified_time= current_timestamp where c.customer_id=#{customerId} ")
-    void updateCustomerInviteCode(String inviteCode,Integer customerId);
+    void updateCustomerInviteCode(@Param("inviteCode") String inviteCode,@Param("customerId") Integer customerId);
 
     /**
      * 分页查询客户邀请列表
      * @param customerQueryCondition
      * @return
      */
-    @Select(" select * from t_customer c where c.parent_id=#{customerId} ")
+    @Select(" select c.*,ifnull((select d.bonus_amount from t_order_bonus  d where b.order_id = d.order_id and d.customer_id=b.bonus_customer_id),0) bonus_amount  from t_customer c left join t_order_bonus b on c.customer_id = b.customer_id and b.bonus_customer_id = c.parent_id where c.parent_id =#{customerId} ")
     Page<Customer> queryCustomer(CustomerQueryCondition customerQueryCondition);
 
     /**

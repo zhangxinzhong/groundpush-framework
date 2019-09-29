@@ -95,8 +95,11 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
                     throw new BusinessException(ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorCode(), ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorMessage());
                 }
                 customerVo.setParentId(parentCustomer.get().getCustomerId());
+                customerMapper.updateCustomer(customerVo);
+            }else{
+                throw new BusinessException(ExceptionEnum.CUSTOMER_NULL_INVITE.getErrorCode(), ExceptionEnum.CUSTOMER_NULL_INVITE.getErrorMessage());
             }
-            customerMapper.updateCustomer(customerVo);
+
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
             throw e;

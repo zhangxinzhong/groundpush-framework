@@ -40,7 +40,7 @@ public class CashOutLog implements Serializable {
     private BigDecimal amount;
 
     /**
-     * 提现渠道
+     * 提现渠道 2微信  3支付宝
      */
     private Integer type;
 

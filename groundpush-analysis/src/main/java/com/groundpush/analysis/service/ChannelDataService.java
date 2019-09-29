@@ -48,4 +48,6 @@ public interface ChannelDataService {
      * @return
      */
     Optional<ChannelData> getChannelDataByUniqueCode(ChannelDataQueryCondition build);
+
+    void addOrder(Order build);
 }

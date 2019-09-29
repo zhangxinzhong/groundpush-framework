@@ -319,4 +319,15 @@ public class Constants {
      * 用于channeldata是否存在订单 isExistOrder true:是
      */
     public static final Boolean CHANNEL_DATA_VAILD = true;
+
+
+    /**
+     * 支付类型  微信
+     */
+    public static final Integer PAY_TYPE_WEIXIN = 2;
+
+    /**
+     * 支付类型  微信
+     */
+    public static final Integer PAY_TYPE_ALIPAY = 3;
 }

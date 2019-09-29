@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -34,7 +35,7 @@ public class TaskOrderList implements Serializable {
     private String title;
 
     @ApiModelProperty("订单创建时间")
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     @ApiModelProperty("订单总数")
     private Integer orderCount;
@@ -54,6 +55,7 @@ public class TaskOrderList implements Serializable {
     @ApiModelProperty("失效订单总金额")
     private BigDecimal  failAmount;
 
-
+    @ApiModelProperty("是否已支付 大于0 则为未支付个数")
+    private Integer hasPay;
 
 }
