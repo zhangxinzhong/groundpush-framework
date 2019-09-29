@@ -24,7 +24,7 @@ layui.use(['form', 'layedit', 'laydate'], function () {
                 window.location = "/home";
             }
         }, function (rep) {
-            layer.msg(rep.data);
+            layer.msg(rep.message);
             eventListener.reloadImgCode();
         });
         return false;
