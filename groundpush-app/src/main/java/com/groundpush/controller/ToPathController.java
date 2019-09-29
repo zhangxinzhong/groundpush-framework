@@ -7,7 +7,9 @@ import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskUri;
 import com.groundpush.core.utils.*;
 import com.groundpush.service.OrderService;
+import com.groundpush.service.TaskService;
 import com.groundpush.service.TaskUriService;
+import com.groundpush.vo.TaskPopCountVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +49,9 @@ public class ToPathController {
     private TaskUriService taskUriService;
 
     @Resource
+    private TaskService taskService;
+
+    @Resource
     private UniqueCode uniqueCode;
 
 
@@ -61,6 +66,19 @@ public class ToPathController {
         String key = aesUtils.dcodes(toPathCondition.getKey(), Constants.APP_AES_KEY);
         String obj = (String) redisUtils.get(key);
         if (stringUtils.isNotBlank(obj) && obj.equals(key)) {
+
+            //获取每日推广剩余次数 每人每日推广剩余次数
+            Optional<TaskPopCountVo>  optional = taskService.getSupTotalOrCustomCount(toPathCondition.getCustomId(), toPathCondition.getTaskId());
+            if(optional.isPresent()){
+              Integer supCustom = optional.get().getSupCustom();
+              Integer supTotal = optional.get().getSupTotal();
+              if(supCustom <= Constants.ZROE.intValue() || supTotal <= Constants.ZROE.intValue()){
+                  log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}",supTotal,supCustom);
+                  model.addAttribute("errorMsg", "今日推广次数已达上限!");
+                  return "page";
+              }
+            }
+
             Optional<TaskUri> taskUriOptional = taskUriService.queryValidTaskUriByTaskId(toPathCondition.getTaskId());
             if (taskUriOptional.isPresent()) {
                 model.addAttribute("uri", taskUriOptional.get().getUri());

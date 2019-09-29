@@ -3,6 +3,7 @@ package com.groundpush.service;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
+import com.groundpush.vo.TaskPopCountVo;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
@@ -46,4 +47,10 @@ public interface TaskService {
      * @return
      */
     public Page<Task> addCount(Page<Task> list);
+
+
+    /**
+     * 获取每日剩余总数 每人每日剩余总数
+     */
+    public Optional<TaskPopCountVo>  getSupTotalOrCustomCount(Integer customerId, Integer taskId);
 }

@@ -330,4 +330,9 @@ public class Constants {
      * 支付类型  微信
      */
     public static final Integer PAY_TYPE_ALIPAY = 3;
+
+    /**
+     * 用于比较
+     */
+    public static final Integer ZROE = 0;
 }

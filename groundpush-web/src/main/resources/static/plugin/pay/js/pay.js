@@ -163,7 +163,7 @@ layui.use('table', function () {
             layer.confirm('确认支付么', function (index) {
                 let dates = {};
                 dates.taskId = data.taskId;
-                dates.orderCreateDate = data.createdTime;
+                dates.orderCreateDate = layui.util.toDateString(data.createdTime, "yyyy-MM-dd HH:mm:ss");
                 eventListener.confirmPay(dates);
                 layer.close(index);
             });

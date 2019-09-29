@@ -15,6 +15,7 @@ import com.groundpush.mapper.TaskMapper;
 import com.groundpush.service.OrderService;
 import com.groundpush.service.TaskAttributeService;
 import com.groundpush.service.TaskService;
+import com.groundpush.vo.TaskPopCountVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -170,4 +171,10 @@ public class TaskServiceImpl implements TaskService {
         }
         return list;
     }
+
+    @Override
+    public Optional<TaskPopCountVo>  getSupTotalOrCustomCount(Integer customerId,Integer taskId){
+        return taskMapper.getSupTotalOrCustomCount(customerId,taskId);
+    }
+
 }

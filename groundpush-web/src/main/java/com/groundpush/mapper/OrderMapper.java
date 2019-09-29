@@ -184,6 +184,7 @@ public interface OrderMapper {
             " left join t_order_bonus b on a.order_id = b.order_id",
             " left join t_customer c on b.customer_id = c.customer_id",
             " <if test='key != null'> where  a.order_no like '%${key}%' or  c.nick_name like '%${key}%' </if>",
+            " order by a.created_time desc ",
             "</script>"
     })
     Page<Order> queryOrderByKeys(@Param("key") String key);

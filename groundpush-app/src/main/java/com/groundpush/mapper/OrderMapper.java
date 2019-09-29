@@ -25,7 +25,7 @@ public interface OrderMapper {
      * @param orderId
      * @return
      */
-    @Select(" select a.*,b.task_id from t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id where order_id=#{orderId} ")
+    @Select(" select a.*,b.task_id from t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id where a.order_id=#{orderId} ")
     Optional<Order> getOrder(@Param("orderId") Integer orderId);
 
     /**
@@ -50,6 +50,7 @@ public interface OrderMapper {
             " where otc.customer_id = #{customerId}",
             " <if test='status != null'> and o.status =#{status}  </if> ",
             " <if test='selectTime != null'> and date_format(o.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(o.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
+            " order by o.created_time desc",
             "</script>"
     })
     Page<Order> queryOrder(OrderQueryCondition order);
@@ -157,12 +158,12 @@ public interface OrderMapper {
     @Select({
             "<script>",
             " SELECT ",
+            " DISTINCT",
             " b.task_id,",
-            " c.brief_title,",
-            " (SELECT c.title FROM t_task c WHERE c.task_id = b.task_id) title",
-            " FROM t_order_task_customer b LEFT JOIN t_order d ON b.order_id = d.order_id",
-            " LEFT JOIN t_task c ON b.task_id = c.task_id ",
-            " WHERE b.customer_id = #{customerId} AND d.type = 2 ",
+            " b.brief_title,",
+            " ( SELECT c.title FROM t_task c WHERE c.task_id = b.task_id ) title ",
+            " FROM t_task b LEFT JOIN t_order_task_customer c ON b.task_id = c.task_id LEFT JOIN t_order d ON c.order_id = d.order_id ",
+            " WHERE c.customer_id = #{customerId} AND d.type = 2 ",
             "</script>"
     })
     Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId);

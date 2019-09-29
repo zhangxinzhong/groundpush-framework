@@ -1,5 +1,6 @@
 package com.groundpush.core.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -24,21 +25,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CustomerAccount {
 
+    @JsonView(Customer.DetailCustomerView.class)
     private Integer customerLoginAccountId;
 
     /**
      * 客户编号
      */
     @ApiModelProperty(value = "客户编号")
+    @JsonView(Customer.DetailCustomerView.class)
     private Integer customerId;
 
     /**
      * 账号金额
      */
     @ApiModelProperty(value = "账号公分")
+    @JsonView(Customer.DetailCustomerView.class)
     private BigDecimal amount;
 
+    @JsonView(Customer.DetailCustomerView.class)
     private LocalDateTime createdTime;
 
+    @JsonView(Customer.DetailCustomerView.class)
     private LocalDateTime lastModifiedTime;
 }

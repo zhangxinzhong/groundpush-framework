@@ -3,6 +3,7 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
+import com.groundpush.vo.TaskPopCountVo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Optional;
@@ -98,4 +99,15 @@ public interface TaskMapper {
      */
     @Select(" select * from t_task t where t.task_id=#{taskId}  ")
     Optional<Task> getTask(@Param("taskId") Integer taskId);
+
+
+    @Select({"<script>",
+            " select ",
+            " a.spread_total-(select count(1) from t_order_task_customer b left join t_order c on b.order_id = c.order_id where a.task_id = b.task_id and c.type = 2 AND DATE_FORMAT(c.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) sup_total, ",
+            " a.handler_num-(select count(1) from t_order_task_customer b left join t_order c on b.order_id = c.order_id where a.task_id = b.task_id and c.type = 2 and b.customer_id = #{customerId} AND DATE_FORMAT(c.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) sup_custom ",
+            " from t_task a where a.task_id = #{taskId} ",
+            "</script>"
+    })
+    Optional<TaskPopCountVo> getSupTotalOrCustomCount(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
+
 }

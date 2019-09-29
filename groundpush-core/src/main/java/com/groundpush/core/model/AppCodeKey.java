@@ -24,4 +24,6 @@ public class AppCodeKey {
     @ApiModelProperty("Key值")
     private String Key;
 
+
+
 }

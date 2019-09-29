@@ -48,6 +48,10 @@ public class GetKeyController {
         if(stringUtils.isNotBlank(key)){
             redisUtils.set(key,key,dateUtils.getIntervalSecond());
         }
+
+        //todo 添加每日推广任务总数	单人每日可做任务数
+
+
         log.info("生成二维码扫描跳转key：{}",key);
         return JsonResp.success(new AppCodeKey(aesUtils.ecodes(key,Constants.APP_AES_KEY)));
     }
