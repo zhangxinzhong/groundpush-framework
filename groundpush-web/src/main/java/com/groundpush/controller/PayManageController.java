@@ -40,7 +40,7 @@ public class PayManageController {
     private AuditLogService auditLogService;
 
     @PostMapping
-    public JsonResp pay(@Valid OrderPayVo orderPay, BindingResult bindingResult) {
+    public JsonResp pay(@Valid @RequestBody OrderPayVo orderPay, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }

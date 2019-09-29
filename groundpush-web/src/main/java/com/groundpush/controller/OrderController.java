@@ -5,7 +5,9 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.OrderBonus;
 import com.groundpush.core.model.PageResult;
+import com.groundpush.service.OrderBonusService;
 import com.groundpush.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,8 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private OrderBonusService orderBonusService;
 
     @ApiOperation(value = "跳转订单管理")
     @GetMapping("toOrder")
@@ -80,5 +84,19 @@ public class OrderController {
             throw e;
         }
     }
+
+    @ApiOperation(value = "查询所有订单分成")
+    @GetMapping("/queryOrderBonus")
+    @ResponseBody
+    public JsonResp queryOrderBonus(@RequestParam(value = "orderId") Integer orderId) {
+        try {
+            List<OrderBonus> orderBonus = orderBonusService.findOrderBonusByOrder(orderId);
+            return JsonResp.success(orderBonus);
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
+
 
 }

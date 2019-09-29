@@ -82,10 +82,19 @@ layui.use('table', function () {
                    "orderTime":layui.util.toDateString(data.createdTime, "yyyy-MM-dd HH:mm:ss")
              });
         }
+        ,confirmPay:function (data) {
+            Utils.postAjax("/payManage",JSON.stringify(data),function(rep) {
+                if(rep.code =='200'){
+                    layer.msg('确认支付成功！');
+                }
+            },function (rep) {
+                layer.msg(rep.message);
+            });
+        }
         ,showViewOrderList:function(data) {
                  table.render({
                                  elem: '#view'
-                                 , url: '/payManage/queryOrderList'
+                                 , url: '/payManage/queryOrderBonus'
                                  , toolbar: true
                                  , title: 'view-data'
                                  , totalRow: true
@@ -151,6 +160,13 @@ layui.use('table', function () {
             eventListener.showAuditLog(data);
         } else if (obj.event === 'payment') {
             //确认付款逻辑
+            layer.confirm('确认支付么', function (index) {
+                let dates = {};
+                dates.taskId = data.taskId;
+                dates.orderCreateDate = data.createdTime;
+                eventListener.confirmPay(dates);
+                layer.close(index);
+            });
         }
     });
 

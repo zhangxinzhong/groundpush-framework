@@ -51,4 +51,8 @@ public interface OrderBonusMapper {
      */
     @Select(" select ob.* from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id inner join t_order_bonus ob on ob.order_id = o.order_id where otc.task_id=#{taskId} and o.created_time between ${startDateTime} and ${endDateTime}  and o.status=#{orderStatus} and o.settlement_status=#{orderStatus} ")
     List<OrderBonus> queryOrderByTaskIdAndOrderCreateTimeAndStatus(OrderPayVo orderPay);
+
+    @Select(" select a.bonus_id,a.order_id,(select c.login_no from t_customer_login_account c where c.customer_id = a.customer_id) customer_login_no,a.bonus_amount,a.bonus_type,a.status,a.created_time,(select c.login_no from t_customer_login_account c where c.customer_id = a.bonus_customer_id) bonus_customer_login_no from t_order_bonus a left join t_customer b on a.customer_id = b.customer_id  where a.order_id = #{orderId} ")
+    List<OrderBonus> findOrderBonusByOrder(@Param("orderId") Integer orderId);
+
 }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPayVo {
+public class OrderPayVo  implements Serializable {
 
     @NotNull(message = "任务编号不可为空")
     private Integer taskId;
@@ -31,8 +32,8 @@ public class OrderPayVo {
      * 订单创建时间
      *  因任务可以永不过期，使用时间来标识哪天的任务订单
      */
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "支付订单时间不可为空")
     private LocalDateTime orderCreateDate;
 

@@ -57,4 +57,15 @@ public class OrderBonus {
      * 推广人id
      */
     private Integer bonusCustomerId;
+
+    //*************非数据库字段**************************
+    /**
+     * 客户登录名
+     */
+    private String   customerLoginNo;
+
+    /**
+     * 推广人登录名
+     */
+    private String   bonusCustomerLoginNo;
 }

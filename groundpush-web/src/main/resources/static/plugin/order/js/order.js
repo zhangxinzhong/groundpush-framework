@@ -26,7 +26,11 @@ layui.use('table', function () {
                 , totalRow: true
                 , cols: [[
                       {field: 'orderId', title: 'ID', width: 80, sort: true}
-                    , {field: 'orderNo', title: '订单编号', width: 300}
+                    , {field: '', title: '订单编号', width: 300,
+                        templet: function(d){
+                            return  '<a class="layui-table-link" lay-event="viewOrderBonusList">' + d.orderNo + "</a>";
+                        }
+                      }
                     , {field: 'channelUri', title: '渠道URI', width: 260}
                     , {field: 'status', title: '订单状态', width: 100,
                           templet: function(d){
@@ -105,13 +109,48 @@ layui.use('table', function () {
                    "status": data.status
              });
         }
+        ,showOrderBonusList:function (data) {
+            table.render({
+                elem: '#orderBonus'
+                , url: '/payManage/queryOrderList'
+                , toolbar: true
+                , title: 'orderBonus-data'
+                , totalRow: true
+                , where:{'orderId':data.orderId}
+                , cols: [[
+                      {field: 'bonusId', title: 'ID', width: 180, sort: true}
+                    , {field: 'customerLoginNo', title: '客户', width: 280}
+                    , {field: 'bonusCustomerLoginNo', title: '推广人', width: 100}
+                    , {field: 'bonusAmount', title: '客户分成金额', width: 100}
+                    , {field: '', title: '订单分成类型', width: 150,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
+                    , {field: 'createdTime', title: '订单创建时间', width: 180,templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                ]]
+                , response:
+                    {
+                        statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                    }
+                ,
+                parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    if(!Utils.isEmpty(res)){
+                        return {
+                            "code": res.code, //解析接口状态
+                            "msg": res.message, //解析提示文本
+                            "count": res.data.total, //解析数据长度
+                            "data": res.data.rows //解析数据列表
+                        };
+                    }
+                }
+            });
+        }
         ,showEditOrderDialog: function(){
             $('#editOrderDialog').modal('show');
         }
         ,hideEditOrderDialog: function(){
             $('#editOrderDialog').modal('hide');
         }
-
+        ,showOrderBonusDialog: function(){
+            $('#showOrderBonusModal').modal('show');
+        }
     };
 
     eventListener.initTable();
@@ -120,6 +159,9 @@ layui.use('table', function () {
         if (obj.event === 'edit') {
             eventListener.showEditOrderDialog();
             eventListener.showEditOrder(data);
+        }else if(obj.event === 'viewOrderBonusList'){
+            eventListener.showOrderBonusDialog();
+            eventListener.showOrderBonusList(data);
         }
     });
 
