@@ -137,6 +137,9 @@ public class LabelController {
             if(labelList!=null && labelList.size()>0){
                 resultMap.put("dataList",labelList);
                 resultMap.put("code","200");
+            }else{
+                resultMap.put("msg", "标签列表为空！");
+                resultMap.put("code", "500");
             }
         } catch (Exception e) {
             resultMap.put("code","500");
