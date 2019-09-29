@@ -76,7 +76,7 @@ public interface ChannelMapper {
      * @param mapping
      * @return
      */
-    @Insert("insert into t_channel_excel(channel_id,task_id,file_name,mapping) values(#{channelId},#{taskId},#{fileName},#{mapping})")
+    @Insert("insert into t_channel_excel(channel_id,task_id,file_name,mapping,create_time,is_use) values(#{channelId},#{taskId},#{fileName},#{mapping},current_timestamp,0)")
     Integer addChannelData(@Param("channelId") Integer channelId,@Param("taskId") Integer taskId, @Param("fileName")String fileName, @Param("mapping")String mapping);
 
     /**
