@@ -471,7 +471,11 @@
                         $("#ownerRatio").val(dataMsg.ownerRatio);
                         $("#spreadRatio").val(dataMsg.spreadRatio);
                         $("#leaderRatio").val(dataMsg.leaderRatio);
-                        $("#isResult").val(dataMsg.isResult);
+                        if(dataMsg.isResult == true){
+                            $("#isResult").val("true");
+                        }else{
+                            $("#isResult").val("false");
+                        }
                         //回显标签
                         labelLoad(dataMsg.labelIds);
                         //加载省份内容
