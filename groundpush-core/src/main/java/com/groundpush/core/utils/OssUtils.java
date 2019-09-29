@@ -5,14 +5,12 @@ import com.aliyun.oss.model.Bucket;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,32 +20,58 @@ import java.util.Map;
  * @author: hengquan
  * @date: 13:44 2019/9/16
  */
+@Slf4j
 @Component
-public class OSSUnit {
+public class OssUtils {
 
-    // log
-    private static final Logger LOG = LoggerFactory.getLogger(OSSUnit.class);
+    /**
+     * 阿里云API的内或外网域名
+     */
+    @Value("${alioss.endPoint:http://oss-cn-beijing.aliyuncs.com}")
+    private String endPoint;
 
-    // 阿里云API的内或外网域名
-    private static String ENDPOINT = "http://oss-cn-beijing.aliyuncs.com";
-    // 阿里云API的密钥Access Key ID
-    private static String ACCESS_KEY_ID = "LTAIekWUSZn0tkPG";
-    // 阿里云API的密钥Access Key Secret
-    private static String ACCESS_KEY_SECRET = "H1T3AMxIO4qwtgxMjFUlLcj4HFANAA";
-    public static String HTTP_KEY = "unimedia-test.oss-cn-beijing.aliyuncs.com";
-    // 容器名称
-    public static String BUCKET_NAME = "unimedia-test";
-    // 图片存储的根路径
-    public static String ROOT_DIR = "push/";
-    // 访问路径
-    public static String BASE_URL = "http://test.unimedia.net.cn/";
+    /**
+     * 阿里云API的密钥Access Key ID
+     */
+    @Value("${alioss.accessKey:LTAIyw1HJvsdPYoG}")
+    private String accessKey;
+
+    /**
+     * 阿里云API的密钥Access Key Secret
+     */
+    @Value("${alioss.accessKeySecret:HkqNNVA9d51UIRFL06LAE29J3io4c4}")
+    private String accessKeySecret;
+
+    /**
+     * http key
+     */
+    @Value("${alioss.httpKey:groundpush.oss-cn-beijing.aliyuncs.com}")
+    private String httpKey;
+
+    /**
+     * 容器名称
+     */
+    @Value("${alioss.bucketName:groundpush}")
+    private String bucketName;
+
+    /**
+     * 图片存储的根路径
+     */
+    @Value("${alioss.rootDir:groundpush/}")
+    private String rootDir;
+
+    /**
+     * 访问路径
+     */
+    @Value("${alioss.baseUrl:http://oss.zhongdi001.com/}")
+    private String baseUrl;
 
 
     /**
      * 获取阿里云OSS客户端对象
      */
-    public static final OSSClient getOSSClient() {
-        return new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+    public final OSSClient getOSSClient() {
+        return new OSSClient(endPoint, accessKey, accessKeySecret);
     }
 
     /**
@@ -56,7 +80,7 @@ public class OSSUnit {
      * @param bucketName bucket名称
      * @return true 新建Bucket成功
      */
-    public static final boolean createBucket(OSSClient client, String bucketName) {
+    public final boolean createBucket(OSSClient client, String bucketName) {
         Bucket bucket = client.createBucket(bucketName);
         return bucketName.equals(bucket.getName());
     }
@@ -66,9 +90,9 @@ public class OSSUnit {
      *
      * @param bucketName bucket名称
      */
-    public static final void deleteBucket(OSSClient client, String bucketName) {
+    public final void deleteBucket(OSSClient client, String bucketName) {
         client.deleteBucket(bucketName);
-        LOG.info("删除" + bucketName + "Bucket成功");
+        log.info("删除" + bucketName + "Bucket成功");
     }
 
     /**
@@ -80,7 +104,7 @@ public class OSSUnit {
      * @param diskName   上传文件的目录 --bucket下文件的路径
      * @return String 唯一MD5数字签名
      */
-    public static final String uploadObject2OSS(OSSClient client, File file, String bucketName, String diskName) {
+    public final String uploadObject2OSS(OSSClient client, File file, String bucketName, String diskName) {
         String resultStr = null;
         try {
             InputStream is = new FileInputStream(file);
@@ -99,7 +123,7 @@ public class OSSUnit {
             // 解析结果
             resultStr = putResult.getETag();
         } catch (Exception e) {
-            LOG.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
+            log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
         }
         return resultStr;
     }
@@ -113,8 +137,8 @@ public class OSSUnit {
      * @param fileName   上传文件的目录 --bucket下文件的路径
      * @return String 唯一MD5数字签名
      */
-    public static final String uploadFileAliyun(OSSClient client, InputStream file, String bucketName, String fileName,
-                                                String filePath) {
+    public final String uploadFileAliyun(OSSClient client, InputStream file, String bucketName, String fileName,
+                                         String filePath) {
         String resultStr = null;
         try {
             // 创建上传Object的Metadata
@@ -130,7 +154,7 @@ public class OSSUnit {
             // 解析结果
             resultStr = putResult.getETag();
         } catch (Exception e) {
-            LOG.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
+            log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
         }
         return resultStr;
     }
@@ -143,8 +167,8 @@ public class OSSUnit {
      * @param diskName   文件路径
      * @param key        Bucket下的文件的路径名+文件名
      */
-    public static final InputStream getOSS2InputStream(OSSClient client, String bucketName, String diskName,
-                                                       String key) {
+    public final InputStream getOSS2InputStream(OSSClient client, String bucketName, String diskName,
+                                                String key) {
         OSSObject ossObj = client.getObject(bucketName, diskName + key);
         return ossObj.getObjectContent();
     }
@@ -157,16 +181,19 @@ public class OSSUnit {
      * @param diskName   文件路径
      * @param key        Bucket下的文件的路径名+文件名
      */
-    public static void deleteFile(OSSClient client, String bucketName, String diskName, String key) {
+    public void deleteFile(OSSClient client, String bucketName, String diskName, String key) {
         client.deleteObject(bucketName, diskName + key);
-        LOG.info("删除" + bucketName + "下的文件" + diskName + key + "成功");
+        log.info("删除" + bucketName + "下的文件" + diskName + key + "成功");
     }
 
-    // 拼参数上传
-    @SuppressWarnings("static-access")
-    public static Map<String, Object> upload(MultipartFile file) {
+    /**
+     * 拼参数上传
+     * @param file
+     * @return
+     */
+    public Map<String, Object> upload(MultipartFile file) {
         //返回结果
-        Map<String,Object> resultMap = new HashMap<String,Object>();
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             InputStream is = file.getInputStream();
             String name = file.getOriginalFilename();
@@ -176,21 +203,20 @@ public class OSSUnit {
             System.out.println(currentTimeMillis);
             String time = String.valueOf(currentTimeMillis);
             String fileName = time + "." + split[length - 1];
-            OSSUnit ossunit = new OSSUnit();
-            OSSClient client = OSSUnit.getOSSClient();
-            uploadFileAliyun(client, is, BUCKET_NAME, fileName, ROOT_DIR);
-            String filePath = BASE_URL + ROOT_DIR + fileName;
+            OSSClient client = getOSSClient();
+            uploadFileAliyun(client, is, bucketName, fileName, rootDir);
+            String filePath = baseUrl + rootDir + fileName;
             //组一下子
-            resultMap.put("filePath",filePath);
-            resultMap.put("fileName",fileName);
+            resultMap.put("filePath", filePath);
+            resultMap.put("fileName", fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return resultMap;
     }
 
-    public static String upload(File file) {
-        OSSClient client = OSSUnit.getOSSClient();
+    public String upload(File file) {
+        OSSClient client = getOSSClient();
         String bucketName = "dog-oss-hd";
         String resultStr = null;
         try {
@@ -210,13 +236,18 @@ public class OSSUnit {
             // 解析结果
             resultStr = putResult.getETag();
         } catch (Exception e) {
-            LOG.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
+            log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
         }
         return resultStr;
     }
 
-    // 下载
-    public static String download(String fileName) {
+    /**
+     * 下载
+     *
+     * @param fileName
+     * @return
+     */
+    public String download(String fileName) {
         String resfile = "D:/jobDogFiles";
         try {
             String[] split = fileName.split("\\/");
@@ -224,9 +255,8 @@ public class OSSUnit {
             if (length > 0) {
                 fileName = split[length - 1];
             }
-            OSSClient client = OSSUnit.getOSSClient();
-            BufferedInputStream bis = new BufferedInputStream(
-                    OSSUnit.getOSS2InputStream(client, BUCKET_NAME, "data/inputFiles/", fileName));
+            OSSClient client = getOSSClient();
+            BufferedInputStream bis = new BufferedInputStream(getOSS2InputStream(client, bucketName, "data/inputFiles/", fileName));
             File file = new File(resfile);
             if (!file.exists()) {
                 file.mkdir();
@@ -246,11 +276,15 @@ public class OSSUnit {
         return resfile;
     }
 
-    //上传本地的图片
-    // 拼参数上传
-    @SuppressWarnings("static-access")
-    public static String uploadFile(File file) {
-        OSSClient client = OSSUnit.getOSSClient();
+    /**
+     * 上传本地的图片
+     * 拼参数上传
+     *
+     * @param file
+     * @return
+     */
+    public String uploadFile(File file) {
+        OSSClient client = getOSSClient();
         String resultStr = null;
         String resultMsg = "";
         try {
@@ -266,13 +300,13 @@ public class OSSUnit {
             metadata.setContentType(getContentType(fileName));
             metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
             // 上传文件
-            PutObjectResult putResult = client.putObject(BUCKET_NAME, "data/dog/baseInfo/" + fileName, is, metadata);
+            PutObjectResult putResult = client.putObject(bucketName, "data/dog/baseInfo/" + fileName, is, metadata);
             // 解析结果
             resultStr = putResult.getETag();
             //返回结果
             resultMsg = "http://dog-oss-hd.oss-cn-hangzhou.aliyuncs.com/data/dog/baseInfo/" + fileName;
         } catch (Exception e) {
-            LOG.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
+            log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
         }
         return resultMsg;
     }
@@ -283,7 +317,7 @@ public class OSSUnit {
      * @param fileName 文件名
      * @return 文件的contentType
      */
-    public static final String getContentType(String fileName) {
+    public final String getContentType(String fileName) {
         String fileExtension = fileName.substring(fileName.lastIndexOf("."));
         if ("bmp".equalsIgnoreCase(fileExtension)) {
             return "image/bmp";
@@ -319,22 +353,22 @@ public class OSSUnit {
         return "text/html";
     }
 
-    public static void deleteFile(String ossFile) {
-        OSSClient client = OSSUnit.getOSSClient();
+    public void deleteFile(String ossFile) {
+        OSSClient client = getOSSClient();
         try {
-            int _posIndex = ossFile.indexOf(HTTP_KEY);
+            int _posIndex = ossFile.indexOf(httpKey);
             if (_posIndex != -1) {
-                ossFile = ossFile.substring(_posIndex + HTTP_KEY.length() + 1);
+                ossFile = ossFile.substring(_posIndex + httpKey.length() + 1);
             }
-            client.deleteObject(BUCKET_NAME, ossFile);
-            LOG.info("删除阿里云OSS成功");
+            client.deleteObject(bucketName, ossFile);
+            log.info("删除阿里云OSS成功");
         } catch (Exception e) {
-            LOG.error("删除阿里云OSS对象异常." + e.getMessage(), e);
+            log.error("删除阿里云OSS对象异常." + e.getMessage(), e);
         }
     }
 
 
-    public static void delFile(String key){
-         deleteFile(getOSSClient(),BUCKET_NAME,ROOT_DIR,key);
+    public void delFile(String key) {
+        deleteFile(getOSSClient(), bucketName, rootDir, key);
     }
 }
