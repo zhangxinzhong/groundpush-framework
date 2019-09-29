@@ -29,6 +29,7 @@ public class GroundPushWebExceptionHandler {
     @ResponseBody
     @ExceptionHandler(BusinessException.class)
     public JsonResp businessException(BusinessException e) {
+        log.error(e.toString(), e);
         return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
@@ -41,6 +42,7 @@ public class GroundPushWebExceptionHandler {
     @ResponseBody
     @ExceptionHandler(SystemException.class)
     public JsonResp systemException(SystemException e) {
+        log.error(e.toString(), e);
         return JsonResp.failure(e.getCode(), e.getMessage());
     }
 
