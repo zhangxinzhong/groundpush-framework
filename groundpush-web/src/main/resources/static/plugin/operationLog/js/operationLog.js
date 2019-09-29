@@ -16,13 +16,26 @@ layui.use(['table', 'form', 'layer'], function () {
                 , cols: [[
                     {field: 'logId', title: 'ID', width: 100, sort: true}
                     , {field: 'method', title: '方法名', width: 400}
-                    , {field: 'args', title: '参数', width: 100}
+                    , {
+                        field: 'args', title: '参数', width: 100,
+                        templet: function (d) {
+                            return '<a onclick="seeArgsContent(this)" args='+ d.args +'>' + d.args + '</a>';
+                        }
+                    }
                     , {field: 'createdBy', title: '创建人', width: 100}
                     , {field: 'operationDetail', title: '日志描述', width: 100}
                     , {field: 'operationType', title: '日志类型', width: 200}
                     , {field: 'exceptionDetail', title: '异常描述', width: 300}
-                    , {field: 'type', title: '操作端类型', width: 100,templet: function(d){return d.type != null && d.type == 0?"APP":"PC" }}
-                    , {field: 'createdTime', title: '创建时间', width: 200,templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    , {
+                        field: 'type', title: '操作端类型', width: 100, templet: function (d) {
+                            return d.type != null && d.type == 0 ? "APP" : "PC"
+                        }
+                    }
+                    , {
+                        field: 'createdTime', title: '创建时间', width: 200, templet: function (d) {
+                            return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss");
+                        }
+                    }
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
@@ -57,3 +70,14 @@ layui.use(['table', 'form', 'layer'], function () {
     };
     eventListener.initUriTable();
 });
+
+//格式化json参数并展示出来
+function seeArgsContent(object) {
+    var obj = $(object);
+    var args = obj.attr("args");
+    var btn = document.querySelector('#json');
+    var jsonData = JSON.parse(args)
+    btn.textContent = JSON.stringify(jsonData, null, "\t");
+    var $modal = $('#myModal');
+    $modal.modal();
+}
