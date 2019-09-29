@@ -67,6 +67,9 @@ public class ToPathController {
                 orderService.createOrder(Order.builder().customerId(toPathCondition.getCustomId()).type(toPathCondition.getType()).taskId(toPathCondition.getTaskId()).status(Constants.ORDER_STATUS_EFFECT_REVIEW).channelUri(taskUriOptional.get().getUri()).build());
                 // 使用完url 后需要把最后修改时间改成今天
                 taskUriService.updateTaskUri(taskUriOptional.get());
+            }else {
+                log.info("任务：{} 的URI 不存在");
+                model.addAttribute("errorMsg", "商品不存在!");
             }
             redisUtils.del(key);
         } else {
