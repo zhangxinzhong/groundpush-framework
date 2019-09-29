@@ -94,7 +94,7 @@ layui.use('table', function () {
         ,showViewOrderList:function(data) {
                  table.render({
                                  elem: '#view'
-                                 , url: '/payManage/queryOrderBonus'
+                                 , url: '/payManage/queryOrderList'
                                  , toolbar: true
                                  , title: 'view-data'
                                  , totalRow: true
