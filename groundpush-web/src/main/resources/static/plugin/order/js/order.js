@@ -119,7 +119,7 @@ layui.use('table', function () {
                 , where:{'orderId':data.orderId}
                 , cols: [[
                       {field: 'bonusId', title: 'ID', width: 180, sort: true}
-                    , {field: 'customerLoginNo', title: '客户', width: 280}
+                    , {field: 'customerLoginNo', title: '客户', width: 200}
                     , {field: 'bonusCustomerLoginNo', title: '推广人', width: 100}
                     , {field: 'bonusAmount', title: '客户分成金额', width: 100}
                     , {field: '', title: '订单分成类型', width: 150,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
