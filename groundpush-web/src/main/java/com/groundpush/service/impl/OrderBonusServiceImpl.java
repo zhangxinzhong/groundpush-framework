@@ -1,10 +1,12 @@
 package com.groundpush.service.impl;
 
 import com.groundpush.core.model.OrderBonus;
+import com.groundpush.mapper.OrderBonusMapper;
 import com.groundpush.service.OrderBonusService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,10 +19,11 @@ import java.util.Optional;
 @Service
 public class OrderBonusServiceImpl implements OrderBonusService {
 
+    @Resource
+    private OrderBonusMapper orderBonusMapper;
 
     @Override
     public List<OrderBonus> findOrderBonusByOrder(Integer orderId) {
-
-        return null;
+        return orderBonusMapper.findOrderBonusByOrder(orderId);
     }
 }

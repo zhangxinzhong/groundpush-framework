@@ -112,14 +112,14 @@ layui.use('table', function () {
         ,showOrderBonusList:function (data) {
             table.render({
                 elem: '#orderBonus'
-                , url: '/payManage/queryOrderList'
+                , url: '/order/queryOrderBonus'
                 , toolbar: true
                 , title: 'orderBonus-data'
                 , totalRow: true
                 , where:{'orderId':data.orderId}
                 , cols: [[
                       {field: 'bonusId', title: 'ID', width: 180, sort: true}
-                    , {field: 'customerLoginNo', title: '客户', width: 280}
+                    , {field: 'customerLoginNo', title: '客户', width: 200}
                     , {field: 'bonusCustomerLoginNo', title: '推广人', width: 100}
                     , {field: 'bonusAmount', title: '客户分成金额', width: 100}
                     , {field: '', title: '订单分成类型', width: 150,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
@@ -135,8 +135,7 @@ layui.use('table', function () {
                         return {
                             "code": res.code, //解析接口状态
                             "msg": res.message, //解析提示文本
-                            "count": res.data.total, //解析数据长度
-                            "data": res.data.rows //解析数据列表
+                            "data": res.data //解析数据列表
                         };
                     }
                 }
