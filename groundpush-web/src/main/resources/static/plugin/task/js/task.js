@@ -5,6 +5,8 @@ $(function () {
     channelLoad();
     //加载标签内容
     labelLoad("");
+    //加载省份
+    provinceLoad("");
     //加载刷新
     $(".selectpicker").selectpicker('refresh');
 })
