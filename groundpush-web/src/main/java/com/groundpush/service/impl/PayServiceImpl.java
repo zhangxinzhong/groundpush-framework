@@ -60,11 +60,11 @@ public class PayServiceImpl implements PayService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void pay(OrderPayVo orderPay) {
-        //todo 查询订单是否审核完毕
 
-//        if(!auditLogService.isAuditPass(orderPay.getTaskId(), orderPay.getOrderCreateDate())){
-//            throw new BusinessException(ExceptionEnum.ORDER_NOT_AUDIT.getErrorCode(),ExceptionEnum.ORDER_NOT_AUDIT.getErrorMessage());
-//        }
+        //查询订单是否审核完毕
+        if(!auditLogService.isAuditPass(orderPay.getTaskId(), orderPay.getOrderCreateDate())){
+            throw new BusinessException(ExceptionEnum.ORDER_NOT_AUDIT.getErrorCode(),ExceptionEnum.ORDER_NOT_AUDIT.getErrorMessage());
+        }
 
         //将渠道数据关联的失效订单绑定到虚拟账户
         batchOrder(orderPay.getTaskId());
