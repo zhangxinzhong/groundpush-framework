@@ -32,9 +32,9 @@ public class AuditLogServiceImpl implements AuditLogService {
     private DateUtils dateUtils;
 
     @Override
-    public Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit,Integer userId) {
+    public Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        return auditLogMapper.getAllPayTaskOrderList(userId);
+        return auditLogMapper.getAllPayTaskOrderList();
     }
 
     @Transactional(rollbackFor = Exception.class)

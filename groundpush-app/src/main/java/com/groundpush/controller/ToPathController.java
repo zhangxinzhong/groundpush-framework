@@ -70,10 +70,8 @@ public class ToPathController {
             //获取每日推广剩余次数 每人每日推广剩余次数
             Optional<TaskPopCountVo>  optional = taskService.getSupTotalOrCustomCount(toPathCondition.getCustomId(), toPathCondition.getTaskId());
             if(optional.isPresent()){
-              Integer supCustom = optional.get().getSupCustom();
-              Integer supTotal = optional.get().getSupTotal();
-              if(supCustom <= Constants.ZROE.intValue() || supTotal <= Constants.ZROE.intValue()){
-                  log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}",supTotal,supCustom);
+                log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}",optional.get().getSupTotal(),optional.get().getSupCustom());
+              if(optional.get().getSupCustom() <= Constants.ZROE.intValue() || optional.get().getSupTotal() <= Constants.ZROE.intValue()){
                   model.addAttribute("errorMsg", "今日推广次数已达上限!");
                   return "page";
               }

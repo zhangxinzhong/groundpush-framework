@@ -40,6 +40,7 @@ public class PayManageController {
     private AuditLogService auditLogService;
 
     @PostMapping
+    @ResponseBody
     public JsonResp pay(@Valid @RequestBody OrderPayVo orderPay, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -63,7 +64,7 @@ public class PayManageController {
     public JsonResp getTaskOrderlist(Integer page, Integer limit) {
 
         try {
-            Page<TaskOrderList> pageAudit  = auditLogService.findAllPayTaskOrderList(page,limit,sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser().getUserId():null);
+            Page<TaskOrderList> pageAudit  = auditLogService.findAllPayTaskOrderList(page,limit);
             return JsonResp.success(new PageResult(pageAudit));
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -78,6 +79,8 @@ public class PayManageController {
     public JsonResp addAuditLog(@RequestBody @Valid AuditLog auditLog) {
 
         try {
+
+
             Optional<LoginUserInfo> optional =  sessionUtils.getLogin();
             if(optional.isPresent()){
                 LoginUserInfo info = optional.get();

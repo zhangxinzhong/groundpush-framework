@@ -21,7 +21,9 @@ public class DateUtils {
      * 获得某天最大时间 2017-10-15 23:59:59
      */
     public LocalDateTime getMaxOfDay(LocalDateTime date) {
-        return date.with(LocalTime.MAX);
+        LocalDateTime localDateTime = date.with(LocalTime.MAX);
+        localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return localDateTime;
     }
 
     /**
@@ -30,7 +32,9 @@ public class DateUtils {
      * @return
      */
     public LocalDateTime getMinOfDay(LocalDateTime date) {
-        return date.with(LocalTime.MAX);
+        LocalDateTime localDateTime = date.with(LocalTime.MIN);
+        localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return localDateTime;
     }
 
 
