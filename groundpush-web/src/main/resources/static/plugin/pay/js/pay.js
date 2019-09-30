@@ -155,6 +155,12 @@ layui.use('table', function () {
             data.flag = flag;
             eventListener.showViewOrderList(data);
         }else if (obj.event === 'check') {
+            if(data.successOrder == 0){
+                layer.msg("未生效订单为0，不可审核！")
+                return false;
+            }
+
+
             eventListener.showAddAuditDialog();
             $("#auditModalform")[0].reset();
             eventListener.showAuditLog(data);
@@ -175,6 +181,8 @@ layui.use('table', function () {
          layui.form.render();
         //可用状态默认为1 即可用
         data.field.status = 1;
+
+        data.field.
         eventListener.addAuditLog(data);
 
         //屏蔽表单提交

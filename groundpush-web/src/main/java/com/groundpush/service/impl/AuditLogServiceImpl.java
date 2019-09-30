@@ -2,7 +2,10 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.condition.OrderListQueryCondition;
+import com.groundpush.core.enums.OperationClientType;
+import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.AuditLog;
@@ -33,12 +36,14 @@ public class AuditLogServiceImpl implements AuditLogService {
     @Resource
     private DateUtils dateUtils;
 
+
     @Override
     public Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
         return auditLogMapper.getAllPayTaskOrderList();
     }
 
+    @OperationLogDetail(operationType = OperationType.PAY_MANAGE_AUDIT,type = OperationClientType.PC)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addAuditLog(AuditLog auditLog){

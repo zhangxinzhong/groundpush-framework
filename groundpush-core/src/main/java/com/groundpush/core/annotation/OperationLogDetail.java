@@ -1,5 +1,6 @@
 package com.groundpush.core.annotation;
 
+import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
 
 import java.lang.annotation.*;
@@ -24,5 +25,5 @@ public @interface OperationLogDetail {
     /**
      * 类型（0-APP，1-PC）
      */
-    int type() default 0;
+    OperationClientType type() default OperationClientType.PC;
 }
