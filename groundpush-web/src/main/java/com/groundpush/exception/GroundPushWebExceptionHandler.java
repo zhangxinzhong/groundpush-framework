@@ -6,10 +6,13 @@ import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @description: 公共异常处理
@@ -27,6 +30,7 @@ public class GroundPushWebExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(BusinessException.class)
     public JsonResp businessException(BusinessException e) {
         log.error(e.toString(), e);
@@ -40,6 +44,7 @@ public class GroundPushWebExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(SystemException.class)
     public JsonResp systemException(SystemException e) {
         log.error(e.toString(), e);
@@ -53,6 +58,7 @@ public class GroundPushWebExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public JsonResp exception(Exception e) {
         log.error(e.toString(), e);
@@ -66,6 +72,7 @@ public class GroundPushWebExceptionHandler {
      * @return
      */
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(GroundPushMethodArgumentNotValidException.class)
     public JsonResp methodArgumentNotValidException(GroundPushMethodArgumentNotValidException e) {
         log.error(e.toString(), e);

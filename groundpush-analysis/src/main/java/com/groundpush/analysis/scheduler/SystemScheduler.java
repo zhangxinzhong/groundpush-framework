@@ -41,7 +41,7 @@ public class SystemScheduler {
     @Value("${groundpush.channel.path:/tmp/channel}")
     private String rootPath;
 
-    @Value("${groundpush.channel.mapping.filed:personnelId,produceTime,isEffective,failureResult}")
+    @Value("${groundpush.channel.mapping.filed:uniqueCode,produceTime,isEffective,failureResult}")
     private String channelMappingFiled;
 
     @Resource
@@ -95,7 +95,7 @@ public class SystemScheduler {
                                     order.setRemark(failureResult);
                                     existOrder.add(order);
                                 }
-                                log.info("数据文件:{},count:{},参数：uniqueCode:{},isExistOrder:{},produceTime:{},isEffective:{},failureResult:{}", path,count,uniqueCode, isExistOrder, analysisResult.get("produceTime"), isEffective, failureResult);
+                                log.info("数据文件:{},count:{},参数：uniqueCode:{},isExistOrder:{},produceTime:{},isEffective:{},failureResult:{}", path, count, uniqueCode, isExistOrder, analysisResult.get("produceTime"), isEffective, failureResult);
                                 try {
                                     ChannelData cd = ChannelData.builder()
                                             .channelId(channelExcel.getChannelId())
@@ -117,8 +117,10 @@ public class SystemScheduler {
                         cds.clear();
 
                         // 保存订单数据
-                        orderService.updateOrder(existOrder);
-                        existOrder.clear();
+                        if (existOrder != null && existOrder.size() > 0) {
+                            orderService.updateOrder(existOrder);
+                            existOrder.clear();
+                        }
 
                     });
 

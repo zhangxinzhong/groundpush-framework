@@ -88,8 +88,6 @@ layui.use('table', function () {
             Utils.postAjax("/payManage",JSON.stringify(data),function(rep) {
                 if(rep.code =='200'){
                     layer.msg('确认支付成功！');
-                }else {
-                    layer.msg(rep.message);
                 }
             },function (rep) {
                 layer.msg(rep.message);

@@ -29,7 +29,6 @@ public interface OrderMapper {
      * @param orders
      * @return
      */
-
     @Update({"<script>",
             " <foreach collection='orders' item='order' separator=';'> ",
             " update t_order set settlement_status = #{order.settlementStatus},remark = #{order.remark} ",
