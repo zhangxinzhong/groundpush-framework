@@ -181,8 +181,6 @@ layui.use('table', function () {
          layui.form.render();
         //可用状态默认为1 即可用
         data.field.status = 1;
-
-        data.field.
         eventListener.addAuditLog(data);
 
         //屏蔽表单提交
