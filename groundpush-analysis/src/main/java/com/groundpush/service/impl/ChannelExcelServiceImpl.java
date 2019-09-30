@@ -1,7 +1,7 @@
-package com.groundpush.analysis.service.impl;
+package com.groundpush.service.impl;
 
-import com.groundpush.analysis.mapper.ChannelExcelMapper;
-import com.groundpush.analysis.service.ChannelExcelService;
+import com.groundpush.mapper.ChannelExcelMapper;
+import com.groundpush.service.ChannelExcelService;
 import com.groundpush.core.model.ChannelExcel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -38,6 +41,9 @@ public class ChannelController {
 
     @Resource
     private SessionUtils sessionUtils;
+
+    @Resource
+    private DateUtils dateUtils;
 
 
     @RequestMapping("/toChannel")
@@ -137,9 +143,9 @@ public class ChannelController {
     @ApiOperation(value = "导入数据")
     @RequestMapping(value = "/importExcelData", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId, Integer taskId) throws Exception {
+    public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId, Integer taskId, String channelTime) throws Exception {
         try {
-            return JsonResp.success(channelService.addChannelData(channelId,taskId,file.getOriginalFilename(),mapping,file.getInputStream()));
+            return JsonResp.success(channelService.addChannelData(channelId, taskId, dateUtils.transToLocalDateTime(channelTime,"yyyy-MM-dd"), file.getOriginalFilename(), mapping, file.getInputStream()));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
@@ -157,7 +163,7 @@ public class ChannelController {
             if (channelList != null && channelList.size() > 0) {
                 resultMap.put("dataList", channelList);
                 resultMap.put("code", "200");
-            }else{
+            } else {
                 resultMap.put("msg", "渠道列表为空！");
                 resultMap.put("code", "500");
             }

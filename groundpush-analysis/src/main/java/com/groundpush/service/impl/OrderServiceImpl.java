@@ -1,15 +1,15 @@
-package com.groundpush.analysis.service.impl;
+package com.groundpush.service.impl;
 
-import com.groundpush.analysis.mapper.OrderMapper;
-import com.groundpush.analysis.service.OrderService;
+import com.groundpush.mapper.OrderMapper;
+import com.groundpush.service.OrderService;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +26,19 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderMapper orderMapper;
 
+    @Resource
+    private DateUtils dateUtils;
+
     @Override
-    public List<Order> queryOrderByTaskId(Integer taskId) {
-        return orderMapper.queryOrderByTaskId(taskId);
+    public List<Order> queryOrderByTaskIdAndChannelTime(Integer taskId, LocalDateTime channelTime) {
+        LocalDateTime beginTime = dateUtils.getMinOfDay(channelTime);
+        LocalDateTime endTime = dateUtils.getMaxOfDay(channelTime);
+        return orderMapper.queryOrderByTaskIdAndChannelTime(taskId, beginTime, endTime);
     }
 
     @Override
-    public Map<String, Order> queryOrderByTaskIdReturnMap(Integer taskId) {
-        List<Order> orders = queryOrderByTaskId(taskId);
+    public Map<String, Order> queryOrderByTaskIdAndChannelTimeReturnMap(Integer taskId, LocalDateTime localDateTime) {
+        List<Order> orders = queryOrderByTaskIdAndChannelTime(taskId, localDateTime);
         Map<String, Order> orderMap = new HashMap<>(orders.size());
         orders.stream().forEach(order -> {
             if (!orderMap.containsKey(order.getUniqueCode())) {

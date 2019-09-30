@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * .
@@ -56,4 +57,9 @@ public class ChannelExcel implements Serializable {
      * 是否使用
      */
     private Boolean isUse;
+
+    /**
+     * 渠道时间
+     */
+    private LocalDateTime channelTime;
 }

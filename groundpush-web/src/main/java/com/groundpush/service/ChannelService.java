@@ -7,6 +7,7 @@ import io.swagger.models.auth.In;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,11 +54,12 @@ public interface ChannelService {
      * 添加渠道数据
      * @param channelId
      * @param taskId
+     * @param channelTime
      * @param fileName
      * @param mapping
      * @return
      */
-    Integer addChannelData(Integer channelId, Integer taskId,String fileName, String mapping, InputStream inputStream) throws IOException;
+    Integer addChannelData(Integer channelId, Integer taskId, LocalDateTime channelTime,String fileName, String mapping, InputStream inputStream) throws IOException;
 
     /**
      * 获取所有的公司列表信息

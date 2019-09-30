@@ -1,4 +1,4 @@
-package com.groundpush.analysis.service;
+package com.groundpush.service;
 
 import com.groundpush.core.model.ChannelExcel;
 

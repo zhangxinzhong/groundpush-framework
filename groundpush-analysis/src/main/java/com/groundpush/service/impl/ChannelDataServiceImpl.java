@@ -1,19 +1,15 @@
-package com.groundpush.analysis.service.impl;
+package com.groundpush.service.impl;
 
-import com.groundpush.analysis.mapper.ChannelDataMapper;
-import com.groundpush.analysis.service.ChannelDataService;
+import com.groundpush.mapper.ChannelDataMapper;
+import com.groundpush.service.ChannelDataService;
 import com.groundpush.core.condition.ChannelDataQueryCondition;
 import com.groundpush.core.model.ChannelData;
-import com.groundpush.core.model.ChannelExcel;
 import com.groundpush.core.model.Order;
-import com.groundpush.core.model.OrderBonus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**

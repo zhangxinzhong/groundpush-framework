@@ -1,13 +1,9 @@
-package com.groundpush.analysis.mapper;
+package com.groundpush.mapper;
 
-import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.ChannelExcel;
-import com.groundpush.core.model.Order;
-import com.groundpush.core.model.OrderBonus;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * . 渠道数据

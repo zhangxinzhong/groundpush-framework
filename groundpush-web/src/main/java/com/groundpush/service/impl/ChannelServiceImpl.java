@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +54,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Integer addChannelData(Integer channelId, Integer taskId, String fileName, String mapping, InputStream inputStream) throws IOException {
+    public Integer addChannelData(Integer channelId, Integer taskId, LocalDateTime channelTime, String fileName, String mapping, InputStream inputStream) throws IOException {
         File file = new File(channelDataFilePath);
         if (!file.exists()) {
             file.mkdirs();
@@ -66,7 +67,7 @@ public class ChannelServiceImpl implements ChannelService {
         }
         fileOutputStream.close();
         inputStream.close();
-        return channelMapper.addChannelData(channelId, taskId, fileName, mapping);
+        return channelMapper.addChannelData(channelId, taskId,channelTime, fileName, mapping);
     }
 
     @Override

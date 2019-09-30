@@ -1,21 +1,17 @@
-package com.groundpush.analysis.scheduler;
+package com.groundpush.scheduler;
 
-import com.groundpush.analysis.service.ChannelDataService;
-import com.groundpush.analysis.service.ChannelExcelService;
-import com.groundpush.analysis.service.OrderService;
-import com.groundpush.core.condition.ChannelDataQueryCondition;
+import com.groundpush.service.ChannelDataService;
+import com.groundpush.service.ChannelExcelService;
+import com.groundpush.service.OrderService;
 import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.ChannelExcel;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.ExcelTools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.aspectj.weaver.ast.Or;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,9 +21,10 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author luzq
@@ -66,7 +63,7 @@ public class SystemScheduler {
             ExcelTools excelTools = ExcelTools.getInstance();
             for (ChannelExcel channelExcel : channelExcels) {
                 try {
-                    Map<String, Order> orderMap = orderService.queryOrderByTaskIdReturnMap(channelExcel.getTaskId());
+                    Map<String, Order> orderMap = orderService.queryOrderByTaskIdAndChannelTimeReturnMap(channelExcel.getTaskId(),channelExcel.getChannelTime());
                     log.info("订单数：{}", orderMap.size());
                     String path = rootPath + File.separator + channelExcel.getFileName();
                     excelTools.openExcel(path);

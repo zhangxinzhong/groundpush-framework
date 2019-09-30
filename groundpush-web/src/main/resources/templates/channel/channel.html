@@ -167,19 +167,28 @@
             <div class="modal-body-max no-padding">
                 <div class="page-content">
                     <div class="row layui-form" lay-filter="resInfo">
-                        <div class="col-xs-12" >
+                        <div class="col-md-12" >
                             <div class="layui-form-item form-head">
-<!--                                <div class="layui-inline">-->
-<!--                                    <label class="layui-form-label">渠道商</label>-->
-<!--                                    <div class="layui-input-inline">-->
-<!--                                        <select id="channelName" lay-filter="channelName"></select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">数据文件</label>
+                                    <label class="layui-form-label"><span class="required_style">*</span>订单生效时间</label>
                                     <div class="layui-input-inline">
-                                        <input type="text" id="upFileShow" disabled autocomplete="off" class="layui-input">
+                                        <input type="text" name="channelTime" id="channelTime" lay-verify="date|required" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                     </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label"><span class="required_style">*</span>数据文件</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="upFileShow" disabled autocomplete="off" lay-verify="required" class="layui-input">
+                                    </div>
+
+
+<!--                                    <div class="layui-form-label">-->
+<!--                                        <label class="layui-form-label">验证日期</label>-->
+<!--                                        <div class="layui-input-inline">-->
+<!--                                            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
                                     <div class="layui-input-inline upBtn layui-upload">
                                         <button type="button" class="layui-btn layui-btn-sm" id="upFile">上传文件</button>
                                     </div>

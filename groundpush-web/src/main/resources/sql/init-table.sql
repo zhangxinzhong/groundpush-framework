@@ -658,6 +658,8 @@ CREATE TABLE `t_user_account` (
 -- Records of t_user_account
 -- ----------------------------
 
+alter table t_channel_excel add column channel_time datetime;
+
 
 
 

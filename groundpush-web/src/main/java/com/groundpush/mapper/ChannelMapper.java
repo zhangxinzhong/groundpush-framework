@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.security.core.parameters.P;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,12 +74,13 @@ public interface ChannelMapper {
      * 添加渠道数据相关excel表信息
      * @param channelId
      * @param taskId
+     * @param channelTime
      * @param fileName
      * @param mapping
      * @return
      */
-    @Insert("insert into t_channel_excel(channel_id,task_id,file_name,mapping,create_time,is_use) values(#{channelId},#{taskId},#{fileName},#{mapping},current_timestamp,0)")
-    Integer addChannelData(@Param("channelId") Integer channelId,@Param("taskId") Integer taskId, @Param("fileName")String fileName, @Param("mapping")String mapping);
+    @Insert("insert into t_channel_excel(channel_id,task_id,channel_time,file_name,mapping,create_time,is_use) values(#{channelId},#{taskId},#{channelTime},#{fileName},#{mapping},current_timestamp,0)")
+    Integer addChannelData(@Param("channelId") Integer channelId, @Param("taskId") Integer taskId, @Param("channelTime") LocalDateTime channelTime, @Param("fileName")String fileName, @Param("mapping")String mapping);
 
     /**
      * 获取所有渠道

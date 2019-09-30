@@ -1,9 +1,8 @@
-package com.groundpush.analysis;
+package com.groundpush;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableScheduling
 @EnableTransactionManagement
-@MapperScan("com.groundpush.analysis.mapper")
+@MapperScan("com.groundpush.mapper")
 public class GroundPushAnalysisApplication {
     public static void main(String[] args) {
         SpringApplication.run(GroundPushAnalysisApplication.class,args);
