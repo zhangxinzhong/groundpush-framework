@@ -71,8 +71,6 @@ layui.use('table', function () {
                     eventListener.hideAddAuditDialog();
                     eventListener.reloadLabelTable();
                     layer.msg('审核成功！');
-                }else{
-                    layer.msg(rep.message);
                 }
             },function (rep) {
                 layer.msg(rep.message);
