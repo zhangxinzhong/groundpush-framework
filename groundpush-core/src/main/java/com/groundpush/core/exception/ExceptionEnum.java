@@ -13,6 +13,7 @@ package com.groundpush.core.exception;
  * M 表示 menu 序号从：080001 开始
  * PR 表示 privilege权限 序号从：090001 开始
  * CO 表示 taskCollect（任务收藏） 序号从：CO1001 开始
+ * AL 表示 auditlog  序号从：Al110001 开始
  * Excetion 表示系统级异常 序号从：O0000 开始
  * @author: zhangxinzhong
  * @date: 2019-08-26 下午1:25
@@ -57,8 +58,8 @@ public enum ExceptionEnum {
     , USER_AND_DEL_ERROR("U70003", "此用户与角色关联不可删除，与角色解绑后才可删除！")
     , MENU_AND_DEL_ERROR("M80001", "此菜单与角色关联不可删除，与角色解绑后才可删除！")
     , PRI_AND_DEL_ERROR("PR90001","此权限与角色关联不可删除，与角色解绑后才可删除！")
+    , AUDITLOG_EXCEPTION("Al110001","此订单支付记录您已审核过，不可重复审核！")
     ;
-
 
     private String errorCode;
 

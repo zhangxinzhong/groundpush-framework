@@ -29,7 +29,7 @@ public interface OrderBonusMapper {
         "<script>",
             " insert into t_order_bonus (order_id, customer_id, bonus_amount, bonus_type, status, created_time) values ",
             "<foreach collection='list' item='orderBonuse' open='(' close=')' separator='),('>",
-                "#{orderBonuse.orderId},#{orderBonuse.customerId},#{orderBonuse.bonusAmount},#{orderBonuse.bonusType},2,current_timestamp",
+                "#{orderBonuse.orderId},#{orderBonuse.customerId},#{orderBonuse.bonusAmount},#{orderBonuse.bonusType},1,current_timestamp",
             "</foreach>",
         "</script>"
     })

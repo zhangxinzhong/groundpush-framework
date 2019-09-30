@@ -3,6 +3,8 @@ package com.groundpush.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.OrderListQueryCondition;
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.AuditLog;
 import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskOrderList;
@@ -40,8 +42,12 @@ public class AuditLogServiceImpl implements AuditLogService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void addAuditLog(AuditLog auditLog){
+        List<AuditLog>  userList = auditLogMapper.getAuditListByTaskIdAndTime(auditLog.getTaskId(),dateUtils.localDateTimetransToString(auditLog.getOrderTime(),"yyyy-MM-dd"),auditLog.getUserId());
+        if(userList != null && userList.size() > 0){
+            throw new BusinessException(ExceptionEnum.AUDITLOG_EXCEPTION.getErrorCode(),ExceptionEnum.AUDITLOG_EXCEPTION.getErrorMessage());
+        }
         auditLogMapper.createAuditLog(auditLog);
-        List<AuditLog> list = auditLogMapper.getAuditListByTaskIdAndTime(auditLog.getTaskId(),dateUtils.localDateTimetransToString(auditLog.getOrderTime(),"yyyy-MM-dd"));
+        List<AuditLog> list = auditLogMapper.getAuditListByTaskIdAndTime(auditLog.getTaskId(),dateUtils.localDateTimetransToString(auditLog.getOrderTime(),"yyyy-MM-dd"),null);
         //为0不操作
         int isUpdate = 0;
         if(list != null && list.size() > 0){
