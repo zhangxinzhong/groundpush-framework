@@ -158,7 +158,7 @@
                 contentType: 'application/json',
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     if (Utils.verifyFunction(errorBack)) {
-                        errorBack(data, XMLHttpRequest, textStatus, errorThrown);
+                        errorBack(XMLHttpRequest.responseJSON, textStatus, errorThrown);
                     }
                 },
                 success: function (data) {
@@ -189,7 +189,7 @@
                 contentType: 'application/json',
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     if (Utils.verifyFunction(errorBack)) {
-                        errorBack(data, XMLHttpRequest, textStatus, errorThrown);
+                        errorBack(XMLHttpRequest.responseJSON, textStatus, errorThrown);
                     }
                 },
                 success: function (data) {
@@ -220,7 +220,7 @@
                 data: data,
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     if (Utils.verifyFunction(errorBack)) {
-                        errorBack(data, XMLHttpRequest, textStatus, errorThrown);
+                        errorBack(XMLHttpRequest.responseJSON, textStatus, errorThrown);
                     }
                 },
                 success: function (data) {
@@ -251,7 +251,7 @@
                 data: data,
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     if (Utils.verifyFunction(errorBack)) {
-                        errorBack(data, XMLHttpRequest, textStatus, errorThrown);
+                        errorBack(XMLHttpRequest.responseJSON, textStatus, errorThrown);
                     }
                 },
                 success: function (data) {

@@ -30,4 +30,11 @@ public class TaskUriServiceImpl implements TaskUriService {
     public void updateTaskUri(TaskUri taskUri) {
         taskUriMapper.updateTaskUri(taskUri);
     }
+
+    @Override
+    public Optional<TaskUri> hasOneTaskUri(Integer taskId){
+        Integer countTaskUri = taskUriMapper.countTaskUri(taskId);
+         return 1 == countTaskUri?taskUriMapper.queryTaskUriByTaskId(taskId):Optional.empty();
+    }
+
 }

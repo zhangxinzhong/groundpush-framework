@@ -1,5 +1,8 @@
 package com.groundpush.service.impl;
 
+import com.groundpush.core.annotation.OperationLogDetail;
+import com.groundpush.core.enums.OperationClientType;
+import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.utils.MathUtil;
@@ -25,6 +28,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
     @Resource
     private CustomerAccountMapper customerAccountMapper;
 
+    @OperationLogDetail(operationType = OperationType.CUSTOMER_ACCOUNT_UPDATE,type = OperationClientType.PC)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCustomerAccountAmountByCustomerId(CustomerAccount build) {

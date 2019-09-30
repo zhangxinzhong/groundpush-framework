@@ -41,7 +41,20 @@ public enum OperationType {
     PAY_ADD_LOG("发起提现"),
     //提现查
     PAY_GET("PAY_GET_LOG"),
-    PAY_GET_LOG("查看提现");
+    PAY_GET_LOG("查看提现"),
+
+    //支付管理审核
+    PAY_MANAGE_AUDIT("PAY_MANAGE_AUDIT_LOG"),
+    PAY_MANAGE_AUDIT_LOG("支付管理审核"),
+    //支付管理确认支付
+    PAY_MANAGE_PAY("PAY_MANAGE_PAY_LOG"),
+    PAY_MANAGE_PAY_LOG("支付管理确认支付"),
+    //添加渠道数据
+    CHANNEL_DATE_ADD("CHANNEL_DATE_ADD_LOG"),
+    CHANNEL_DATE_ADD_LOG("添加渠道数据excel表信息"),
+    //修改客户账户
+    CUSTOMER_ACCOUNT_UPDATE("CUSTOMER_ACCOUNT_UPDATE_LOG"),
+    CUSTOMER_ACCOUNT_UPDATE_LOG("修改客户账户");
 
     private String value;
 

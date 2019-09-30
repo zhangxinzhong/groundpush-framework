@@ -2,6 +2,9 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.annotation.OperationLogDetail;
+import com.groundpush.core.enums.OperationClientType;
+import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.model.Channel;
 import com.groundpush.mapper.ChannelMapper;
 import com.groundpush.service.ChannelService;
@@ -31,10 +34,12 @@ public class ChannelServiceImpl implements ChannelService {
         return channelMapper.getChannels();
     }
 
+
     @Override
     public void createChannel(Channel channel) {
         channelMapper.createChannel(channel);
     }
+
 
     @Override
     public void updateChannel(Channel channel) {
@@ -53,6 +58,7 @@ public class ChannelServiceImpl implements ChannelService {
         channelMapper.updateChannel(channel);
     }
 
+    @OperationLogDetail(operationType = OperationType.CUSTOMER_ACCOUNT_UPDATE,type = OperationClientType.PC)
     @Override
     public Integer addChannelData(Integer channelId, Integer taskId, LocalDateTime channelTime, String fileName, String mapping, InputStream inputStream) throws IOException {
         File file = new File(channelDataFilePath);

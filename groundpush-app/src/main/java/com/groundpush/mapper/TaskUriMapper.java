@@ -31,6 +31,11 @@ public interface TaskUriMapper {
     Optional<TaskUri> queryAllByTaskId(@Param("taskId") Integer taskId);
 
 
+    @Select(" SELECT count(1) from t_task_uri a WHERE a.task_id = #{taskId} ")
+    Integer countTaskUri(@Param("taskId") Integer taskId);
+
+    @Select(" SELECT a.* from t_task_uri a WHERE a.task_id = #{taskId} ")
+    Optional<TaskUri> queryTaskUriByTaskId(@Param("taskId") Integer taskId);
     /**
      * 修改taskUri
      *

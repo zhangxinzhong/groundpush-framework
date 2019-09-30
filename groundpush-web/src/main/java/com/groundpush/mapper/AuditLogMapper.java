@@ -17,7 +17,6 @@ public interface AuditLogMapper {
 
    /**
     * 分页查询支付管理中 任务订单审核列表
-    * @param userId
     */
    @Select({
            "<script>",
@@ -97,6 +96,14 @@ public interface AuditLogMapper {
     * @param orderTime
     * @return
     */
-   @Select(" SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ")
-   List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") String orderTime);
+   @Select({"<script>",
+           " SELECT * FROM t_audit_log where task_id = #{taskId} and DATE_FORMAT(order_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ",
+           " <if test='userId != null and userId != \"\"'> and user_id =#{userId}  </if> ",
+           "</script>",
+   })
+   List<AuditLog> getAuditListByTaskIdAndTime(@Param("taskId") Integer taskId,@Param("orderTime") String orderTime,@Param("userId") Integer userId);
+
+
+
+
 }

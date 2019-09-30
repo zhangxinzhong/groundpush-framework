@@ -3,6 +3,7 @@ package com.groundpush.core.aop;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.annotation.OperationLogDetail;
+import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.model.*;
 import com.groundpush.core.repository.OperationLogRepository;
@@ -110,11 +111,11 @@ public class LogAspect {
             //存日志类型描述
             operationLog.setOperationDetail(detail);
             //获取类型（0-APP，1-PC）
-            int type = annotation.type();
+            OperationClientType type = annotation.type();
             //存类型
-            operationLog.setType(type);
+            operationLog.setType(type.getClient());
             //根据不同类型获取创建人信息
-            if (type == 0) {
+            if (type.getClient() == 0) {
                 Optional<Customer> login = loginUtils.getLogin();
                 Customer customer = login.get();
                 //存创建人ID

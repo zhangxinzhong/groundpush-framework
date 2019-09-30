@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.groundpush.core.OssConfig;
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.condition.TaskQueryCondition;
+import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
@@ -59,7 +60,7 @@ public class TaskServiceImpl implements TaskService {
         taskMapper.createSingleTask(task);
     }
 
-    @OperationLogDetail(operationType = OperationType.TASK_GET,type = 1)
+    @OperationLogDetail(operationType = OperationType.TASK_GET,type = OperationClientType.PC)
     @Override
     public Optional<Task> getTask(Integer id) {
         Optional<Task> optionalTask = taskMapper.getTask(id);
@@ -88,7 +89,7 @@ public class TaskServiceImpl implements TaskService {
         return Optional.empty();
     }
 
-    @OperationLogDetail(operationType = OperationType.TASK_ADD,type = 1)
+    @OperationLogDetail(operationType = OperationType.TASK_ADD,type = OperationClientType.PC)
     @Override
     public Boolean save(Task task) {
         //添加、更新任务内容
@@ -138,7 +139,7 @@ public class TaskServiceImpl implements TaskService {
         return taskAttributeResult && taskResult && labelResult;
     }
 
-    @OperationLogDetail(operationType = OperationType.TASK_UPDATE,type = 1)
+    @OperationLogDetail(operationType = OperationType.TASK_UPDATE,type = OperationClientType.PC)
     @Override
     public Boolean updateTask(Task task) {
         return taskMapper.updateTask(task) > 0 ? true : false;

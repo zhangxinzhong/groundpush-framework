@@ -1,5 +1,8 @@
 package com.groundpush.service.impl;
 
+import com.groundpush.core.annotation.OperationLogDetail;
+import com.groundpush.core.enums.OperationClientType;
+import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.*;
@@ -56,7 +59,7 @@ public class PayServiceImpl implements PayService {
     private SessionUtils sessionUtils;
 
 
-
+    @OperationLogDetail(operationType = OperationType.PAY_MANAGE_PAY,type = OperationClientType.PC)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void pay(OrderPayVo orderPay) {
