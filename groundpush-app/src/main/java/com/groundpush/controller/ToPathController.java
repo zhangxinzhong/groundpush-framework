@@ -77,7 +77,11 @@ public class ToPathController {
               }
             }
 
-            Optional<TaskUri> taskUriOptional = taskUriService.queryValidTaskUriByTaskId(toPathCondition.getTaskId());
+            //若任务只存在一个uri 则直接获取
+            Optional<TaskUri>  taskUriOptional = taskUriService.hasOneTaskUri(toPathCondition.getTaskId());
+            if(!taskUriOptional.isPresent()){
+                taskUriService.queryValidTaskUriByTaskId(toPathCondition.getTaskId());
+            }
             if (taskUriOptional.isPresent()) {
                 model.addAttribute("uri", taskUriOptional.get().getUri());
                 orderService.createOrder(Order.builder().customerId(toPathCondition.getCustomId()).type(toPathCondition.getType()).taskId(toPathCondition.getTaskId()).status(Constants.ORDER_STATUS_EFFECT_REVIEW).channelUri(taskUriOptional.get().getUri()).build());

@@ -24,4 +24,6 @@ public interface TaskUriService {
      * @param taskUri
      */
     void updateTaskUri(TaskUri taskUri);
+
+    Optional<TaskUri> hasOneTaskUri(Integer taskId);
 }
