@@ -1,5 +1,6 @@
 package com.groundpush.service;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.vo.CustomerVo;
@@ -21,4 +22,25 @@ public interface CustomerService {
      * @return
      */
     Optional<Customer> getCustomer(Integer customerId);
+
+    /**
+     * 更新客户信息
+     * @param customerVo
+     */
+    void updateCustomer(CustomerVo customerVo);
+
+    /**
+     * 创建客户信息
+     * @param customer
+     */
+    void createCustomer(Customer customer);
+
+    /**
+     * 根据条件分页查询客户信息
+     * @param customer
+     * @param page
+     * @param limit
+     * @return
+     */
+    Page<Customer> queryCustomerPage(Customer customer, Integer page, Integer limit);
 }

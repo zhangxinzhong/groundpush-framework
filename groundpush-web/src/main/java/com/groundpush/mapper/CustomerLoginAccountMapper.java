@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,8 +58,9 @@ public interface CustomerLoginAccountMapper {
     /**
      * 通过登录名查询用户是否存在
      * @param loginNo
+     * @param type
      * @return
      */
     @Select(" select * from t_customer_login_account ca where ca.login_no=#{loginNo} ")
-    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(@Param("loginNo") String loginNo);
+    Optional<CustomerLoginAccount> queryCustomerLoginAccountByLoginNo(@Param("loginNo") String loginNo, @NotNull(message = "登录类型不可为空") Integer type);
 }

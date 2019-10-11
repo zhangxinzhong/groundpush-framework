@@ -1,5 +1,6 @@
 package com.groundpush.mapper;
 
+import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.vo.CustomerVo;
@@ -77,4 +78,15 @@ public interface CustomerMapper {
      */
     @Select(" select c.* from t_customer c inner join t_customer_account ca on ca.customer_id= c.customer_id where ca.login_no = #{loginNo} ")
     Optional<Customer> queryCustomerByLoginNo(@Param("loginNo") String loginNo);
+
+    void updateCustomerInviteCode(String inviteCode, Integer customerId);
+
+    @Select({
+            "<script>",
+            " select * from t_customer where 1=1  ",
+            " <if test='nickName != null'> and instr(nick_name,#{nickName})  </if> ",
+            " order by created_time desc ",
+            "</script>"
+    })
+    Page<Customer> queryCustomerPage(Customer customer);
 }

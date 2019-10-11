@@ -15,4 +15,6 @@ public interface CustomerAccountService {
      * @param build
      */
     void updateCustomerAccountAmountByCustomerId(CustomerAccount build);
+
+    void createCustomerAccount(CustomerAccount build);
 }
