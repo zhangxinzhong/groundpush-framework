@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,4 +40,10 @@ public interface TaskService {
     Boolean save(Task task);
 
     Boolean updateTask(Task task);
+
+    /**
+     * 获取所有任务
+     * @return
+     */
+    List<Task> queryAllTaskList();
 }

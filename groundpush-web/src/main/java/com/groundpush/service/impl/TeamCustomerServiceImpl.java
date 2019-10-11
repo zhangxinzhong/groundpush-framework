@@ -28,4 +28,12 @@ public class TeamCustomerServiceImpl implements TeamCustomerService {
     public void saveTeamCustomer(TeamCustomer teamCustomer) {
         teamCustomerMapper.saveTeamCustomer(teamCustomer);
     }
+
+    @Override
+    public void delTeamCustomerByTeamId(Integer teamId) {
+        teamCustomerMapper.delTeamCustomerByTeamId(teamId);
+    }
+
+
+
 }

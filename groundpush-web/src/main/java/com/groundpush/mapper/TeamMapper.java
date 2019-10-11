@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * TeamMapper
  *
@@ -16,7 +18,7 @@ import org.apache.ibatis.annotations.Select;
 public interface TeamMapper {
 
 
-    @Select(" select a.team_name,count(select count(1) from t_team_customer b where b.team_id = a.team_id) counts from t_team a group by a.team_name ")
+    @Select(" select a.team_id,a.team_name,count(select count(1) from t_team_customer b where b.team_id = a.team_id) count,a.created_by,a.created_time from t_team a group by a.team_name ")
     Page<Team> queryTeamPage();
 
 
@@ -25,4 +27,7 @@ public interface TeamMapper {
 
     @Insert(" insert into t_team(team_name,created_by,created_time) values (#{teamName},#{createdBy},current_timestamp)")
     void saveTeam(Team team);
+
+    @Select(" select a.team_id,a.team_name  from t_team a ")
+    List<Team> queryAllTeamList();
 }

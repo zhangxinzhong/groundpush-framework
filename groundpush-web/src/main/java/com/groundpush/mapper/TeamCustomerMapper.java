@@ -3,8 +3,10 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Team;
 import com.groundpush.core.model.TeamCustomer;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -22,4 +24,7 @@ public interface TeamCustomerMapper {
 
     @Insert(" insert into t_team_customer(team_id,customer_id,created_by,created_time) values (#{teamId},#{customerId},#{createdBy},current_timestamp)")
     void saveTeamCustomer(TeamCustomer teamCustomer);
+
+    @Delete(" delete from t_team_customer where team_id = #{teamId} ")
+    void delTeamCustomerByTeamId(@Param("teamId") Integer teamId);
 }

@@ -3,11 +3,14 @@ package com.groundpush.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.model.Team;
+import com.groundpush.core.model.TeamCustomer;
 import com.groundpush.mapper.TeamMapper;
+import com.groundpush.service.TeamCustomerService;
 import com.groundpush.service.TeamService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TeamServiceImpl
@@ -21,6 +24,9 @@ public class TeamServiceImpl implements TeamService {
     @Resource
     private TeamMapper teamMapper;
 
+    @Resource
+    private TeamCustomerService teamCustomerService;
+
     @Override
     public Page<Team> queryTeamPage(Integer page, Integer limit) {
         PageHelper.startPage(page,limit);
@@ -30,10 +36,16 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void delTeam(Integer teamId) {
         teamMapper.delTeam(teamId);
+        teamCustomerService.delTeamCustomerByTeamId(teamId);
     }
 
     @Override
     public void saveTeam(Team team) {
         teamMapper.saveTeam(team);
+    }
+
+    @Override
+    public List<Team> queryAllTeamList() {
+        return teamMapper.queryAllTeamList();
     }
 }

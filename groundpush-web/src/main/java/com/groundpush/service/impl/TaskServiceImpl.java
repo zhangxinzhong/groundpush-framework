@@ -145,6 +145,11 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.updateTask(task) > 0 ? true : false;
     }
 
+    @Override
+    public List<Task> queryAllTaskList() {
+        return taskMapper.queryAllTaskList();
+    }
+
     /**
      * 任务添加属性
      *

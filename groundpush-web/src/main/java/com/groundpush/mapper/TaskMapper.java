@@ -5,6 +5,7 @@ import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.Task;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -83,4 +84,7 @@ public interface TaskMapper {
      */
     @Select(" select * from t_task t where t.task_id=#{taskId}  ")
     Optional<Task> getTask(@Param("taskId") Integer taskId);
+
+    @Select(" select a.task_id,a.title from t_task a ")
+    List<Task> queryAllTaskList();
 }

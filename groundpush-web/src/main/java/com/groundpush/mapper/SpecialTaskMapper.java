@@ -17,8 +17,8 @@ public interface SpecialTaskMapper {
             " SELECT a.special_task_id,a.STATUS,a.created_time,b.team_name,c.title, ",
             " (select d.login_no from t_user d where d.user_id = d.created_by) created_name FROM ",
             " t_special_task a",
-            " LEFT JOIN t_special_team b ON a.team_id = b.team_id ",
-            " LEFT JOIN t_task c ON c.task_id = a.task_id",
+            " LEFT JOIN t_team b ON a.team_id = b.team_id ",
+            " LEFT JOIN t_task c ON a.task_id = c.task_id ",
             "</script>"})
     Page<SpecialTask> querySpecialTaskPage();
 

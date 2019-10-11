@@ -34,4 +34,9 @@ public class Team {
 
     @ApiModelProperty(value = "创建时间")
     public LocalDateTime createdTime;
+
+    //*****************非数据库字段***********
+
+    @ApiModelProperty(value = "关联客户数")
+    public Integer count;
 }

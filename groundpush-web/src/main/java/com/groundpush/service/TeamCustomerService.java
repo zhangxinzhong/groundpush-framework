@@ -26,4 +26,10 @@ public interface TeamCustomerService {
      * @param teamCustomer
      */
      void saveTeamCustomer(TeamCustomer teamCustomer);
+
+    /**
+     * 通过团队id删除所有关联
+     * @param teamId
+     */
+     void delTeamCustomerByTeamId(Integer teamId);
 }

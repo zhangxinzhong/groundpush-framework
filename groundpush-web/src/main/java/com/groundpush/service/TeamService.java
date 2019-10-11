@@ -3,6 +3,8 @@ package com.groundpush.service;
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Team;
 
+import java.util.List;
+
 /**
  * TeamService
  *
@@ -33,4 +35,11 @@ public interface TeamService {
      * @param team
      */
      void saveTeam(Team team);
+
+
+    /**
+     * 获取所有团队
+     * @return
+     */
+     List<Team> queryAllTeamList();
 }
