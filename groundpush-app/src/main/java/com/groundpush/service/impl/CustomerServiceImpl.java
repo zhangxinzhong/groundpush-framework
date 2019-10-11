@@ -74,10 +74,10 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
     @Override
     public void updateCustomer(CustomerVo customerVo) {
         try {
-            if (StringUtils.isNotBlank(customerVo.getInviteCode())) {
 
-                //验证邀请码是否与本邀请码相同
-                Optional<Customer> optionalCustomer = customerMapper.getCustomer(customerVo.getCustomerId());
+            //验证邀请码是否与本邀请码相同
+            Optional<Customer> optionalCustomer = customerMapper.getCustomer(customerVo.getCustomerId());
+            if(StringUtils.isNotBlank(customerVo.getInviteCode())){
                 if(optionalCustomer.isPresent()){
                     if(customerVo.getInviteCode().equals(optionalCustomer.get().getInviteCode())){
                         throw new BusinessException(ExceptionEnum.CUSTOMER_REPETITION_INVITE.getErrorCode()
@@ -90,15 +90,15 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
                 if (!parentCustomer.isPresent()) {
                     throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorMessage());
                 }
+                 customerVo.setParentId(parentCustomer.get().getCustomerId());
                 List<Order> orders = orderService.queryOrderByCustomerId(customerVo.getCustomerId());
                 if (orders.size() > 0) {
                     throw new BusinessException(ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorCode(), ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorMessage());
                 }
-                customerVo.setParentId(parentCustomer.get().getCustomerId());
-                customerMapper.updateCustomer(customerVo);
-            }else{
-                throw new BusinessException(ExceptionEnum.CUSTOMER_NULL_INVITE.getErrorCode(), ExceptionEnum.CUSTOMER_NULL_INVITE.getErrorMessage());
             }
+
+            customerMapper.updateCustomer(customerVo);
+
 
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
