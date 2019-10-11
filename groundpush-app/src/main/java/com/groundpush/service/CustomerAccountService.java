@@ -2,8 +2,8 @@ package com.groundpush.service;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.CustomerAccount;
+import com.groundpush.core.vo.PayVo;
 import com.groundpush.pay.model.AliPayResponse;
-import com.groundpush.vo.PayVo;
 
 import java.util.Optional;
 

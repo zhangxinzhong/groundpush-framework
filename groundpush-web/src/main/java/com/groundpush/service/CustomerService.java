@@ -1,10 +1,8 @@
 package com.groundpush.service;
 
 import com.github.pagehelper.Page;
-import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
-import com.groundpush.vo.CustomerVo;
-import org.springframework.data.domain.Pageable;
+import com.groundpush.core.vo.CustomerVo;
 
 import java.util.List;
 import java.util.Optional;

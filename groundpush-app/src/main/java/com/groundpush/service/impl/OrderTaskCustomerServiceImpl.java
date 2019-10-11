@@ -1,7 +1,7 @@
 package com.groundpush.service.impl;
 
+import com.groundpush.core.mapper.OrderTaskCustomerMapper;
 import com.groundpush.core.model.OrderTaskCustomer;
-import com.groundpush.mapper.OrderTaskCustomerMapper;
 import com.groundpush.service.OrderTaskCustomerService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -17,7 +17,7 @@ public class OrderTaskCustomerServiceImpl implements OrderTaskCustomerService {
 
 
     @Resource
-    private  OrderTaskCustomerMapper orderTaskCustomerMapper;
+    private OrderTaskCustomerMapper orderTaskCustomerMapper;
 
     @Override
     public List<OrderTaskCustomer>  findOrderByTaskId(Integer taskId,Integer customerId) {

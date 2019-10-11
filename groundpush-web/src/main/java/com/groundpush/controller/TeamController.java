@@ -2,7 +2,7 @@ package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.Team;
-import com.groundpush.service.TeamService;
+import com.groundpush.core.service.TeamService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
