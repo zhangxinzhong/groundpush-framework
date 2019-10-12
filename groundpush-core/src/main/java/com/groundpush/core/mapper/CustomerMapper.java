@@ -84,8 +84,6 @@ public interface CustomerMapper {
     Optional<Customer> queryCustomerByLoginNo(@Param("loginNo") String loginNo);
 
 
-
-
     @Select({
             "<script>",
             " select * from t_customer where 1=1  ",
@@ -94,4 +92,19 @@ public interface CustomerMapper {
             "</script>"
     })
     Page<Customer> queryCustomerPage(Customer customer);
+
+
+    /**
+     * 通过key获取客户列表 用于团队管理
+     * @param key
+     * @return
+     */
+    @Select({
+            "<script>",
+            " select a.customer_id,a.nick_name,a.created_time,b.login_no from t_customer a left join t_customer_login_account b on  a.customer_id = b.customer_id  ",
+            " <if test='key != null'> where a.nick_name like CONCAT('%',#{key},'%') or b.login_no like CONCAT('%',#{key},'%')  </if> ",
+            " order by created_time desc ",
+            "</script>"
+    })
+    Page<Customer> teamQueryAllCustomerPage(@Param("key") String key);
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * SpecialTeam
@@ -33,4 +34,9 @@ public class TeamCustomer {
 
     @ApiModelProperty(value = "创建时间")
     public LocalDateTime createdTime;
+
+    //********************非数据库字段*******************
+
+    @ApiModelProperty(value = "关联customerId list")
+    public List<Integer> ids;
 }

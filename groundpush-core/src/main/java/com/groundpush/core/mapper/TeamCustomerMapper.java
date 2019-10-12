@@ -18,7 +18,14 @@ public interface TeamCustomerMapper {
     @Delete(" delete from t_team_customer where team_id = #{teamId} and  customer_id = #{customerId}")
     void delTeamCustomer(TeamCustomer teamCustomer);
 
-    @Insert(" insert into t_team_customer(team_id,customer_id,created_by,created_time) values (#{teamId},#{customerId},#{createdBy},current_timestamp)")
+    @Insert({
+            "<script>",
+            " insert into t_team_customer(team_id,customer_id,created_by,created_time) values ",
+            "<foreach collection='ids' item='id' open='(' close=')' separator='),('>",
+            " #{teamId},#{id},#{createdBy},current_timestamp",
+            "</foreach>",
+            "</script>"
+    })
     void saveTeamCustomer(TeamCustomer teamCustomer);
 
     @Delete(" delete from t_team_customer where team_id = #{teamId} ")

@@ -18,7 +18,7 @@ import java.util.List;
 public interface TeamMapper {
 
 
-    @Select(" select a.team_id,a.team_name,count(select count(1) from t_team_customer b where b.team_id = a.team_id) count,a.created_by,a.created_time from t_team a group by a.team_name ")
+    @Select(" select a.team_id,a.team_name,(select c.login_no from t_user c where c.user_id = a.created_by) created_name,a.created_time,(select count(1) from t_team_customer b where a.team_id = b.team_id) count,(select group_concat(d.customer_id) from t_team_customer d where d.team_id = a.team_id  ) ids from t_team a ")
     Page<Team> queryTeamPage();
 
 
