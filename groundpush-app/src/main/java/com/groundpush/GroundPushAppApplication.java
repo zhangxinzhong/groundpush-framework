@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author: zhangxinzhong
  * @date: 2019-09-03 上午9:51
  */
-@MapperScan("com.groundpush.mapper")
+@MapperScan(value = {"com.groundpush.mapper","com.groundpush.core.mapper"})
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableSwagger2Doc

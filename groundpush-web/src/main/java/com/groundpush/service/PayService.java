@@ -2,7 +2,7 @@ package com.groundpush.service;
 
 import com.groundpush.core.model.OrderBonus;
 import com.groundpush.core.model.User;
-import com.groundpush.vo.OrderPayVo;
+import com.groundpush.core.vo.OrderPayVo;
 
 /**
  * @description: 支付

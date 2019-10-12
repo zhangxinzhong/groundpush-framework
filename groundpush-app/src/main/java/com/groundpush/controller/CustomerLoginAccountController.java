@@ -3,7 +3,7 @@ package com.groundpush.controller;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.CustomerLoginAccount;
-import com.groundpush.service.CustomerLoginAccountService;
+import com.groundpush.core.service.CustomerLoginAccountService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

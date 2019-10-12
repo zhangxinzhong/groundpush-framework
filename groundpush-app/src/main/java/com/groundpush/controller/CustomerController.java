@@ -2,23 +2,18 @@ package com.groundpush.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.core.condition.CustomerQueryCondition;
-import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Customer;
-import com.groundpush.service.CustomerService;
-import com.groundpush.vo.CustomerVo;
+import com.groundpush.core.service.CustomerService;
+import com.groundpush.core.vo.CustomerVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 /**
