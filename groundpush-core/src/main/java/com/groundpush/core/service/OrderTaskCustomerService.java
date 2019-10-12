@@ -1,6 +1,7 @@
-package com.groundpush.service;
+package com.groundpush.core.service;
 
 import com.groundpush.core.model.OrderTaskCustomer;
+
 import java.util.List;
 
 /**
@@ -15,6 +16,6 @@ public interface OrderTaskCustomerService {
      * 根据taskId查询出所有关联订单
      * @param taskId
      */
-    List<OrderTaskCustomer>  findOrderByTaskId(Integer taskId,Integer customerId);
+    List<OrderTaskCustomer>  findOrderByTaskId(Integer taskId, Integer customerId);
 
 }

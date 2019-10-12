@@ -1,9 +1,10 @@
-package com.groundpush.service.impl;
+package com.groundpush.core.service.impl;
 
 import com.groundpush.core.mapper.OrderTaskCustomerMapper;
 import com.groundpush.core.model.OrderTaskCustomer;
-import com.groundpush.service.OrderTaskCustomerService;
+import com.groundpush.core.service.OrderTaskCustomerService;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.List;
 
