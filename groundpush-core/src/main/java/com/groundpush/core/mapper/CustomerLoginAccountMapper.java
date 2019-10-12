@@ -1,6 +1,7 @@
 package com.groundpush.core.mapper;
 
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
+import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerLoginAccount;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -73,4 +74,20 @@ public interface CustomerLoginAccountMapper {
      */
     @Select(" select * from t_customer_login_account cla where cla.customer_id=#{customerId} and cla.type=#{type} ")
     Optional<CustomerLoginAccount> getCustomerLoginAccountByTypeAndCustomerId(CustomerAccountQueryCondition customerAccountQueryCondition);
+
+    /**
+     * 获取客户登入帐号信息
+     * @param customerId
+     * @return
+     */
+    @Select(" SELECT * from t_customer_login_account where customer_id = #{customerId} ")
+    List<CustomerLoginAccount> getDateByCustomerId(@Param("customerId") Integer customerId);
+
+    /**
+     * 根据ID获取具体信息
+     * @param customerLoginAccountId
+     * @return
+     */
+    @Select(" select * from t_customer_login_account cla where cla.customer_login_account_id=#{customerLoginAccountId}")
+    Optional<CustomerLoginAccount> get(Integer customerLoginAccountId);
 }

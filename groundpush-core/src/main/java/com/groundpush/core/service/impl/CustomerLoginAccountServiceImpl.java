@@ -2,6 +2,7 @@ package com.groundpush.core.service.impl;
 
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.mapper.CustomerLoginAccountMapper;
+import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.service.CustomerLoginAccountService;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,15 @@ public class CustomerLoginAccountServiceImpl implements CustomerLoginAccountServ
     @Override
     public List<CustomerLoginAccount> queryCustomerLoginAccount(CustomerAccountQueryCondition customerAccountQueryCondition) {
         return customerLoginAccountMapper.queryCustomerLoginAccount(customerAccountQueryCondition);
+    }
+
+    @Override
+    public List<CustomerLoginAccount> getDateByCustomerId(Integer customerId) {
+        return customerLoginAccountMapper.getDateByCustomerId(customerId);
+    }
+
+    @Override
+    public Optional<CustomerLoginAccount> get(Integer customerLoginAccountId) {
+        return customerLoginAccountMapper.get(customerLoginAccountId);
     }
 }

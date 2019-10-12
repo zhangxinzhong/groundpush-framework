@@ -5,7 +5,9 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Customer;
+import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.model.PageResult;
+import com.groundpush.core.service.CustomerLoginAccountService;
 import com.groundpush.core.service.CustomerService;
 import com.groundpush.core.vo.CustomerVo;
 import io.swagger.annotations.ApiModel;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,6 +35,8 @@ public class CustomerController {
 
     @Resource
     private CustomerService customerService;
+    @Resource
+    private CustomerLoginAccountService customerLoginAccountService;
 
     @RequestMapping("/toCustomerList")
     public String toCustomerList() {
@@ -58,6 +63,7 @@ public class CustomerController {
     @ApiOperation(value = "获取客户")
     @JsonView(Customer.DetailCustomerView.class)
     @GetMapping("/{customerId:\\d+}")
+    @ResponseBody
     public JsonResp getCustomer(@PathVariable Integer customerId) {
         Optional<Customer> optionalCustomer = customerService.getCustomer(customerId);
         return JsonResp.success(optionalCustomer.isPresent() ? optionalCustomer.get() : null);
@@ -65,10 +71,8 @@ public class CustomerController {
 
     @ApiOperation(value = "更新客登录账号、头像及客户父子关系")
     @RequestMapping("/updateCustomer")
-    public JsonResp updateCustomer(@Valid @RequestBody CustomerVo customerVo, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
-        }
+    @ResponseBody
+    public JsonResp updateCustomer(@RequestBody CustomerVo customerVo) {
         customerService.updateCustomer(customerVo);
         return JsonResp.success();
     }
@@ -77,9 +81,27 @@ public class CustomerController {
 
     @ApiOperation(value = "创建客户")
     @RequestMapping("/createCustomer")
+    @ResponseBody
     public JsonResp createCustomer(@RequestBody Customer customer) {
         customerService.createCustomer(customer);
         return JsonResp.success();
     }
 
+    @ApiOperation(value = "获取客户登入帐号信息列表")
+    @JsonView(Customer.DetailCustomerView.class)
+    @GetMapping("getCustomerLoginAccount/{customerId:\\d+}")
+    @ResponseBody
+    public JsonResp getCustomerLoginAccount(@PathVariable Integer customerId) {
+        List<CustomerLoginAccount> optionalCustomer = customerLoginAccountService.getDateByCustomerId(customerId);
+        return JsonResp.success(optionalCustomer);
+    }
+
+    @ApiOperation(value = "获取客户登入帐号信息")
+    @JsonView(Customer.DetailCustomerView.class)
+    @GetMapping("getCustomerLoginAccountById/{customerLoginAccountId:\\d+}")
+    @ResponseBody
+    public JsonResp getCustomerLoginAccountById(@PathVariable Integer customerLoginAccountId) {
+        Optional<CustomerLoginAccount> optionalCustomerLoginAccount = customerLoginAccountService.get(customerLoginAccountId);
+        return JsonResp.success(optionalCustomerLoginAccount.isPresent() ? optionalCustomerLoginAccount.get() : null);
+    }
 }

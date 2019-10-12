@@ -9,17 +9,25 @@ layui.use(['table', 'form', 'layer'], function () {
             table.render({
                 elem: '#customer'
                 , url: '/customer/getCustomerPageList'
+                ,done: function (res, curr, count) {
+                    $("#customerDiv table").css("width", "100%");
+                }
                 , toolbar: '#toolbarCustomer'
                 , title: 'customer-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'customerId', title: 'ID', width: 100, sort: true}
-                    , {field: 'nickName', title: '客户昵称', width: 100}
-                    , {field: 'status', title: '状态', width: 100}
-                    , {field: 'inviteCode', title: '邀请码', width: 200}
-                    , {field: 'reputation', title: '信誉值', width: 100}
-                    , {field: 'bonusAmount', title: '帐户余额', width: 100}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarCustomerOperation"}
+                    {field: 'customerId', title: 'ID', sort: true}
+                    , {
+                        field: 'nickName', title: '客户昵称',
+                        templet: function (d) {
+                            return '<a class="layui-table-link" lay-event="showCustomerLoginAccount">' + d.nickName + '</a>';
+                        }
+                    }
+                    , {field: 'status', title: '状态'}
+                    , {field: 'inviteCode', title: '邀请码'}
+                    , {field: 'reputation', title: '信誉值'}
+                    , {field: 'bonusAmount', title: '帐户余额'}
+                    , {field: '', title: '操作',toolbar: "#toolbarCustomerOperation"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
@@ -50,8 +58,38 @@ layui.use(['table', 'form', 'layer'], function () {
                     curr: 1 //重新从第 1 页开始
                 }
             });
-        },
-        saveCustomer: function (data) {
+        }, initCustomerLoginAccountTable: function (data) {
+            table.render({
+                elem: '#customerLoginAccountTable',id:"toolbarCustomerLoginAccount"
+                ,cellMinWidth: 200
+                , url: '/customer/getCustomerLoginAccount/' + data.customerId
+                ,done: function (res, curr, count) {
+                    $("#customerLoginAccountDiv table").css("width", "100%");
+                }
+                , cols: [[
+                    {field: 'customerLoginAccountId', title: 'ID', sort: true}
+                    , {field: 'loginNo', title: '客户帐号'}
+                    , {field: 'name', title: '客户姓名'}
+                    , {field: 'type', title: '类型'}
+                    , {field: '', title: '操作',toolbar: "#toolbarCustomerLoginAccount"}
+                ]]
+                , response:
+                    {
+                        statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                    }
+                ,
+                parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    if (!Utils.isEmpty(res)) {
+                        console.log(res);
+                        return {
+                            "code": res.code, //解析接口状态
+                            "msg": res.message, //解析提示文本
+                            "data": res.data //解析数据列表
+                        };
+                    }
+                }
+            });
+        },saveCustomer: function (data) {
             Utils.postAjax("/customer/createCustomer", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
                     eventListener.hideAddCustomerDialog();
@@ -62,24 +100,24 @@ layui.use(['table', 'form', 'layer'], function () {
                 layer.msg(rep.message);
             });
         }, editCustomer: function (data) {
-            Utils.putAjax("/customer/save", JSON.stringify(data.field), function (rep) {
+            Utils.putAjax("/customer/updateCustomer", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
                     eventListener.hideEditCustomerDialog();
                     eventListener.reloadCustomerTable();
-                    layer.msg('客户添加成功');
+                    layer.msg('客户修改成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
         }
         , showCustomer: function (data) {
-            Utils.getAjax("/customer/getCustomer/" + data.customerId, null, function (rep) {
+            Utils.getAjax("/customer/" + data.customerId, null, function (rep) {
                 console.log(rep);
                 if (rep.code == '200') {
                     form.val("editCustomerForm", {
                         "customerId": rep.data.customerId
-                        , "customerName": rep.data.customerName
-                        , "customerPattern": rep.data.customerPattern
+                        , "nickName": rep.data.nickName
+                        , "inviteCode": rep.data.inviteCode
                     })
                     eventListener.showEditCustomerDialog();
                 }
@@ -107,6 +145,24 @@ layui.use(['table', 'form', 'layer'], function () {
         }
         , hideEditCustomerDialog: function () {
             $('#editCustomerDialog').modal('hide');
+        },showCustomerLoginAccount:function () {
+            $('#customerLoginAccount').modal('show');
+        },hideCustomerLoginAccount:function () {
+            $('#customerLoginAccount').modal('hide');
+        },ShowEditCustomerLoginAccount:function (data) {
+            Utils.getAjax("/customer/getCustomerLoginAccountById/" + data.customerLoginAccountId, null, function (rep) {
+                console.log(rep);
+                if (rep.code == '200') {
+                    form.val("editCustomerForm", {
+                        "customerId": rep.data.customerId
+                        , "nickName": rep.data.nickName
+                        , "inviteCode": rep.data.inviteCode
+                    })
+                    eventListener.showEditCustomerDialog();
+                }
+            }, function (rep) {
+                //layer.msg(rep.message);
+            });
         }
     };
 
@@ -126,13 +182,19 @@ layui.use(['table', 'form', 'layer'], function () {
             $("#customerId").val(data.customerId);
             eventListener.showCustomerDetailListDialog(data);
             eventListener.initCustomerDetailTable(data);
+        } else if (obj.event === 'showCustomerLoginAccount') {
+            eventListener.showCustomerLoginAccount(data);
+            eventListener.initCustomerLoginAccountTable(data);
+        }else if (obj.event === 'showAddCustomerDialog') {
+            eventListener.showAddCustomerDialog(data);
         }
     });
 
-    table.on('toolbar(customer)', function (obj) {
+    table.on('tool(customerLoginAccountTable)', function (obj) {
+        alert(123);
         var data = obj.data;
-        if (obj.event === 'showAddCustomerDialog') {
-            eventListener.showAddCustomerDialog(data);
+        if (obj.event === 'editCustomerLoginAccount') {
+            eventListener.ShowEditCustomerLoginAccount(data);
         }
     });
 
