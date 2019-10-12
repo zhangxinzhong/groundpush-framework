@@ -38,7 +38,7 @@ public interface CustomerAccountMapper {
      *
      * @param customerAccount
      */
-    @Update(" update t_customer_account set amount=#{customerAccountAmount},last_modified_time=current_timestamp where customer_id=#{customerId} ")
+    @Update(" update t_customer_account set amount=#{amount},last_modified_time=current_timestamp where customer_id=#{customerId} ")
     void subtractCustomerAccountAmount(CustomerAccount customerAccount);
 
 }

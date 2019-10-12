@@ -30,7 +30,9 @@
 <!-- role tool-->
 <script type="text/html" id="toolSpecial">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{# if(d.status == 0){  }}
     <a class="layui-btn layui-btn-xs" lay-event="publish">发布任务</a>
+    {{# }  }}
 </script>
 
 
