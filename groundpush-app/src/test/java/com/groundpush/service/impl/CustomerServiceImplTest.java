@@ -1,7 +1,7 @@
 package com.groundpush.service.impl;
 
 import com.groundpush.core.model.Customer;
-import com.groundpush.service.CustomerService;
+import com.groundpush.core.service.CustomerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

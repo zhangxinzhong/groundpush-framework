@@ -1,4 +1,4 @@
-package com.groundpush.service.impl;
+package com.groundpush.core.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -11,14 +11,13 @@ import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.service.CustomerAccountService;
+import com.groundpush.core.service.CustomerLoginAccountService;
+import com.groundpush.core.service.CustomerService;
 import com.groundpush.core.service.OrderService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.core.vo.CustomerVo;
-import com.groundpush.security.core.repository.ObjectRepository;
-import com.groundpush.service.CustomerAccountService;
-import com.groundpush.service.CustomerLoginAccountService;
-import com.groundpush.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class CustomerServiceImpl implements CustomerService, ObjectRepository<Customer> {
+public class CustomerServiceImpl implements CustomerService {
 
     @Resource
     private CustomerMapper customerMapper;
@@ -152,15 +151,11 @@ public class CustomerServiceImpl implements CustomerService, ObjectRepository<Cu
         return customerMapper.queryCustomerByLoginNo(loginNo);
     }
 
+
+
     @Override
-    public Optional<Customer> queryOrCreate(String mobile) {
-        Optional<Customer> optionalCustomer = customerMapper.queryCustomerByLoginNo(mobile);
-        if (!optionalCustomer.isPresent()) {
-            Customer customer = Customer.builder().loginNo(mobile).type(Constants.LOGIN_TYPE_1).build();
-            createCustomer(customer);
-            return Optional.of(customer);
-        }
-        return optionalCustomer;
+    public Page<Customer> queryCustomerPage(Customer customer, Integer page, Integer limit) {
+        return customerMapper.queryCustomerPage(customer);
     }
 
     private String generateNickName() {

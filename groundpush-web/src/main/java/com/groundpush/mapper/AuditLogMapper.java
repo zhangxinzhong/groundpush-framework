@@ -12,6 +12,11 @@ import java.util.Date;
 import java.util.List;
 
 
+/**
+ * @description: 审核日志
+ * @author: zhangxinzhong
+ * @date: 2019-08-29 下午12:52
+ */
 public interface AuditLogMapper {
 
 

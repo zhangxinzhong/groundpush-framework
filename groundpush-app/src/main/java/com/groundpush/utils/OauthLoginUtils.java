@@ -2,21 +2,15 @@ package com.groundpush.utils;
 
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
-import com.groundpush.core.model.Customer;
 import com.groundpush.core.utils.LoginUtils;
 import com.groundpush.security.oauth.model.CustomerDetail;
-import com.groundpush.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 

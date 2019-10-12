@@ -1,4 +1,4 @@
-package com.groundpush.service;
+package com.groundpush.core.service;
 
 import com.groundpush.core.model.CustomerAccount;
 
@@ -24,5 +24,10 @@ public interface CustomerAccountService {
      */
     void createCustomerAccount(CustomerAccount customerAccount);
 
+    /**
+     * 根据客户编号更新客户账户金额
+     * @param build
+     */
+    void updateCustomerAccountAmountByCustomerId(CustomerAccount build);
 
 }

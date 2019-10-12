@@ -3,14 +3,14 @@ package com.groundpush.service.impl;
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.mapper.CustomerAccountMapper;
+import com.groundpush.core.mapper.CustomerLoginAccountMapper;
 import com.groundpush.core.model.CashOutLog;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.model.CustomerLoginAccount;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.utils.UniqueCode;
-import com.groundpush.mapper.CustomerAccountMapper;
-import com.groundpush.mapper.CustomerLoginAccountMapper;
 import com.groundpush.pay.alipay.GroundPushAliPay;
 import com.groundpush.pay.exception.PayException;
 import com.groundpush.pay.model.AliPayRequest;
@@ -82,7 +82,8 @@ public class WithdrawServiceImpl implements WithdrawService {
             //获取转账后客户账户金额
             BigDecimal customerAccountAmount = MathUtil.subtract(customerAccount.getAmount(), orderAmount);
             //变更客户账户余额
-            customerAccountMapper.subtractCustomerAccountAmount(customerAccount.getCustomerId(), customerAccountAmount);
+
+            customerAccountMapper.subtractCustomerAccountAmount(CustomerAccount.builder().customerId(customerAccount.getCustomerId()).amount(customerAccountAmount).build());
             //提现时需要传入唯一字符串
             String outBizNo = uniqueCode.generateRandomCode(withdrawVo.getCustomerId());
             CashOutLog cashOutLog = CashOutLog.builder().customerId(withdrawVo.getCustomerId()).amount(withdrawVo.getAmount()).type(withdrawVo.getWithdrawType()).outBizNo(outBizNo).build();

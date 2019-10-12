@@ -1,12 +1,10 @@
-package com.groundpush.service;
+package com.groundpush.core.service;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.vo.CustomerVo;
-import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,4 +46,13 @@ public interface CustomerService {
      * @return
      */
     Optional<Customer> queryCustomerByMobile(String loginNo);
+
+    /**
+     * 根据条件分页查询客户信息
+     * @param customer
+     * @param page
+     * @param limit
+     * @return
+     */
+    Page<Customer> queryCustomerPage(Customer customer, Integer page, Integer limit);
 }

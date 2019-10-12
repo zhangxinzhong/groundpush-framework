@@ -1,4 +1,4 @@
-package com.groundpush.mapper;
+package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Label;
@@ -7,7 +7,22 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * @description: 标签管理
+ * @author: zhangxinzhong
+ * @date: 2019-08-29 下午12:52
+ */
 public interface LabelMapper {
+
+    /**
+     * 获取所有主标签
+     * @param type
+     * @return
+     */
+    @Select(" select * from t_label where type = #{type} and status = 1 order by  created_time desc ")
+    List<Label> getLabelByType(@Param("type") Integer type);
+
 
     /**
      * 分页获取标签列表
@@ -74,4 +89,6 @@ public interface LabelMapper {
      */
     @Select(" select * from t_label")
     List<Label> getLabelAll();
+
+
 }

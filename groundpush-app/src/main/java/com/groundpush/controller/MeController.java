@@ -4,25 +4,15 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
-import com.groundpush.core.model.Customer;
 import com.groundpush.security.oauth.model.CustomerDetail;
-import com.groundpush.service.CustomerService;
 import com.groundpush.utils.OauthLoginUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.Optional;
 
 /**

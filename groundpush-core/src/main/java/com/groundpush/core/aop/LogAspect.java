@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
-import com.groundpush.core.model.*;
-import com.groundpush.core.repository.OperationLogRepository;
+import com.groundpush.core.model.Customer;
+import com.groundpush.core.model.LoginUserInfo;
+import com.groundpush.core.model.OperationLog;
+import com.groundpush.core.model.User;
+import com.groundpush.core.service.OperationLogService;
 import com.groundpush.core.utils.LoginUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -37,7 +39,7 @@ public class LogAspect {
     @Resource
     private LoginUtils loginUtils;
     @Resource
-    private OperationLogRepository operationLogRepository;
+    private OperationLogService operationLogService;
 
     /**
      * 此处的切点是注解的方式，也可以用包名的方式达到相同的效果
@@ -57,7 +59,7 @@ public class LogAspect {
         } catch (Exception e) {
             log.info("LogAspect 操作失败：{}", e.getMessage());
             e.printStackTrace();
-            throwss(joinPoint,e);
+            throwss(joinPoint, e);
         }
     }
 
@@ -130,7 +132,7 @@ public class LogAspect {
         }
         // 这里保存日志
         log.info("记录日志:{}", operationLog.toString());
-        operationLogRepository.createOperationLog(operationLog);
+        operationLogService.createOperationLog(operationLog);
     }
 
 }

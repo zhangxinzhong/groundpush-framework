@@ -1,13 +1,12 @@
-package com.groundpush.service.impl;
+package com.groundpush.core.service.impl;
 
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
-import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.mapper.CustomerAccountMapper;
 import com.groundpush.core.model.CustomerAccount;
+import com.groundpush.core.service.CustomerAccountService;
 import com.groundpush.core.utils.MathUtil;
-import com.groundpush.mapper.CustomerAccountMapper;
-import com.groundpush.service.CustomerAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,18 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
     @Resource
     private CustomerAccountMapper customerAccountMapper;
 
-    @OperationLogDetail(operationType = OperationType.CUSTOMER_ACCOUNT_UPDATE,type = OperationClientType.PC)
+
+    @Override
+    public Optional<CustomerAccount> getCustomerAccount(Integer customerId) {
+        return customerAccountMapper.getCustomerAccount(customerId);
+    }
+
+    @Override
+    public void createCustomerAccount(CustomerAccount customerAccount) {
+        customerAccountMapper.createCustomerAccount(customerAccount);
+    }
+
+    @OperationLogDetail(operationType = OperationType.CUSTOMER_ACCOUNT_UPDATE, type = OperationClientType.PC)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCustomerAccountAmountByCustomerId(CustomerAccount build) {
@@ -40,15 +50,11 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                 BigDecimal accountAmount = MathUtil.add(customerAccount.getAmount(), build.getAmount());
                 build.setAmount(accountAmount);
             }
-            customerAccountMapper.updateCustomerAccount(build);
+            customerAccountMapper.subtractCustomerAccountAmount(build);
         } catch (Exception e) {
-            log.error(e.toString(),e);
+            log.error(e.toString(), e);
             throw e;
         }
     }
 
-    @Override
-    public void createCustomerAccount(CustomerAccount build) {
-
-    }
 }

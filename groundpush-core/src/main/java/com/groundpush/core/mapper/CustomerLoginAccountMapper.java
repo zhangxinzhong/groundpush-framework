@@ -1,4 +1,4 @@
-package com.groundpush.mapper;
+package com.groundpush.core.mapper;
 
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.model.CustomerLoginAccount;
@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;

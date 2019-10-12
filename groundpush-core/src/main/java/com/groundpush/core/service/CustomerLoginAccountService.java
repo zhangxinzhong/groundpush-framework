@@ -1,4 +1,4 @@
-package com.groundpush.service;
+package com.groundpush.core.service;
 
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
 import com.groundpush.core.model.CustomerLoginAccount;

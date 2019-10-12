@@ -1,11 +1,7 @@
-package com.groundpush.service;
+package com.groundpush.core.service;
 
 import com.github.pagehelper.Page;
-import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.OperationLog;
-import com.groundpush.core.model.Task;
-
-import java.util.Optional;
 
 /**
  * @description: 操作日志
@@ -26,6 +22,8 @@ public interface OperationLogService {
 
     /**
      * 保存日志
+     * @param operationLog
+     * @return
      */
-    Boolean insert(OperationLog operationLog);
+    void createOperationLog(OperationLog operationLog);
 }
