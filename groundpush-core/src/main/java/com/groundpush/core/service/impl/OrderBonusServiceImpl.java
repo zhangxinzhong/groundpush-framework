@@ -114,12 +114,14 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             //将任务金额从RMB 转换成 公分 1块=100公分
             BigDecimal taskAmount = MathUtil.multiply(Constants.PERCENTAGE_100, task.getAmount());
             log.info("订单编号：{}的任务公分：{}", orderId, taskAmount);
-            //计算任务完成人分成
-            BigDecimal taskFinishCustBonus = MathUtil.multiply(MathUtil.divide(task.getOwnerRatio(), Constants.PERCENTAGE_100), taskAmount);
-            log.info("订单号：{} 的完成人分成：{}", orderId, taskFinishCustBonus);
             //计算任务推广人分成
             BigDecimal taskSpreadCustBonus = MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), taskAmount);
             log.info("订单号：{} 的推广人分成：{}", orderId, taskSpreadCustBonus);
+
+            // 计算任务推广人上级分成
+            BigDecimal taskSpreadParentCustBonus = MathUtil.multiply(MathUtil.divide(task.getSpreadParentRatio(), Constants.PERCENTAGE_100), taskAmount);
+            log.info("订单号：{} 的推广人上级分成：{}", orderId, taskSpreadParentCustBonus);
+
             //计算团队领导分成
             BigDecimal taskLeaderCustBonus = MathUtil.multiply(MathUtil.divide(task.getLeaderRatio(), Constants.PERCENTAGE_100), taskAmount);
             log.info("订单号：{} 的团队领导分成：{}", orderId, taskSpreadCustBonus);
@@ -127,39 +129,22 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             // 任务分成集合
             List<OrderBonus> list = new ArrayList<>();
             //计算申请任务分成
-            if (Constants.GET_TASK_ATTRIBUTE.equals(order.getType())) {
-                log.info("计算任务申请...");
-                //计算任务完成人分成
-                log.info("订单号：{} 的完成人分成：{}", orderId, taskFinishCustBonus);
-                list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId)
-                        .bonusType(Constants.TASK_FINISH_CUSTOMER).bonusAmount(taskFinishCustBonus).bonusCustomerId(taskOperCust.getParentId()).build());
-                //计算推广人分成
-                Optional<Customer> taskSpreadCustOptional = customerMapper.getCustomer(taskOperCust.getParentId());
-                if (taskSpreadCustOptional.isPresent()) {
-                    Customer spreadCust = taskSpreadCustOptional.get();
-                    log.info("订单号：{} 的推广人分成：{}", orderId, taskSpreadCustBonus);
-                    list.add(OrderBonus.builder().customerId(spreadCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).bonusAmount(taskSpreadCustBonus).bonusCustomerId(spreadCust.getParentId()).build());
-                    //计算团队领导分成
-                    generateCustomerBonus(order, taskLeaderCustBonus, Constants.TASK_LEADER_CUSTOMER, spreadCust, list);
-                } else {
-                    log.info("客户编号：{} 的推广人为空,订单编号：{}", taskOperCust.getCustomerId(), orderId);
-                }
-                // 计算推广任务分成
-            } else if (Constants.SPREAD_TASK_ATTRIBUTE.equals(order.getType())) {
+            if (Constants.SPREAD_TASK_ATTRIBUTE.equals(order.getType())) {
                 log.info("计算任务推广...");
                 //计算推广人分成
                 list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).bonusAmount(taskSpreadCustBonus).bonusCustomerId(taskOperCust.getParentId()).build());
-                log.info("订单号：{} 的推广人分成：{}", orderId, taskSpreadCustBonus);
+
+                // 计算推广人上级分成
+
                 //计算团队领导分成
-                generateCustomerBonus(order, taskLeaderCustBonus, Constants.TASK_LEADER_CUSTOMER, taskOperCust, list);
 
             } else {
                 log.info("任务类型错误...");
             }
             //处理分成相加若分成大于总金额则说明：1.任务新建时分成填写错误 2.计算分成错误
-            BigDecimal totalBonus = MathUtil.sum(taskFinishCustBonus, taskSpreadCustBonus, taskLeaderCustBonus);
+            BigDecimal totalBonus = MathUtil.sum(taskSpreadParentCustBonus, taskSpreadCustBonus, taskLeaderCustBonus);
 
-            if (MathUtil.greaterThan(totalBonus,taskAmount)) {
+            if (MathUtil.greaterThan(totalBonus, taskAmount)) {
                 throw new BusinessException(ExceptionEnum.ORDER_BONUS_ERROR.getErrorCode(), ExceptionEnum.ORDER_BONUS_ERROR.getErrorMessage());
             }
 
@@ -176,28 +161,9 @@ public class OrderBonusServiceImpl implements OrderBonusService {
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             log.error(e.getMessage(), e);
             throw e;
-        }
-    }
-
-    /**
-     * 生成客户分成
-     *
-     * @param bonusAmount  分成金额
-     * @param cust         客户
-     * @param orderBonuses 订单分成
-     * @param bonusType    订单分成类型
-     */
-    private void generateCustomerBonus(Order order, BigDecimal bonusAmount, Integer bonusType, Customer cust, List<OrderBonus> orderBonuses) {
-        Optional<Customer> customerOptional = customerMapper.getCustomer(cust.getParentId());
-        if (customerOptional.isPresent()) {
-            Customer customer = customerOptional.get();
-            log.info("订单号：{} 的团队领导分成：{}", order.getOrderId(), bonusAmount);
-            orderBonuses.add(OrderBonus.builder().customerId(customer.getCustomerId()).orderId(order.getOrderId()).bonusType(bonusType).bonusAmount(bonusAmount).build());
-        } else {
-            log.info("订单号：{} 的团队领导不存在：{}", order.getOrderId(), cust.toString());
         }
     }
 }

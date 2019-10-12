@@ -39,4 +39,12 @@ public interface SpecialTaskService {
      * @param specialTask
      */
      void saveSpecialTask(SpecialTask specialTask);
+
+    /**
+     * 查询是否是特殊任务
+     * @param taskId 任务编号
+     * @param customId
+     * @return
+     */
+    Boolean whetherSpecialTask(Integer taskId, Integer customId);
 }

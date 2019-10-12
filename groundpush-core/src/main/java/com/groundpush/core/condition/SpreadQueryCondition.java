@@ -20,7 +20,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ToPathCondition implements Serializable {
+public class SpreadQueryCondition implements Serializable {
 
     @ApiModelProperty(value = "用户id")
     @NotNull(message="用户id不能为空")

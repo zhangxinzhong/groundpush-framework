@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.model.SpecialTask;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * SpecialTaskMapper
  *
@@ -31,4 +33,22 @@ public interface SpecialTaskMapper {
 
     @Insert(" insert into t_special_task(team_id,task_id,created_by,created_time,status) values (#{teamId},#{taskId},#{createdBy},current_timestamp,#{status})")
     void saveSpecialTask(SpecialTask specialTask);
+
+    /**
+     * 查询特殊任务
+     *
+     * @param taskId 任务编号
+     * @return
+     */
+    @Select(" select * from t_special_task st where st.task_id=#{taskId} ")
+    List<SpecialTask> querySpecialTaskByTaskId(Integer taskId);
+
+    /**
+     * 查询特殊任务 只返回teamId
+     *
+     * @param taskId 任务编号
+     * @return
+     */
+    @Select(" select st.team_id from t_special_task st where st.status=1 and st.task_id=#{taskId} ")
+    List<Integer> querySpecialTaskByTaskIdReturnTeamId(Integer taskId);
 }

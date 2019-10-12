@@ -33,7 +33,7 @@ public class AgainToPathController {
         }
         log.info("微信二次跳转参数 回调url：{} ",condition.getBackUrl());
         model.addAttribute("uri", condition.getBackUrl());
-        return "page";
+        return "spread";
 
     }
 

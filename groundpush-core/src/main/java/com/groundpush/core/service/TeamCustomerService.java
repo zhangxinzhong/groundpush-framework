@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.model.Team;
 import com.groundpush.core.model.TeamCustomer;
 
+import java.util.List;
+
 /**
  * TeamService
  *
@@ -32,4 +34,12 @@ public interface TeamCustomerService {
      * @param teamId
      */
      void delTeamCustomerByTeamId(Integer teamId);
+
+    /**
+     * 客户是否存在团队中
+     * @param teams
+     * @param customId
+     * @return
+     */
+    Boolean existCustomerByTeam(List<Integer> teams, Integer customId);
 }

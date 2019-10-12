@@ -72,6 +72,11 @@ public class Order implements Serializable {
      */
     private String remark;
 
+    /**
+     * 是否特殊订单，特殊订单金额为配置的特定金额
+     */
+    private Boolean isSpecial;
+
 
     /**
      * *****************非数据库字段********************

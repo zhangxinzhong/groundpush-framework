@@ -1,6 +1,7 @@
 package com.groundpush.core.utils;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
@@ -20,6 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @author: zhangxinzhong
  * @date: 2019-09-03 下午5:26
  */
+@Slf4j
 @Component
 public class AesUtils {
 
@@ -55,17 +57,17 @@ public class AesUtils {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (BadPaddingException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         }
         return null;
     }
@@ -102,15 +104,15 @@ public class AesUtils {
             byte[] result = cipher.doFinal(byteRresult);
             return new String(result);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         } catch (BadPaddingException e) {
-            e.printStackTrace();
+            log.error(e.toString(),e);
         }
         return null;
     }
