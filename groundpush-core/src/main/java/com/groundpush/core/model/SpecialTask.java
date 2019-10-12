@@ -43,10 +43,10 @@ public class SpecialTask {
     //*************非数据库字段***************
 
     @ApiModelProperty(value = "任务标题")
-    public String taskTitle;
+    public String title;
 
     @ApiModelProperty(value = "客户登录名")
-    public String loginNo;
+    public String teamName;
 
     @ApiModelProperty(value = "创建人")
     public String createdName;

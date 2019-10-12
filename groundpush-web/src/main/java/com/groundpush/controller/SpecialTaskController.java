@@ -5,10 +5,12 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.SpecialTask;
-import com.groundpush.service.SpecialTaskService;
+import com.groundpush.core.model.TaskTeamList;
+import com.groundpush.core.service.SpecialTaskService;
+import com.groundpush.core.service.TaskService;
+import com.groundpush.core.service.TeamService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -29,6 +31,12 @@ public class SpecialTaskController {
 
     @Resource
     private SpecialTaskService specialTaskService;
+
+    @Resource
+    private TaskService taskService;
+
+    @Resource
+    private TeamService teamService;
 
 
 
@@ -102,4 +110,16 @@ public class SpecialTaskController {
         }
     }
 
+
+    @ApiOperation("获取所有任务、所有团队")
+    @GetMapping("/queryAllList")
+    @ResponseBody
+    public JsonResp queryAllList() {
+        try {
+            return JsonResp.success(new TaskTeamList(teamService.queryAllTeamList(),taskService.queryAllTaskList()));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
 }

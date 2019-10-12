@@ -3,7 +3,7 @@ package com.groundpush.mapper;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
-import com.groundpush.vo.CustomerVo;
+import com.groundpush.core.vo.CustomerVo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

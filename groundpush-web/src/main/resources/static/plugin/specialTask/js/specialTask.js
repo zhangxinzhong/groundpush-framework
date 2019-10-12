@@ -5,42 +5,24 @@ layui.use('table', function () {
     var ids = [];
     var myLinkData;
 
-    //自定义验证规则
-    form.verify({
-        name: function (value) {
-            if (value == null || value == undefined) {
-                return '角色名称不能为空';
-            }
-            if (value.length > 60) {
-                return '角色名称最大不可超过60个字符';
-            }
-        }
-        ,code: function (value) {
-            if (value == null || value == undefined) {
-                return '角色编码不能为空';
-            }
-            if (value.length > 60) {
-                return '角色编码最大不可超过60个字符';
-            }
-        }
-    });
+
 
     //触发事件
     let eventListener = {
         initTable: function(){
             table.render({
                 elem: '#special'
-                , url: '/role/queryAllRoles'
+                , url: '/specialTask/querySpecialTaskPage'
                 , toolbar: true
-                , title: 'role-data'
+                , title: 'special-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'specialTaskId', title: 'ID', width: 80, sort: true}
-                    , {field: 'taskTitle', title: '任务标题', width: 200}
-                    , {field: 'loginNo', title: '客户登录名', width: 200}
-                    , {field: 'createdName', title: '创建人', width: 200}
-                    , {field: '', title: '创建时间', width: 200,templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                    , {field: '', title: '操作', width: 200,toolbar: "#toolSpecial"}
+                    {field: 'specialTaskId', title: 'ID', width:'5%', sort: true}
+                    , {field: 'title' ,title: '任务标题', width: '20%'}
+                    , {field: 'teamName', title: '团队名称', width: '20%'}
+                    , {field: 'createdName', title: '创建人', width: '20%'}
+                    , {field: '', title: '创建时间', width: '20%',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    , {field: '', title: '操作', width: '15%',toolbar: "#toolSpecial"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE
@@ -60,7 +42,7 @@ layui.use('table', function () {
                     }
                 }
             });
-        }, reloadRoleTable:function() {
+        }, reloadSpecialTable:function() {
             table.reload('special', {
                 where: {
                     curr: 1
@@ -72,21 +54,39 @@ layui.use('table', function () {
             });
         }
         ,addSpecialTask:function(data) {
-            Utils.postAjax("/role/addRole",JSON.stringify(data.field),function(rep) {
+            Utils.postAjax("/specialTask/saveSpecialTask",JSON.stringify(data.field),function(rep) {
                 if(rep.code =='200'){
-                    eventListener.hideAddRoleDialog();
-                    eventListener.reloadRoleTable();
-                    layer.msg('角色添加成功！');
+                    eventListener.reloadSpecialTable();
+                    layer.msg('特殊任务添加成功！');
                 }
             },function (rep) {
                 layer.msg(rep.message);
             });
         }
+        ,showAddSpecialTask:function(data) {
+            Utils.getAjax("/specialTask/queryAllList",{},function(rep) {
+                //添加团队下拉列表
+                $('#teamId').append(new Option());
+                $.each(rep.data.teams, function (index, item) {
+                    $('#teamId').append(new Option(item.teamName, item.teamId));
+                });
+                //添加任务下拉列表
+                $('#taskId').append(new Option());
+                $.each(rep.data.tasks, function (index, item) {
+                    $('#taskId').append(new Option(item.title, item.taskId));
+                });
+                eventListener.showAddSpecialTaskDialog();
+                layui.form.render("select");
+
+            },function (rep) {
+                layer.msg(rep.message);
+            });
+        }
         ,delSpecialTask:function(data){
-            Utils.getAjax("/role/delRole",{roleId:data.roleId},function(rep) {
+            Utils.getAjax("/specialTask/delSpecialTask",{specialTaskId:data.specialTaskId},function(rep) {
                 if(rep.code =='200'){
-                    eventListener.reloadRoleTable();
-                    layer.msg("角色删除成功！");
+                    eventListener.reloadSpecialTable();
+                    layer.msg("特殊任务删除成功！");
                 }else{
                     layer.msg(rep.message);
                 }
@@ -95,11 +95,10 @@ layui.use('table', function () {
             });
         }
         ,publicSpecialTask:function(data) {
-            Utils.postAjax("/role/addRole",JSON.stringify(data.field),function(rep) {
+            Utils.getAjax("/specialTask/publicSpecialTask",{specialTaskId:data.specialTaskId,status:data.status},function(rep) {
                 if(rep.code =='200'){
-                    eventListener.hideAddRoleDialog();
-                    eventListener.reloadRoleTable();
-                    layer.msg('角色添加成功！');
+                    eventListener.reloadSpecialTable();
+                    layer.msg('特殊任务状态修改成功！');
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -131,6 +130,7 @@ layui.use('table', function () {
 
         }else if(obj.event === 'public'){
             layer.confirm('真的要发布此特殊任务关联么?',function(index){
+                data.status = 1;
                 eventListener.publicSpecialTask(data);
                 layer.close(index);
             });
@@ -141,9 +141,9 @@ layui.use('table', function () {
 
 
     //监听新增角色
-    form.on('submit(addRole)',function (data) {
+    form.on('submit(addSpecialTask)',function (data) {
         layui.form.render();
-        eventListener.addRole(data);
+        eventListener.addSpecialTask(data);
         //屏蔽表单提交
         return false;
     });

@@ -5,7 +5,6 @@ import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.CashOutLog;
 import com.groundpush.pay.model.AliPayResponse;
 import com.groundpush.service.CashOutLogService;
-import com.groundpush.service.CustomerAccountService;
 import com.groundpush.service.WithdrawService;
 import com.groundpush.vo.WithdrawVo;
 import lombok.extern.slf4j.Slf4j;

@@ -2,19 +2,17 @@ package com.groundpush.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.groundpush.core.condition.TaskCollectQueryCondition;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskCollect;
+import com.groundpush.core.service.TaskService;
 import com.groundpush.mapper.TaskCollectMapper;
 import com.groundpush.service.CustomerService;
 import com.groundpush.service.TaskCollectService;
-import com.groundpush.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
