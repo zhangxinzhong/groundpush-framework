@@ -26,7 +26,7 @@ public class Team {
     public Integer  teamId;
 
     @ApiModelProperty(value = "团队名称")
-    public Integer  teamName;
+    public String  teamName;
 
 
     @ApiModelProperty(value = "创建人id")
@@ -39,4 +39,11 @@ public class Team {
 
     @ApiModelProperty(value = "关联客户数")
     public Integer count;
+
+    @ApiModelProperty(value = "创建人")
+    public String createdName;
+
+    @ApiModelProperty(value = "客户id序列 格式：customerId1,customerId2")
+    private String ids;
+
 }

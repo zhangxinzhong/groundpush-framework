@@ -2,6 +2,7 @@ package com.groundpush.core.service;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.Team;
+import com.groundpush.core.model.TeamCustomer;
 
 import java.util.List;
 
@@ -42,4 +43,7 @@ public interface TeamService {
      * @return
      */
      List<Team> queryAllTeamList();
+
+
+     void relationCustomer(TeamCustomer teamCustomer);
 }

@@ -140,18 +140,18 @@ public class Task implements Serializable {
     private BigDecimal completeOdds;
 
     /**
-     * 完成人分成比
-     */
-    @NotNull(message = "完成人分成比不可以为空")
-    @JsonView(SimpleTaskView.class)
-    private BigDecimal ownerRatio;
-
-    /**
      * 推广人分成比
      */
     @NotNull(message = "推广人分成比")
     @JsonView(SimpleTaskView.class)
     private BigDecimal spreadRatio;
+
+    /**
+     * 推广人上级分成比
+     */
+    @NotNull(message = "推广人上级分成比")
+    @JsonView(SimpleTaskView.class)
+    private BigDecimal spreadParentRatio;
 
     /**
      * 团队领导分成比

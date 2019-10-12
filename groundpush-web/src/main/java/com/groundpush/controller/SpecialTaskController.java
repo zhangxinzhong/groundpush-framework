@@ -3,12 +3,14 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
+import com.groundpush.core.model.LoginUserInfo;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.SpecialTask;
 import com.groundpush.core.model.TaskTeamList;
 import com.groundpush.core.service.SpecialTaskService;
 import com.groundpush.core.service.TaskService;
 import com.groundpush.core.service.TeamService;
+import com.groundpush.utils.SessionUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * @description:任务
@@ -38,6 +41,9 @@ public class SpecialTaskController {
     @Resource
     private TeamService teamService;
 
+
+    @Resource
+    private SessionUtils sessionUtils;
 
 
     @RequestMapping("/toSpecialTask")
@@ -82,10 +88,10 @@ public class SpecialTaskController {
 
     @ResponseBody
     @ApiOperation("发布特殊任务服务")
-    @GetMapping("/publicSpecialTask")
-    public JsonResp publicSpecialTask(@RequestParam(value = "specialTaskId") Integer specialTaskId,@RequestParam(value = "status") Integer status) {
+    @GetMapping("/publishSpecialTask")
+    public JsonResp publishSpecialTask(@RequestParam(value = "specialTaskId") Integer specialTaskId,@RequestParam(value = "status") Integer status) {
         try {
-            specialTaskService.publicSpecialTask(specialTaskId,status);
+            specialTaskService.publishSpecialTask(specialTaskId,status);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -102,6 +108,8 @@ public class SpecialTaskController {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
         try {
+            Optional<LoginUserInfo> optional = sessionUtils.getLogin();
+            specialTask.setCreatedBy(optional.isPresent()?optional.get().getUser().getUserId():null);
             specialTaskService.saveSpecialTask(specialTask);
             return JsonResp.success();
         } catch (Exception e) {

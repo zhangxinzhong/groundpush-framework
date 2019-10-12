@@ -27,18 +27,17 @@ public interface TaskUriService {
     Boolean del(Integer taskId);
 
     /**
-     * 获取今天的为使用的uri
-     * @param taskId
-     * @return
-     */
-    Optional<TaskUri> queryValidTaskUriByTaskId(Integer taskId);
-
-    /**
      * 修改uri
      * @param taskUri
      */
     void updateTaskUri(TaskUri taskUri);
 
-    Optional<TaskUri> hasOneTaskUri(Integer taskId);
 
+
+    /**
+     * 获取今天的为使用的uri
+     * @param taskId
+     * @return
+     */
+    Optional<TaskUri> queryTaskUriByTaskId(Integer taskId);
 }

@@ -174,8 +174,8 @@ public class TaskServiceImpl implements TaskService {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             //获取 任务申请详情页面 或 任务推广页面 金额
-            BigDecimal ratio = Constants.TASK_TYPE_1.equals(taskType) ? task.getOwnerRatio() : task.getSpreadRatio();
-            task.setAppAmount(MathUtil.multiply(MathUtil.divide(ratio, Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
+
+            task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
 
             //任务添加属性
             addTaskAttr(task);
@@ -231,7 +231,7 @@ public class TaskServiceImpl implements TaskService {
     public Page<Task> addCount(Page<Task> list) {
         for (Task task : list) {
             BigDecimal amount = task.getAmount();
-            task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
+            task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
             task.setSurNumber(String.valueOf(task.getSpreadTotal() - Integer.valueOf(task.getTaskPerson())));
         }
         return list;

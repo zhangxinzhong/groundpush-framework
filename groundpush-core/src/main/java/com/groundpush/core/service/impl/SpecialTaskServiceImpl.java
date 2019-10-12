@@ -5,9 +5,12 @@ import com.github.pagehelper.PageHelper;
 import com.groundpush.core.mapper.SpecialTaskMapper;
 import com.groundpush.core.model.SpecialTask;
 import com.groundpush.core.service.SpecialTaskService;
+import com.groundpush.core.service.TeamCustomerService;
+import com.groundpush.core.service.TeamService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * SpecialTaskServiceImpl
@@ -21,9 +24,12 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     @Resource
     private SpecialTaskMapper specialTaskMapper;
 
+    @Resource
+    private TeamCustomerService teamCustomerService;
+
     @Override
     public Page<SpecialTask> querySpecialTaskPage(Integer page, Integer limit) {
-        PageHelper.startPage(page,limit);
+        PageHelper.startPage(page, limit);
         return specialTaskMapper.querySpecialTaskPage();
     }
 
@@ -33,12 +39,22 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     }
 
     @Override
-    public void publicSpecialTask(Integer specialTaskId, Integer status) {
-        specialTaskMapper.publicSpecialTask(specialTaskId,status);
+    public void publishSpecialTask(Integer specialTaskId, Integer status) {
+        specialTaskMapper.publishSpecialTask(specialTaskId,status);
     }
 
     @Override
     public void saveSpecialTask(SpecialTask specialTask) {
         specialTaskMapper.saveSpecialTask(specialTask);
+    }
+
+    @Override
+    public Boolean whetherSpecialTask(Integer taskId, Integer customId) {
+        List<Integer> teams = specialTaskMapper.querySpecialTaskByTaskIdReturnTeamId(taskId);
+
+        if(teams.size() > 0 ){
+            return teamCustomerService.existCustomerByTeam(teams, customId);
+        }
+        return Boolean.FALSE;
     }
 }

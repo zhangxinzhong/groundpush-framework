@@ -20,9 +20,14 @@ layui.use('table', function () {
                     {field: 'specialTaskId', title: 'ID', width:'5%', sort: true}
                     , {field: 'title' ,title: '任务标题', width: '20%'}
                     , {field: 'teamName', title: '团队名称', width: '20%'}
-                    , {field: 'createdName', title: '创建人', width: '20%'}
+                    , {field: 'createdName', title: '创建人', width: '15%'}
+                    , {field: '' ,title: '状态', width: '10%',
+                        templet:function (d) {
+                            return d.status == 1?'已发布':'未发布';
+                        }
+                     }
                     , {field: '', title: '创建时间', width: '20%',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                    , {field: '', title: '操作', width: '15%',toolbar: "#toolSpecial"}
+                    , {field: '', title: '操作', width: '10%',toolbar: "#toolSpecial"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE
@@ -56,6 +61,7 @@ layui.use('table', function () {
         ,addSpecialTask:function(data) {
             Utils.postAjax("/specialTask/saveSpecialTask",JSON.stringify(data.field),function(rep) {
                 if(rep.code =='200'){
+                    eventListener.hideAddSpecialTaskDialog();
                     eventListener.reloadSpecialTable();
                     layer.msg('特殊任务添加成功！');
                 }
@@ -94,8 +100,8 @@ layui.use('table', function () {
                 layer.msg(rep.message);
             });
         }
-        ,publicSpecialTask:function(data) {
-            Utils.getAjax("/specialTask/publicSpecialTask",{specialTaskId:data.specialTaskId,status:data.status},function(rep) {
+        ,publishSpecialTask:function(data) {
+            Utils.getAjax("/specialTask/publishSpecialTask",{specialTaskId:data.specialTaskId,status:data.status},function(rep) {
                 if(rep.code =='200'){
                     eventListener.reloadSpecialTable();
                     layer.msg('特殊任务状态修改成功！');
@@ -128,10 +134,10 @@ layui.use('table', function () {
                 layer.close(index);
             });
 
-        }else if(obj.event === 'public'){
+        }else if(obj.event === 'publish'){
             layer.confirm('真的要发布此特殊任务关联么?',function(index){
                 data.status = 1;
-                eventListener.publicSpecialTask(data);
+                eventListener.publishSpecialTask(data);
                 layer.close(index);
             });
         }

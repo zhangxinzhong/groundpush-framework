@@ -55,4 +55,14 @@ public interface CustomerService {
      * @return
      */
     Page<Customer> queryCustomerPage(Customer customer, Integer page, Integer limit);
+
+
+    /**
+     * 团队管理中获取所有客户列表
+     * @param key
+     * @param page
+     * @param limit
+     * @return
+     */
+    Page<Customer>  teamQueryAllCustomerPage(String key,Integer page,Integer limit);
 }

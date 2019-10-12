@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.mapper.TeamMapper;
 import com.groundpush.core.model.Team;
+import com.groundpush.core.model.TeamCustomer;
 import com.groundpush.core.service.TeamCustomerService;
 import com.groundpush.core.service.TeamService;
 import org.springframework.stereotype.Service;
@@ -47,4 +48,14 @@ public class TeamServiceImpl implements TeamService {
     public List<Team> queryAllTeamList() {
         return teamMapper.queryAllTeamList();
     }
+
+    @Override
+    public void relationCustomer(TeamCustomer teamCustomer) {
+        teamCustomerService.delTeamCustomerByTeamId(teamCustomer.getTeamId());
+        if(teamCustomer.getIds().size() > 0){
+            teamCustomerService.saveTeamCustomer(teamCustomer);
+        }
+    }
+
+
 }

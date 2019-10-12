@@ -6,6 +6,7 @@ import com.groundpush.core.service.TeamCustomerService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TeamCustomerServiceImpl
@@ -29,11 +30,17 @@ public class TeamCustomerServiceImpl implements TeamCustomerService {
         teamCustomerMapper.saveTeamCustomer(teamCustomer);
     }
 
+
     @Override
     public void delTeamCustomerByTeamId(Integer teamId) {
         teamCustomerMapper.delTeamCustomerByTeamId(teamId);
     }
 
+    @Override
+    public Boolean existCustomerByTeam(List<Integer> teams, Integer customId) {
+        List<Integer> customerIds = teamCustomerMapper.queryCustomerByTeamReturnCustomerId(teams);
+        return customerIds.contains(customId);
+    }
 
 
 }

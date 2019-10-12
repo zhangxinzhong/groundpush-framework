@@ -193,20 +193,19 @@ public class Constants {
     public static final String INIT_USER_PASSWORD = "Abcd112233";
     /**
      * 二维码key 前缀
-     *
      */
-    public static final  String CODE_KEY_PREFIX = "code_key_";
+    public static final String CODE_KEY_PREFIX = "code_key_";
 
     /**
      * 菜单默认父级id
      */
-    public static final  Integer MENU_PARENT_ID = 0;
+    public static final Integer MENU_PARENT_ID = 0;
 
 
-     /** 用于二维码key的加密key
-     *
+    /**
+     * 用于二维码key的加密key
      */
-    public static final  String APP_AES_KEY = "appAesKey";
+    public static final String APP_AES_KEY = "appAesKey";
 
 
     /**
@@ -251,51 +250,50 @@ public class Constants {
 
 
     /**
-     *上传图片
+     * 上传图片
      */
     public static final Integer UPLOAD_STATUS_2 = 2;
 
     /**
-     *上传头像
+     * 上传头像
      */
     public static final Integer UPLOAD_STATUS_3 = 3;
 
     /**
-     *任务类型  申请1 用于app
+     * 任务类型  申请1 用于app
      */
     public static final Integer TASK_TYPE_1 = 1;
 
 
     /**
-     *任务类型  推广2 用于app
+     * 任务类型  推广2 用于app
      */
     public static final Integer TASK_TYPE_2 = 2;
 
     /**
-     *渠道文件导入 是否有效字段  1表示有效
+     * 渠道文件导入 是否有效字段  1表示有效
      */
-    public static final Integer  XLS_IS_EFFECTIVE_VAILD = 1;
+    public static final Integer XLS_IS_EFFECTIVE_VAILD = 1;
 
     /**
-     *渠道文件导入 是否有效字段  0表示无效
+     * 渠道文件导入 是否有效字段  0表示无效
      */
-    public static final Integer  XLS_IS_EFFECTIVE_INVAILD = 0;
+    public static final Integer XLS_IS_EFFECTIVE_INVAILD = 0;
 
     /**
-     *渠道文件导入 是否有效字段 文字表示
+     * 渠道文件导入 是否有效字段 文字表示
      */
-    public static final String  XLS_IS_EFFECTIVE_VAILD_TEXT = "是";
+    public static final String XLS_IS_EFFECTIVE_VAILD_TEXT = "是";
 
     /**
-     *渠道文件导入 是否有效字段  文字表示
+     * 渠道文件导入 是否有效字段  文字表示
      */
-    public static final String  XLS_IS_EFFECTIVE_INVAILD_TEXT = "否";
+    public static final String XLS_IS_EFFECTIVE_INVAILD_TEXT = "否";
 
     /**
      * 用于微信页面跳转
-     *
      */
-    public static final  String WX_PAGE_TOKEN = "wx_token_";
+    public static final String WX_PAGE_TOKEN = "wx_token_";
 
     /**
      * 微信二次跳转页面过期时间 单位秒
@@ -305,9 +303,7 @@ public class Constants {
     /**
      * 微信二次跳转页面加密key
      */
-    public static final  String WX_AES_TOKEN = "wxAesToken";
-
-
+    public static final String WX_AES_TOKEN = "wxAesToken";
 
 
     /**
@@ -335,4 +331,6 @@ public class Constants {
      * 用于比较
      */
     public static final Integer ZROE = 0;
+
+    public static final Integer ONE = 1;
 }
