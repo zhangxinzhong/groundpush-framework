@@ -108,6 +108,7 @@ public class Customer implements Serializable {
 
 
     @ApiModelProperty(value = "分成金额")
+    @JsonView(DetailCustomerView.class)
     private BigDecimal bonusAmount;
 
 }

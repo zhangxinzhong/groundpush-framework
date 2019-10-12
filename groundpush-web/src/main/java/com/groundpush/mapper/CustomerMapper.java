@@ -79,13 +79,14 @@ public interface CustomerMapper {
     @Select(" select c.* from t_customer c inner join t_customer_account ca on ca.customer_id= c.customer_id where ca.login_no = #{loginNo} ")
     Optional<Customer> queryCustomerByLoginNo(@Param("loginNo") String loginNo);
 
-    void updateCustomerInviteCode(String inviteCode, Integer customerId);
+    @Update(" update  t_customer c set  c.invite_code =#{inviteCode},c.last_modified_time= current_timestamp where c.customer_id=#{customerId} ")
+    void updateCustomerInviteCode(@Param("inviteCode") String inviteCode,@Param("customerId") Integer customerId);
 
     @Select({
             "<script>",
-            " select * from t_customer where 1=1  ",
-            " <if test='nickName != null'> and instr(nick_name,#{nickName})  </if> ",
-            " order by created_time desc ",
+            " select tc.*,tca.amount bonusAmount from t_customer tc JOIN t_customer_account tca ON tc.customer_id = tca.customer_id where 1=1  ",
+            " <if test='nickName != null'> and instr(tc.nick_name,#{nickName})  </if> ",
+            " order by tc.created_time desc ",
             "</script>"
     })
     Page<Customer> queryCustomerPage(Customer customer);

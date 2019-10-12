@@ -3,52 +3,23 @@ layui.use(['table', 'form', 'layer'], function () {
     var form = layui.form;
     var layer = layui.layer;
 
-    //自定义验证规则
-    form.verify({
-        uriCode: function (value) {
-            if (Utils.isEmpty(value)) {
-                return '字典编码不可为空';
-            }
-            var message;
-            Utils.getAjax("/uri", {code: value}, function (rep) {
-                if (rep.code == '200' && !Utils.isEmptyArray(rep.data.rows)) {
-                    message = '字典编码已经存在';
-                }
-            }, function (rep) {
-                console.log(rep);
-            });
-            return message;
-        }, uriDetailCode: function (value) {
-            if (Utils.isEmpty(value)) {
-                return '字典项编码不可为空';
-            }
-            var message;
-            var uriId = $("#uriId").val();
-            Utils.getAjax("/uri/" + uriId + "/uriDetail", {code: value}, function (rep) {
-                if (rep.code == '200' && !Utils.isEmptyArray(rep.data.rows)) {
-                    message = '字典项编码已经存在';
-                }
-            }, function (rep) {
-                console.log(rep);
-            });
-            return message;
-        }
-    });
-
     //触发事件
     var eventListener = {
-        initUriTable: function () {
+        initCustomerTable: function () {
             table.render({
-                elem: '#uri'
-                , url: '/uri/getUriPageList'
-                , toolbar: '#toolbarUri'
-                , title: 'uri-data'
+                elem: '#customer'
+                , url: '/customer/getCustomerPageList'
+                , toolbar: '#toolbarCustomer'
+                , title: 'customer-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'uriId', title: 'ID', width: 100, sort: true}
-                    , {field: 'uriName', title: 'URI名称', width: 300}
-                    , {field: 'uriPattern', title: 'URI地址', width: 300}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarUriOperation"}
+                    {field: 'customerId', title: 'ID', width: 100, sort: true}
+                    , {field: 'nickName', title: '客户昵称', width: 100}
+                    , {field: 'status', title: '状态', width: 100}
+                    , {field: 'inviteCode', title: '邀请码', width: 200}
+                    , {field: 'reputation', title: '信誉值', width: 100}
+                    , {field: 'bonusAmount', title: '帐户余额', width: 100}
+                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarCustomerOperation"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
@@ -69,8 +40,8 @@ layui.use(['table', 'form', 'layer'], function () {
                     }
                 }
             });
-        }, reloadUriTable: function () {
-            table.reload('uri', {
+        }, reloadCustomerTable: function () {
+            table.reload('customer', {
                 where: {
                     curr: 1
                     , limit: Global.PAGE_SISE
@@ -80,122 +51,122 @@ layui.use(['table', 'form', 'layer'], function () {
                 }
             });
         },
-        saveUri: function (data) {
-            Utils.postAjax("/uri/save", JSON.stringify(data.field), function (rep) {
+        saveCustomer: function (data) {
+            Utils.postAjax("/customer/createCustomer", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
-                    eventListener.hideAddUriDialog();
-                    eventListener.reloadUriTable();
-                    layer.msg('URI添加成功');
+                    eventListener.hideAddCustomerDialog();
+                    eventListener.reloadCustomerTable();
+                    layer.msg('客户添加成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
-        }, editUri: function (data) {
-            Utils.putAjax("/uri/save", JSON.stringify(data.field), function (rep) {
+        }, editCustomer: function (data) {
+            Utils.putAjax("/customer/save", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
-                    eventListener.hideEditUriDialog();
-                    eventListener.reloadUriTable();
-                    layer.msg('URI添加成功');
+                    eventListener.hideEditCustomerDialog();
+                    eventListener.reloadCustomerTable();
+                    layer.msg('客户添加成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
         }
-        , showUri: function (data) {
-            Utils.getAjax("/uri/getUri/" + data.uriId, null, function (rep) {
+        , showCustomer: function (data) {
+            Utils.getAjax("/customer/getCustomer/" + data.customerId, null, function (rep) {
                 console.log(rep);
                 if (rep.code == '200') {
-                    form.val("editUriForm", {
-                        "uriId": rep.data.uriId
-                        , "uriName": rep.data.uriName
-                        , "uriPattern": rep.data.uriPattern
+                    form.val("editCustomerForm", {
+                        "customerId": rep.data.customerId
+                        , "customerName": rep.data.customerName
+                        , "customerPattern": rep.data.customerPattern
                     })
-                    eventListener.showEditUriDialog();
+                    eventListener.showEditCustomerDialog();
                 }
             }, function (rep) {
                 //layer.msg(rep.message);
             });
-        }, delUri: function (data) {
-            Utils.deleteAjax("/uri/del", {uriId: data.uriId}, function (rep) {
+        }, delCustomer: function (data) {
+            Utils.deleteAjax("/customer/del", {customerId: data.customerId}, function (rep) {
                 if (rep.code == '200') {
-                    eventListener.reloadUriTable();
-                    layer.msg("URI删除成功");
+                    eventListener.reloadCustomerTable();
+                    layer.msg("客户删除成功");
                 }
             }, function (rep) {
                 layer.msg(rep.message);
             });
         }
-        , showAddUriDialog: function () {
-            $('#addUriDialog').modal('show');
+        , showAddCustomerDialog: function () {
+            $('#addCustomerDialog').modal('show');
         }
-        , hideAddUriDialog: function () {
-            $('#addUriDialog').modal('hide');
-            $('#addUriForm')[0].reset();
-        }, showEditUriDialog: function () {
-            $('#editUriDialog').modal('show');
+        , hideAddCustomerDialog: function () {
+            $('#addCustomerDialog').modal('hide');
+            $('#addCustomerForm')[0].reset();
+        }, showEditCustomerDialog: function () {
+            $('#editCustomerDialog').modal('show');
         }
-        , hideEditUriDialog: function () {
-            $('#editUriDialog').modal('hide');
+        , hideEditCustomerDialog: function () {
+            $('#editCustomerDialog').modal('hide');
         }
     };
 
-    eventListener.initUriTable();
+    eventListener.initCustomerTable();
 
-    table.on('tool(uri)', function (obj) {
+    table.on('tool(customer)', function (obj) {
         var data = obj.data;
-        if (obj.event === 'editUri') {
-            eventListener.showUri(data);
-        } else if (obj.event === 'delUri') {
+        if (obj.event === 'editCustomer') {
+            eventListener.showCustomer(data);
+        } else if (obj.event === 'delCustomer') {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
-                eventListener.delUri(data);
+                eventListener.delCustomer(data);
                 layer.close(index);
             });
-        } else if (obj.event === 'showUriDetailListDialog') {
-            $("#uriId").val(data.uriId);
-            eventListener.showUriDetailListDialog(data);
-            eventListener.initUriDetailTable(data);
+        } else if (obj.event === 'showCustomerDetailListDialog') {
+            $("#customerId").val(data.customerId);
+            eventListener.showCustomerDetailListDialog(data);
+            eventListener.initCustomerDetailTable(data);
         }
     });
 
-    table.on('toolbar(uri)', function (obj) {
+    table.on('toolbar(customer)', function (obj) {
         var data = obj.data;
-        if (obj.event === 'showAddUriDialog') {
-            eventListener.showAddUriDialog(data);
+        if (obj.event === 'showAddCustomerDialog') {
+            eventListener.showAddCustomerDialog(data);
         }
     });
 
-    table.on('tool(uriDetail)', function (detailObj) {
+    table.on('tool(customerDetail)', function (detailObj) {
         var data = detailObj.data;
-        if (detailObj.event === 'editUriDetail') {
-            eventListener.showUriDetail(data);
-        } else if (detailObj.event === 'delUriDetail') {
+        if (detailObj.event === 'editCustomerDetail') {
+            eventListener.showCustomerDetail(data);
+        } else if (detailObj.event === 'delCustomerDetail') {
             layer.confirm('真的删除行么', function (index) {
                 detailObj.del();
-                eventListener.delUriDetail(data);
+                eventListener.delCustomerDetail(data);
                 layer.close(index);
             });
         }
     });
 
-    table.on('toolbar(uriDetail)', function (obj) {
+    table.on('toolbar(customerDetail)', function (obj) {
         var data = obj.data;
-        if (obj.event === 'showUriDetailDialog') {
-            eventListener.showAddUriDetailDialog(data);
+        if (obj.event === 'showCustomerDetailDialog') {
+            eventListener.showAddCustomerDetailDialog(data);
         }
     });
 
 
-    //保存Uri
-    form.on('submit(addUri)', function (data) {
-        eventListener.saveUri(data);
+    //保存Customer
+    form.on('submit(addCustomer)', function (data) {
+        eventListener.saveCustomer(data);
         //屏蔽表单提交
         return false;
     });
 
     //保存字典
-    form.on('submit(editUri)', function (data) {
-        eventListener.editUri(data);
+    form.on('submit(editCustomer)', function (data) {
+        eventListener.editCustomer(data);
         //屏蔽表单提交
         return false;
     });

@@ -48,7 +48,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
     }
 
     @Override
-    public void createCustomerAccount(CustomerAccount build) {
-
+    public void createCustomerAccount(CustomerAccount customerAccount) {
+        customerAccountMapper.createCustomerAccount(customerAccount);
     }
 }

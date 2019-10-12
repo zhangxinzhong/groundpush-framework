@@ -65,7 +65,7 @@ public class CustomerController {
     }
 
     @ApiOperation(value = "更新客登录账号、头像及客户父子关系")
-    @PutMapping
+    @RequestMapping("/updateCustomer")
     public JsonResp updateCustomer(@Valid @RequestBody CustomerVo customerVo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -77,11 +77,8 @@ public class CustomerController {
 
 
     @ApiOperation(value = "创建客户")
-    @PostMapping
-    public JsonResp createCustomer(@Valid @RequestBody Customer customer, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
-        }
+    @RequestMapping("/createCustomer")
+    public JsonResp createCustomer(@RequestBody Customer customer) {
         customerService.createCustomer(customer);
         return JsonResp.success();
     }

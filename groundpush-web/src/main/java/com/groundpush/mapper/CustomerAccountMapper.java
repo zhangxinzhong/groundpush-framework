@@ -33,4 +33,12 @@ public interface CustomerAccountMapper {
 
     @Update(" update t_customer_account set amount=#{amount} where customer_id=#{customerId} ")
     void updateCustomerAccount(CustomerAccount build);
+
+    /**
+     * 创建客户账户信息
+     *
+     * @param customerAccount
+     */
+    @Insert(" insert into t_customer_account(customer_id,created_time) values (#{customerId},current_timestamp) ")
+    void createCustomerAccount(CustomerAccount customerAccount);
 }

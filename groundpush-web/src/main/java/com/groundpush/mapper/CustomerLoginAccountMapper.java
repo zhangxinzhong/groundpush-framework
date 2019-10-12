@@ -22,7 +22,7 @@ public interface CustomerLoginAccountMapper {
      *
      * @param customerLoginAccount
      */
-    @Insert(" insert into t_customer_login_account (customer_id, login_no, password, amount, type, created_time) values (#{customerId},#{loginNo},#{password},#{amount},#{type},current_timestamp); ")
+    @Insert(" insert into t_customer_login_account (customer_id, login_no, name, password, type, created_time) values (#{customerId},#{loginNo},#{name},#{password},#{type},current_timestamp) ")
     void createCustomerLoginAccount(CustomerLoginAccount customerLoginAccount);
 
     /**
