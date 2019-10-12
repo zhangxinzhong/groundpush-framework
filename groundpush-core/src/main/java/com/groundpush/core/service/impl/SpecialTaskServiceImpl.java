@@ -39,8 +39,8 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     }
 
     @Override
-    public void publicSpecialTask(Integer specialTaskId, Integer status) {
-        specialTaskMapper.publicSpecialTask(specialTaskId, status);
+    public void publishSpecialTask(Integer specialTaskId, Integer status) {
+        specialTaskMapper.publishSpecialTask(specialTaskId,status);
     }
 
     @Override

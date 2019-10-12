@@ -2,8 +2,12 @@ layui.use('table', function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
-    var ids = [];
-    var myLinkData;
+    //关联客户list
+    let ids = [];
+    //团队id
+    let teamId;
+    //modal框中当前客户idlist
+    let myLinkData;
 
     //自定义验证规则
     form.verify({
@@ -73,7 +77,7 @@ layui.use('table', function () {
                 if(rep.code =='200'){
                     eventListener.hideAddTeamDialog();
                     eventListener.reloadTeamTable();
-                    layer.msg('角色添加成功！');
+                    layer.msg('团队添加成功！');
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -83,7 +87,7 @@ layui.use('table', function () {
             Utils.getAjax("/team/delTeam",{teamId:data.teamId},function(rep) {
                 if(rep.code =='200'){
                     eventListener.reloadTeamTable();
-                    layer.msg('角色删除成功！');
+                    layer.msg('团队删除成功！');
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -93,16 +97,16 @@ layui.use('table', function () {
 
             table.render({
                 elem: '#relation'
-                , url: data.urls
+                , url: '/team/queryAllCustomers'
                 , toolbar: '#teamCustomConfirm'
                 , title: 'view-data'
                 , totalRow: true
                 , cols: [[
                     {type:'checkbox', width: '10%'}
-                    , {field: 'customerId', title: '客户ID', width: '25%'}
-                    , {field: 'loginNo', title: '登录账号', width: '25%'}
-                    , {field: 'nickName', title: '昵称', width: '25%'}
-                    , {field: '', title: '创建时间', width: '15%',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    , {field: 'customerId', title: '客户ID', width: '10%'}
+                    , {field: 'loginNo', title: '登录账号', width: '30%'}
+                    , {field: 'nickName', title: '昵称', width: '30%'}
+                    , {field: '', title: '创建时间', width: '20%',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
                 ]]
                 ,page: true,curr:1, limit: Global.PAGE_SISE
                 , response:
@@ -112,10 +116,11 @@ layui.use('table', function () {
                 ,
                 parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                     if(!Utils.isEmpty(res)){
-                        var datas = res.data.rows;
-                        var newDatas = [];
-                        for(var i in datas){
-                            var id = datas[i].customerId;
+
+                        let datas = res.data.rows;
+                        let newDatas = [];
+                        for(let i in datas){
+                            let id = datas[i].customerId;
                             if(ids.indexOf(id) > -1){
                                 datas[i].LAY_CHECKED = true;
                             }else{
@@ -149,10 +154,11 @@ layui.use('table', function () {
             });
         }
         ,addCustomer:function(data) {
-            Utils.postAjax(data.urls,JSON.stringify(data),function(rep) {
+            Utils.postAjax('/team/relationCustomer',JSON.stringify(data),function(rep) {
                 if(rep.code =='200'){
                     eventListener.reloadTeamTable();
-                    layer.msg("关联成功");
+                    eventListener.hideRelationDialog();
+                    layer.msg("客户关联成功");
                 }else{
                     layer.msg(rep.message);
                 }
@@ -161,21 +167,24 @@ layui.use('table', function () {
             });
 
         }
-        // 添加角色modal
+        // 添加团队modal
         ,showAddTeamDialog: function(){
             $('#addTeamDialog').modal('show');
         }
         ,hideAddTeamDialog: function(){
             $('#addTeamDialog').modal('hide');
         }
+        // 添加客户关联
+        ,showRelatioDialog: function(){
+            $('#relationCustomDialog').modal('show');
+        }
+        ,hideRelationDialog: function(){
+            $('#relationCustomDialog').modal('hide');
+        }
 
     };
 
     eventListener.initTable();
-
-
-
-
 
 
 
@@ -187,19 +196,33 @@ layui.use('table', function () {
                 eventListener.delTeam(data);
                 layer.close(index);
             });
+        }else if (obj.event === 'viewUser') {
+            ids = [];
+            if(data.ids != null && data.ids !=''){
+                let customerIds = data.ids.split(',');
+                for(let d in customerIds){
+                    ids.push(parseInt(customerIds[d]));
+                }
+            }
+
+            teamId = data.teamId;
+            eventListener.showRelatioDialog();
+            eventListener.showView(data);
         }
     });
 
 
     //监听关联table工具栏
     table.on('toolbar(relation)', function (obj) {
-        var data = {};
+        let data = {};
         if(obj.event === 'addCustomer'){
+            data.ids = ids;
+            data.teamId = teamId;
             eventListener.addCustomer(data);
         }
     });
 
-    //监听新增角色
+    //监听新增团队
     form.on('submit(addTeam)',function (data) {
         layui.form.render();
         eventListener.addTeam(data);
@@ -230,7 +253,7 @@ layui.use('table', function () {
 
         } else if(obj.type == 'one') {
             // 单行复选框切换（当单行和全选同时 选中行数据解决采用行监听事件获取 ）
-            let id = item.customerId;
+            let id = obj.data.customerId;
             if(obj.checked){
                 if(ids.indexOf(id) == -1){
                     ids.push(id);

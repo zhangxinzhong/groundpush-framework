@@ -161,4 +161,12 @@ public class CustomerServiceImpl implements CustomerService {
     private String generateNickName() {
         return Constants.CUSTOMER_NIKE_NAME;
     }
+
+
+    @Override
+    public Page<Customer>  teamQueryAllCustomerPage(String key,Integer page,Integer limit){
+        PageHelper.startPage(page,limit);
+        return customerMapper.teamQueryAllCustomerPage(key);
+    }
+
 }

@@ -664,5 +664,33 @@ alter table t_task add column spread_parent_ratio decimal(8,2) DEFAULT NULL;\
 alter table t_task drop column owner_ratio;
 
 
+-- 特殊任务表
+DROP TABLE IF EXISTS `t_special_task`;
+CREATE TABLE `t_special_task` (
+  `special_task_id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(20) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_time` datetime DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL,
+  `task_id` int(20) DEFAULT NULL,
+  PRIMARY KEY (`special_task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 团队表
+DROP TABLE IF EXISTS `t_team`;
+CREATE TABLE `t_team` (
+  `team_id` int(20) NOT NULL AUTO_INCREMENT,
+  `team_name` varchar(500) DEFAULT NULL,
+  `created_by` int(20) DEFAULT NULL,
+  `created_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`team_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+-- 团队客户关联表
+DROP TABLE IF EXISTS `t_team_customer`;
+CREATE TABLE `t_team_customer` (
+  `team_id` int(20) DEFAULT NULL,
+  `customer_id` int(20) DEFAULT NULL,
+  `created_by` int(20) DEFAULT NULL,
+  `created_time` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

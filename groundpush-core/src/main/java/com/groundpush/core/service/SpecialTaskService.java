@@ -32,7 +32,7 @@ public interface SpecialTaskService {
      * @param specialTaskId
      * @param status
      */
-     void publicSpecialTask(Integer specialTaskId,Integer status);
+     void publishSpecialTask(Integer specialTaskId,Integer status);
 
     /**
      * 新增特殊任务
