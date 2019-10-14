@@ -41,4 +41,6 @@ public interface CustomerLoginAccountService {
      * @return
      */
     Optional<CustomerLoginAccount> get(Integer customerLoginAccountId);
+
+    Boolean updateCustomerLoginAccountLoginNo(CustomerLoginAccount customerLoginAccount);
 }

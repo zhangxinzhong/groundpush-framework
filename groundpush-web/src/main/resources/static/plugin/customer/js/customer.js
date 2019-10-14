@@ -152,16 +152,35 @@ layui.use(['table', 'form', 'layer'], function () {
         },ShowEditCustomerLoginAccount:function (data) {
             Utils.getAjax("/customer/getCustomerLoginAccountById/" + data.customerLoginAccountId, null, function (rep) {
                 console.log(rep);
+                console.log(rep.data.loginNo);
                 if (rep.code == '200') {
-                    form.val("editCustomerForm", {
-                        "customerId": rep.data.customerId
-                        , "nickName": rep.data.nickName
-                        , "inviteCode": rep.data.inviteCode
+                    form.val("saveCustomerLoginAccountForm", {
+                        "loginNo": rep.data.loginNo,
+                        "type": rep.data.type,
+                        "customerLoginAccountId": rep.data.customerLoginAccountId
                     })
-                    eventListener.showEditCustomerDialog();
+                    eventListener.showEditCustomerLoginAccount();
                 }
             }, function (rep) {
                 //layer.msg(rep.message);
+            });
+        },showEditCustomerLoginAccount:function () {
+            $('#saveCustomerLoginAccount').modal('show');
+        },hideEditCustomerLoginAccount:function () {
+            $('#saveCustomerLoginAccount').modal('hide');
+        },saveCustomerLoginAccount: function (data) {
+            console.log(data);
+            Utils.putAjax("/customer/updateCustomerLoginAccountLoginNo", JSON.stringify(data.field), function (rep) {
+                console.log(rep);
+                if (rep.code == '200') {
+                    eventListener.hideEditCustomerLoginAccount();
+                    //重新加载父页面
+                    location.reload();
+                    //eventListener.ShowEditCustomerLoginAccount(rep.data);
+                    layer.msg('客户登入帐号信息修改成功');
+                }
+            }, function (rep) {
+                layer.msg(rep.message);
             });
         }
     };
@@ -191,30 +210,9 @@ layui.use(['table', 'form', 'layer'], function () {
     });
 
     table.on('tool(customerLoginAccountTable)', function (obj) {
-        alert(123);
         var data = obj.data;
         if (obj.event === 'editCustomerLoginAccount') {
             eventListener.ShowEditCustomerLoginAccount(data);
-        }
-    });
-
-    table.on('tool(customerDetail)', function (detailObj) {
-        var data = detailObj.data;
-        if (detailObj.event === 'editCustomerDetail') {
-            eventListener.showCustomerDetail(data);
-        } else if (detailObj.event === 'delCustomerDetail') {
-            layer.confirm('真的删除行么', function (index) {
-                detailObj.del();
-                eventListener.delCustomerDetail(data);
-                layer.close(index);
-            });
-        }
-    });
-
-    table.on('toolbar(customerDetail)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'showCustomerDetailDialog') {
-            eventListener.showAddCustomerDetailDialog(data);
         }
     });
 
@@ -229,6 +227,12 @@ layui.use(['table', 'form', 'layer'], function () {
     //保存字典
     form.on('submit(editCustomer)', function (data) {
         eventListener.editCustomer(data);
+        //屏蔽表单提交
+        return false;
+    });
+
+    form.on('submit(saveCustomerLoginAccount)', function (data) {
+        eventListener.saveCustomerLoginAccount(data);
         //屏蔽表单提交
         return false;
     });

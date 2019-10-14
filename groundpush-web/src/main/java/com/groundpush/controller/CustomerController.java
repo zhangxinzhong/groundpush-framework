@@ -104,4 +104,13 @@ public class CustomerController {
         Optional<CustomerLoginAccount> optionalCustomerLoginAccount = customerLoginAccountService.get(customerLoginAccountId);
         return JsonResp.success(optionalCustomerLoginAccount.isPresent() ? optionalCustomerLoginAccount.get() : null);
     }
+
+    @ApiOperation(value = "更新客户登入帐号信息")
+    @JsonView(Customer.DetailCustomerView.class)
+    @RequestMapping("/updateCustomerLoginAccountLoginNo")
+    @ResponseBody
+    public JsonResp updateCustomerLoginAccountLoginNo(@RequestBody CustomerLoginAccount customerLoginAccount) {
+        customerLoginAccountService.updateCustomerLoginAccountLoginNo(customerLoginAccount);
+        return JsonResp.success(customerLoginAccount);
+    }
 }
