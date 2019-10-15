@@ -660,7 +660,7 @@ CREATE TABLE `t_user_account` (
 
 alter table t_channel_excel add column channel_time datetime;
 alter table t_order add column is_special tinyint(1) DEFAULT NULL;
-alter table t_task add column spread_parent_ratio decimal(8,2) DEFAULT NULL;\
+alter table t_task add column spread_parent_ratio decimal(8,2) DEFAULT NULL;
 alter table t_task drop column owner_ratio;
 
 
