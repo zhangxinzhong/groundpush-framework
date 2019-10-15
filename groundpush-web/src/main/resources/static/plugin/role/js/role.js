@@ -31,36 +31,39 @@ layui.use('table', function () {
             table.render({
                 elem: '#role'
                 , url: '/role/queryAllRoles'
+                ,done: function (res, curr, count) {
+                    $("#roleDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'role-data'
                 , totalRow: true
                 , cols: [[
-                      {field: 'roleId', title: 'ID', width: 80, sort: true}
-                    , {field: 'name', title: '角色名称', width: 200}
-                    , {field: 'code', title: '角色编码', width: 200}
-                    , {field: '', title: '角色状态', width: 119,
+                      {field: 'roleId', title: 'ID', sort: true}
+                    , {field: 'name', title: '角色名称'}
+                    , {field: 'code', title: '角色编码'}
+                    , {field: '', title: '角色状态',
                       templet: function(d){
                              return d.status == 1?"有效":"无效";
                          }
                       }
-                    , {field: '', title: '关联用户数', width: 160,
+                    , {field: '', title: '关联用户数',
                           templet: function(d){
                                  return '<a class="layui-table-link" lay-event="viewUser">' + d.userNum + "</a>";
                           }
                       }
-                    , {field: '', title: '关联权限数', width: 160,
+                    , {field: '', title: '关联权限数',
                         templet: function(d){
                                 return '<a class="layui-table-link" lay-event="viewPrivilege">' + d.privilegeNum + "</a>";
                         }
                       }
-                    , {field: '', title: '关联菜单数', width: 160,
+                    , {field: '', title: '关联菜单数',
                         templet: function(d){
                                 return '<a class="layui-table-link" lay-event="viewMenu">' + d.menuNum + "</a>";
                         }
                       }
-                    , {field: 'createdName', title: '创建人', width: 200}
-                    , {field: 'lastModifyedName', title: '修改人', width: 200}
-                    , {field: '', title: '操作', width: 200,toolbar: "#toolRole"}
+                    , {field: 'createdName', title: '创建人'}
+                    , {field: 'lastModifyedName', title: '修改人'}
+                    , {field: '', title: '操作',toolbar: "#toolRole"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE

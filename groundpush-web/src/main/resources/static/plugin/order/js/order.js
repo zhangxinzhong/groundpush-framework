@@ -21,45 +21,48 @@ layui.use('table', function () {
             table.render({
                 elem: '#order'
                 , url: '/order/queryOrderByKeys'
+                ,done: function (res, curr, count) {
+                    $("#orderDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'order-data'
                 , totalRow: true
                 , cols: [[
-                      {field: 'orderId', title: 'ID', width: 80, sort: true}
-                    , {field: '', title: '订单编号', width: 300,
+                      {field: 'orderId', title: 'ID',  sort: true}
+                    , {field: '', title: '订单编号',
                         templet: function(d){
                             return  '<a class="layui-table-link" lay-event="viewOrderBonusList">' + d.orderNo + "</a>";
                         }
                       }
-                    , {field: 'channelUri', title: '渠道URI', width: 260}
-                    , {field: 'status', title: '订单状态', width: 100,
+                    //, {field: 'channelUri', title: '渠道URI'}
+                    , {field: 'status', title: '订单状态',
                           templet: function(d){
                             return   d.status == 1?'已通过':(d.status==3?'审核中':(d.status==4?'审核不通过':'待审核'));
                           }
                       }
-                    , {field: '', title: '订单结算金额', width: 120,
+                    , {field: '', title: '订单结算金额',
                          templet: function(d){
                                  return   d.settlementAmount == null?'0.00':d.settlementAmount;
                               }
                           }
-                    , {field: 'settlementStatus', title: '订单结算状态', width: 120,
+                    , {field: 'settlementStatus', title: '订单结算状态',
                          templet: function(d){
                              return   d.settlementStatus == 1?'已通过':(d.settlementStatus==3?'审核中':(d.settlementStatus==4?'审核失败':'待审核'));
                           }
                        }
-                    , {field: '', title: '订单创建时间', width: 200,
+                    , {field: '', title: '订单创建时间',
                             templet: function(d){
                                 return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss");
                             }
                        }
-                    , {field: 'nickName', title: '客户', width: 100}
-                    , {field: 'bonusAmount', title: '订单分成', width: 100}
-                    , {field: '', title: '订单分成类型', width: 150,
+                    , {field: 'nickName', title: '客户'}
+                    , {field: 'bonusAmount', title: '订单分成'}
+                    , {field: '', title: '订单分成类型',
                           templet: function(d){
                                return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导');
                           }
                       }
-                    , {field: '', title: '操作', width: 148,toolbar: "#toolbarOrder"}
+                    , {field: '', title: '操作', toolbar: "#toolbarOrder"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE
@@ -112,18 +115,22 @@ layui.use('table', function () {
         ,showOrderBonusList:function (data) {
             table.render({
                 elem: '#orderBonus'
+                ,cellMinWidth: 200
                 , url: '/order/queryOrderBonus'
+                ,done: function (res, curr, count) {
+                    $("#orderBonusDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'orderBonus-data'
                 , totalRow: true
                 , where:{'orderId':data.orderId}
                 , cols: [[
-                      {field: 'bonusId', title: 'ID', width: 180, sort: true}
-                    , {field: 'customerLoginNo', title: '客户', width: 200}
-                    , {field: 'bonusCustomerLoginNo', title: '推广人', width: 100}
-                    , {field: 'bonusAmount', title: '客户分成金额', width: 100}
-                    , {field: '', title: '订单分成类型', width: 150,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
-                    , {field: 'createdTime', title: '订单创建时间', width: 180,templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                      {field: 'bonusId', title: 'ID', sort: true}
+                    , {field: 'customerLoginNo', title: '客户'}
+                    , {field: 'bonusCustomerLoginNo', title: '推广人'}
+                    , {field: 'bonusAmount', title: '客户分成金额'}
+                    , {field: '', title: '订单分成类型',templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
+                    , {field: 'createdTime', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
                 ]]
                 , response:
                     {

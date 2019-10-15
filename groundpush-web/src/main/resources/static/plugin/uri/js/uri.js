@@ -41,14 +41,17 @@ layui.use(['table', 'form', 'layer'], function () {
             table.render({
                 elem: '#uri'
                 , url: '/uri/getUriPageList'
+                ,done: function (res, curr, count) {
+                    $("#uriDiv table").css("width", "100%");
+                }
                 , toolbar: '#toolbarUri'
                 , title: 'uri-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'uriId', title: 'ID', width: 100, sort: true}
-                    , {field: 'uriName', title: 'URI名称', width: 300}
-                    , {field: 'uriPattern', title: 'URI地址', width: 300}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarUriOperation"}
+                    {field: 'uriId', title: 'ID',sort: true}
+                    , {field: 'uriName', title: 'URI名称'}
+                    , {field: 'uriPattern', title: 'URI地址'}
+                    , {field: '', title: '操作',toolbar: "#toolbarUriOperation"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE

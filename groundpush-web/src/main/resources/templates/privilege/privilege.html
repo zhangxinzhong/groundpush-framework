@@ -15,7 +15,9 @@
 </head>
 <body>
 <!-- privilege table -->
-<table class="layui-hide" id="privilege" lay-filter="privilege"></table>
+<div id="privilegeDiv">
+    <table class="layui-hide" id="privilege" lay-filter="privilege"></table>
+</div>
 
 <!-- privilege tobar-->
 <script type="text/html" id="toolbarPrivilege">
@@ -114,14 +116,14 @@
 
 <!-- 字典子项列表模态框 -->
 <div class="modal fade bs-example-modal-lg" id="privilegeUriListDialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+    <div class="modal-dialog modal-lg" role="document" style="width: 72%">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title" id="privilegeUriListTitle">URI项</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="privilegeUriDiv">
                 <input hidden type="text" name="modalPrivilegeId" id="modalPrivilegeId"  class="layui-input">
                 <!-- privilege uri table -->
                 <table class="layui-hide" id="privilegeUri" lay-filter="privilegeUri"></table>

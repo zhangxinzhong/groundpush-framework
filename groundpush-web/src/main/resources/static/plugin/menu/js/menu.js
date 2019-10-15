@@ -18,15 +18,18 @@ layui.use('table', function () {
             table.render({
                 elem: '#menu'
                 , url: '/menu/loadMenu'
+                ,done: function (res, curr, count) {
+                    $("#menuDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'menu-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'menuId', title: 'ID', width: 100, sort: true}
-                    , {field: 'name', title: '菜单名称', width: 300}
-                    , {field: 'code', title: '菜单编码', width: 300}
-                    , {field: 'path', title: 'URI', width: 500}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarMenu"}
+                    {field: 'menuId', title: 'ID', sort: true}
+                    , {field: 'name', title: '菜单名称'}
+                    , {field: 'code', title: '菜单编码'}
+                    , {field: 'path', title: 'URI'}
+                    , {field: '', title: '操作', toolbar: "#toolbarMenu"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE

@@ -22,7 +22,9 @@
 </div>
 
 <!-- pay table -->
-<table class="layui-hide" id="team" lay-filter="team"></table>
+<div id="teamDiv">
+    <table class="layui-hide" id="team" lay-filter="team"></table>
+</div>
 
 
 
@@ -89,7 +91,7 @@
                 <div class="modal-body-max no-padding">
                     <div class="page-content">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12" id="relationDiv">
                                 <input hidden type="text" name="teamId" id="teamId" class="layui-input">
                                 <table class="layui-hide" id="relation" lay-filter="relation"></table>
                             </div>

@@ -25,7 +25,9 @@
 </div>
 
 <!-- order table -->
-<table class="layui-hide" id="order" lay-filter="order"></table>
+<div id="orderDiv">
+    <table class="layui-hide" id="order" lay-filter="order"></table>
+</div>
 
 <!-- order tobar-->
 <script type="text/html" id="toolbarOrder">
@@ -81,7 +83,7 @@
 
 <!--  订单分成展示 begin -->
 <div class="modal fade bs-example-modal-lg" id="showOrderBonusModal" tabindex="-1" role="dialog" aria-labelledby="myModalOrderBonus" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="width: 77%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -91,7 +93,7 @@
                 <div class="modal-body-max no-padding">
                     <div class="page-content">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12" id="orderBonusDiv">
                                 <table class="layui-hide" id="orderBonus" lay-filter="orderBonus"></table>
                             </div>
                         </div>

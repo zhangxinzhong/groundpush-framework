@@ -70,7 +70,11 @@ layui.use(['table', 'form', 'layer'], function () {
                     {field: 'customerLoginAccountId', title: 'ID', sort: true}
                     , {field: 'loginNo', title: '客户帐号'}
                     , {field: 'name', title: '客户姓名'}
-                    , {field: 'type', title: '类型'}
+                    , {field: 'type', title: '类型',
+                        templet: function(d){
+                            return   d.type == 1?'手机号':(d.type==2?'微信':'支付宝');
+                        }
+                    }
                     , {field: '', title: '操作',toolbar: "#toolbarCustomerLoginAccount"}
                 ]]
                 , response:

@@ -13,21 +13,24 @@ layui.use('table', function () {
             table.render({
                 elem: '#special'
                 , url: '/specialTask/querySpecialTaskPage'
+                ,done: function (res, curr, count) {
+                    $("#specialTaskDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'special-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'specialTaskId', title: 'ID', width:'5%', sort: true}
-                    , {field: 'title' ,title: '任务标题', width: '20%'}
-                    , {field: 'teamName', title: '团队名称', width: '20%'}
-                    , {field: 'createdName', title: '创建人', width: '15%'}
-                    , {field: '' ,title: '状态', width: '10%',
+                    {field: 'specialTaskId', title: 'ID',sort: true}
+                    , {field: 'title' ,title: '任务标题'}
+                    , {field: 'teamName', title: '团队名称'}
+                    , {field: 'createdName', title: '创建人'}
+                    , {field: '' ,title: '状态',
                         templet:function (d) {
                             return d.status == 1?'已发布':'未发布';
                         }
                      }
-                    , {field: '', title: '创建时间', width: '20%',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                    , {field: '', title: '操作', width: '10%',toolbar: "#toolSpecial"}
+                    , {field: '', title: '创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    , {field: '', title: '操作',toolbar: "#toolSpecial"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE

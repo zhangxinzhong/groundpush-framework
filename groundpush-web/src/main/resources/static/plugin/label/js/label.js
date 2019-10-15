@@ -29,17 +29,20 @@ layui.use('table', function () {
             table.render({
                 elem: '#label'
                 , url: '/label/getLabelPage'
+                ,done: function (res, curr, count) {
+                    $("#labelDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'label-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'labelId', title: 'ID', width: 100, sort: true}
-                    , {field: 'labelName', title: '标签名称', width: 200}
-                    , {field: 'type', title: '标签类型', width: 200,templet: function(d){return d.type != null && d.type == 1?"主要标签":"次要标签" }}
-                    , {field: 'remark', title: '标签说明', width: 500}
-                    , {field: 'createdBy', title: '创建人', width: 180}
-                    , {field: 'createdTime', title: '创建时间', width: 200,templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                    , {field: '', title: '操作', width: 300,toolbar: "#toolbarLabel"}
+                    {field: 'labelId', title: 'ID', sort: true}
+                    , {field: 'labelName', title: '标签名称'}
+                    , {field: 'type', title: '标签类型',templet: function(d){return d.type != null && d.type == 1?"主要标签":"次要标签" }}
+                    , {field: 'remark', title: '标签说明'}
+                    , {field: 'createdBy', title: '创建人'}
+                    , {field: 'createdTime', title: '创建时间',templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    , {field: '', title: '操作',toolbar: "#toolbarLabel"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE

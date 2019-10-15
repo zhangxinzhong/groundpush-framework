@@ -18,17 +18,20 @@ layui.use('table', function () {
             table.render({
                 elem: '#user'
                 , url: '/user'
+                ,done: function (res, curr, count) {
+                    $("#userDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'user-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'userId', title: 'ID', width: 100, sort: true}
-                    , {field: 'loginNo', title: '登录名', width: 100}
-                    , {field: 'name', title: '用户名', width: 100}
-                    , {field: 'namePinyin', title: '用户名拼音', width: 100}
-                    , {field: 'mobileNo', title: '用户名手机号', width: 400}
-                    , {field: 'workEmail', title: '用户名邮箱', width: 400}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarUser"}
+                    {field: 'userId', title: 'ID', sort: true}
+                    , {field: 'loginNo', title: '登录名'}
+                    , {field: 'name', title: '用户名'}
+                    , {field: 'namePinyin', title: '用户名拼音'}
+                    , {field: 'mobileNo', title: '用户名手机号'}
+                    , {field: 'workEmail', title: '用户名邮箱'}
+                    , {field: '', title: '操作',toolbar: "#toolbarUser"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE

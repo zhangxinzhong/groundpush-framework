@@ -43,19 +43,22 @@ layui.use(['table', 'form', 'layer'], function () {
                 table.render({
                     elem: '#privilege'
                     , url: '/privilege/getPrivilegePageList'
+                    ,done: function (res, curr, count) {
+                        $("#privilegeDiv table").css("width", "100%");
+                    }
                     , toolbar: '#toolbarPrivilege'
                     , title: 'privilege-data'
                     , totalRow: true
                     , cols: [[
-                        {field: 'privilegeId', title: 'ID', width: 100, sort: true}
+                        {field: 'privilegeId', title: 'ID',sort: true}
                         , {
-                            field: 'code', title: '权限编码', width: 300,
+                            field: 'code', title: '权限编码',
                             templet: function (d) {
                                 return '<a class="layui-table-link" lay-event="showPrivilegeUriListDialog">' + d.code + '</a>';
                             }
                         }
-                        , {field: 'name', title: '权限名称', width: 300}
-                        , {field: '', title: '操作', width: 380, toolbar: "#toolbarPrivilegeOperation"}
+                        , {field: 'name', title: '权限名称'}
+                        , {field: '', title: '操作',toolbar: "#toolbarPrivilegeOperation"}
                     ]]
                     ,
                     page: true, curr: 1, limit: Global.PAGE_SISE
@@ -88,16 +91,20 @@ layui.use(['table', 'form', 'layer'], function () {
             }, initPrivilegeUriTable: function (data) {
                 table.render({
                     elem: '#privilegeUri'
+                    ,cellMinWidth: 220
                     , url: '/privilegeUri/' + data.privilegeId + '/getPrivilegeUriList'
+                    ,done: function (res, curr, count) {
+                        $("#privilegeUriDiv table").css("width", "100%");
+                    }
                     , toolbar: '#toolbarPrivilegeUri'
                     , title: 'privilege-uri-data'
                     , totalRow: true
                     , cols: [[
-                        {field: 'privilegeId', title: '权限项编号', width: 300, sort: true}
-                        , {field: 'uriId', title: 'URI项编号', width: 300, sort: true}
-                        , {field: 'uriName', title: 'URI名称', width: 300, sort: true}
-                        , {field: 'uriPattern', title: 'URI地址', width: 300, sort: true}
-                        , {field: '', title: '操作', width: 380, toolbar: "#toolbarPrivilegeUriOperation"}
+                        {field: 'privilegeId', title: '权限项编号',sort: true}
+                        , {field: 'uriId', title: 'URI项编号',sort: true}
+                        , {field: 'uriName', title: 'URI名称',sort: true}
+                        , {field: 'uriPattern', title: 'URI地址',sort: true}
+                        , {field: '', title: '操作',toolbar: "#toolbarPrivilegeUriOperation"}
                     ]]
                     , page: true, curr: 1, limit: Global.PAGE_SISE
                     , response:

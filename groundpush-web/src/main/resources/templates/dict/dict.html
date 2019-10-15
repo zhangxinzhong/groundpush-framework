@@ -15,7 +15,9 @@
 </head>
 <body>
 <!-- dict table -->
-<table class="layui-hide" id="dict" lay-filter="dict"></table>
+<div id="dictDiv">
+    <table class="layui-hide" id="dict" lay-filter="dict"></table>
+</div>
 
 <!-- dict tobar-->
 <script type="text/html" id="toolbarDict">
@@ -133,7 +135,7 @@
                 </button>
                 <h4 class="modal-title" id="dictDetailListTitle">字典子项</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="dictDetailDiv">
                 <!-- dict detail table -->
                 <table class="layui-hide" id="dictDetail" lay-filter="dictDetail"></table>
             </div>

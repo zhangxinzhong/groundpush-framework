@@ -21,20 +21,23 @@ layui.use('table', function () {
             table.render({
                 elem: '#pay'
                 , url: '/payManage/getTaskOrderlist'
+                ,done: function (res, curr, count) {
+                    $("#payDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'pay-data'
                 , totalRow: true
                 , cols: [[
-                     {field: 'companyName', title: '渠道', width: 318, sort: true}
-                    , {field: 'title', title: '任务名称', width: 300}
-                    , {field: 'createdTime', title: '订单创建时间', width: 130,templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd"); }}
-                    , {field: '', title: '订单总数', width: 130,templet: function(d){ return '<a class="layui-table-link" lay-event="viewAllOrderList">' + d.orderCount + "</a>"}}
-                    , {field: 'orderAmount', title: '订单总金额', width: 130}
-                    , {field: '', title: '生效订单数', width: 130,templet: function(d){ return '<a class="layui-table-link" lay-event="viewPassOrderList">' + d.successOrder + "</a>"}}
-                    , {field: 'successAmount', title: '生效订单金额', width: 130}
-                    , {field: '', title: '未生效订单数', width: 130,templet: function(d){ return '<a class="layui-table-link" lay-event="viewFailOrderList">' + d.failOrder + "</a>"}}
-                    , {field: 'failAmount', title: '未生效订单金额', width: 130}
-                    , {field: '', title: '操作', width: 150,toolbar: "#toolbarPay"}
+                     {field: 'companyName', title: '渠道', sort: true}
+                    , {field: 'title', title: '任务名称'}
+                    , {field: 'createdTime', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd"); }}
+                    , {field: '', title: '订单总数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewAllOrderList">' + d.orderCount + "</a>"}}
+                    , {field: 'orderAmount', title: '订单总金额'}
+                    , {field: '', title: '生效订单数', templet: function(d){ return '<a class="layui-table-link" lay-event="viewPassOrderList">' + d.successOrder + "</a>"}}
+                    , {field: 'successAmount', title: '生效订单金额'}
+                    , {field: '', title: '未生效订单数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewFailOrderList">' + d.failOrder + "</a>"}}
+                    , {field: 'failAmount', title: '未生效订单金额',}
+                    , {field: '', title: '操作',toolbar: "#toolbarPay"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE
@@ -93,37 +96,41 @@ layui.use('table', function () {
         }
         ,showViewOrderList:function(data) {
                  table.render({
-                                 elem: '#view'
-                                 , url: '/payManage/queryOrderList'
-                                 , toolbar: true
-                                 , title: 'view-data'
-                                 , totalRow: true
-                                 , where:{'taskId':data.taskId,'orderTime':layui.util.toDateString(data.createdTime, "yyyy-MM-dd"),flag:data.flag}
-                                 , cols: [[
-                                       {field: 'title', title: '任务名称', width: 180, sort: true}
-                                     , {field: 'orderNo', title: '订单号', width: 280}
-                                     , {field: 'nickName', title: '客户', width: 100}
-                                     , {field: 'bonusAmount', title: '订单分成', width: 100}
-                                     , {field: '', title: '订单分成类型', width: 150,templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
-                                     , {field: 'createdTime', title: '订单创建时间', width: 180,templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                                 ]]
-                                 ,
-                                 page: true,curr:1, limit: Global.PAGE_SISE
-                                 , response:
-                                     {
-                                         statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
-                                     }
-                                 ,
-                                 parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-                                     if(!Utils.isEmpty(res)){
-                                         return {
-                                             "code": res.code, //解析接口状态
-                                             "msg": res.message, //解析提示文本
-                                             "count": res.data.total, //解析数据长度
-                                             "data": res.data.rows //解析数据列表
-                                         };
-                                     }
-                                 }
+                     elem: '#view'
+                     ,cellMinWidth: 200
+                     , url: '/payManage/queryOrderList'
+                     ,done: function (res, curr, count) {
+                         $("#viewOrderForm table").css("width", "100%");
+                     }
+                     , toolbar: true
+                     , title: 'view-data'
+                     , totalRow: true
+                     , where:{'taskId':data.taskId,'orderTime':layui.util.toDateString(data.createdTime, "yyyy-MM-dd"),flag:data.flag}
+                     , cols: [[
+                           {field: 'title', title: '任务名称', sort: true}
+                         , {field: 'orderNo', title: '订单号'}
+                         , {field: 'nickName', title: '客户'}
+                         , {field: 'bonusAmount', title: '订单分成'}
+                         , {field: '', title: '订单分成类型',templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
+                         , {field: 'createdTime', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                     ]]
+                     ,
+                     page: true,curr:1, limit: Global.PAGE_SISE
+                     , response:
+                         {
+                             statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                         }
+                     ,
+                     parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                         if(!Utils.isEmpty(res)){
+                             return {
+                                 "code": res.code, //解析接口状态
+                                 "msg": res.message, //解析提示文本
+                                 "count": res.data.total, //解析数据长度
+                                 "data": res.data.rows //解析数据列表
+                             };
+                         }
+                     }
                 });
 
          }

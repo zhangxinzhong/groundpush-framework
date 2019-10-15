@@ -8,31 +8,34 @@ layui.use(['table', 'form', 'layer'], function () {
     var eventListener = {
         initUriTable: function () {
             table.render({
-                elem: '#uri'
+                elem: '#operationLog'
                 , url: '/operationLog/getOperationLogList'
+                ,done: function (res, curr, count) {
+                    $("#operationLogDiv table").css("width", "100%");
+                }
                 , toolbar: '#toolbarUri'
                 , title: 'uri-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'logId', title: 'ID', width: 100, sort: true}
-                    , {field: 'method', title: '方法名', width: 400}
+                    {field: 'logId', title: 'ID', sort: true}
+                    , {field: 'method', title: '方法名'}
                     , {
-                        field: 'args', title: '参数', width: 100,
+                        field: 'args', title: '参数',
                         templet: function (d) {
                             return '<a onclick="seeArgsContent(this)" args='+ d.args +'>' + d.args + '</a>';
                         }
                     }
-                    , {field: 'createdBy', title: '创建人', width: 100}
-                    , {field: 'operationDetail', title: '日志描述', width: 100}
-                    , {field: 'operationType', title: '日志类型', width: 200}
-                    , {field: 'exceptionDetail', title: '异常描述', width: 300}
+                    , {field: 'createdBy', title: '创建人'}
+                    , {field: 'operationDetail', title: '日志描述'}
+                    , {field: 'operationType', title: '日志类型'}
+                    , {field: 'exceptionDetail', title: '异常描述'}
                     , {
-                        field: 'type', title: '操作端类型', width: 100, templet: function (d) {
+                        field: 'type', title: '操作端类型',  templet: function (d) {
                             return d.type != null && d.type == 0 ? "APP" : "PC"
                         }
                     }
                     , {
-                        field: 'createdTime', title: '创建时间', width: 200, templet: function (d) {
+                        field: 'createdTime', title: '创建时间',  templet: function (d) {
                             return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss");
                         }
                     }

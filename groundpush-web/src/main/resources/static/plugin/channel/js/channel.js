@@ -54,27 +54,28 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
             table.render({
                 elem: '#channel'
                 , url: '/channel/getChannelPage'
+                ,done: function (res, curr, count) {
+                    $("#channelDiv table").css("width", "100%");
+                    $("[data-field='taskId']").css('display', 'none');
+                }
                 , toolbar: true
                 , title: 'channel-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'channelId', title: 'ID', minWidth: 30, sort: true}
-                    , {field: 'companyName', title: '公司名称', minWidth: 300}
-                    , {field: 'taskId', title: '任务编号', minWidth: 120}
-                    , {field: 'title', title: '公司产品', minWidth: 150}
-                    , {field: 'linkName', title: '联系人', minWidth: 150}
-                    , {field: 'phone', title: '联系电话', minWidth: 120}
-                    , {field: 'address', title: '公司地址', minWidth: 100}
+                    {field: 'channelId', title: 'ID', sort: true}
+                    , {field: 'companyName', title: '公司名称'}
+                    , {field: 'taskId', title: '任务编号'}
+                    , {field: 'title', title: '公司产品'}
+                    , {field: 'linkName', title: '联系人'}
+                    , {field: 'phone', title: '联系电话'}
+                    , {field: 'address', title: '公司地址'}
                     , {
-                        field: 'createdTime', title: '创建时间', minWidth: 150, templet: function (d) {
+                        field: 'createdTime', title: '创建时间', templet: function (d) {
                             return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss");
                         }
                     }
-                    , {field: '', title: '操作', minWidth: 300, toolbar: "#toolbarChannel"}
+                    , {field: '', title: '操作', toolbar: "#toolbarChannel"}
                 ]]
-                , done: function () {
-                    $("[data-field='taskId']").css('display', 'none');
-                }
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
                 , response:

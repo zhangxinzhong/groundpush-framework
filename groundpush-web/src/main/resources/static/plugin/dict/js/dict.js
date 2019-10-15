@@ -41,20 +41,23 @@ layui.use(['table', 'form', 'layer'], function () {
             table.render({
                 elem: '#dict'
                 , url: '/dict'
+                ,done: function (res, curr, count) {
+                    $("#dictDiv table").css("width", "100%");
+                }
                 , toolbar: '#toolbarDict'
                 , title: 'dict-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'dictId', title: 'ID', width: 100, sort: true}
+                    {field: 'dictId', title: 'ID', sort: true}
                     , {
-                        field: '', title: '字典编码', width: 300,
+                        field: '', title: '字典编码',
                         templet: function (d) {
                             return '<a class="layui-table-link" lay-event="showDictDetailListDialog">' + d.code + '</a>';
                         }
                     }
-                    , {field: 'name', title: '字典名称', width: 300}
-                    , {field: 'dictType', title: '字典类型', width: 500}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarDictOperation"}
+                    , {field: 'name', title: '字典名称'}
+                    , {field: 'dictType', title: '字典类型'}
+                    , {field: '', title: '操作',toolbar: "#toolbarDictOperation"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
@@ -88,15 +91,19 @@ layui.use(['table', 'form', 'layer'], function () {
         }, initDictDetailTable: function (data) {
             table.render({
                 elem: '#dictDetail'
+                ,cellMinWidth: 200
                 , url: '/dict/' + data.dictId + '/dictDetail'
+                ,done: function (res, curr, count) {
+                    $("#dictDetailDiv table").css("width", "100%");
+                }
                 , toolbar: '#toolbarDictDetail'
                 , title: 'dict-detail-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'detailId', title: '字典项编号', width: 300, sort: true}
-                    , {field: 'code', title: '字典项编码', width: 300}
-                    , {field: 'name', title: '字典项名称', width: 300}
-                    , {field: '', title: '操作', width: 380, toolbar: "#toolbarDictDetailOperation"}
+                    {field: 'detailId', title: '字典项编号', sort: true}
+                    , {field: 'code', title: '字典项编码'}
+                    , {field: 'name', title: '字典项名称'}
+                    , {field: '', title: '操作',toolbar: "#toolbarDictDetailOperation"}
                 ]]
                 , page: true, curr: 1, limit: Global.PAGE_SISE
                 , response:

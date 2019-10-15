@@ -28,20 +28,23 @@ layui.use('table', function () {
             table.render({
                 elem: '#team'
                 , url: '/team/queryTeamPage'
+                ,done: function (res, curr, count) {
+                    $("#teamDiv table").css("width", "100%");
+                }
                 , toolbar: true
                 , title: 'team-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'teamId', title: 'ID', width: '5%', sort: true}
-                    , {field: 'teamName', title: '团队名称', width: '20%'}
-                    , {field: '', title: '关联客户数', width: '20%',
+                    {field: 'teamId', title: 'ID', sort: true}
+                    , {field: 'teamName', title: '团队名称'}
+                    , {field: '', title: '关联客户数',
                         templet:function (d){
                             return '<a class="layui-table-link" lay-event="viewUser">' + d.count + "</a>";
                         }
                      }
-                    , {field: '', title: '创建时间', width: '20%',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                    , {field: 'createdName', title: '创建人', width: '20%'}
-                    , {field: '', title: '操作', width: '15%',toolbar: "#toolTeam"}
+                    , {field: '', title: '创建时间', templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    , {field: 'createdName', title: '创建人'}
+                    , {field: '', title: '操作',toolbar: "#toolTeam"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE
@@ -97,16 +100,20 @@ layui.use('table', function () {
 
             table.render({
                 elem: '#relation'
+                ,cellMinWidth: 200
                 , url: '/team/queryAllCustomers'
+                ,done: function (res, curr, count) {
+                    $("#relationDiv table").css("width", "100%");
+                }
                 , toolbar: '#teamCustomConfirm'
                 , title: 'view-data'
                 , totalRow: true
                 , cols: [[
-                    {type:'checkbox', width: '10%'}
-                    , {field: 'customerId', title: '客户ID', width: '10%'}
-                    , {field: 'loginNo', title: '登录账号', width: '30%'}
-                    , {field: 'nickName', title: '昵称', width: '30%'}
-                    , {field: '', title: '创建时间', width: '20%',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
+                    {type:'checkbox'}
+                    , {field: 'customerId', title: '客户ID'}
+                    , {field: 'loginNo', title: '登录账号'}
+                    , {field: 'nickName', title: '昵称'}
+                    , {field: '', title: '创建时间', templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
                 ]]
                 ,page: true,curr:1, limit: Global.PAGE_SISE
                 , response:
