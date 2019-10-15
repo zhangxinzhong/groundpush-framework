@@ -30,7 +30,6 @@ public class TeamCustomerServiceImpl implements TeamCustomerService {
         teamCustomerMapper.saveTeamCustomer(teamCustomer);
     }
 
-
     @Override
     public void delTeamCustomerByTeamId(Integer teamId) {
         teamCustomerMapper.delTeamCustomerByTeamId(teamId);
@@ -38,9 +37,13 @@ public class TeamCustomerServiceImpl implements TeamCustomerService {
 
     @Override
     public Boolean existCustomerByTeam(List<Integer> teams, Integer customId) {
-        List<Integer> customerIds = teamCustomerMapper.queryCustomerByTeamReturnCustomerId(teams);
-        return customerIds.contains(customId);
+        // 用户是否属于team
+        List<Integer> teamCustomer = teamCustomerMapper.queryTeamReturnCustomerId(teams);
+        return teamCustomer.contains(customId);
     }
 
-
+    @Override
+    public List<Integer> queryTeamReturnCustomerId(List<Integer> teamIds) {
+        return teamCustomerMapper.queryTeamReturnCustomerId(teamIds);
+    }
 }

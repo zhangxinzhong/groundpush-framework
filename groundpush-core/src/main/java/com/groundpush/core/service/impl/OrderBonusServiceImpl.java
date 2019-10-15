@@ -88,7 +88,11 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             }
 
             //计算任务订单分成
-            CalculationOrderBonus(taskOperCust.get(), optionalTask.get(), optionalOrder.get());
+            if (optionalOrder.get().getIsSpecial()) {
+                log.info("Order :{},为特殊订单。不计算分成", optionalOrder.get().toString());
+            } else {
+                CalculationOrderBonus(taskOperCust.get(), optionalTask.get(), optionalOrder.get());
+            }
 
         } catch (BusinessException e) {
             log.error(e.getMessage(), e);
@@ -135,8 +139,21 @@ public class OrderBonusServiceImpl implements OrderBonusService {
                 list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).bonusAmount(taskSpreadCustBonus).bonusCustomerId(taskOperCust.getParentId()).build());
 
                 // 计算推广人上级分成
+                Optional<Customer> taskSpreadParentCustomerOptional = customerMapper.getCustomer(taskOperCust.getParentId());
+                if (taskSpreadParentCustomerOptional.isPresent()) {
+                    list.add(OrderBonus.builder().customerId(taskSpreadParentCustomerOptional.get().getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_PARENT_CUSTOMER).bonusAmount(taskSpreadParentCustBonus).bonusCustomerId(taskOperCust.getCustomerId()).build());
 
-                //计算团队领导分成
+                    //计算团队领导分成
+                    Optional<Customer> taskLeaderCustomerOptional = customerMapper.getCustomer(taskSpreadParentCustomerOptional.get().getParentId());
+                    if (taskLeaderCustomerOptional.isPresent()) {
+                        list.add(OrderBonus.builder().customerId(taskLeaderCustomerOptional.get().getCustomerId()).orderId(orderId).bonusType(Constants.TASK_LEADER_CUSTOMER).bonusAmount(taskLeaderCustBonus).bonusCustomerId(taskOperCust.getCustomerId()).build());
+                    } else {
+                        log.info("团队领导不存在...");
+                    }
+
+                } else {
+                    log.info("任务推广人上级不存在...");
+                }
 
             } else {
                 log.info("任务类型错误...");

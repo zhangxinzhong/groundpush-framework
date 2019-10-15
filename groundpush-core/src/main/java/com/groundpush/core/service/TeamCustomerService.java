@@ -42,4 +42,12 @@ public interface TeamCustomerService {
      * @return
      */
     Boolean existCustomerByTeam(List<Integer> teams, Integer customId);
+
+
+    /**
+     * 查询团队
+     * @param teamIds
+     * @return 团队中的客户编号
+     */
+    List<Integer> queryTeamReturnCustomerId(List<Integer> teamIds);
 }

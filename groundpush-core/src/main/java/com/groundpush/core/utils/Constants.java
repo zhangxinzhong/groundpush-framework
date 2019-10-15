@@ -33,14 +33,14 @@ public class Constants {
     public static final long ORDER_OVER_TIME = 24;
 
     /**
-     * 任务完成人
-     */
-    public static final Integer TASK_FINISH_CUSTOMER = 1;
-
-    /**
      * 任务推广人
      */
-    public static final Integer TASK_SPREAD_CUSTOMER = 2;
+    public static final Integer TASK_SPREAD_CUSTOMER = 1;
+
+    /**
+     * 任务推广人上级
+     */
+    public static final Integer TASK_SPREAD_PARENT_CUSTOMER = 2;
 
     /**
      * 团队领导
