@@ -106,5 +106,36 @@
         </div>
     </div>
 </div>
+
+<!-- 修改客户登入帐号信息模态框 -->
+<div class="modal fade bs-example-modal-lg" id="saveCustomerLoginAccount" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="saveCustomerLoginAccountTitle">修改客户登入帐号信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form" action="" id="saveCustomerLoginAccountForm" lay-filter="saveCustomerLoginAccountForm">
+                    <input type="hidden" name="customerId" class="layui-input">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>手机号</label>
+                        <div class="col-md-10">
+                            <input type="text" name="loginNo" lay-verify="customerLoginAccountLoginNo" autocomplete="off" placeholder="请输入客户手机号" class="layui-input">
+                            <input type="hidden" name="type">
+                            <input type="hidden" name="customerLoginAccountId">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="saveCustomerLoginAccount">更新</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

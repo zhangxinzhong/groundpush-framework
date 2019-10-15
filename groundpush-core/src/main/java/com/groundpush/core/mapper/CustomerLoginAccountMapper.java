@@ -89,5 +89,19 @@ public interface CustomerLoginAccountMapper {
      * @return
      */
     @Select(" select * from t_customer_login_account cla where cla.customer_login_account_id=#{customerLoginAccountId}")
-    Optional<CustomerLoginAccount> get(Integer customerLoginAccountId);
+    Optional<CustomerLoginAccount> get(@Param("customerLoginAccountId") Integer customerLoginAccountId);
+
+    /**
+     * 更新客户登入帐号信息
+     * @param customerLoginAccount
+     * @return
+     */
+    @Update({
+            "<script>",
+            " update  t_customer_login_account  set  ",
+            " <if test='loginNo != null'> login_no =#{loginNo},  </if> ",
+            " last_modified_time= current_timestamp where customer_login_account_id=#{customerLoginAccountId} and type=#{type} ",
+            "</script>"
+    })
+    Integer updateCustomerLoginAccountLoginNo(CustomerLoginAccount customerLoginAccount);
 }

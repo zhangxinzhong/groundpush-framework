@@ -55,4 +55,9 @@ public class CustomerLoginAccountServiceImpl implements CustomerLoginAccountServ
     public Optional<CustomerLoginAccount> get(Integer customerLoginAccountId) {
         return customerLoginAccountMapper.get(customerLoginAccountId);
     }
+
+    @Override
+    public Boolean updateCustomerLoginAccountLoginNo(CustomerLoginAccount customerLoginAccount) {
+        return customerLoginAccountMapper.updateCustomerLoginAccountLoginNo(customerLoginAccount)>0?true:false;
+    }
 }
