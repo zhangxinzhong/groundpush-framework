@@ -1,13 +1,11 @@
 package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
-import com.groundpush.core.condition.CustomerQueryCondition;
-import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.Version;
-import com.groundpush.core.vo.CustomerVo;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,9 +15,21 @@ import java.util.Optional;
  */
 public interface VersionMapper {
 
+    @Select({
+            "<script>",
+            " select * from t_version where 1=1  ",
+            " order by created_time desc ",
+            "</script>"
+    })
     Page<Version> queryVersionPage(Version version);
 
-    Optional<Version> getVersion(Integer versionId);
+    @Select({
+            "<script>",
+            " select * from t_version where version_id=#{versionId}  ",
+            "</script>"
+    })
+    Optional<Version> getVersion(@Param("versionId") Integer versionId);
 
-    Boolean createVersion(Version version);
+    @Insert(" insert into t_version(is_update, new_version, apk_file_url, update_log, target_size, new_md5, is_constraint,type,created_time) values (#{isUpdate},#{newVersion},#{apkFileUrl},#{updateLog},#{targetSize},#{newMd5},#{isConstraint},#{type},current_timestamp) ")
+    Integer createVersion(Version version);
 }

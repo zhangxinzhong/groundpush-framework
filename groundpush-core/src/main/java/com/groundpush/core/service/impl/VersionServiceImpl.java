@@ -46,6 +46,6 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public Boolean createVersion(Version version) {
-        return versionMapper.createVersion(version);
+        return versionMapper.createVersion(version)>0?true:false;
     }
 }

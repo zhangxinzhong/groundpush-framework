@@ -33,9 +33,6 @@ import java.util.*;
 @RequestMapping("/channel")
 public class ChannelController {
 
-    @Value("${groundpush.channel.mapping_filed}")
-    private String mappingFiled;
-
     @Resource
     private ChannelService channelService;
 
@@ -47,7 +44,7 @@ public class ChannelController {
 
 
     @RequestMapping("/toChannel")
-    public String toChannel(Model model) {
+    public String toChannel() {
 
         return "channel/channel";
     }
@@ -145,7 +142,7 @@ public class ChannelController {
     @ResponseBody
     public JsonResp importExcelData(@RequestParam("file") MultipartFile file, String mapping, Integer channelId, Integer taskId, String channelTime) throws Exception {
         try {
-            return JsonResp.success(channelService.addChannelData(channelId, taskId, dateUtils.transToLocalDateTime(channelTime,"yyyy-MM-dd"), file.getOriginalFilename(), mapping, file.getInputStream()));
+            return JsonResp.success(channelService.addChannelData(channelId, taskId, dateUtils.transToLocalDateTime(channelTime, "yyyy-MM-dd"), file.getOriginalFilename(), mapping, file.getInputStream()));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
@@ -163,25 +160,5 @@ public class ChannelController {
             log.error(e.toString(), e);
             throw e;
         }
-    }
-
-    /**
-     * 处理单条数据
-     *
-     * @param result  单条数据
-     * @param mapping 映射关系
-     * @return
-     */
-    private Map<String, Object> analysisSingletData(Object[] result, String mapping) {
-        Map<String, Object> res = new LinkedHashMap<>();
-
-        /** excel数据映射到系统内部关系 */
-        JSONArray mappingRelation = new JSONArray(mapping);
-        String[] mFiled = mappingFiled.split(",");
-        mappingRelation.forEach(obj -> {
-            JSONObject mappingObj = (JSONObject) obj;
-            res.put(mFiled[mappingObj.getInt("sysType") - 1], result[mappingObj.getInt("excelType")]);
-        });
-        return res;
     }
 }
