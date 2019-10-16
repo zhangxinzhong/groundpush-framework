@@ -118,7 +118,7 @@ public class TaskController {
             Task task = optionalTask.get();
             List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
             if (taskAttributeList != null && taskAttributeList.size() > 0) {
-                task.setTaskAttributes(taskAttributeList);
+                task.setSpreadTaskAttributes(taskAttributeList);
             }
             return JsonResp.success(optionalTask.isPresent() ? task : null);
         } catch (Exception e) {
@@ -127,7 +127,6 @@ public class TaskController {
         }
     }
 
-    //上传任务URL
     @RequestMapping("/uploadExcel")
     @ResponseBody
     public JsonResp uploadExcel(@RequestParam MultipartFile file, Integer taskId) throws IOException, InvalidFormatException {

@@ -128,7 +128,7 @@ public class TaskServiceImpl implements TaskService {
         //删除
         taskAttributeResult = taskAttributeMapper.deleteTaskAttributeByTaskId(taskId) > 0 ? true : false;
         //添加
-        List<TaskAttribute> taskAttributes = task.getTaskAttributes();
+        List<TaskAttribute> taskAttributes = task.getSpreadTaskAttributes();
         if (taskAttributes != null && taskAttributes.size() > 0) {
             for (TaskAttribute taskAttribute : taskAttributes) {
                 taskAttribute.setTaskId(taskId);
@@ -174,7 +174,6 @@ public class TaskServiceImpl implements TaskService {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             //获取 任务申请详情页面 或 任务推广页面 金额
-
             task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
 
             //任务添加属性
@@ -193,15 +192,10 @@ public class TaskServiceImpl implements TaskService {
      */
     public void addTaskAttr(Task task) {
         if (task.getTaskId() != null) {
-            //获取申请任务属性
-            List<TaskAttribute> getTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.GET_TASK_ATTRIBUTE);
-            task.setGetTaskAttributes(getTasks);
             //获取推广任务属性
             List<TaskAttribute> spreadTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.SPREAD_TASK_ATTRIBUTE);
             task.setSpreadTaskAttributes(spreadTasks);
 
-            // 处理申请任务 添加属性到map中方便app端使用
-            task.setGetTaskAttributesSet(addTaskAttributeToSet(getTasks));
             // 申请任务 添加属性到map中方便app端使用
             task.setSpreadTaskAttributesSet(addTaskAttributeToSet(spreadTasks));
 
