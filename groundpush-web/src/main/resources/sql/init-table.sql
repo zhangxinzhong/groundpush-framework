@@ -694,3 +694,8 @@ CREATE TABLE `t_team_customer` (
   `created_by` int(20) DEFAULT NULL,
   `created_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table t_channel_excel add column channel_time datetime;
+alter table t_order add column is_special tinyint(1) DEFAULT NULL;
+alter table t_task add column spread_parent_ratio decimal(8,2) DEFAULT NULL;
+alter table t_task drop column owner_ratio;
