@@ -270,6 +270,13 @@ public class Constants {
      */
     public static final Integer TASK_TYPE_2 = 2;
 
+
+    /**
+     * 任务类型  任务结果集3 用于app
+     */
+    public static final Integer TASK_TYPE_3 = 3;
+
+
     /**
      * 渠道文件导入 是否有效字段  1表示有效
      */

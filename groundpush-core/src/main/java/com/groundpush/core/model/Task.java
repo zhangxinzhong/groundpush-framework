@@ -77,6 +77,7 @@ public class Task implements Serializable {
     /**
      * 任务类型
      */
+    //TODO 未赋值检查是否删除
     @NotNull(message = "任务类型不可为空")
     @JsonView(SimpleTaskView.class)
     private Integer type;
@@ -198,6 +199,13 @@ public class Task implements Serializable {
 
     @JsonView(DetailTaskView.class)
     private LocalDateTime lastModifiedTime;
+
+    @JsonView(DetailTaskView.class)
+    private String taskTitle;
+
+    @JsonView(DetailTaskView.class)
+    private String taskContent;
+
 
 
     /**

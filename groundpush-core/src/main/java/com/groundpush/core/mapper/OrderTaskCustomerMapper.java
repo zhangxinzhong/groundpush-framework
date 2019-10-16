@@ -1,11 +1,13 @@
 package com.groundpush.core.mapper;
 
+import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderTaskCustomer;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:订单、任务、客户关联关系
@@ -41,5 +43,14 @@ public interface OrderTaskCustomerMapper {
      */
     @Select(" SELECT a.* FROM t_order_task_customer a where a.task_id = #{taskId} and a.customer_id = #{customerId} ")
     List<OrderTaskCustomer> findOrderByTaskId(@Param("taskId") Integer taskId, @Param("customerId") Integer customerId);
+
+
+    /**
+     * 通过orderId获取taskId
+     * @param orderId
+     * @return
+     */
+    @Select(" select distinct task_id from t_order_task_customer where order_id = #{orderId} ")
+    Optional<Integer> queryTaskIdByOrderId(Integer orderId);
 
 }

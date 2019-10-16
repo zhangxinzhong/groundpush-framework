@@ -140,4 +140,12 @@ public interface OrderService {
      * @return
      */
     Boolean existOrderByCustomerId(Integer customerId);
+
+
+    /**
+     * 通过订单id获取订单
+     * @param orderId
+     * @return
+     */
+    Optional<Integer> queryOrderByOrderId(Integer orderId);
 }

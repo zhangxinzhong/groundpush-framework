@@ -46,9 +46,6 @@ public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskAttributeService taskAttributeService;
 
-    @Resource
-    private OrderService orderService;
-
     @Override
     public Page<Task> queryTaskAllPc(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
@@ -193,7 +190,7 @@ public class TaskServiceImpl implements TaskService {
     public void addTaskAttr(Task task) {
         if (task.getTaskId() != null) {
             //获取推广任务属性
-            List<TaskAttribute> spreadTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.SPREAD_TASK_ATTRIBUTE);
+             List<TaskAttribute> spreadTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.SPREAD_TASK_ATTRIBUTE);
             task.setSpreadTaskAttributes(spreadTasks);
 
             // 申请任务 添加属性到map中方便app端使用
