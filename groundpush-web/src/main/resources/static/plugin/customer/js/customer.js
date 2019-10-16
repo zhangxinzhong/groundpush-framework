@@ -27,7 +27,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     , {field: 'inviteCode', title: '邀请码'}
                     , {field: 'reputation', title: '信誉值'}
                     , {field: 'bonusAmount', title: '帐户余额'}
-                    , {field: '', title: '操作',toolbar: "#toolbarCustomerOperation"}
+                    , {field: '', title: '操作',toolbar: "#toolbarCustomerOperationUpdate"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
@@ -209,6 +209,7 @@ layui.use(['table', 'form', 'layer'], function () {
             eventListener.showCustomerLoginAccount(data);
             eventListener.initCustomerLoginAccountTable(data);
         }else if (obj.event === 'showAddCustomerDialog') {
+            alert(2131231);
             eventListener.showAddCustomerDialog(data);
         }
     });

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @description: APP版本管理
@@ -29,7 +30,7 @@ public class Version implements Serializable {
 
     @ApiModelProperty(value = "版本ID")
     @JsonView(DetailVersionView.class)
-    private Integer versionsId;
+    private Integer versionId;
 
     @ApiModelProperty(value = "是否更新（0-否；1-是）")
     @JsonView(DetailVersionView.class)
@@ -37,29 +38,33 @@ public class Version implements Serializable {
 
     @ApiModelProperty(value = "APK下载地址")
     @JsonView(DetailVersionView.class)
-    private Integer apkFileUrl;
+    private String apkFileUrl;
 
     @ApiModelProperty(value = "新版本号")
     @JsonView(DetailVersionView.class)
-    private Integer newVersion;
+    private String newVersion;
 
     @ApiModelProperty(value = "更新日志")
     @JsonView(DetailVersionView.class)
-    private Integer updateLog;
+    private String updateLog;
 
     @ApiModelProperty(value = "apk文件大小")
     @JsonView(DetailVersionView.class)
-    private Integer targetSize;
+    private String targetSize;
 
     @ApiModelProperty(value = "新的MD5")
     @JsonView(DetailVersionView.class)
-    private Integer newMd5;
+    private String newMd5;
 
     @ApiModelProperty(value = "是否强制更新")
     @JsonView(DetailVersionView.class)
-    private Integer constraint;
+    private Integer isConstraint;
 
     @ApiModelProperty(value = "类型（1-app）")
     @JsonView(DetailVersionView.class)
     private Integer type;
+
+    @ApiModelProperty(value = "创建时间")
+    @JsonView(DetailVersionView.class)
+    private LocalDateTime createdTime;
 }
