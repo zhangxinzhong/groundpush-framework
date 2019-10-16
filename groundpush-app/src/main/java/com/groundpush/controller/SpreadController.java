@@ -85,16 +85,13 @@ public class SpreadController {
         if (taskUriOptional.isPresent()) {
             model.addAttribute("uri", taskUriOptional.get().getUri());
             //1.是否是特殊任务 且 是否是改任务的特殊用户
+            //  还需验证当前用户上级是否是特殊用户
             Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId(), spreadQueryCondition.getCustomId());
-            Order order = Order.builder().customerId(spreadQueryCondition.getCustomId()).type(spreadQueryCondition.getType()).taskId(spreadQueryCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).channelUri(taskUriOptional.get().getUri()).build();
+            Order order = Order.builder().customerId(spreadQueryCondition.getCustomId()).type(spreadQueryCondition.getType()).taskId(spreadQueryCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).channelUri(taskUriOptional.get().getUri()).isSpecial(isSpecialTask).build();
             if (isSpecialTask) {
                 // 特殊任务的订单默认为已支付
                 order.setStatus(Constants.ORDER_STATUS_PAY_SUCCESS);
-                order.setSettlementStatus(Constants.ORDER_STATUS_PAY_SUCCESS);
-                // 特殊任务金额为0
-                order.setBonusAmount(BigDecimal.ZERO);
             }
-
             //2.创建用户订单
             orderService.createOrder(order);
             // 使用完url 后需要把最后修改时间改成今天

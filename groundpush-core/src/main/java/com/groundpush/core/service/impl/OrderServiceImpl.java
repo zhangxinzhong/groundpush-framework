@@ -246,4 +246,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> queryUnResultOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId) {
         return orderMapper.queryUnResultOrderByTaskIdAndCustomerId(taskId, customerId);
     }
+
+    @Override
+    public Boolean existOrderByCustomerId(Integer customerId) {
+        return orderMapper.queryOrderByCustomerId(customerId).size() > 0;
+    }
 }

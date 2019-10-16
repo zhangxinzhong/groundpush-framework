@@ -48,5 +48,5 @@ public interface TeamCustomerMapper {
             "</foreach>",
             "</script>"
     })
-    List<Integer> queryCustomerByTeamReturnCustomerId(@Param("teams") List<Integer> teams);
+    List<Integer> queryTeamReturnCustomerId(@Param("teams") List<Integer> teams);
 }

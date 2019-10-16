@@ -133,4 +133,11 @@ public interface OrderService {
      * @return
      */
     List<Order> queryUnResultOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId);
+
+    /**
+     * 查询该客户是否存在订单
+     * @param customerId
+     * @return
+     */
+    Boolean existOrderByCustomerId(Integer customerId);
 }

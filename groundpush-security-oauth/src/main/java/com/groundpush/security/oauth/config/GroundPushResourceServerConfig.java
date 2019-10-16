@@ -55,6 +55,7 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
                 .antMatchers("/validate/codeSms").permitAll()
                 .antMatchers("/againPath","/path","/img/*").permitAll()
                 .antMatchers("/appPage/*").permitAll()
+                .antMatchers("/aliSts").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagge‌​r-ui.html","/swagger-resources/configuration/**").permitAll()
 //                .antMatchers("/swagger-resources/*","/swagger-ui.html/*","/api/v2/api-docs","/api/*","/swagger-ui.html","/webjars/springfox-swagger-ui/*","/swagger-resources/configuration/security","/swagger-resources","/swagger-resources/configuration/").permitAll()
                 .anyRequest()
