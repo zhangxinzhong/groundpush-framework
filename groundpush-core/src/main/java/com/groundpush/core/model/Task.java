@@ -215,8 +215,8 @@ public class Task implements Serializable {
     /**
      * 推广任务
      */
-    /*@JsonView(DetailTaskView.class)
-    private List<TaskAttribute> spreadTaskAttributes;*/
+    @JsonView(DetailTaskView.class)
+    private List<TaskAttribute> spreadTaskAttributes;
 
     /**
      * 推广任务map APP端使用
