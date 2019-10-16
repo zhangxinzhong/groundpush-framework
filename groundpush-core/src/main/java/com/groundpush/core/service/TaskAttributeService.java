@@ -33,5 +33,20 @@ public interface TaskAttributeService {
      */
     Optional<Integer> createTaskAttribute(List<TaskAttribute> taskAttributes);
 
+    /**
+     * 通过任务Id 获取所有任务属性
+     * @param taskId
+     * @return
+     */
     List<TaskAttribute> getTaskAttributeListByTaskId(Integer taskId);
+
+
+    /**
+     * 通过任务id或订单id、类型查询任务属性
+     * @param taskId
+     * @param orderId
+     * @param type
+     * @return
+     */
+    List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(Integer taskId,Integer orderId,Integer type);
 }

@@ -183,6 +183,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Integer type = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? Constants.LOAD_RESULT_T1 : Constants.LOAD_RESULT_T2;
 
+        //todo 优化任务结果集 log
         OrderLog orderLog = new OrderLog();
         orderLog.setOrderId(condition.getOrderId());
         orderLog.setUnqiueCode(condition.getUniqueCode());
@@ -250,5 +251,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Boolean existOrderByCustomerId(Integer customerId) {
         return orderMapper.queryOrderByCustomerId(customerId).size() > 0;
+    }
+
+    @Override
+    public Optional<Integer> queryOrderByOrderId(Integer orderId) {
+        return orderTaskCustomerMapper.queryTaskIdByOrderId(orderId);
     }
 }

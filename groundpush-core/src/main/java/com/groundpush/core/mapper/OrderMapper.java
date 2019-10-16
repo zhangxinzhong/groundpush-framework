@@ -317,4 +317,8 @@ public interface OrderMapper {
 
     @Select(" select a.* from t_order a left join t_order_task_customer b on a.order_id= b.order_id where  a.unique_code = #{uniqueCode} and b.task_id = #{taskId}  and DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ")
     List<Order>  findOrderByUnqiuCode(OrderUpdateCondition condition);
+
+
+
+
 }

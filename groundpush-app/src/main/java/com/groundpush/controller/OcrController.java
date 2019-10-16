@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * TaskResultUploadController
+ * UploadController
  *
  * @author hss
  * @date 2019/9/20 9:20

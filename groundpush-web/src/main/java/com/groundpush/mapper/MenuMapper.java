@@ -45,7 +45,7 @@ public interface MenuMapper {
      *
      * @param menu
      */
-    @Update(" update t_menu set name=#{name},code=#{code},parent_id=#{parentId},seq=#{seq},leaf=#{leaf},path=#{path},last_modified_time=current_timestamp where menu_id=#{menuId} ")
+    @Update(" update t_menu set name=#{name},parent_id=#{parentId},seq=#{seq},leaf=#{leaf},path=#{path},last_modified_time=current_timestamp where menu_id=#{menuId} ")
     void updateMenu(Menu menu);
 
     /**
