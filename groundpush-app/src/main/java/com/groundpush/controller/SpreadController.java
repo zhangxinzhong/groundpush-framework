@@ -8,7 +8,9 @@ import com.groundpush.core.service.OrderService;
 import com.groundpush.core.service.SpecialTaskService;
 import com.groundpush.core.service.TaskService;
 import com.groundpush.core.service.TaskUriService;
-import com.groundpush.core.utils.*;
+import com.groundpush.core.utils.AesUtils;
+import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.RedisUtils;
 import com.groundpush.core.vo.TaskPopCountVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.Optional;
 
 /**
@@ -88,10 +89,6 @@ public class SpreadController {
             //  还需验证当前用户上级是否是特殊用户
             Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId(), spreadQueryCondition.getCustomId());
             Order order = Order.builder().customerId(spreadQueryCondition.getCustomId()).type(spreadQueryCondition.getType()).taskId(spreadQueryCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).channelUri(taskUriOptional.get().getUri()).isSpecial(isSpecialTask).build();
-            if (isSpecialTask) {
-                // 特殊任务的订单默认为已支付
-                order.setStatus(Constants.ORDER_STATUS_PAY_SUCCESS);
-            }
             //2.创建用户订单
             orderService.createOrder(order);
             // 使用完url 后需要把最后修改时间改成今天

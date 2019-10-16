@@ -205,22 +205,10 @@ public class Task implements Serializable {
      */
 
     /**
-     * 申请任务
-     */
-    @JsonView(DetailTaskView.class)
-    private List<TaskAttribute> getTaskAttributes;
-
-    /**
      * 推广任务
      */
     @JsonView(DetailTaskView.class)
     private List<TaskAttribute> spreadTaskAttributes;
-
-    /**
-     * 申请任务map APP端使用
-     */
-    @JsonView(DetailTaskView.class)
-    private Set<List<TaskAttribute>> getTaskAttributesSet;
 
     /**
      * 推广任务map APP端使用
@@ -231,10 +219,6 @@ public class Task implements Serializable {
     @NotNull(message = "标签内容不可为空")
     @JsonView(DetailTaskView.class)
     private String labelIds;
-
-    @NotNull(message = "任务编辑内容不可为空")
-    @JsonView(SimpleTaskView.class)
-    private List<TaskAttribute> taskAttributes;
 
     /**
      * 添加次要标签
@@ -252,7 +236,7 @@ public class Task implements Serializable {
     private Boolean hasOrder;
 
     /**
-     * 任务是否存在订单
+     *  是否收藏
      */
     @ApiParam("是否收藏")
     @JsonView(SimpleTaskView.class)
