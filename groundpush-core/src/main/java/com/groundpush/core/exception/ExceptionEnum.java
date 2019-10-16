@@ -46,6 +46,7 @@ public enum ExceptionEnum {
     , CUSTOMER_ACCOUNT_NOT_EXISTS("CA40004", "客户账户不存在")
     , CUSTOMER_ACCOUNT_NOT_ENOUGH("CA40005", "账户余额不足")
     , CUSTOMER_ACCOUNT_NOT_PAY("CA40006", "客户未绑定%s")
+    , CUSTOMER_EXISTS("CA40007", "客户已存在")
     , VALIDATE_CODE_UNEXPIRED("O50001", "短信验证码还未过期，请勿重新发送！")
     , VALIDATE_CODE_EXCEPTION("O50002", "短信验证码发送异常，请联系管理员！")
     , VALIDATE_CODE_NOT_EXISTS("O50003", "验证码不存在！")
