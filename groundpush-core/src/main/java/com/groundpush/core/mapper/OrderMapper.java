@@ -152,7 +152,7 @@ public interface OrderMapper {
      */
     @Select({
             "<script>",
-            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title,c.audit_duration,c.amount,c.owner_ratio,c.spread_ratio,c.brief_title,c.example_img from t_order o ",
+            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title,c.audit_duration,c.amount,c.spread_ratio,c.brief_title,c.example_img from t_order o ",
             " left join t_order_task_customer otc on otc.order_id = o.order_id ",
             " left join t_task c on otc.task_id = c.task_id ",
             " where otc.customer_id = #{customerId}",

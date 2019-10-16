@@ -22,7 +22,7 @@ public interface TaskService {
      * @param limit
      * @return
      */
-    Page<Task> queryTaskAllPc(TaskQueryCondition taskQueryCondition, Integer page, Integer limit);
+    Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit);
 
     /**
      * 新增任务
@@ -38,9 +38,9 @@ public interface TaskService {
      */
     Optional<Task> getTask(Integer id);
 
-    Boolean save(Task task);
+    void save(Task task);
 
-    Boolean updateTask(Task task);
+    void updateTask(Task task);
 
     /**
      * 获取所有任务

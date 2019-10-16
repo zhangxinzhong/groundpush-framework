@@ -130,24 +130,14 @@ public class LabelController {
     @JsonView(Label.OutLabelView.class)
     @RequestMapping(value = "/getLabelAll")
     @ResponseBody
-    public Map<String,Object> getLabelPage() {
-        Map<String,Object> resultMap = new HashMap<String,Object>();
+    public JsonResp getLabelPage() {
         try {
-            List<Label>  labelList  = labelService.getLabelAll();
-            if(labelList!=null && labelList.size()>0){
-                resultMap.put("dataList",labelList);
-                resultMap.put("code","200");
-            }else{
-                resultMap.put("msg", "标签列表为空！");
-                resultMap.put("code", "500");
-            }
+            return JsonResp.success(labelService.getLabelAll());
         } catch (Exception e) {
-            resultMap.put("code","500");
-            resultMap.put("msg","获取标签列表失败！");
             log.error(e.toString(), e);
             throw e;
         }
-        return resultMap;
+
     }
 }
 

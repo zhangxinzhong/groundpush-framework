@@ -74,6 +74,8 @@ layui.use('table', function () {
         }
         ,showAddSpecialTask:function(data) {
             Utils.getAjax("/specialTask/queryAllList",{},function(rep) {
+                $('#teamId').html('');
+                $('#taskId').html('');
                 //添加团队下拉列表
                 $('#teamId').append(new Option());
                 $.each(rep.data.teams, function (index, item) {

@@ -11,1015 +11,418 @@
     <meta name="format-detection" content="telephone=no">
     <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/task/js/task.js"
             th:src="@{/common/common.js}"></script>
+
 </head>
-<style>
-
-</style>
 <body>
-<div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" onclick="addTask()">
-        新增任务
-    </button>
-    <input type="hidden" name="temporaryTaskId" id="temporaryTaskId">
-    <table class="table table-bordered" style="margin-top: 10px" id="loadTaskData">
-
-    </table>
-    <nav aria-label="Page navigation" style="margin-top:-31px ;">
-        <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true"><</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">></span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <!--存放临时数据区-->
-    <div id="myTaskHtml"></div>
-    <div id="generalizeTaskHtml"></div>
-
-    <!--模态框部分-->
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" style="width: 95%" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">新增任务</h4>
-                </div>
-                <div class="modal-body">
 
 
-                    <form id="submitTask" method="post">
-                        <input type="hidden" name="taskId" id="thisTaskId">
-                        <input type="hidden" id="nowPage" value="1">
-                        <input type="hidden" id="pageSize" value="20">
-                        <input type="hidden" id="totalPageNum">
+<!--新增角色-->
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn" data-method="showTaskModal" data-custom-event="task">新增任务</button>
+</div>
 
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;缩&emsp;略&emsp;图：</label>
-                            <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px;width: 90px;height: 75px" id="imgSLT"
-                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
-                                     onerror="excptionUrl(this)">
-                                <br><label>上传缩略图片(推荐尺寸：90*75)</label>
-                            </div>
-                            <input type="hidden" name="iconUri" id="iconUri">
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;示&emsp;例&emsp;图：</label>
-                            <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px;width: 160px;height: 95px" id="imgZST"
-                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
-                                     onerror="excptionUrl(this)">
-                                <br><label>上传示例图片(推荐尺寸：160*95)</label>
-                            </div>
-                            <input type="hidden" name="exampleImg" id="exampleImg">
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;封&emsp;面&emsp;图：</label>
-                            <div class="btn col-lg-2" style="text-align: center">
-                                <img style="margin-left: -10px;width: 360px;height: 200px" id="imgFMT"
-                                     src="http://101.200.42.9:8686/cms/upload/imgs/1561976082996.png"
-                                     onerror="excptionUrl(this)">
-                                <br><label>上传封面图片(推荐尺寸：360*200)</label>
-                            </div>
-                            <input type="hidden" name="imgUri" id="imgUri">
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;&emsp;标&emsp;&emsp;题：</label>
-                            <input class="form-control col-lg-10" name="title" id="title"
-                                   style="width:80%;display:inline"
-                                   type="text">
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;&emsp;简略标题：</label>
-                            <input class="form-control col-lg-10" name="briefTitle" id="briefTitle"
-                                   style="width:80%;display:inline"
-                                   type="text">
-                        </div>
-                        <div class="row panel-heading" id="labelDiv">
-                            <input type="hidden" name="labelIds" id="labelIds">
-                            <label class="btn col-lg-1">&emsp;&emsp;标&emsp;&emsp;签：</label>
-                            <select class="selectpicker form-control" multiple id="selectLabelIds" name="selectLabelIds"
-                                    style="width:80%;display:inline"
-                                    data-title="点击选择标签（可多选）" data-width="80%" data-live-search="true"
-                                    data-live-search-placeholder="搜索" data-actions-box="true">
+<!-- task table -->
+<table class="layui-hide" id="task" lay-filter="task"></table>
+
+
+
+<!-- task tool-->
+<script type="text/html" id="toolTask">
+    <a class="layui-btn layui-btn-xs" lay-event="check">查看任务</a>
+    <a class="layui-btn layui-btn-xs" lay-event="publish">发布任务</a>
+    <a class="layui-btn layui-btn-xs" id="uploadFile{{d.taskId}}" >上传任务URL</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除任务</a>
+</script>
+
+
+
+
+<!-- 用于添加阶段中内容-->
+<script id="phaseTr" type="text/html">
+    <tr>
+        <td>
+            <input class="form-control col-lg-1" type="text" name="seq" value="{{d.seq}}" readonly="readonly" />
+        </td>
+
+        {{# if(d.rowType == 5 ){ }}
+        <td>
+            <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
+            <select class="form-control col-lg-1" name="rowType" >
+                <option value="5"  selected>图片</option>
+            </select>
+            </div>
+        </td>
+        <td>
+            <img class="imgShow{{d.imgCode}} my-img form-control col-lg-1" src="{{# if(d.content != '' && d.content != undefined ){ }} {{d.content}} {{# }else{ }} /images/sample_img.png {{# } }}" style="height: 300px;min-width:100%;display:inline"  />
+            <input type="hidden" class="imgVal{{d.imgCode}} content" name="content" value="{{# if(d.content != '' && d.content != undefined ){ }} {{d.content}} {{# }    }}" />
+            <input type="hidden" class="imgCode" name="imgCode" value="{{d.imgCode}}" />
+        </td>
+
+        {{# }else{ }}
+        <td>
+            <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
+            <select class="form-control col-lg-1 rowType" name="rowType" lay-filter="rowType" >
+                <option value="2" selected>内容</option>
+                <option value="3" >打开URL</option>
+                <option value="4" >保存二维码</option>
+            </select>
+            </div>
+        </td>
+        <td>
+            <textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;">{{# if(d.content != '' && d.content != undefined){ }} {{d.content}} {{# } }}</textarea>
+        </td>
+        {{# } }}
+        <td>
+            <a class="layui-btn layui-btn-danger layui-btn-sm delPhaseTr" >删除</a>
+        </td>
+    </tr>
+</script>
+<!-- rowType对应类型 -->
+<script id="selectContent" type="text/html">
+    <!-- 内容 -->
+    {{# if(d.rowType == 2 ){ }}
+    <textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>
+    {{# } }}
+    <!-- 打开URL、保存二维码 -->
+    {{# if(d.rowType == 3 || d.rowType == 4){ }}
+        <input type="text" name="content" class="form-control col-lg-1 content" value=""  placeholder="输入文本内容" style="width:85%;float:left;margin-right:3%;">
+        <input type="radio" name="createUri" class="form-control createUri" title="生成" style="float:left;">
+    {{# } }}
+</script>
+
+<!-- 用于添加阶段-->
+<script id="phase" type="text/html">
+    <div style="padding: 20px; background-color: #F2F2F2;">
+        <div class="layui-card">
+            <div class="layui-card-header"><label>{{d.title }}</label>
+                &emsp;&emsp;<a class="layui-btn layui-btn-sm addPhaseImg" >添加图片</a>
+                &emsp;&emsp;<a class="layui-btn layui-btn-sm addPhaseText" >添加文本</a>
+                &emsp;&emsp;<a class="layui-btn layui-btn-danger layui-btn-sm delPhase" >删除阶段</a>
+            </div>
+            <div class="layui-card-body">
+                <table class="layui-table" lay-skin="line">
+                    <colgroup>
+                        <col width="6%">
+                        <col width="15%">
+                        <col width="70%">
+                        <col width="10%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>类型</th>
+                        <th>类型值</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input class="form-control col-lg-1" type="text" name="seq" value="1" readonly="readonly" />
+                        </td>
+                        <td>
+                            <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
+                            <select class="form-control col-lg-3" name="rowType"    disabled>
+                                <option value="1"  selected>标题</option>
                             </select>
-                        </div>
-
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;&emsp;公&emsp;&emsp;司：</label>
-                            <select class="form-control col-lg-3" name="source" id="source"
-                                    style="width:21%;display:inline">
-                            </select>
-                            <input type="hidden" name="province" id="province">
-                            <select class="selectpicker form-control col-lg-3" name="provinces" id="provinces" multiple
-                                    style="width:21%;display:inline;margin-left: 5px"
-                                    data-title="点击选择省份（可多选）" data-width="21%" data-live-search="true"
-                                    data-live-search-placeholder="搜索" data-actions-box="true" onchange="selectProvince()" >
-                            </select>
-                            <input type="hidden" name="location" id="location">
-                            <select class="selectpicker form-control col-lg-3" name="locations" id="locations" multiple
-                                    style="width:21%;display:inline"
-                                    data-title="点击选择城市（可多选）" data-width="21%" data-live-search="true"
-                                    data-live-search-placeholder="搜索" data-actions-box="true">
-                            </select>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;&emsp;单笔佣金：</label>
-                            <input class="form-control col-lg-1" name="amount" id="amount"
-                                   style="width:80%;display:inline" type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">/元</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;&emsp;推广总数：</label>
-                            <input class="form-control col-lg-1" name="spreadTotal" id="spreadTotal"
-                                   style="width:80%;display:inline" type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">/天</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">可推广任务数：</label>
-                            <input class="form-control col-lg-1" name="handlerNum" id="handlerNum"
-                                   style="width:80%;display:inline"
-                                   type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">/人/天</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;&emsp;审核天数：</label>
-                            <input class="form-control col-lg-1" name="auditDuration" id="auditDuration"
-                                   style="width:80%;display:inline" type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">/天</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;&emsp;任务耗时：</label>
-                            <input class="form-control col-lg-1" name="expendTime" id="expendTime"
-                                   style="width:80%;display:inline"
-                                   type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">/分钟</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;综合通过率：</label>
-                            <input class="form-control col-lg-1" name="completeOdds" id="completeOdds"
-                                   style="width:80%;display:inline" type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">%</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;完成人分成：</label>
-                            <input class="form-control col-lg-1" name="ownerRatio" id="ownerRatio"
-                                   style="width:80%;display:inline"
-                                   type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">%</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">&emsp;推广人分成：</label>
-                            <input class="form-control col-lg-1" name="spreadRatio" id="spreadRatio"
-                                   style="width:80%;display:inline" type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">%</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">团队领导分成：</label>
-                            <input class="form-control col-lg-1" name="leaderRatio" id="leaderRatio"
-                                   style="width:80%;display:inline" type="number">
-                            <span class="btn col-lg-1" style="text-align: left;">%</span>
-                        </div>
-                        <div class="row panel-heading">
-                            <label class="btn col-lg-1">是否上传结果：</label>
-                            <select class="form-control col-lg-1" name="isResult" id="isResult"
-                                    style="width:80%;display:inline">
-                                <option value="false">否</option>
-                                <option value="true">是</option>
-                            </select>
-                        </div>
-                    </form>
-                    <form>
-                        <div class="row" id="allTaskDiv" style="margin-top: 15px">
-                            <div class="col-lg-6" id="MyTask" style="border-right:1px solid #000">
-                                <div style="margin-left: 20px;" class="row">
-                                    <a class="btn btn-primary col-lg-2">我的任务编辑</a>
-                                    <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
-                                       onclick="addJieDuan('MyTask')">添加阶段</a>
-                                </div>
-                                <div id="MyTaskContentDiv">
-
-                                </div>
                             </div>
-                            <div class="col-lg-6" id="GeneralizeTask">
-                                <div style="margin-left: 20px;" class="row">
-                                    <a class="btn btn-primary col-lg-2">推广任务编辑</a>
-                                    <a class="btn btn-primary col-lg-2" style="margin-left: 5px"
-                                       onclick="addJieDuan('GeneralizeTask')">添加阶段</a>
-                                </div>
-                                <div id="GeneralizeTaskContentDiv">
+                        </td>
+                        <td>
+                            <input type="text" name="content" class="form-control col-lg-5 content" value="{{# if(d.content != '' && d.content != undefined){ }} {{d.content}} {{# } }}"  placeholder="输入文本内容">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                                </div>
+    </div>
+</script>
+
+
+<!-- 用于添加任务结果集-->
+<script id="result" type="text/html">
+    <tr>
+        <td>
+            <input class="form-control col-lg-1" type="text" name="seq" value="{{d.seq}}" readonly="readonly" />
+        </td>
+        <td>
+            <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
+                <select class="form-control col-lg-1" name="rowType"  >
+                    <option value="1" selected>标题</option>
+                    <option value="2" >图片</option>
+                </select>
+             <div>
+        </td>
+        <td>
+            <input class="form-control col-lg-1 content" name="content" placeholder="请输入文本内容" />
+        </td>
+        <td>
+            <a class="layui-btn layui-btn-danger layui-btn-sm delResultTr" >删除</a>
+        </td>
+    </tr>
+</script>
+
+
+<!-- 新增角色模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="addTaskDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" style="width: 80%" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addRoleTitle">新增任务</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form  class="layui-form" action="" id="addTaskForm" lay-filter="addTaskForm">
+
+                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                                        <legend>&emsp;&emsp;缩&emsp;略&emsp;图 (推荐尺寸：90*75)</legend>
+                                    </fieldset>
+                                    <div class="layui-form-item">
+
+                                        <div class="layui-upload">
+                                            <div class="layui-upload-list" style="margin-left: 7%">
+                                                <img class="layui-upload-img" id="imgThum" width="20%" height="5%" src="/images/sample_img.png" title="点击更换图片" />
+                                                <p id="thumText"></p>
+                                                <input hidden type="text" name="thumInput" id="thumInput" lay-verify="thumInput" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                                        <legend>&emsp;&emsp;示&emsp;例&emsp;图 (推荐尺寸：160*95)</legend>
+                                    </fieldset>
+                                    <div class="layui-form-item">
+                                        <div class="layui-upload">
+                                            <div class="layui-upload-list" style="margin-left: 7%">
+                                                <img class="layui-upload-img" id="imgSample" width="20%" height="5%" src="/images/sample_img.png" title="点击更换图片" />
+                                                <p id="sampleText"></p>
+                                                <input hidden type="text" name="sampleInput" id="sampleInput" lay-verify="sampleInput" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                                        <legend>&emsp;&emsp;封&emsp;面&emsp;图 (推荐尺寸：360*200)</legend>
+                                    </fieldset>
+                                    <div class="layui-form-item">
+
+                                        <div class="layui-upload">
+                                            <div class="layui-upload-list" style="margin-left: 7%">
+                                                <img class="layui-upload-img" id="imgCover" width="20%" height="5%" src="/images/sample_img.png" title="点击更换图片" />
+                                                <p id="coverText"></p>
+                                                <input hidden type="text" name="coverInput" id="coverInput" lay-verify="coverInput" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">标&emsp;&emsp;题:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" name="title" id="title"  lay-verify="title" autocomplete="off" maxlength="120" placeholder="请输入标题" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">简略标题:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-10" name="briefTitle"  id="briefTitle" lay-verify="briefTitle" autocomplete="off" maxlength="7" placeholder="请输入简略标题（最多7个字符）" type="text">
+                                        </div>
+                                    </div>
+
+                                   <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">标&emsp;&emsp;签:</label>
+                                        <div class="col-md-8">
+                                            <select class="selectpicker form-control" multiple id="selectLabelIds" name="selectLabelIds"
+                                                    data-title="点击选择标签（可多选）"  data-live-search="true"
+                                                    data-live-search-placeholder="搜索" data-actions-box="true">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">公&emsp;&emsp;司:</label>
+                                        <div class="col-md-8">
+                                            <div class="layui-input-inline layui-form" style="width:35%;" lay-filter="source">
+                                                <select class="form-control col-lg-3" name="source" id="source" placeholder="请输入公司"   >
+                                                </select>
+                                            </div>
+                                            <select class="selectpicker  col-lg-4" name="provinces" id="provinces" multiple
+                                                    data-title="请选择省份（可多选）" data-live-search="true"
+                                                    data-live-search-placeholder="搜索" data-actions-box="true" lay-filter="province" >
+                                            </select>
+                                            <select class="selectpicker" name="locations" id="locations" multiple
+                                                    data-title="请选择城市（可多选）"  data-live-search-placeholder="搜索" data-actions-box="true" >
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">单笔佣金:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="amount" id="amount" lay-verify="amount" autocomplete="off" maxlength="8" placeholder="请输入单笔佣金" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">/元</span>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">推广总数:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="spreadTotal" id="spreadTotal" lay-verify="spreadTotal" autocomplete="off" maxlength="11" placeholder="请输入推广总数" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">/天</span>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">可推广任务数:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="handlerNum" id="handlerNum" lay-verify="handlerNum" autocomplete="off" maxlength="11" placeholder="请输入可推广任务数" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">/人/天</span>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">审核天数:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="auditDuration" id="auditDuration" lay-verify="auditDuration" autocomplete="off" maxlength="11" placeholder="请输入审核天数" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">/天</span>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">任务耗时:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="expendTime" id="expendTime" lay-verify="expendTime" autocomplete="off" maxlength="11" placeholder="请输入任务耗时" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">/分钟</span>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">综合通过率:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="completeOdds" id="completeOdds" lay-verify="completeOdds" autocomplete="off" maxlength="11" placeholder="请输入综合通过率" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">%</span>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">推广人分成:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="spreadRatio" id="spreadRatio" lay-verify="spreadRatio" autocomplete="off" maxlength="11" placeholder="请输入推广人分成" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">%</span>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">推广人上级分成:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="spreadParentRatio" id="spreadParentRatio" lay-verify="spreadParentRatio" autocomplete="off" maxlength="11" placeholder="请输入推广人上级分成" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">%</span>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">团队领导分成:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="leaderRatio" id="leaderRatio" lay-verify="leaderRatio" autocomplete="off" maxlength="11" placeholder="请输入团队领导分成" type="number">
+                                        </div>
+                                        <span class="btn col-lg-1" style="text-align: left;">%</span>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">介绍标题:</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control col-lg-1" name="taskTitle" id="taskTitle" lay-verify="taskTitle" autocomplete="off" maxlength="200" placeholder="请输入介绍标题" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">介绍内容:</label>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control col-lg-1" name="taskContent" id="taskContent" lay-verify="taskContent" autocomplete="off" maxlength="500" placeholder="请输入介绍内容" ></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">是否上传结果:</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control col-lg-1" name="isResult" id="isResult" >
+                                                <option value="false">否</option>
+                                                <option value="true">是</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">任务类型:</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control col-lg-1" name="type" id="type" >
+                                                <option value="1">微信外</option>
+                                                <option value="0">微信内</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-tab">
+                                        <ul class="layui-tab-title">
+                                            <li class="layui-this">我的任务编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small" title="添加阶段" id="addPhase"><i class="layui-icon"></i></button></li>
+                                            <li>结果集上传编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small" title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button></li>
+                                        </ul>
+                                        <div class="layui-tab-content">
+                                            <div class="layui-tab-item layui-show">
+                                                <div class="layui-form-item">
+                                                    <div id="view"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-tab-item">
+                                                <div class="layui-form-item" id="resultView">
+                                                    <table class="layui-table" lay-skin="line">
+                                                        <colgroup>
+                                                            <col width="5%">
+                                                            <col width="15%">
+                                                            <col width="70%">
+                                                            <col width="10%">
+                                                        </colgroup>
+                                                        <thead>
+                                                        <tr>
+                                                            <th>序号</th>
+                                                            <th>类型</th>
+                                                            <th>类型值</th>
+                                                            <th>操作</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="addTask">提交</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="toSubmit(0)">保存任务</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
+<!-- 新增角色模态框 end -->
+
+
 </body>
-<script>
-    //加载列表信息
-    function loadTaskData() {
-        //清空一下子
-        clearForm();
-        //加载内容
-        var jsondata = {
-            "nowPage": $("#nowPage").val(),
-            "pageSize": $("#pageSize").val()
-        };
-        $.ajax({
-            url: "/task/getTaskPageList",
-            async: false,
-            type: "POST",
-            dataType: 'json',
-            data: jsondata,
-            success: function (data) {
-                var code = data.code;
-                var dataList = data.data.rows;
-                if (code == "200") {
-                    //加载分页项
-                    compoundPage(data.data);
-                    //加载页面列表
-                    var tableHtml = '<tr>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">任务标题</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">单笔佣金</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">所属公司</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">每日推广任务总数</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">单人每日可做任务数</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">完成人分成比</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">推广人分成比</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">推广领导分成比</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">发布类型</th>\n' +
-                        '            <th style="text-align: center;vertical-align: middle;">操作</th>\n' +
-                        '        </tr>';
-                    //定义一个数组
-                    var uploadExcelArray = new Array();
-                    for (var i = 0; i < dataList.length; i++) {
-                        var status = dataList[i].status;
-                        var statusName;
-                        if (status == 1) {
-                            statusName = "已发布";
-                        } else if (status == 2) {
-                            statusName = "未发布";
-                        } else if (status == 3) {
-                            statusName = "已过期";
-                        }
-                        //先来组一下子上传文件ID的规则
-                        //获取随机数字
-                        var number = Math.ceil(Math.random() * 10);
-                        //获取当前的时间戳
-                        var timestamp = Date.parse(new Date());
-                        var uploadExcel = "uploadExcel" + timestamp + number;
-                        //组页面
-                        tableHtml += '<tr>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].title + '</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].amount + '元</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].source + '</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].spreadTotal + '</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].handlerNum + '</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].ownerRatio + '%</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].spreadRatio + '%</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + dataList[i].leaderRatio + '%</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">' + statusName + '</td>\n' +
-                            '            <td style="text-align: center;vertical-align: middle;">\n' +
-                            '                <button class="layui-btn" onclick="seeTask(' + dataList[i].taskId + ')">查看任务</button>\n' +
-                            '                <button class="layui-btn" onclick="delTask(' + dataList[i].taskId + ')">删除任务</button>\n' +
-                            '                <button class="layui-btn" onclick="sendTask(' + dataList[i].taskId + ')">发布任务</button>\n' +
-                            '                <button class="layui-btn" onclick="uploadFileData(' + dataList[i].taskId + ',this)">上传任务URL</button>\n' +
-                            '                <input class="layui-btn uploadExcel" type="hidden">\n' +
-                            '            </td>\n' +
-                            '        </tr>';
-                        //把这个破唯一标识扔进去
-                        uploadExcelArray.push("." + uploadExcel);
-                    }
-                    $("#loadTaskData").html(tableHtml);
-                }
-            }
-        })
-    }
-
-    function uploadFileData(taskId, object) {
-        $("#temporaryTaskId").val(taskId);
-        var obj = $(object);
-        obj.parent().find(".uploadExcel").click();
-    }
-
-    //跳转不同任务
-    function selectType(object) {
-        $(".selectType").each(function (index, oneType) {
-            var type = $(oneType);
-            //css样式
-            type.removeClass("active");
-        })
-        //跳转连接
-        var obj = $(object);
-        obj.addClass("active");
-        var type = obj.attr("type");
-        if (type == "1") {
-            $("#iframeContent").attr("src", "../task/taskMy");
-        } else {
-            $("#iframeContent").attr("src", "../task/taskMy");
-        }
-    }
-
-    //提交任务
-    function toSubmit(type) {
-        //妈嘞个蛋蛋滴组串串
-        var params = [];
-        $("#allTaskDiv .labelRowDiv").each(function (index, object) {
-            var obj = {}
-            var seq = $(object).find(".seq");
-            obj["seq"] = seq.val();
-            var name = $(object).find(".name");
-            obj["name"] = name.val();
-            var content = $(object).find(".content");
-            obj["content"] = content.val();
-            var type = $(object).find(".type");
-            obj["type"] = type.val();
-            var labelType = $(object).find(".labelType");
-            obj["labelType"] = labelType.val();
-            var rowType = $(object).find(".rowType");
-            obj["rowType"] = rowType.val();
-            var imgCode = $(object).find(".imgCode");
-            obj["imgCode"] = imgCode.val();
-            var createUri = $(object).find(".createUri");
-            if (createUri.is(':checked')) {
-                obj["createUri"] = 1;
-            } else {
-                obj["createUri"] = 0;
-            }
-            params.push(obj);
-        })
-        //获取标签内容
-        var selectLabelIds = $('#selectLabelIds').selectpicker('val');
-        $("#labelIds").val(selectLabelIds);
-        //获取省份内容
-        var provinces = $('#provinces').selectpicker('val');
-        $("#province").val(provinces);
-        //获取城市内容
-        var locations = $('#locations').selectpicker('val');
-        $("#location").val(locations);
-        //获取表单内容项转成JSON
-        var jsondata = {};//转化为json
-        jsondata["taskId"] = $("#thisTaskId").val();
-        jsondata["imgUri"] = $("#imgUri").val();
-        jsondata["iconUri"] = $("#iconUri").val();
-        jsondata["exampleImg"] = $("#exampleImg").val();
-        jsondata["title"] = $("#title").val();
-        jsondata["briefTitle"] = $("#briefTitle").val();
-        jsondata["labelIds"] = $("#labelIds").val();
-        jsondata["selectLabelIds"] = $("#selectLabelIds").val();
-        jsondata["source"] = $("#source").val();
-        jsondata["province"] = $("#province").val();
-        jsondata["location"] = $("#location").val();
-        jsondata["amount"] = $("#amount").val();
-        jsondata["spreadTotal"] = $("#spreadTotal").val();
-        jsondata["handlerNum"] = $("#handlerNum").val();
-        jsondata["auditDuration"] = $("#auditDuration").val();
-        jsondata["expendTime"] = $("#expendTime").val();
-        jsondata["completeOdds"] = $("#completeOdds").val();
-        jsondata["ownerRatio"] = $("#ownerRatio").val();
-        jsondata["spreadRatio"] = $("#spreadRatio").val();
-        jsondata["leaderRatio"] = $("#leaderRatio").val();
-        jsondata["isResult"] = $("#isResult").val();
-        jsondata["taskAttributes"] = params;
-        var jsonParamsData = JSON.stringify(jsondata);
-
-        //提交校验
-        var verifyResult = verify(jsonParamsData);
-        if (!verifyResult)
-            return;
-        //如果校验通过则提交表单
-        $.ajax({
-            url: "/task/save",
-            async: false,
-            type: "POST",
-            contentType: 'application/json',
-            dataType: 'json',
-            data: jsonParamsData,
-            success: function (data) {
-                //loadTaskData();
-                //$("#myModal").modal('hide');
-                location.reload();
-            }
-        });
-    }
-
-    //查看任务
-    function seeTask(taskId) {
-        //清空表单
-        clearForm();
-        //获取任务详情信息
-        $.ajax({
-                url: "/task/getTask/" + taskId,
-                async: false,
-                type: "GET",
-                contentType: 'application/json',
-                dataType: 'json',
-                success: function (data) {
-                    var code = data.code;
-                    if (code == "200") {
-                        //基础数据
-                        var dataMsg = data.data;
-                        $("#thisTaskId").val(dataMsg.taskId);
-                        $("#imgUri").val(dataMsg.imgUri);
-                        if (dataMsg.imgUri != null && dataMsg.imgUri != "") {
-                            $("#imgFMT").attr("src", dataMsg.imgUri);
-                        }
-                        $("#iconUri").val(dataMsg.iconUri);
-                        if (dataMsg.iconUri != null && dataMsg.iconUri != "") {
-                            $("#imgSLT").attr("src", dataMsg.iconUri);
-                        }
-                        $("#exampleImg").val(dataMsg.exampleImg);
-                        if (dataMsg.exampleImg != null && dataMsg.exampleImg != "") {
-                            $("#imgZST").attr("src", dataMsg.exampleImg);
-                        }
-                        $("#title").val(dataMsg.title);
-                        $("#briefTitle").val(dataMsg.briefTitle);
-                        $("#source").val(dataMsg.source);
-                        $("#location").val(dataMsg.location);
-                        $("#spreadTotal").val(dataMsg.spreadTotal);
-                        $("#amount").val(dataMsg.amount);
-                        $("#handlerNum").val(dataMsg.handlerNum);
-                        $("#auditDuration").val(dataMsg.auditDuration);
-                        $("#expendTime").val(dataMsg.expendTime);
-                        $("#completeOdds").val(dataMsg.completeOdds);
-                        $("#ownerRatio").val(dataMsg.ownerRatio);
-                        $("#spreadRatio").val(dataMsg.spreadRatio);
-                        $("#leaderRatio").val(dataMsg.leaderRatio);
-                        if(dataMsg.isResult == true){
-                            $("#isResult").val("true");
-                        }else{
-                            $("#isResult").val("false");
-                        }
-                        //回显标签
-                        labelLoad(dataMsg.labelIds);
-                        //加载省份内容
-                        provinceLoad(dataMsg.province);
-                        //加载位置内容
-                        locationLoad(dataMsg.province,dataMsg.location,2);
-                        //子表数据
-                        var taskAttributes = dataMsg.taskAttributes;
-                        //定义两部分的页面值
-                        //我的任务页面
-                        var myTaskHtml = "";
-                        //推广任务页面
-                        var generalizeTaskHtml = "";
-                        //循环
-                        for (var i in taskAttributes) {
-                            var type = taskAttributes[i].type;
-                            //不同的行类型显示不同--先把所有的数据弄出来在说
-                            if (type == "1") {
-                                myTaskHtml += getZiTaskMsg(taskAttributes[i]);
-                            } else {
-                                generalizeTaskHtml += getZiTaskMsg(taskAttributes[i]);
-                            }
-                        }
-                        //把这两部分临时存起来已备后用。。。。我滴天啊。。。
-                        $("#myTaskHtml").html(myTaskHtml);
-                        $("#generalizeTaskHtml").html(generalizeTaskHtml);
-                        //在循环一次来确定阶段的信息-哎麻烦
-                        //我的任务编辑部分
-                        var MyTaskContentDivHtml = "";
-                        for (var i in taskAttributes) {
-                            var num = parseInt(i);
-                            //阶段标头内容
-                            var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
-                                '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="MyTask" onclick="addTaskText(this)">添加文本</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="MyTask" onclick="addTaskImage(this)">添加图片</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-danger col-lg-2" onclick="delThisLabelRow(this)">删除该阶段</a>\n' +
-                                '                                    </div>';
-                            //阶段内容
-                            var TaskMsgHtml = "";
-                            //所属阶段的内容
-                            $("#myTaskHtml .labelRowDiv").each(function (dataIndex, dataMsg) {
-                                var onLabelIndex = $(dataMsg).attr("onLabelIndex");
-                                if (onLabelIndex == num) {
-                                    TaskMsgHtml += $(dataMsg).prop("outerHTML");
-                                }
-                            })
-                            if (TaskMsgHtml.length > 0) {
-                                MyTaskContentDivHtml += TaskLabelHtml + TaskMsgHtml;
-                            }
-                        }
-                        $("#MyTaskContentDiv").html(MyTaskContentDivHtml);
-                        //清除临时内容
-                        $("#myTaskHtml").html("");
-                        //推广任务编辑部分
-                        var GeneralizeTaskContentDivHtml = "";
-                        for (var i in taskAttributes) {
-                            var num = parseInt(i);
-                            //阶段标头内容
-                            var TaskLabelHtml = '<div labelIndex="' + num + '" style="margin-left: 20px;margin-top: 15px;" class="row labelRow">\n' +
-                                '                                        <a class="btn btn-primary col-lg-2 stageIndex">第' + num + '阶段</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="GeneralizeTask" onclick="addTaskText(this)">添加文本</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-primary col-lg-2" typeMsg="GeneralizeTask" onclick="addTaskImage(this)">添加图片</a>\n' +
-                                '                                        <a style="margin-left: 5px;" class="btn btn-danger col-lg-2" onclick="delThisLabelRow(this)">删除该阶段</a>\n' +
-                                '                                    </div>';
-                            //阶段内容
-                            var TaskMsgHtml = "";
-                            //所属阶段的内容
-                            $("#generalizeTaskHtml .labelRowDiv").each(function (dataIndex, dataMsg) {
-                                var onLabelIndex = $(dataMsg).attr("onLabelIndex");
-                                if (onLabelIndex == num) {
-                                    TaskMsgHtml += $(dataMsg).prop("outerHTML");
-                                }
-                            })
-                            if (TaskMsgHtml.length > 0) {
-                                GeneralizeTaskContentDivHtml += TaskLabelHtml + TaskMsgHtml;
-                            }
-                        }
-                        $("#GeneralizeTaskContentDiv").html(GeneralizeTaskContentDivHtml);
-                        //清除临时内容
-                        $("#generalizeTaskHtml").html("");
-                        //调用一下子那个啥。。。。动态加载的那个文件上传的那个东西
-                        upLoadFile();
-                    }
-                }
-            }
-        );
-        var $modal = $('#myModal');
-        $modal.modal();
-    }
-
-    //处理详情回显时的文件加载
-    function upLoadFile() {
-        for (var i in resultMap) {
-            var labelClass = resultMap[i].key;
-            var valueClass = resultMap[i].value;
-            attributeFileUpload(labelClass, valueClass);
-        }
-    }
-
-    //处理回显子表部分
-    //先定义一个数组在说
-    var resultMap = [];
-
-    function getZiTaskMsg(taskAttribute) {
-        //content
-        var content = taskAttribute.content;
-        //图片唯一标识
-        var imgCode = taskAttribute.imgCode;
-        //序号
-        var seq = taskAttribute.seq;
-        //是否生成URL
-        var createUri = taskAttribute.createUri;
-        //任务类型
-        var type = taskAttribute.type;
-        //阶段类型
-        var labelType = taskAttribute.labelType;
-        //行级类型
-        var rowType = taskAttribute.rowType;
-
-        //组页面了
-        var ziHtml = "";
-        //处理一下子不同类型之下的单选生成按钮的问题
-        //块级类型
-        var divType = "";
-        //区别是否生成URL在哪边
-        var createUriName = "";
-        if (type == 1) {
-            divType = "MyTask";
-            createUriName = "createUriName1";
-        } else if (type == 2) {
-            divType = "GeneralizeTask";
-            createUriName = "createUriName2";
-        }
-        //拼页面
-        if (rowType == 1) {
-            //标题
-            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
-                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '" >\n' +
-                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
-                '                <option value="1" selected>标题</option>' +
-                '                <option value="2">内容</option>' +
-                '                <option value="3">URL</option>' +
-                '                <option value="4">下载APP</option>' +
-                '                <option value="5">扫描二维码</option>' +
-                '                <option value="6">保存二维码</option>' +
-                '                </select>' +
-                '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
-                '                </span>';
-        } else if (rowType == 2) {
-            //内容
-            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
-                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
-                '                <option value="1" >标题</option>' +
-                '                <option value="2" selected>内容</option>' +
-                '                <option value="3">URL</option>' +
-                '                <option value="4">下载APP</option>' +
-                '                <option value="5">扫描二维码</option>' +
-                '                <option value="6">保存二维码</option>' +
-                '                </select>' +
-                '                <span class="valueDiv">' +
-                '                <textarea class="content form-control col-lg-5" name="content" id="textContent"\n' +
-                '                style="font-family: mFont;height:150px;width: 55%;margin-left: 5px;">' + content + '</textarea>\n' +
-                '                </span>';
-        } else if (rowType == 3) {
-            //URL
-            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
-                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
-                '                <option value="1" >标题</option>' +
-                '                <option value="2" >内容</option>' +
-                '                <option value="3" selected>URL</option>' +
-                '                <option value="4">下载APP</option>' +
-                '                <option value="5">扫描二维码</option>' +
-                '                <option value="6">保存二维码</option>' +
-                '                </select>' +
-                '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">';
-            if (createUri == 0) {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
-                '</span>';
-            } else {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri" checked>生成</label>\n';
-                '</span>';
-            }
-        } else if (rowType == 4) {
-            //下载APP
-            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
-                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
-                '                <option value="1" >标题</option>' +
-                '                <option value="2">内容</option>' +
-                '                <option value="3">URL</option>' +
-                '                <option value="4" selected>下载APP</option>' +
-                '                <option value="5">扫描二维码</option>' +
-                '                <option value="6">保存二维码</option>' +
-                '                </select>' +
-                '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:55%;display:inline" placeholder="输入文本内容">\n' +
-                '                </span>';
-        } else if (rowType == 5) {
-            //扫描二维码
-            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
-                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
-                '                <option value="1" >标题</option>' +
-                '                <option value="2">内容</option>' +
-                '                <option value="3">URL</option>' +
-                '                <option value="4" >下载APP</option>' +
-                '                <option value="5" selected>扫描二维码</option>' +
-                '                <option value="6">保存二维码</option>' +
-                '                </select>' +
-                '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">\n';
-            if (createUri == 0) {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
-                '</span>';
-            } else {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri" checked>生成</label>\n';
-                '</span>';
-            }
-        } else if (rowType == 6) {
-            //保存二维码
-            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
-                '<input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" onchange="updateRowType(this)" placeholder="输入文本标题">\n' +
-                '                <option value="1" >标题</option>' +
-                '                <option value="2">内容</option>' +
-                '                <option value="3">URL</option>' +
-                '                <option value="4" >下载APP</option>' +
-                '                <option value="5" >扫描二维码</option>' +
-                '                <option value="6" selected>保存二维码</option>' +
-                '                </select>' +
-                '                <span class="valueDiv">' +
-                '                <input type="text" name="content" class="content form-control col-lg-5" value="' + content + '" style="margin-left:5px;width:47%;display:inline" placeholder="输入文本内容">\n';
-            if (createUri == 0) {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri">生成</label>\n';
-                '</span>';
-            } else {
-                ziHtml += '<label class="col-lg-1 btn" style="width: 8%;"><input type="radio" name="' + createUriName + '" class="createUri" checked>生成</label>\n';
-                '</span>';
-            }
-        } else if (rowType == 7) {
-            //组一下子唯 一标识
-            var labelClass = "imgTP" + imgCode;
-            var valueClass = "imgVAL" + imgCode;
-            //图片
-            ziHtml += '<div style="margin-top: 16px;margin-left: 20px;" onLabelIndex="' + labelType + '" class="row labelRowDiv">\n' +
-                '                <input type="number" name="seq" class="seq form-control col-lg-1" style="width:10%;display:inline" placeholder="序号" value="' + seq + '">\n' +
-                '                <select name="rowType" typeMsg="'+ divType +'" class="rowType form-control col-lg-3" style="margin-left:5px;width:20%;display:inline" placeholder="输入文本标题">\n' +
-                '                <option value="7" selected>图片</option>' +
-                '                </select>' +
-                '                <img class="' + labelClass + ' my-img form-control col-lg-5" src="' + content + '" style="margin-left: 5px;width:350px; height: 400px;display:inline" onerror="excptionUrl(this)" />' +
-                '                <input type="hidden" class="' + valueClass + ' content" name="content" value="' + content + '" />' +
-                '                <input type="hidden" class="imgCode" name="imgCode" value="' + imgCode + '" />';
-            //把这些KEY和VAL记住
-            var map = {};
-            map.key = "." + labelClass;
-            map.value = "." + valueClass;
-            resultMap.push(map);
-        }
-        //组上
-        ziHtml += '<a class="btn btn-danger col-lg-1" style="margin-left: 20px;" onclick="romeve(this)">删除</a>' +
-            '<input type="hidden" class="labelType" name="labelType" value="' + labelType + '">';
-
-        //任务类型
-        if (type == 1) {
-            ziHtml += '<input type="hidden" class="type" name="type" value="1">' +
-                '            </div>';
-        } else if (type == 2) {
-            ziHtml += '<input type="hidden" class="type" name="type" value="2">' +
-                '            </div>';
-        }
-        return ziHtml;
-    }
-
-    //添加任务
-    function addTask() {
-        //清空表单
-        clearForm()
-        //显示输入项
-        var $modal = $('#myModal');
-        $modal.modal();
-    }
-
-    //过期任务
-    function delTask(taskId) {
-        var data = {
-            "taskId": taskId,
-            "status": 3
-        }
-        $.ajax({
-            url: "/task/updateTaskStatus",
-            async: false,
-            type: "POST",
-            dataType: 'json',
-            data: data,
-            success: function (data) {
-                loadTaskData();
-                $("#myModal").modal('hide');
-            }
-        });
-        loadTaskData();
-    }
-
-    //发布任务
-    function sendTask(taskId) {
-        var data = {
-            "taskId": taskId,
-            "status": 1
-        }
-        $.ajax({
-            url: "/task/updateTaskStatus",
-            async: false,
-            type: "POST",
-            dataType: 'json',
-            data: data,
-            success: function (data) {
-                loadTaskData();
-                $("#myModal").modal('hide');
-            }
-        });
-        loadTaskData();
-    }
-
-    //清空表单
-    function clearForm() {
-        $("#thisTaskId").val("");
-        document.getElementById("submitTask").reset();
-        $("#MyTaskContentDiv").html("");
-        $("#MyExplainContentDiv").html("");
-        $("#MyResultContentDiv").html("");
-        $("#GeneralizeTaskContentDiv").html("");
-        $("#GeneralizeExplainContentDiv").html("");
-        $("#GeneralizeResultContentDiv").html("");
-    }
-
-    //提交之前的检验
-    function verify(jsondata) {
-        var dataObj = eval("(" + jsondata + ")");
-        //封面图片
-        var imgUri = dataObj.imgUri;
-        if (imgUri == undefined || imgUri.length == 0) {
-            alert("封面图片不可为空！");
-            return false;
-        }
-        //缩略图片
-        var iconUri = dataObj.iconUri;
-        if (iconUri == undefined || iconUri.length == 0) {
-            alert("缩略图片不可为空！");
-            return false;
-        }
-        //示例图片
-        var exampleImg = dataObj.exampleImg;
-        if (exampleImg == undefined || exampleImg.length == 0) {
-            alert("示例图片不可为空！");
-            return false;
-        }
-        //任务标题
-        var title = dataObj.title;
-        if (title == undefined || title.length == 0) {
-            alert("任务标题不可为空！");
-            return false;
-        }
-        //简略标题
-        var briefTitle = dataObj.briefTitle;
-        if (briefTitle == undefined || briefTitle.length == 0) {
-            alert("简略标题不可为空！");
-            return false;
-        } else if (briefTitle.length > 7) {
-            alert("简略标题长度不可大于7个字符！");
-            return false;
-        }
-        //标签项
-        var labelIds = dataObj.labelIds;
-        if (labelIds == undefined || labelIds.length == 0) {
-            alert("标签项不可为空！");
-            return false;
-        }
-        //公司项
-        var source = dataObj.source;
-        if (source == undefined || source.length == 0) {
-            alert("公司项不可为空！");
-            return false;
-        }
-        //公司项
-        var amount = dataObj.amount;
-        if (amount == undefined || amount.length == 0) {
-            alert("单笔佣金不可为空！");
-            return false;
-        }
-        //推广总数
-        var spreadTotal = dataObj.spreadTotal;
-        if (spreadTotal == undefined || spreadTotal.length == 0) {
-            alert("推广总数不可为空！");
-            return false;
-        }
-        //可做任务数
-        var handlerNum = dataObj.handlerNum;
-        if (handlerNum == undefined || handlerNum.length == 0) {
-            alert("可做任务数不可为空！");
-            return false;
-        }
-        //审核天数
-        var auditDuration = dataObj.auditDuration;
-        if (auditDuration == undefined || auditDuration.length == 0) {
-            alert("审核天数不可为空！");
-            return false;
-        }
-        //任务耗时
-        var expendTime = dataObj.expendTime;
-        if (expendTime == undefined || expendTime.length == 0) {
-            alert("任务耗时不可为空！");
-            return false;
-        }
-        //综合通过率
-        var completeOdds = dataObj.completeOdds;
-        if (completeOdds == undefined || completeOdds.length == 0) {
-            alert("综合通过率不可为空！");
-            return false;
-        }
-        //完成人分成
-        var ownerRatio = dataObj.ownerRatio;
-        if (ownerRatio == undefined || ownerRatio.length == 0) {
-            alert("完成人分成不可为空！");
-            return false;
-        }
-        //推广人分成
-        var spreadRatio = dataObj.spreadRatio;
-        if (spreadRatio == undefined || spreadRatio.length == 0) {
-            alert("推广人分成不可为空！");
-            return false;
-        }
-        //领导人分成
-        var leaderRatio = dataObj.leaderRatio;
-        if (leaderRatio == undefined || leaderRatio.length == 0) {
-            alert("团队领导人分成不可为空！");
-            return false;
-        }
-        //验证子项
-        //领导人分成
-        var taskAttributes = dataObj.taskAttributes;
-        for (var one in taskAttributes) {
-            var msg;
-            var type = taskAttributes[one].type;
-            if (type == 1) {
-                msg = "我的任务编辑-";
-            } else {
-                msg = "推广任务编辑-";
-            }
-            var labelType = taskAttributes[one].labelType;
-            if (labelType == 1) {
-                msg += "任务模块-";
-            } else if (labelType == 2) {
-                msg += "说明模块-";
-            } else if (labelType == 3) {
-                msg += "结果模块-";
-            }
-            var rowType = taskAttributes[one].rowType;
-            if (rowType == 1) {
-                msg += "文本项不可为空";
-            } else if (rowType == 2) {
-                msg += "图片项不可为空";
-            } else if (rowType == 3) {
-                msg += "URL项不可为空";
-            }
-            //序号
-            var seq = taskAttributes[one].seq;
-            //key
-            var name = taskAttributes[one].name;
-            //value
-            var content = taskAttributes[one].content;
-            /*if (seq.length == 0 || name.length == 0 || content.length == 0) {
-                //alert(msg);
-                //return false;
-            }*/
-        }
-        return true;
-    }
-
-    //组分页
-    function compoundPage(data) {
-        //当前页数
-        var nowPage = data.nowPage;
-        $("#nowPage").val(nowPage);
-        //页面条数
-        var pageSize = data.pageSize;
-        $("#pageSize").val(pageSize);
-        //总页数
-        var total = data.total;
-        var residueCount = total % pageSize;
-        var totalPageNum = 0;
-        if (residueCount == 0) {
-            totalPageNum = total / pageSize;
-        } else {
-            totalPageNum = parseInt(total / pageSize) + 1;
-        }
-        $("#totalPageNum").val(totalPageNum);
-        var html = "";
-        html += '<li><a href="#" onclick=doAppointPage("1")>首页</a></li>'
-            + '<li><a href="#" onclick=doUpPage("' + nowPage + '","' + totalPageNum + '")>上翻</a></li>';
-        //组中间页数
-        //之间的差值
-        var begin = nowPage;
-        var errand = totalPageNum - nowPage;
-        if (errand < 3) {
-            errand = 3 - errand;
-            begin = nowPage - errand < 1 ? 1 : nowPage - errand;
-        }
-        var end = nowPage + 3 > totalPageNum ? totalPageNum : nowPage + 3;
-        for (begin; begin <= end; begin++) {
-            if (nowPage == begin) {
-                html += '<li class="active"><a href="#" onclick=doAppointPage("' + begin + '")>' + begin + '</a></li>';
-            } else {
-                html += '<li><a href="#" onclick=doAppointPage("' + begin + '")>' + begin + '</a></li>';
-            }
-        }
-        //组尾页面
-        html += '<li><a href="#" onclick=doNextPage("' + nowPage + '","' + totalPageNum + '")>下翻</a></li>'
-            + '<li><a href="#" onclick=doAppointPage("' + totalPageNum + '")>尾页</a></li>';
-        //填充页面
-        $(".pagination").html(html);
-    }
-
-    //上翻
-    function doUpPage(nowPage, totalPageNum) {
-        nowPage = nowPage - 1 < 1 ? 1 : nowPage - 1;
-        $("#nowPage").val(nowPage);
-        loadTaskData();
-    }
-
-    //下翻
-    function doNextPage(nowPage, totalPageNum) {
-        nowPage = parseInt(nowPage + 1) > totalPageNum ? totalPageNum : parseInt(nowPage + 1);
-        $("#nowPage").val(nowPage);
-        loadTaskData();
-    }
-
-    //跳转指定页面
-    function doAppointPage(nowPage) {
-        $("#nowPage").val(nowPage);
-        loadTaskData();
-    }
-</script>
 </html>

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 
@@ -62,9 +63,9 @@ public class TaskController {
         }
     }
 
-    @RequestMapping("/updateTaskStatus")
+    @PostMapping("/updateTaskStatus")
     @ResponseBody
-    public JsonResp updateTaskStatus(Task task) {
+    public JsonResp updateTaskStatus(@RequestBody Task task ) {
         try {
             taskService.updateTask(task);
             return JsonResp.success();
@@ -83,9 +84,9 @@ public class TaskController {
     @ApiOperation("任务查询服务")
     @JsonView(Task.SimpleTaskView.class)
     @RequestMapping("/getTaskPageList")
-    public JsonResp queryTask(TaskQueryCondition taskCondition, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+    public JsonResp queryTaskAllPC(TaskQueryCondition taskCondition, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         try {
-            Page<Task> tasks = taskService.queryTaskAll(taskCondition, nowPage, pageSize);
+            Page<Task> tasks = taskService.queryTaskAllPC(taskCondition, nowPage, pageSize);
             return JsonResp.success(new PageResult(tasks));
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -117,8 +118,8 @@ public class TaskController {
             //获取任务编辑数据
             Task task = optionalTask.get();
             List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
-            if (taskAttributeList != null && taskAttributeList.size() > 0) {
-                task.setTaskAttributes(taskAttributeList);
+            if (taskAttributeList != null && taskAttributeList.size() > 0 && optionalTask.isPresent()) {
+                task.setSpreadTaskAttributes(taskAttributeList);
             }
             return JsonResp.success(optionalTask.isPresent() ? task : null);
         } catch (Exception e) {

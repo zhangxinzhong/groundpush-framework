@@ -200,9 +200,15 @@ public class Task implements Serializable {
     @JsonView(DetailTaskView.class)
     private LocalDateTime lastModifiedTime;
 
+    /**
+     * 介绍标题
+     */
     @JsonView(DetailTaskView.class)
     private String taskTitle;
 
+    /**
+     * 介绍内容
+     */
     @JsonView(DetailTaskView.class)
     private String taskContent;
 

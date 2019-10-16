@@ -118,8 +118,6 @@ public class Order implements Serializable {
     @ApiModelProperty("任务金额")
     private BigDecimal amount;
 
-    @ApiModelProperty("完成人分成")
-    private BigDecimal ownerRatio;
 
     @ApiModelProperty("推广人分成比")
     private BigDecimal spreadRatio;

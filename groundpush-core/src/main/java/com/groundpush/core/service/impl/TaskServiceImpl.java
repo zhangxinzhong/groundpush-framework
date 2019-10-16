@@ -50,9 +50,9 @@ public class TaskServiceImpl implements TaskService {
     private OrderService orderService;
 
     @Override
-    public Page<Task> queryTaskAllPc(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
+    public Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        Page<Task> tasks = taskMapper.queryTaskAllPc(taskQueryCondition);
+        Page<Task> tasks = taskMapper.queryTaskAllPC(taskQueryCondition);
         return tasks;
     }
 
@@ -94,22 +94,19 @@ public class TaskServiceImpl implements TaskService {
 
     @OperationLogDetail(operationType = OperationType.TASK_ADD,type = OperationClientType.PC)
     @Override
-    public Boolean save(Task task) {
+    public void save(Task task) {
         //添加、更新任务内容
         boolean taskResult = true;
         Integer taskId = task.getTaskId();
         task.setStatus(Constants.TASK_STATUS_2);
         if (taskId == null) {
-            taskResult = taskMapper.createSingleTask(task) > 0 ? true : false;
+            taskMapper.createSingleTask(task);
         } else {
-            taskResult = taskMapper.updateTask(task) > 0 ? true : false;
+            taskMapper.updateTask(task);
         }
         taskId = task.getTaskId();
-        System.out.println(taskId);
         //添加标签内容
-        Boolean labelResult = true;
-        //删除
-        labelResult = taskLabelMapper.deleteTaskLabelByTaskId(taskId) > 0 ? true : false;
+        taskLabelMapper.deleteTaskLabelByTaskId(taskId);
         //添加
         String labelIds = task.getLabelIds();
         if (StringUtils.isNotEmpty(labelIds)) {
@@ -124,28 +121,22 @@ public class TaskServiceImpl implements TaskService {
             }
         }
         //添加任务内容（先删除后添加）
-        Boolean taskAttributeResult = true;
         //删除
-        taskAttributeResult = taskAttributeMapper.deleteTaskAttributeByTaskId(taskId) > 0 ? true : false;
+        taskAttributeMapper.deleteTaskAttributeByTaskId(taskId);
         //添加
         List<TaskAttribute> taskAttributes = task.getSpreadTaskAttributes();
         if (taskAttributes != null && taskAttributes.size() > 0) {
             for (TaskAttribute taskAttribute : taskAttributes) {
                 taskAttribute.setTaskId(taskId);
-                //todo
-                //taskAttribute.setCreatedBy();
-                //taskAttribute.setLastModifiedBy();
             }
-            taskAttributeResult = taskAttributeMapper.createTaskAttribute(taskAttributes) > 0 ? true : false;
+            taskAttributeMapper.createTaskAttribute(taskAttributes);
         }
-        //返回结果
-        return taskAttributeResult && taskResult && labelResult;
     }
 
     @OperationLogDetail(operationType = OperationType.TASK_UPDATE,type = OperationClientType.PC)
     @Override
-    public Boolean updateTask(Task task) {
-        return taskMapper.updateTask(task) > 0 ? true : false;
+    public void updateTask(Task task) {
+        taskMapper.updateTask(task);
     }
 
     @Override

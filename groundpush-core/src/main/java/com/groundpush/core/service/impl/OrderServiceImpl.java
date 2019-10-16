@@ -134,13 +134,7 @@ public class OrderServiceImpl implements OrderService {
             order.setIntervalDays(days.intValue());
             Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? dateUtils.plusMinutesTime(order.getCreatedTime()) : false;
             order.setHasReUpload(reUpload);
-            dateUtils.plusMinutesTime(order.getCreatedTime());
-            BigDecimal amount = order.getAmount();
-            if (Constants.ORDER_TYPE_1.equals(order.getType())) {
-                order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getOwnerRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
-            } else {
-                order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getSpreadRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
-            }
+            order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getSpreadRatio(), Constants.PERCENTAGE_100), order.getAmount()).toPlainString());
         }
         return page;
     }
