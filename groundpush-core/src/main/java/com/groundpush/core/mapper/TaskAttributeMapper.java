@@ -64,4 +64,14 @@ public interface TaskAttributeMapper {
     List<TaskAttribute> queryTaskAttributeByTaskId(@Param("taskId") Integer taskId,@Param("type") Integer type);
 
 
+    /**
+     *
+     * @param taskId
+     * @param type
+     * @return
+     */
+    @Select(" select a.* from t_task_attribute a where a.task_id= #{taskId}  and a.type= #{type} ")
+    List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(Integer taskId,Integer type);
+
+
 }
