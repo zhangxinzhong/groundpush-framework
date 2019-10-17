@@ -151,6 +151,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //初始化modal框
         ,showTaskModal:function () {
             eventListener.showAddUpdateTaskDialog();
+            eventListener.clearHistory();
             //初始化缩略图上传
             eventListener.initUploadImg({'id': '#imgThum', 'inputId': '#thumInput'});
             //初始化示例图上传
@@ -166,13 +167,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             //添加点击事件
             eventListener.addClick();
 
-            $('#selectLabelIds,#locations,#provinces').parent().next().remove();
-
         }
         //添加我的任务编辑与结果集上传编辑的添加事件
         , addClick: function () {
             //添加阶段
-            $('#addPhase').on('click', function () {
+            $('.addPhase').off('click');
+            $('.addPhase').on('click', function () {
                 let taskSeq = $('#view').find('.layui-card').length;
                 let data = {
                     'title': '第' + (++taskSeq) + '阶段',
@@ -187,7 +187,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             });
 
             //添加结果集
-            $('#addResult').on('click',function () {
+            $('.addResult').off('click');
+            $('.addResult').on('click',function () {
                 let len =  $('#resultView table tbody tr').length;
                 laytpl($('#resultAdd').html()).render({"seq": ++len}, function(html){
                     $('#resultView').find('table tbody').append(html);
@@ -201,7 +202,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         }
         //初始化结果集上传编辑事件
         , initResultEvent: function () {
-
+            $('.delResultTr').off('click');
             $('.delResultTr').on('click', function () {
                 $(this).parent().parent().remove();
                 let i = 0;
@@ -273,7 +274,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //初始化modal中省份select
         , initProvinces: function (data) {
             //所有选择的省份
-            let provincesNames = data != undefined ? data.provincesNames : [];
+            let provincesNames = data != undefined ? data: [];
             //遍历省份信息
             let provincesHtml = "";
             for (let x in CityInfo) {
@@ -288,9 +289,10 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 eventListener.initCity({'provinceNames': provinceNames});
             });
             $('#provinces').html(provincesHtml);
-            $("#provinces,#locations").selectpicker('refresh');
-            $("#provinces,#locations").selectpicker('render');
-
+            $("#provinces").selectpicker('refresh');
+            $("#provinces").selectpicker('render');
+            $("#locations").selectpicker('refresh');
+            $("#locations").selectpicker('render');
 
         }
         //初始化modal中城市select
@@ -311,6 +313,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 if (provinceNames.indexOf(provinces.label) > -1) {
                     let cityChildren = provinces.children;
                     for (let z in cityChildren) {
+                        let city = cityChildren[z].label;
                         cityHtml += '<option value="' + cityChildren[z].label + '"  ' + (cityNames != undefined && cityNames.indexOf(city) > -1 ? 'selected' : '') + '>' + cityChildren[z].label + '</option>';
                         ++forCount;
                     }
@@ -322,13 +325,13 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             $("#locations").selectpicker('render');
         }
         //初始化modal中公司select
-        , initSource: function () {
+        , initSource: function (data) {
             Utils.postAjax("/channel/getChannelAll", {}, function (rep) {
                 if (rep.code == '200') {
                     $('#source').html('');
                     $('#source').append(new Option('请选择公司', ''));
                     $.each(rep.data, function (index, item) {
-                        $('#source').append(new Option(item.companyName, item.channelId));
+                        $('#source').append('<option value="' + item.channelId + '"  ' + (data !=undefined && data ==item.channelId ? 'selected' : '') + '>' + item.companyName + '</option>');
                     });
                     form.render('select', 'source');
                 } else {
@@ -348,7 +351,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     }
                     $('#selectLabelIds').html('');
                     $.each(rep.data, function (index, item) {
-                        $('#selectLabelIds').append(new Option(item.labelName, item.labelId, selectLabel.indexOf(item.labelId) > -1 ? true : false));
+                        $('#selectLabelIds').append('<option value="' + item.labelId + '"  ' + (selectLabel.indexOf(item.labelId+'') > -1 ? 'selected' : '') + '>' + item.labelName + '</option>');
                     });
                     //加载下拉列表内容
                     $("#selectLabelIds").selectpicker('refresh');
@@ -376,6 +379,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 }
                 , done: function (res) {
                     if (res.code == "200") {
+                        $(attrs.id).attr('src',res.data);
                         $(attrs.inputId).val(res.data);
                     } else {
                         layer.msg(res.message)
@@ -401,13 +405,22 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 layer.msg(rep.message);
             });
         }
+        //清空遗留数据
+        ,clearHistory:function () {
+            //清空form表单数据
+            $('#addTaskForm')[0].reset();
+            //重置显示缩略图、示例图、封面图
+            $('#addTaskForm').find('img').each(function(i,o){ $(o).attr('src','/images/sample_img.png') });
+            //重置我的任务与结果集
+            $('#view').html('');$('#resultView table tbody').html('');
+        }
         //回显数据
         ,showData:function (data) {
             Utils.getAjax("/task/getTask/"+data.taskId,{},function(rep) {
+                 eventListener.clearHistory();
                 if(rep.code =='200'){
                    let data = rep.data;
                    form.val('addTaskForm',{
-                       "taskId":taskId,
                        //缩略图
                        "thumInput":data.iconUri,
                        //示例图
@@ -443,66 +456,81 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                         //是否上传结果
                         "isResult":data.isResult,
                         //任务类型
-                        "type":data.type,
-                        //公司
-                        "source":source
+                        "type":data.type
                    });
                     eventListener.showAddUpdateTaskDialog();
+                    $('#taskId').val(data.taskId);
                     $('#imgThum').attr('src',data.iconUri);
                     $('#imgSample').attr('src',data.exampleImg);
                     $('#imgCover').attr('src',data.imgUri);
 
-                    //初始化缩略图上传
+                    //初始化回显缩略图上传
                     eventListener.initUploadImg({'id':'#imgThum','inputId':'#thumInput'});
-                    //初始化示例图上传
+                    //初始化回显示例图上传
                     eventListener.initUploadImg({'id':'#imgSample','inputId':'#sampleInput'});
-                    //初始化封面图上传
+                    //初始化回显封面图上传
                     eventListener.initUploadImg({'id':'#imgCover','inputId':'#coverInput'});
-                    //初始化标签
+                    //初始化回显标签
                     eventListener.initLabel(data.labelIds);
-                    //初始化省市
+                    //初始化回显省市
                     eventListener.initProvinces(data.province);
                     eventListener.initCity({'cityNames':data.location,'provinceNames':data.province})
+                    //初始化回显公司
+                    eventListener.initSource(data.source);
 
+                    //初始化回显我的任务与结果集 begin
                      let phaseJsonObjs = {'array':[]};
                      let resultJsonObjs = {'array':[]};
                      $.each(data.spreadTaskAttributes,function (index,object) {
                          if(object.type == 2){
-                             $.each(phaseJsonArr,function (i,o) {
+                             let pushArray = false;
+                             $.each(phaseJsonObjs.array,function (i,o) {
                                  if(o.labelType == object.labelType){
-                                     o.list.push(o);
-                                 }else{
-                                     let phaseJsonObj = {};
-                                     let list = [];
-                                     list.push(object);
-                                     phaseJsonObj["labelType"] = object.labelType;
-                                     phaseJsonObj["list"] = list;
-                                     phaseJsonObjs.array.push(phaseJsonObj);
+                                     o.list.push(object);
+                                     pushArray = true;
                                  }
                              });
+                             if(!pushArray){
+                                 let phaseJsonObj = {};
+                                 phaseJsonObj["labelType"] = object.labelType;
+                                 phaseJsonObj["list"] = [object];
+                                 phaseJsonObjs.array.push(phaseJsonObj);
+                             }
+                         }else {
+                             resultJsonObjs.array.push(object);
                          }
-                         resultJsonObjs.push(object);
                      });
 
-                    laytpl($('#phaseEcho').html()).render(phaseJsonObjs, function(html){
+                    laytpl($('#phaseTableEcho').html()).render(phaseJsonObjs, function(html){
                         $('#view').append(html);
+                        //渲染select
+                        form.render('select','rowTypeDiv');
                     });
 
-                    laytpl($('#resultUpdate').html()).render(resultJsonObjs, function(html){
+                    laytpl($('#resultUpdateEcho').html()).render(resultJsonObjs, function(html){
                         $('#resultView table tbody').append(html);
-                    });
 
+                    });
+                    //渲染select
+                    form.render('select','rowTypeDiv');
                     //添加点击事件
                     eventListener.addClick();
-
+                    eventListener.addButtonEvent();
+                    //初始化回显我的任务与结果集 end
                 }else{
                     layer.msg(rep.message);
                 }
             },function (rep) {
                 layer.msg(rep.message);
             });
-
-
+        }
+        //我的任务编辑中为添加图片、添加文本、删除文本、删除行 结果集上传编辑中删除 绑定event
+        ,addButtonEvent:function () {
+            //我的任务编辑
+            eventListener.initPhaseEvent();
+            eventListener.initDelTr();
+            //结果集上传编辑
+            eventListener.initResultEvent();
         }
         //删除或发布任务
         , delOrPublishTask: function (data) {
@@ -592,8 +620,9 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //我的任务编辑
         $("#view div table").each(function (index, object) {
             ++ labelType;
-            let obj = {}
+
             $(this).find('tbody tr').each(function (index, object) {
+                let obj = {}
                 obj["labelType"] = labelType;
                 let seq = $(object).find('input[name="seq"]').val();
                 obj["seq"] = seq;

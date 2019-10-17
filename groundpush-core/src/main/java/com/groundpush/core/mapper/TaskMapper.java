@@ -37,7 +37,7 @@ public interface TaskMapper {
      * @param task
      * @return
      */
-    @Insert(" insert into t_task(title, img_uri,icon_uri, amount, source, type, status, location,province, spread_total, handler_num, audit_duration, expend_time, complete_odds,  spread_ratio, leader_ratio, created_by, created_time,is_result,brief_title,example_img,spread_parent_ratio) values (#{title},#{imgUri},#{iconUri},#{amount},#{source},#{type},#{status},#{location},#{province},#{spreadTotal},#{handlerNum},#{auditDuration},#{expendTime},#{completeOdds},#{spreadRatio},#{leaderRatio},#{createdBy},current_timestamp,#{isResult},#{briefTitle},#{exampleImg},#{spreadParentRatio}) ")
+    @Insert(" insert into t_task(title, img_uri,icon_uri, amount, source, type, status, location,province, spread_total, handler_num, audit_duration, expend_time, complete_odds,  spread_ratio, leader_ratio, created_by, created_time,is_result,brief_title,example_img,spread_parent_ratio,task_title,task_content) values (#{title},#{imgUri},#{iconUri},#{amount},#{source},#{type},#{status},#{location},#{province},#{spreadTotal},#{handlerNum},#{auditDuration},#{expendTime},#{completeOdds},#{spreadRatio},#{leaderRatio},#{createdBy},current_timestamp,#{isResult},#{briefTitle},#{exampleImg},#{spreadParentRatio},#{taskTitle},#{taskContent}) ")
     @Options(useGeneratedKeys = true, keyProperty = "taskId")
     Integer createSingleTask(Task task);
 
@@ -71,6 +71,8 @@ public interface TaskMapper {
             " <if test='lastModifiedBy != null'> last_modified_by=#{lastModifiedBy},  </if> ",
             " <if test='isResult != null'> is_result=#{isResult},  </if> ",
             " <if test='spreadParentRatio != null'> spread_parent_ratio=#{spreadParentRatio},  </if> ",
+            " <if test='taskTitle != null'> task_title=#{taskTitle},  </if> ",
+            " <if test='taskContent != null'> task_content=#{taskContent},  </if> ",
             " last_modified_time = CURRENT_TIMESTAMP ",
             "where task_id=#{taskId}",
             "</script>"

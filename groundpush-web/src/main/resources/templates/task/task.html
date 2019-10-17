@@ -113,14 +113,16 @@
         <td>
             <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
             <select class="form-control col-lg-1 rowType" name="rowType" lay-filter="rowType" >
-                <option value="2" selected>内容</option>
-                <option value="3" >打开URL</option>
+                <!--<option value="2" selected>内容</option>-->
+                <option value="3" selected >打开URL</option>
                 <option value="4" >保存二维码</option>
             </select>
             </div>
         </td>
         <td>
-            <textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>
+            <!--<textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>-->
+            <input type="text" name="content" class="form-control col-lg-1 content" value=""  placeholder="输入文本内容" style="width:85%;float:left;margin-right:3%;">
+            <input type="radio" name="createUri" class="form-control createUri" title="生成" style="float:left;">
         </td>
         {{# } }}
         <td>
@@ -167,7 +169,7 @@
     </tr>
 </script>
 <!-- 用于修改任务结果集-->
-<script id="resultUpdate" type="text/html">
+<script id="resultUpdateEcho" type="text/html">
     {{# layui.each(d.array, function(index, item){  }}
     <tr>
         <td>
@@ -196,10 +198,10 @@
 <!--******************************************用于我的任务编辑回显修改模板**begin***************************************************-->
 
 <script id="phaseTableEcho" type="text/html">
-    {{# layui.each(d.array, function(index, array){  }}
+    {{# layui.each(d.array, function(index, arr){  }}
     <div style="padding: 20px; background-color: #F2F2F2;">
         <div class="layui-card">
-            <div class="layui-card-header"><label>{{d.title }}</label>
+            <div class="layui-card-header"><label>第{{arr.labelType }}阶段</label>
                 &emsp;&emsp;<a class="layui-btn layui-btn-sm addPhaseImg" >添加图片</a>
                 &emsp;&emsp;<a class="layui-btn layui-btn-sm addPhaseText" >添加文本</a>
                 &emsp;&emsp;<a class="layui-btn layui-btn-danger layui-btn-sm delPhase" >删除阶段</a>
@@ -221,10 +223,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {{# layui.each(array.list, function(index, item){  }}
+                    {{# layui.each(arr.list, function(index, item){  }}
                     <tr>
                         <td>
-                            <input class="form-control col-lg-1" type="text" name="seq" value="{{item.seq }}" readonly="readonly" />
+                            <input class="form-control col-lg-1" type="text" name="seq" value="{{ item.seq }}" readonly="readonly" />
                         </td>
                         <td>
                             <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
@@ -233,7 +235,7 @@
                                       <option value="1"  selected>标题</option>
                                     {{# } }}
                                     {{# if(item.rowType==2 || item.rowType==3 || item.rowType==4){ }}
-                                    <option value="2"  {{ item.rowType==2?'selected':'' }}>内容</option>
+                                    <!--<option value="2"  {{ item.rowType==2?'selected':'' }}>内容</option>-->
                                     <option value="3"  {{ item.rowType==3?'selected':'' }}>打开URL</option>
                                     <option value="4"  {{ item.rowType==4?'selected':'' }}>保存二维码</option>
                                     {{# } }}
@@ -245,27 +247,28 @@
                         </td>
                         <td>
                             <!-- 标题 -->
-                            {{# if(item.rowType == 1) }}
-                            <input type="text" name="content" class="form-control col-lg-5 content" value="{{ item.content != '' && item.content != undefined?item.content:'' }}"  placeholder="输入文本内容">
+                            {{# if(item.rowType == 1){ }}
+                            <input type="text" name="content" class="form-control col-lg-5 content" value="{{ item.content != undefined?item.content:'' }}"  placeholder="输入文本内容">
                             {{# } }}
                             <!-- 内容 -->
                             {{# if(item.rowType == 2){ }}
-                            <textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;">{{ item.content != '' && item.content != undefined?item.content:'' }}</textarea>
+                            <textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;">{{ item.content != undefined?item.content:'' }}</textarea>
                             {{# } }}
                             <!-- 打开URL、保存二维码 -->
                             {{# if(item.rowType == 3 || item.rowType == 4){ }}
-                            <input type="text" name="content" class="form-control col-lg-1 content" value="{{ item.content != '' && item.content != undefined?item.content:'' }}"  placeholder="输入文本内容" style="width:85%;float:left;margin-right:3%;">
-                            <input type="radio" name="createUri" class="form-control createUri" title="生成" style="float:left;"  {{ item.createUri == 0 ?'checked':'' }} />
+                            <input type="text" name="content" class="form-control col-lg-1 content" value="{{ item.content != undefined?item.content:'' }}"  placeholder="输入文本内容" style="width:85%;float:left;margin-right:3%;">
+                            <input type="radio" name="createUri" class="form-control createUri" title="生成" style="float:left;" {{ item.createUri==1?'checked':'' }} />
                             {{# } }}
 
                             <!-- 图片 -->
-                            {{# if(item.rowType == 3 || item.rowType == 4){ }}
-                            <img class="imgShow{{d.imgCode}} my-img form-control col-lg-1" src="{{ item.content != '' && item.content != undefined?item.content:'/images/sample_img.png' }}" style="height: 300px;min-width:100%;display:inline"  />
-                            <input type="hidden" class="imgVal{{d.imgCode}} content" name="content" value="{{ item.content != '' && item.content != undefined?item.content:'' }}" />
-                            <input type="hidden" class="imgCode" name="imgCode" value="{{d.imgCode}}" />
+                            {{# if(item.rowType == 5){ }}
+                            <img class="imgShow{{item.imgCode}} my-img form-control col-lg-1" src="{{ item.content != undefined?item.content:'/images/sample_img.png' }}" style="height: 300px;min-width:100%;display:inline"  />
+                            <input type="hidden" class="imgVal{{item.imgCode}} content" name="content" value="{{ item.content != undefined?item.content:'' }}" />
+                            <input type="hidden" class="imgCode" name="imgCode" value="{{item.imgCode}}" />
                             {{# } }}
                         </td>
                         <td>
+                            <a class="layui-btn layui-btn-danger layui-btn-sm delPhaseTr" >删除</a>
                         </td>
                     </tr>
                     {{# });  }}
@@ -354,7 +357,7 @@
                                         <div class="col-md-8">
                                             <select class="selectpicker form-control" multiple id="selectLabelIds" name="selectLabelIds"
                                                     data-title="点击选择标签（可多选）"  data-live-search="true"
-                                                    data-live-search-placeholder="搜索" data-actions-box="true">
+                                                    data-live-search-placeholder="搜索" data-actions-box="true" lay-ignore>
                                             </select>
                                         </div>
                                     </div>
@@ -362,16 +365,16 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label col-md-2">公&emsp;&emsp;司:</label>
                                         <div class="col-md-8">
-                                            <div class="layui-input-inline layui-form" style="width:35%;" lay-filter="source">
+                                            <div class="layui-input-inline layui-form" style="width:30%;" lay-filter="source">
                                                 <select class="form-control col-lg-3" name="source" id="source" placeholder="请输入公司"   >
                                                 </select>
                                             </div>
                                             <select class="selectpicker  col-lg-4" name="provinces" id="provinces" multiple
                                                     data-title="请选择省份（可多选）" data-live-search="true"
-                                                    data-live-search-placeholder="搜索" data-actions-box="true" lay-filter="province" >
+                                                    data-live-search-placeholder="搜索" data-actions-box="true" lay-ignore >
                                             </select>
-                                            <select class="selectpicker" name="locations" id="locations" multiple
-                                                    data-title="请选择城市（可多选）"  data-live-search-placeholder="搜索" data-actions-box="true" >
+                                            <select class="selectpicker col-lg-4" name="locations" id="locations" multiple data-live-search="true"
+                                                    data-title="请选择城市（可多选）"  data-live-search-placeholder="搜索" data-actions-box="true" lay-ignore>
                                             </select>
                                         </div>
                                     </div>
@@ -488,8 +491,8 @@
 
                                     <div class="layui-tab">
                                         <ul class="layui-tab-title">
-                                            <li class="layui-this">我的任务编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small" title="添加阶段" id="addPhase"><i class="layui-icon"></i></button></li>
-                                            <li>结果集上传编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small" title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button></li>
+                                            <li class="layui-this">我的任务编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addPhase" title="添加阶段" id="addPhase"><i class="layui-icon"></i></button></li>
+                                            <li>结果集上传编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addResult" title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button></li>
                                         </ul>
                                         <div class="layui-tab-content">
                                             <div class="layui-tab-item layui-show">
