@@ -181,7 +181,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 };
                 laytpl($('#phase').html()).render(data, function (html) {
                     $('#view').append(html);
-                    form.render('select', 'rowTypeDiv');
+                    form.render();
                     eventListener.initPhaseEvent();
                 });
             });
@@ -192,9 +192,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 let len =  $('#resultView table tbody tr').length;
                 laytpl($('#resultAdd').html()).render({"seq": ++len}, function(html){
                     $('#resultView').find('table tbody').append(html);
-                    form.render('select', 'rowTypeDiv');
-
                 });
+                form.render();
                 eventListener.initResultEvent();
             })
             
@@ -224,8 +223,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 laytpl($('#phaseTr').html()).render({'rowType': 5, 'seq': ++len, 'imgCode': imgCode}, function (html) {
                     currTbody.append(html);
                 });
+                form.render();
                 eventListener.initUploadImg({'id': '.imgShow' + imgCode, 'inputId': '.imgVal' + imgCode});
-                form.render('select', 'rowTypeDiv');
                 eventListener.initDelTr();
             });
             //添加文本
@@ -236,7 +235,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 laytpl($('#phaseTr').html()).render({'seq': ++len}, function (html) {
                     currTbody.append(html);
                 });
-                form.render('select', 'rowTypeDiv');
+                form.render();
                 eventListener.initDelTr();
             });
 
@@ -333,7 +332,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     $.each(rep.data, function (index, item) {
                         $('#source').append('<option value="' + item.channelId + '"  ' + (data !=undefined && data ==item.channelId ? 'selected' : '') + '>' + item.companyName + '</option>');
                     });
-                    form.render('select', 'source');
+
                 } else {
                     layer.msg(rep.message);
                 }
@@ -503,20 +502,19 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
                     laytpl($('#phaseTableEcho').html()).render(phaseJsonObjs, function(html){
                         $('#view').append(html);
-                        //渲染select
-                        form.render('select','rowTypeDiv');
                     });
 
                     laytpl($('#resultUpdateEcho').html()).render(resultJsonObjs, function(html){
                         $('#resultView table tbody').append(html);
 
                     });
-                    //渲染select
-                    form.render('select','rowTypeDiv');
                     //添加点击事件
                     eventListener.addClick();
                     eventListener.addButtonEvent();
                     //初始化回显我的任务与结果集 end
+
+                    //渲染from
+                    form.render();
                 }else{
                     layer.msg(rep.message);
                 }
@@ -745,8 +743,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     form.on('select(rowType)', function (data) {
         laytpl($('#selectContent').html()).render({'rowType': data.value}, function (html) {
             $(data.elem).parents('td').next().html(html);
-            //layui渲染radio
-            form.render('radio')
+            form.render();
         });
     });
 
@@ -762,6 +759,14 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         }
 
     });
+
+    form.on('radio(createUri)',function (data) {
+        $('#view div table tbody tr .createUri').each(function (i,o) {
+            $(o).parent('td').find('.content').removeAttr('readonly');
+        });
+        $(data.elem).parent('td').find('.content').attr('readonly','readonly').val($("#spread").val());
+    });
+
 
 
     $('[data-custom-event="task"]').on("click", function () {

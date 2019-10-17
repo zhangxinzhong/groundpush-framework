@@ -16,7 +16,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,8 +47,13 @@ public class TaskController {
     @Resource
     private TaskAttributeService taskAttributeService;
 
+
+    @Value("${groundpush.app.spread}")
+    private String spread;
+
     @RequestMapping("/toTaskList")
-    public String getTaskList() {
+    public String getTaskList(Model model) {
+        model.addAttribute("spread",spread);
         return "task/task";
     }
 
