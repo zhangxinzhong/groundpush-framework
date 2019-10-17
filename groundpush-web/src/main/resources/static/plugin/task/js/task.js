@@ -151,7 +151,7 @@ layui.use(['table','laytpl','upload'],function () {
         }
         //初始化modal框
         ,showTaskModal:function () {
-            eventListener.showAddTaskDialog();
+            eventListener.showAddUpdateTaskDialog();
             //初始化缩略图上传
             eventListener.initUploadImg({'id':'#imgThum','inputId':'#thumInput'});
             //初始化示例图上传
@@ -394,7 +394,7 @@ layui.use(['table','laytpl','upload'],function () {
         ,saveTask:function (data) {
             Utils.postAjax("/task/save",data,function(rep) {
                 if(rep.code =='200'){
-                    eventListener.hideAddTaskDialog();
+                    eventListener.hideAddUpdateTaskDialog();
                     eventListener.reloadTaskTable();
                     layer.msg('任务保存成功！');
                 }else{
@@ -449,11 +449,11 @@ layui.use(['table','laytpl','upload'],function () {
                         //公司
                         "source":source
                    });
-                    eventListener.showAddTaskDialog();
+                    eventListener.showAddUpdateTaskDialog();
                     $('#imgThum').attr('src',data.iconUri);
                     $('#imgSample').attr('src',data.exampleImg);
                     $('#imgCover').attr('src',data.imgUri);
-                    eventListener.initLabel(data.labelIds);
+
                     //初始化缩略图上传
                     eventListener.initUploadImg({'id':'#imgThum','inputId':'#thumInput'});
                     //初始化示例图上传
@@ -465,6 +465,12 @@ layui.use(['table','laytpl','upload'],function () {
                     //初始化省市
                     eventListener.initProvinces(data.province);
                     eventListener.initCity({'cityNames':location,'provinceNames':province})
+                    
+                    // $.each(data.spreadTaskAttributes,function (index,object) {
+                    //     object.
+                    // })
+
+
                     //添加点击事件
                     eventListener.addClick();
 
@@ -516,19 +522,13 @@ layui.use(['table','laytpl','upload'],function () {
             });
         }
         //新增任务modal
-        ,showAddTaskDialog: function(){
-            $('#addTaskDialog').modal('show');
+        ,showAddUpdateTaskDialog: function(){
+            $('#addUpdateTaskDialog').modal('show');
         }
-        ,hideAddTaskDialog: function(){
-            $('#addTaskDialog').modal('hide');
+        ,hideAddUpdateTaskDialog: function(){
+            $('#addUpdateTaskDialog').modal('hide');
         }
-        //修改任务modal
-        ,showUpdateTaskDialog: function(){
-            $('#updateTaskDialog').modal('show');
-        }
-        ,hideUpdateTaskDialog: function(){
-            $('#updateTaskDialog').modal('hide');
-        }
+
     };
 
     eventListener.initTable();
@@ -575,7 +575,7 @@ layui.use(['table','laytpl','upload'],function () {
         let labelType = 0;
 
         //我的任务编辑
-        $("#view table").each(function (index, object) {
+        $("#view div table").each(function (index, object) {
             ++ labelType;
             let obj = {}
             $(this).find('tbody tr').each(function (index, object) {

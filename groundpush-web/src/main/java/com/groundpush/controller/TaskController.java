@@ -118,7 +118,7 @@ public class TaskController {
             //获取任务编辑数据
             Task task = optionalTask.get();
             List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
-            if (taskAttributeList != null && taskAttributeList.size() > 0 && optionalTask.isPresent()) {
+            if (taskAttributeList != null && taskAttributeList.size() > 0) {
                 task.setSpreadTaskAttributes(taskAttributeList);
             }
             return JsonResp.success(optionalTask.isPresent() ? task : null);
