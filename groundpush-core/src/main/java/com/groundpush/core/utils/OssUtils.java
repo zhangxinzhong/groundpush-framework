@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -33,37 +34,31 @@ public class OssUtils {
     /**
      * 阿里云API的密钥Access Key ID
      */
-    @Value("${alioss.accessKey:LTAIyw1HJvsdPYoG}")
+    @Value("${alioss.accessKey}")
     private String accessKey;
 
     /**
      * 阿里云API的密钥Access Key Secret
      */
-    @Value("${alioss.accessKeySecret:HkqNNVA9d51UIRFL06LAE29J3io4c4}")
+    @Value("${alioss.accessKeySecret}")
     private String accessKeySecret;
 
     /**
      * http key
      */
-    @Value("${alioss.httpKey:groundpush.oss-cn-beijing.aliyuncs.com}")
+    @Value("${alioss.httpKey}")
     private String httpKey;
 
     /**
      * 容器名称
      */
-    @Value("${alioss.bucketName:groundpush}")
+    @Value("${alioss.bucketName}")
     private String bucketName;
-
-    /**
-     * 图片存储的根路径
-     */
-    @Value("${alioss.rootDir:groundpush/}")
-    private String rootDir;
 
     /**
      * 访问路径
      */
-    @Value("${alioss.baseUrl:http://oss.zhongdi001.com/}")
+    @Value("${alioss.baseUrl}")
     private String baseUrl;
 
 
@@ -95,52 +90,19 @@ public class OssUtils {
         log.info("删除" + bucketName + "Bucket成功");
     }
 
-    /**
-     * 向阿里云的OSS存储中存储文件 --file也可以用InputStream替代
-     *
-     * @param client     OSS客户端
-     * @param file       上传文件
-     * @param bucketName bucket名称
-     * @param diskName   上传文件的目录 --bucket下文件的路径
-     * @return String 唯一MD5数字签名
-     */
-    public final String uploadObject2OSS(OSSClient client, File file, String bucketName, String diskName) {
-        String resultStr = null;
-        try {
-            InputStream is = new FileInputStream(file);
-            String fileName = file.getName();
-            Long fileSize = file.length();
-            // 创建上传Object的Metadata
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(is.available());
-            metadata.setCacheControl("no-cache");
-            metadata.setHeader("Pragma", "no-cache");
-            metadata.setContentEncoding("utf-8");
-            metadata.setContentType(getContentType(fileName));
-            metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
-            // 上传文件
-            PutObjectResult putResult = client.putObject(bucketName, diskName + fileName, is, metadata);
-            // 解析结果
-            resultStr = putResult.getETag();
-        } catch (Exception e) {
-            log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
-        }
-        return resultStr;
-    }
 
     /**
      * 向阿里云的OSS存储中存储文件 --file也可以用InputStream替代
      *
-     * @param client     OSS客户端
      * @param file       上传文件
      * @param bucketName bucket名称
      * @param fileName   上传文件的目录 --bucket下文件的路径
+     * @param filePath   上传文件的目录 --bucket下文件的路径
      * @return String 唯一MD5数字签名
      */
-    public final String uploadFileAliyun(OSSClient client, InputStream file, String bucketName, String fileName,
-                                         String filePath) {
-        String resultStr = null;
+    public final PutObjectResult uploadFileAliyun(InputStream file, String bucketName, String fileName, String filePath) throws Exception {
         try {
+
             // 创建上传Object的Metadata
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.available());
@@ -149,14 +111,13 @@ public class OssUtils {
             metadata.setContentEncoding("utf-8");
             metadata.setContentType(getContentType(fileName));
             metadata.setContentDisposition("filename/filesize=" + bucketName + "/" + file.available() + "Byte.");
+            OSSClient client = getOSSClient();
             // 上传文件
-            PutObjectResult putResult = client.putObject(bucketName, filePath + fileName, file, metadata);
-            // 解析结果
-            resultStr = putResult.getETag();
+            return client.putObject(bucketName, filePath + fileName, file, metadata);
         } catch (Exception e) {
             log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
+            throw e;
         }
-        return resultStr;
     }
 
     /**
@@ -167,8 +128,7 @@ public class OssUtils {
      * @param diskName   文件路径
      * @param key        Bucket下的文件的路径名+文件名
      */
-    public final InputStream getOSS2InputStream(OSSClient client, String bucketName, String diskName,
-                                                String key) {
+    public final InputStream getOSS2InputStream(OSSClient client, String bucketName, String diskName, String key) {
         OSSObject ossObj = client.getObject(bucketName, diskName + key);
         return ossObj.getObjectContent();
     }
@@ -176,69 +136,40 @@ public class OssUtils {
     /**
      * 根据key删除OSS服务器上的文件
      *
-     * @param client     OSS客户端
      * @param bucketName bucket名称
      * @param diskName   文件路径
      * @param key        Bucket下的文件的路径名+文件名
      */
-    public void deleteFile(OSSClient client, String bucketName, String diskName, String key) {
+    public void deleteFile(String bucketName, String diskName, String key) {
+        OSSClient client = getOSSClient();
         client.deleteObject(bucketName, diskName + key);
         log.info("删除" + bucketName + "下的文件" + diskName + key + "成功");
     }
 
     /**
-     * 拼参数上传
-     * @param file
+     * 文件上传
+     * @param file 文件
+     * @param rootDir 文件上传的根目录 /task /order .....
      * @return
+     * @throws Exception
      */
-    public Map<String, Object> upload(MultipartFile file) {
+    public String upload(MultipartFile file,String rootDir) throws Exception {
         //返回结果
-        Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             InputStream is = file.getInputStream();
             String name = file.getOriginalFilename();
             String[] split = name.split("\\.");
             int length = split.length;
             long currentTimeMillis = System.currentTimeMillis();
-            System.out.println(currentTimeMillis);
-            String time = String.valueOf(currentTimeMillis);
-            String fileName = time + "." + split[length - 1];
-            OSSClient client = getOSSClient();
-            uploadFileAliyun(client, is, bucketName, fileName, rootDir);
+            StringBuffer fileName = new StringBuffer().append(currentTimeMillis).append(".").append(split[length - 1]);
+            uploadFileAliyun(is, bucketName, fileName.toString(), rootDir);
             String filePath = baseUrl + rootDir + fileName;
-            //组一下子
-            resultMap.put("filePath", filePath);
-            resultMap.put("fileName", fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return resultMap;
-    }
-
-    public String upload(File file) {
-        OSSClient client = getOSSClient();
-        String bucketName = "dog-oss-hd";
-        String resultStr = null;
-        try {
-            InputStream is = new FileInputStream(file);
-            String fileName = file.getName();
-            Long fileSize = file.length();
-            // 创建上传Object的Metadata
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(is.available());
-            metadata.setCacheControl("no-cache");
-            metadata.setHeader("Pragma", "no-cache");
-            metadata.setContentEncoding("utf-8");
-            metadata.setContentType(getContentType(fileName));
-            metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
-            // 上传文件
-            PutObjectResult putResult = client.putObject(bucketName, "data/dog/baseInfo/" + fileName, is, metadata);
-            // 解析结果
-            resultStr = putResult.getETag();
+            log.info("文件上传成功。bucketName:{},fileName:{},filePath:{},rootDir:{}", bucketName, filePath, fileName, rootDir);
+            return filePath;
         } catch (Exception e) {
-            log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
+            log.error(e.toString(), e);
+            throw e;
         }
-        return resultStr;
     }
 
     /**
@@ -262,7 +193,6 @@ public class OssUtils {
                 file.mkdir();
             }
             resfile = "D:/jobDogFiles/" + fileName;
-            //BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(resfile)));
             FileOutputStream bos = new FileOutputStream(resfile);
             int itemp = 0;
             while ((itemp = bis.read()) != -1) {
@@ -276,40 +206,6 @@ public class OssUtils {
         return resfile;
     }
 
-    /**
-     * 上传本地的图片
-     * 拼参数上传
-     *
-     * @param file
-     * @return
-     */
-    public String uploadFile(File file) {
-        OSSClient client = getOSSClient();
-        String resultStr = null;
-        String resultMsg = "";
-        try {
-            InputStream is = new FileInputStream(file);
-            String fileName = file.getName();
-            Long fileSize = file.length();
-            // 创建上传Object的Metadata
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(is.available());
-            metadata.setCacheControl("no-cache");
-            metadata.setHeader("Pragma", "no-cache");
-            metadata.setContentEncoding("utf-8");
-            metadata.setContentType(getContentType(fileName));
-            metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
-            // 上传文件
-            PutObjectResult putResult = client.putObject(bucketName, "data/dog/baseInfo/" + fileName, is, metadata);
-            // 解析结果
-            resultStr = putResult.getETag();
-            //返回结果
-            resultMsg = "http://dog-oss-hd.oss-cn-hangzhou.aliyuncs.com/data/dog/baseInfo/" + fileName;
-        } catch (Exception e) {
-            log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
-        }
-        return resultMsg;
-    }
 
     /**
      * 通过文件名判断并获取OSS服务文件上传时文件的contentType
@@ -319,35 +215,35 @@ public class OssUtils {
      */
     public final String getContentType(String fileName) {
         String fileExtension = fileName.substring(fileName.lastIndexOf("."));
-        if ("bmp".equalsIgnoreCase(fileExtension)) {
+        if (".bmp".equalsIgnoreCase(fileExtension)) {
             return "image/bmp";
         }
-        if ("gif".equalsIgnoreCase(fileExtension)) {
+        if (".gif".equalsIgnoreCase(fileExtension)) {
             return "image/gif";
         }
-        if ("jpeg".equalsIgnoreCase(fileExtension) || "jpg".equalsIgnoreCase(fileExtension)
-                || "png".equalsIgnoreCase(fileExtension)) {
+        if (".jpeg".equalsIgnoreCase(fileExtension) || ".jpg".equalsIgnoreCase(fileExtension)
+                || ".png".equalsIgnoreCase(fileExtension)) {
             return "image/jpeg";
         }
-        if ("html".equalsIgnoreCase(fileExtension)) {
+        if (".html".equalsIgnoreCase(fileExtension)) {
             return "text/html";
         }
-        if ("txt".equalsIgnoreCase(fileExtension)) {
+        if (".txt".equalsIgnoreCase(fileExtension)) {
             return "text/plain";
         }
-        if ("vsd".equalsIgnoreCase(fileExtension)) {
+        if (".vsd".equalsIgnoreCase(fileExtension)) {
             return "application/vnd.visio";
         }
-        if ("ppt".equalsIgnoreCase(fileExtension) || "pptx".equalsIgnoreCase(fileExtension)) {
+        if (".ppt".equalsIgnoreCase(fileExtension) || ".pptx".equalsIgnoreCase(fileExtension)) {
             return "application/vnd.ms-powerpoint";
         }
-        if ("doc".equalsIgnoreCase(fileExtension) || "docx".equalsIgnoreCase(fileExtension)) {
+        if (".doc".equalsIgnoreCase(fileExtension) || ".docx".equalsIgnoreCase(fileExtension)) {
             return "application/msword";
         }
-        if ("xml".equalsIgnoreCase(fileExtension)) {
+        if (".xml".equalsIgnoreCase(fileExtension)) {
             return "text/xml";
         }
-        if ("mp4".equalsIgnoreCase(fileExtension)) {
+        if (".mp4".equalsIgnoreCase(fileExtension)) {
             return "video/mp4";
         }
         return "text/html";
@@ -364,11 +260,16 @@ public class OssUtils {
             log.info("删除阿里云OSS成功");
         } catch (Exception e) {
             log.error("删除阿里云OSS对象异常." + e.getMessage(), e);
+            throw e;
         }
     }
 
-
-    public void delFile(String key) {
-        deleteFile(getOSSClient(), bucketName, rootDir, key);
+    /**
+     * 删除文件
+     * @param key 文件名
+     * @param rootDir 文件根目录
+     */
+    public void delFile(String key,String rootDir) {
+        deleteFile(bucketName, rootDir, key);
     }
 }

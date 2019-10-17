@@ -1,6 +1,4 @@
-
-
-layui.use(['table','laytpl','upload'],function () {
+layui.use(['table', 'laytpl', 'upload'], function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
@@ -14,78 +12,78 @@ layui.use(['table','laytpl','upload'],function () {
                 return '缩略图片不可为空！';
             }
         }
-        ,sampleInput: function (value) {
+        , sampleInput: function (value) {
             if (value == null || value == undefined || value == '') {
                 return '示例图片不可为空！';
             }
         }
-        ,coverInput: function (value) {
+        , coverInput: function (value) {
             if (value == null || value == undefined || value == '') {
                 return '封面图片不可为空！';
             }
         }
-        ,title:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , title: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '标题不能为空！';
             }
         }
-        ,briefTitle:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , briefTitle: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '简略标题不可为空！';
             }
         }
-        ,labelIds:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , labelIds: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '标签项不可为空！';
             }
         }
-        ,amount:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , amount: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '标单笔佣金不可为空！';
             }
         }
-        ,spreadTotal:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , spreadTotal: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '推广总数不可为空！';
             }
         }
-        ,handlerNum:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , handlerNum: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '可推广任务数不可为空！';
             }
         }
-        ,auditDuration:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , auditDuration: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '审核天数不可为空！';
             }
         }
-        ,expendTime:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , expendTime: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '任务耗时不可为空！';
             }
         }
-        ,completeOdds:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , completeOdds: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '综合通过率不可为空！';
             }
         }
-        ,spreadRatio:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , spreadRatio: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '推广人分成不可为空！';
             }
         }
-        ,leaderRatio:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , leaderRatio: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '团队领导分成不可为空！';
             }
         }
-        ,taskTitle:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , taskTitle: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '介绍标题不可为空！';
             }
         }
-        ,taskContent:function (value) {
-            if(value == null || value == undefined || value == ''){
+        , taskContent: function (value) {
+            if (value == null || value == undefined || value == '') {
                 return '介绍内容不可为空！';
             }
         }
@@ -94,9 +92,9 @@ layui.use(['table','laytpl','upload'],function () {
 
     //触发事件
     let eventListener = {
-        initTable: function(){
+        initTable: function () {
             table.render({
-                 elem: '#task'
+                elem: '#task'
                 , url: '/task/getTaskPageList'
                 , toolbar: true
                 , title: 'task-data'
@@ -109,21 +107,22 @@ layui.use(['table','laytpl','upload'],function () {
                     , {field: 'handlerNum', title: '单人每日可做任务数', width: '10%'}
                     , {field: 'spreadRatio', title: '推广人分成比', width: '10%'}
                     , {field: 'leaderRatio', title: '推广领导分成比', width: '10%'}
-                    , {field: '', title: '发布类型', width: '10%',
-                        templet: function(d){
-                            return d.status == 0?"未发布":(d.status == 1?"已发布":"已过期");
+                    , {
+                        field: '', title: '发布类型', width: '10%',
+                        templet: function (d) {
+                            return d.status == 0 ? "未发布" : (d.status == 1 ? "已发布" : "已过期");
                         }
                     }
-                    , {field: '', title: '操作', width: '20%',toolbar: "#toolTask"}
+                    , {field: '', title: '操作', width: '20%', toolbar: "#toolTask"}
                 ]]
-                ,page: true,curr:1, limit: Global.PAGE_SISE
+                , page: true, curr: 1, limit: Global.PAGE_SISE
                 , response:
                     {
                         statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
                     }
                 ,
                 parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-                    if(!Utils.isEmpty(res)){
+                    if (!Utils.isEmpty(res)) {
                         return {
                             "code": res.code, //解析接口状态
                             "msg": res.message, //解析提示文本
@@ -132,32 +131,32 @@ layui.use(['table','laytpl','upload'],function () {
                         };
                     }
                 }
-                ,done:function (res, curr, count) {
-                    $.each(res.data,function(index,item){
-                       eventListener.initUploadURL(item);
+                , done: function (res, curr, count) {
+                    $.each(res.data, function (index, item) {
+                        eventListener.initUploadURL(item);
                     });
                 }
             });
-        }, reloadTaskTable:function() {
+        }, reloadTaskTable: function () {
             table.reload('task', {
                 where: {
                     curr: 1
-                    ,limit: Global.PAGE_SISE
+                    , limit: Global.PAGE_SISE
                 }
-                ,page: {
+                , page: {
                     curr: 1 //重新从第 1 页开始
                 }
             });
         }
         //初始化modal框
-        ,showTaskModal:function () {
+        , showTaskModal: function () {
             eventListener.showAddTaskDialog();
             //初始化缩略图上传
-            eventListener.initUploadImg({'id':'#imgThum','inputId':'#thumInput'});
+            eventListener.initUploadImg({'id': '#imgThum', 'inputId': '#thumInput'});
             //初始化示例图上传
-            eventListener.initUploadImg({'id':'#imgSample','inputId':'#sampleInput'});
+            eventListener.initUploadImg({'id': '#imgSample', 'inputId': '#sampleInput'});
             //初始化封面图上传
-            eventListener.initUploadImg({'id':'#imgCover','inputId':'#coverInput'});
+            eventListener.initUploadImg({'id': '#imgCover', 'inputId': '#coverInput'});
             //初始化标签
             eventListener.initLabel();
             //初始化公司
@@ -171,42 +170,42 @@ layui.use(['table','laytpl','upload'],function () {
 
         }
         //添加我的任务编辑与结果集上传编辑的添加事件
-        ,addClick:function () {
+        , addClick: function () {
             //添加阶段
-            $('#addPhase').on('click',function(){
+            $('#addPhase').on('click', function () {
                 let taskSeq = $('#view').find('.layui-card').length;
                 let data = {
-                    'title':'第'+(++ taskSeq)+'阶段',
-                    'type':1,
-                    'labelType':taskSeq
+                    'title': '第' + (++taskSeq) + '阶段',
+                    'type': 1,
+                    'labelType': taskSeq
                 };
-                laytpl($('#phase').html()).render(data, function(html){
+                laytpl($('#phase').html()).render(data, function (html) {
                     $('#view').append(html);
-                    form.render('select','rowTypeDiv');
+                    form.render('select', 'rowTypeDiv');
                     eventListener.initPhaseEvent();
                 });
             });
 
             //添加结果集
-            $('#addResult').on('click',function () {
-                let len =  $('#resultView table tbody tr').length;
-                laytpl($('#result').html()).render({"seq": ++len}, function(html){
+            $('#addResult').on('click', function () {
+                let len = $('#resultView table tbody tr').length;
+                laytpl($('#result').html()).render({"seq": ++len}, function (html) {
                     $('#resultView').find('table tbody').append(html);
-                    form.render('select','rowTypeDiv');
+                    form.render('select', 'rowTypeDiv');
 
                 });
                 eventListener.initResultEvent();
             })
-            
+
 
         }
         //初始化结果集上传编辑事件
-        ,initResultEvent:function () {
+        , initResultEvent: function () {
 
-            $('.delResultTr').on('click',function () {
+            $('.delResultTr').on('click', function () {
                 $(this).parent().parent().remove();
                 let i = 0;
-                $.each($('#resultView table tbody tr'),function(index,items){
+                $.each($('#resultView table tbody tr'), function (index, items) {
                     $(items).find(' input[name="seq"]').val(++i);
                 });
 
@@ -214,79 +213,79 @@ layui.use(['table','laytpl','upload'],function () {
 
         }
         //初始化我的任务编辑中阶段事件
-        ,initPhaseEvent:function () {
+        , initPhaseEvent: function () {
             //添加图片
             $('.addPhaseImg').off('click');
-            $('.addPhaseImg').click(function(event){
-                let imgCode = Date.parse(new Date()) +Math.ceil(Math.random() * 10);
+            $('.addPhaseImg').click(function (event) {
+                let imgCode = Date.parse(new Date()) + Math.ceil(Math.random() * 10);
                 let currTbody = $(this).parents('.layui-card').find('table tbody');
                 let len = currTbody.find('tr').length;
-                laytpl($('#phaseTr').html()).render({'rowType':5,'seq':++len,'imgCode':imgCode}, function(html){
+                laytpl($('#phaseTr').html()).render({'rowType': 5, 'seq': ++len, 'imgCode': imgCode}, function (html) {
                     currTbody.append(html);
                 });
-                eventListener.initUploadImg({'id':'.imgShow'+imgCode,'inputId':'.imgVal'+imgCode});
-                form.render('select','rowTypeDiv');
+                eventListener.initUploadImg({'id': '.imgShow' + imgCode, 'inputId': '.imgVal' + imgCode});
+                form.render('select', 'rowTypeDiv');
                 eventListener.initDelTr();
             });
             //添加文本
             $('.addPhaseText').off('click');
-            $('.addPhaseText').click(function(event){
+            $('.addPhaseText').click(function (event) {
                 let currTbody = $(this).parents('.layui-card').find('table tbody');
                 let len = currTbody.find('tr').length;
-                laytpl($('#phaseTr').html()).render({ 'seq': ++len}, function(html){
+                laytpl($('#phaseTr').html()).render({'seq': ++len}, function (html) {
                     currTbody.append(html);
                 });
-                form.render('select','rowTypeDiv');
+                form.render('select', 'rowTypeDiv');
                 eventListener.initDelTr();
             });
 
             //删除阶段
             $('.delPhase').off('click');
-            $('.delPhase').click(function(event){
+            $('.delPhase').click(function (event) {
 
                 let obj = $(this);
-                layer.confirm('真的此阶段么?', function (index,item) {
+                layer.confirm('真的此阶段么?', function (index, item) {
                     obj.parent().parent().parent().remove();
                     let divs = $('#view').find('.layui-card');
                     let i = 0;
-                     $.each(divs,function(index,items){
-                           $(items).find('.layui-card-header label').html('第' + (++i) + '阶段');
-                           $(items).find(' input[name="labelType"]').val(i);
+                    $.each(divs, function (index, items) {
+                        $(items).find('.layui-card-header label').html('第' + (++i) + '阶段');
+                        $(items).find(' input[name="labelType"]').val(i);
                     });
                     layer.close(index);
                 });
             });
         }
         //初始化我的任务编辑中的删除
-        ,initDelTr:function () {
+        , initDelTr: function () {
             //删除行
             $('.delPhaseTr').off('click');
-            $('.delPhaseTr').click(function(event){
+            $('.delPhaseTr').click(function (event) {
                 let tr = $(this).parent().parent();
                 let tbody = tr.parent();
-                    tr.remove();
+                tr.remove();
                 let i = 0;
-                $.each(tbody.find('tr'),function(index,items){
+                $.each(tbody.find('tr'), function (index, items) {
                     $(items).find('input[name="seq"]').val(++i);
                 });
             });
         }
         //初始化modal中省份select
-        ,initProvinces:function (data) {
+        , initProvinces: function (data) {
             //所有选择的省份
-            let provincesNames = data != undefined?data.provincesNames:[];
+            let provincesNames = data != undefined ? data.provincesNames : [];
             //遍历省份信息
             let provincesHtml = "";
             for (let x in CityInfo) {
                 let province = CityInfo[x].label;
-                provincesHtml += '<option value="' + province + '"  ' + (provincesNames != undefined && provincesNames.indexOf(province) > -1?'selected':'') + '>' + province + '</option>';
-             }
-            $('#provinces').on('change',function (value) {
+                provincesHtml += '<option value="' + province + '"  ' + (provincesNames != undefined && provincesNames.indexOf(province) > -1 ? 'selected' : '') + '>' + province + '</option>';
+            }
+            $('#provinces').on('change', function (value) {
                 let provinceNames = $('#provinces').selectpicker('val');
-                if(provinceNames.length == 0){
+                if (provinceNames.length == 0) {
                     return false;
                 }
-                eventListener.initCity({'provinceNames':provinceNames});
+                eventListener.initCity({'provinceNames': provinceNames});
             });
             $('#provinces').html(provincesHtml);
             $("#provinces,#locations").selectpicker('refresh');
@@ -295,7 +294,7 @@ layui.use(['table','laytpl','upload'],function () {
 
         }
         //初始化modal中城市select
-        ,initCity:function (data) {
+        , initCity: function (data) {
 
             //所有被选中的城市
             let cityNames = data.cityNames;
@@ -306,13 +305,13 @@ layui.use(['table','laytpl','upload'],function () {
             let forCount = 0;
             for (let x in CityInfo) {
                 let provinces = CityInfo[x];
-                if(forCount == provinceNames.length){
-                     break;
+                if (forCount == provinceNames.length) {
+                    break;
                 }
                 if (provinceNames.indexOf(provinces.label) > -1) {
                     let cityChildren = provinces.children;
                     for (let z in cityChildren) {
-                        cityHtml += '<option value="' + cityChildren[z].label + '"  '+ (cityNames != undefined && cityNames.indexOf(city) > -1?'selected':'' ) + '>' + cityChildren[z].label + '</option>';
+                        cityHtml += '<option value="' + cityChildren[z].label + '"  ' + (cityNames != undefined && cityNames.indexOf(city) > -1 ? 'selected' : '') + '>' + cityChildren[z].label + '</option>';
                         ++forCount;
                     }
                 }
@@ -323,185 +322,183 @@ layui.use(['table','laytpl','upload'],function () {
             $("#locations").selectpicker('render');
         }
         //初始化modal中公司select
-        ,initSource:function () {
-            Utils.postAjax("/channel/getChannelAll",{},function(rep) {
-                if(rep.code =='200'){
+        , initSource: function () {
+            Utils.postAjax("/channel/getChannelAll", {}, function (rep) {
+                if (rep.code == '200') {
                     $('#source').html('');
-                    $('#source').append(new Option('请选择公司',''));
+                    $('#source').append(new Option('请选择公司', ''));
                     $.each(rep.data, function (index, item) {
                         $('#source').append(new Option(item.companyName, item.channelId));
                     });
-                    form.render('select','source');
-                }else{
+                    form.render('select', 'source');
+                } else {
                     layer.msg(rep.message);
                 }
-            },function (rep) {
+            }, function (rep) {
                 layer.msg(rep.message);
             });
         }
         //初始化modal中标签select
-        ,initLabel:function (data) {
-            Utils.postAjax("/label/getLabelAll",{},function(rep) {
-                if(rep.code =='200'){
+        , initLabel: function (data) {
+            Utils.postAjax("/label/getLabelAll", {}, function (rep) {
+                if (rep.code == '200') {
                     let selectLabel = [];
-                    if(data != null && data != undefined && data != ''){
+                    if (data != null && data != undefined && data != '') {
                         selectLabel = data.split(',')
                     }
                     $('#selectLabelIds').html('');
                     $.each(rep.data, function (index, item) {
-                        $('#selectLabelIds').append(new Option(item.labelName, item.labelId,selectLabel.indexOf(item.labelId) > -1?true:false));
+                        $('#selectLabelIds').append(new Option(item.labelName, item.labelId, selectLabel.indexOf(item.labelId) > -1 ? true : false));
                     });
                     //加载下拉列表内容
                     $("#selectLabelIds").selectpicker('refresh');
                     $("#selectLabelIds").selectpicker('render');
 
-                }else{
+                } else {
                     layer.msg(rep.message);
                 }
-            },function (rep) {
+            }, function (rep) {
                 layer.msg(rep.message);
             });
         }
         //初始化上传图片img
-        ,initUploadImg:function(attrs){
+        , initUploadImg: function (attrs) {
             //普通图片上传
             upload.render({
                 elem: attrs.id
-                ,url: '/upload/uploadFile'//上传接口
-                ,size: '5024'
-                ,before: function(obj){
+                , url: '/upload/uploadTaskFile'//上传接口
+                , size: '5024'
+                , before: function (obj) {
                     //预读本地文件示例，不支持ie8
-                    obj.preview(function(index, file, result){
+                    obj.preview(function (index, file, result) {
                         $(attrs.id).attr('src', result); //图片链接（base64）
                     });
                 }
-                ,done: function(res){
-                    let code = res.code;
-                    if (code == "200") {
-                        var filePath = res.data.filePath;
-                        $(attrs.inputId).val(filePath);
+                , done: function (res) {
+                    if (res.code == "200") {
+                        $(attrs.inputId).val(res.data);
                     } else {
                         layer.msg(res.message)
                     }
                 }
-                ,error: function(){
+                , error: function () {
                     //演示失败状态，并实现重传
                     layer.msg('上传失败');
                 }
             });
         }
         //保存任务
-        ,saveTask:function (data) {
-            Utils.postAjax("/task/save",data,function(rep) {
-                if(rep.code =='200'){
+        , saveTask: function (data) {
+            Utils.postAjax("/task/save", data, function (rep) {
+                if (rep.code == '200') {
                     eventListener.hideAddTaskDialog();
                     eventListener.reloadTaskTable();
                     layer.msg('任务保存成功！');
-                }else{
+                } else {
                     layer.msg(rep.message);
                 }
-            },function (rep) {
+            }, function (rep) {
                 layer.msg(rep.message);
             });
         }
         //回显数据
-        ,showData:function (data) {
-            Utils.getAjax("/task/getTask/"+data.taskId,{},function(rep) {
-                if(rep.code =='200'){
-                   let data = rep.data;
-                   form.val('addTaskForm',{
-                       //缩略图
-                       "thumInput":data.iconUri,
-                       //示例图
-                       "sampleInput":data.exampleImg,
-                       //封面图
-                       "coverInput":data.imgUri,
-                       //标题
-                       "title":data.title,
+        , showData: function (data) {
+            Utils.getAjax("/task/getTask/" + data.taskId, {}, function (rep) {
+                if (rep.code == '200') {
+                    let data = rep.data;
+                    form.val('addTaskForm', {
+                        //缩略图
+                        "thumInput": data.iconUri,
+                        //示例图
+                        "sampleInput": data.exampleImg,
+                        //封面图
+                        "coverInput": data.imgUri,
+                        //标题
+                        "title": data.title,
                         //简略标题
-                        "briefTitle":data.briefTitle,
+                        "briefTitle": data.briefTitle,
                         //任务公分
-                        "amount":data.amount,
+                        "amount": data.amount,
                         //每日推广任务总数
-                        "spreadTotal":data.spreadTotal,
+                        "spreadTotal": data.spreadTotal,
                         //每日单人可做任务数
-                        "handlerNum":data.handlerNum,
+                        "handlerNum": data.handlerNum,
                         //审核期
-                        "auditDuration":data.auditDuration,
+                        "auditDuration": data.auditDuration,
                         //任务耗时
-                        "expendTime":data.expendTime,
+                        "expendTime": data.expendTime,
                         //综合通过率
-                        "completeOdds":data.completeOdds,
+                        "completeOdds": data.completeOdds,
                         //推广人分成
-                        "spreadRatio":data.spreadRatio,
+                        "spreadRatio": data.spreadRatio,
                         //推广人上级分成比
-                        "spreadParentRatio":data.spreadParentRatio,
+                        "spreadParentRatio": data.spreadParentRatio,
                         //团队领导分成
-                        "leaderRatio":data.leaderRatio,
+                        "leaderRatio": data.leaderRatio,
                         //介绍标题
-                        "taskContent":data.taskContent,
+                        "taskContent": data.taskContent,
                         //介绍内容
-                        "taskTitle":data.taskTitle,
+                        "taskTitle": data.taskTitle,
                         //是否上传结果
-                        "isResult":data.isResult,
+                        "isResult": data.isResult,
                         //任务类型
-                        "type":data.type,
+                        "type": data.type,
                         //公司
-                        "source":source
-                   });
+                        "source": source
+                    });
                     eventListener.showAddTaskDialog();
-                    $('#imgThum').attr('src',data.iconUri);
-                    $('#imgSample').attr('src',data.exampleImg);
-                    $('#imgCover').attr('src',data.imgUri);
+                    $('#imgThum').attr('src', data.iconUri);
+                    $('#imgSample').attr('src', data.exampleImg);
+                    $('#imgCover').attr('src', data.imgUri);
                     eventListener.initLabel(data.labelIds);
                     //初始化缩略图上传
-                    eventListener.initUploadImg({'id':'#imgThum','inputId':'#thumInput'});
+                    eventListener.initUploadImg({'id': '#imgThum', 'inputId': '#thumInput'});
                     //初始化示例图上传
-                    eventListener.initUploadImg({'id':'#imgSample','inputId':'#sampleInput'});
+                    eventListener.initUploadImg({'id': '#imgSample', 'inputId': '#sampleInput'});
                     //初始化封面图上传
-                    eventListener.initUploadImg({'id':'#imgCover','inputId':'#coverInput'});
+                    eventListener.initUploadImg({'id': '#imgCover', 'inputId': '#coverInput'});
                     //初始化标签
                     eventListener.initLabel(data.labelIds);
                     //初始化省市
                     eventListener.initProvinces(data.province);
-                    eventListener.initCity({'cityNames':location,'provinceNames':province})
+                    eventListener.initCity({'cityNames': location, 'provinceNames': province})
                     //添加点击事件
                     eventListener.addClick();
 
-                }else{
+                } else {
                     layer.msg(rep.message);
                 }
-            },function (rep) {
+            }, function (rep) {
                 layer.msg(rep.message);
             });
 
 
         }
         //删除或发布任务
-        ,delOrPublishTask:function (data) {
-            Utils.postAjax("/task/updateTaskStatus",JSON.stringify(data),function(rep) {
-                if(rep.code =='200'){
-                   eventListener.reloadTaskTable();
-                   layer.msg('任务发布成功');
-                }else{
+        , delOrPublishTask: function (data) {
+            Utils.postAjax("/task/updateTaskStatus", JSON.stringify(data), function (rep) {
+                if (rep.code == '200') {
+                    eventListener.reloadTaskTable();
+                    layer.msg('任务发布成功');
+                } else {
                     layer.msg(rep.message);
                 }
-            },function (rep) {
+            }, function (rep) {
                 layer.msg(rep.message);
             });
         }
         //上传任务URL
-        ,initUploadURL:function(data){
+        , initUploadURL: function (data) {
             //普通图片上传
             upload.render({
-                elem: "#uploadFile"+data.taskId
-                ,url: '/task/uploadExcel'//上传接口
-                ,accept: 'file'
-                ,data: {"taskId":data.taskId}   //可放扩展数据  key-value
-                ,exts: 'xls|xlsx'
-                ,before: function(obj){
+                elem: "#uploadFile" + data.taskId
+                , url: '/task/uploadExcel'//上传接口
+                , accept: 'file'
+                , data: {"taskId": data.taskId}   //可放扩展数据  key-value
+                , exts: 'xls|xlsx'
+                , before: function (obj) {
                 }
-                ,done: function(res){
+                , done: function (res) {
                     let code = res.code;
                     if (code == "200") {
                         layer.msg('上传文件URL成功！');
@@ -509,24 +506,24 @@ layui.use(['table','laytpl','upload'],function () {
                         layer.msg(res.message)
                     }
                 }
-                ,error: function(){
+                , error: function () {
                     //演示失败状态，并实现重传
                     layer.msg('上传失败！');
                 }
             });
         }
         //新增任务modal
-        ,showAddTaskDialog: function(){
+        , showAddTaskDialog: function () {
             $('#addTaskDialog').modal('show');
         }
-        ,hideAddTaskDialog: function(){
+        , hideAddTaskDialog: function () {
             $('#addTaskDialog').modal('hide');
         }
         //修改任务modal
-        ,showUpdateTaskDialog: function(){
+        , showUpdateTaskDialog: function () {
             $('#updateTaskDialog').modal('show');
         }
-        ,hideUpdateTaskDialog: function(){
+        , hideUpdateTaskDialog: function () {
             $('#updateTaskDialog').modal('hide');
         }
     };
@@ -534,37 +531,31 @@ layui.use(['table','laytpl','upload'],function () {
     eventListener.initTable();
 
 
-
-
-
-
-
-
     //监听角色编辑角色
-    form.on('submit(addTask)',function (data) {
+    form.on('submit(addTask)', function (data) {
         let json = {};
         //公司
         let source = $("#source").val();
-        if(source == undefined || source == ''){
+        if (source == undefined || source == '') {
             layer.msg('公司不可为空！');
             return false;
         }
 
         //标签内容
         let labelIds = $('#selectLabelIds').selectpicker('val');
-        if(labelIds == undefined || labelIds == ''){
+        if (labelIds == undefined || labelIds == '') {
             layer.msg('标签不可为空！');
             return false;
         }
         //任务所在地
         let province = $('#provinces').selectpicker('val');
-        if(province == undefined || province == ''){
+        if (province == undefined || province == '') {
             layer.msg('省份不可为空！');
             return false;
         }
         //城市内容
         let location = $('#locations').selectpicker('val');
-        if(location == undefined || location == ''){
+        if (location == undefined || location == '') {
             layer.msg('城市不可为空！');
             return false;
         }
@@ -576,7 +567,7 @@ layui.use(['table','laytpl','upload'],function () {
 
         //我的任务编辑
         $("#view table").each(function (index, object) {
-            ++ labelType;
+            ++labelType;
             let obj = {}
             $(this).find('tbody tr').each(function (index, object) {
                 obj["labelType"] = labelType;
@@ -585,8 +576,8 @@ layui.use(['table','laytpl','upload'],function () {
                 let rowType = $(object).find('select[name="rowType"]').val();
                 obj["rowType"] = rowType;
                 let content = $(object).find('.content').val();
-                if(content == undefined || content == ''){
-                    let msg = '我的任务编辑：第'+labelType+'阶段:序号'+seq+'的类型值为空！'
+                if (content == undefined || content == '') {
+                    let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值为空！'
                     layer.msg(msg);
                     success = false;
                     return false;
@@ -596,16 +587,16 @@ layui.use(['table','laytpl','upload'],function () {
                 let imgCode = $(object).find('.imgCode').val();
                 obj["imgCode"] = imgCode != undefined ? imgCode : '';
                 let createUri = $(object).find(".createUri");
-                obj["createUri"] = createUri.is(':checked')?1:0;
+                obj["createUri"] = createUri.is(':checked') ? 1 : 0;
                 params.push(obj);
             });
         });
 
-        if(!success){
-           return false;
+        if (!success) {
+            return false;
         }
 
-        if(labelType == 0){
+        if (labelType == 0) {
             layer.msg('我的任务编辑不可为空！')
             return false;
         }
@@ -619,8 +610,8 @@ layui.use(['table','laytpl','upload'],function () {
             let rowType = $(object).find('select[name="rowType"]').val();
             obj["rowType"] = rowType;
             let content = $(object).find('input[name="content"]').val();
-            if(content == undefined || content == ''){
-                let msg = '任务结果集编辑：序号'+seq+'的类型值为空！'
+            if (content == undefined || content == '') {
+                let msg = '任务结果集编辑：序号' + seq + '的类型值为空！'
                 layer.msg(msg);
                 success = false;
                 return false;
@@ -630,10 +621,10 @@ layui.use(['table','laytpl','upload'],function () {
             params.push(obj);
         });
 
-        if(!success){
+        if (!success) {
             return false;
         }
-        if(seq == 0){
+        if (seq == 0) {
             layer.msg('任务结果集不可为空！')
             return false;
         }
@@ -693,10 +684,9 @@ layui.use(['table','laytpl','upload'],function () {
     });
 
 
-
     //监听select
-    form.on('select(rowType)',function(data){
-        laytpl($('#selectContent').html()).render({ 'rowType':data.value}, function(html){
+    form.on('select(rowType)', function (data) {
+        laytpl($('#selectContent').html()).render({'rowType': data.value}, function (html) {
             $(data.elem).parents('td').next().html(html);
             //layui渲染radio
             form.render('radio')
@@ -706,22 +696,21 @@ layui.use(['table','laytpl','upload'],function () {
     //监听task
     table.on('tool(task)', function (obj) {
         let data = obj.data;
-        if(obj.event === 'check'){
-          eventListener.showData(data);
-        }else if(obj.event === 'publish'){
-            eventListener.delOrPublishTask({"taskId": data.taskId,"status": 1});
-        }else if(obj.event === 'del'){
-            eventListener.delOrPublishTask({"taskId": data.taskId,"status": 0});
+        if (obj.event === 'check') {
+            eventListener.showData(data);
+        } else if (obj.event === 'publish') {
+            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 1});
+        } else if (obj.event === 'del') {
+            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 0});
         }
 
     });
 
 
-
-    $('[data-custom-event="task"]').on("click",function () {
+    $('[data-custom-event="task"]').on("click", function () {
         let $this = $(this);
         let _method = $this.data('method');
-        eventListener[_method]?eventListener[_method].call(this,$this):'';
+        eventListener[_method] ? eventListener[_method].call(this, $this) : '';
     });
 
 

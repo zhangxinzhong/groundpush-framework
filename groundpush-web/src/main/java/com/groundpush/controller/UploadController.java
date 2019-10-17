@@ -1,6 +1,9 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.OssUtils;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
@@ -33,20 +36,14 @@ public class UploadController {
      */
     @GetMapping
     @ResponseBody
-    @RequestMapping("/uploadFile")
+    @RequestMapping("/uploadTaskFile")
     public JsonResp uploadFile(@RequestParam MultipartFile file) {
-
         try {
-            //返回文件访问路径
-            Map<String,Object> fileMap = new HashMap<String, Object>();
             // 获取文件并上传
-            if (file != null && file.getSize() > 0) {
-                fileMap = ossUtils.upload(file);
-            }
-            return JsonResp.success(fileMap);
+            return JsonResp.success(ossUtils.upload(file, Constants.FILE_UPLOAD_DIR_TASK));
         } catch (Exception e) {
             log.error(e.toString(), e);
-            throw e;
+            throw new SystemException(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
         }
 
     }

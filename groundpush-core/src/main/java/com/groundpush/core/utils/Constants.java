@@ -340,4 +340,9 @@ public class Constants {
     public static final Integer ZROE = 0;
 
     public static final Integer ONE = 1;
+
+    /**
+     * oss 文件上传路径
+     */
+    public static final String FILE_UPLOAD_DIR_TASK = "task/";
 }
