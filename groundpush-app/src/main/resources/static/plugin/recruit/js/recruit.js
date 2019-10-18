@@ -1,7 +1,7 @@
 layui.use('table', function () {
-    let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
+    let isSendSms = true;
 
     //触发事件
     let eventListener = {
@@ -12,7 +12,7 @@ layui.use('table', function () {
                 mobileCode: data.field.mobileCode
             }, function (rep) {
                 if (rep.code == '200') {
-
+                    location.href=Global.DOWNLOAD_APP;
                 } else {
                     layer.msg(rep.message);
                 }
@@ -42,15 +42,16 @@ layui.use('table', function () {
                 layer.msg(rep.message);
             });
         }
-        , setTime: function () {
-            let count = 6; // 发送频率/秒
-            let $sendSmsBtn = $('span[name="sendSms"]');
+        , countDown: function () {
+            let count = Global.COUNT_SECOND; // 发送频率/秒
+            let $sendSmsBtn = $('a[name="sendSms"]');
+            $sendSmsBtn.attr('disabled', true).css({'color': '#b5adad'});
             let countdown = setInterval(function () {
-                $sendSmsBtn.attr('disabled', true).css({'color': '#b5adad'},{'pointer-events':'none'});
-                $sendSmsBtn.html(count +"秒后获取验证码");
+                $sendSmsBtn.html(count + "秒后获取验证码");
                 if (count == 0) {
                     $sendSmsBtn.html('获取验证码').removeAttr('disabled').css({'color': '#0066cc'});
                     clearInterval(countdown);
+                    isSendSms = true;
                 }
                 count--;
             }, 1000);
@@ -64,16 +65,21 @@ layui.use('table', function () {
         return false;
     });
 
-    $('span[name="sendSms"]').on("click", function () {
-        layer.msg("a");
-        let mobileNo = $("#mobileNo").val();
 
-        if (!(/^1[3456789]\d{9}$/.test(mobileNo))) {
-            layer.msg("请输入正确的手机号");
+    $('a[name="sendSms"]').on("click", function () {
+        if (isSendSms) {
+            let mobileNo = $("#mobileNo").val();
+            if (!(/^1[3456789]\d{9}$/.test(mobileNo))) {
+                layer.msg("请输入正确的手机号");
+                return false;
+            }
+            isSendSms = false;
+            eventListener.sendSms(mobileNo);
+            eventListener.countDown();
+        } else {
             return false;
         }
 
-        // eventListener.sendSms(mobileNo);
-        eventListener.setTime();
+
     });
 });
