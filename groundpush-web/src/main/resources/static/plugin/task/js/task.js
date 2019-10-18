@@ -258,7 +258,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             $('.upTr').click(function (event) {
                 let tr = $(this).parent().parent();
                 let currVal = tr.find('td input[name="seq"]').val(); let prevVal = tr.prev().find('td input[name="seq"]').val();
-                if(tr.prev('tr').length == 0 undefined  || ($(this).attr("type")== 2 && prevVal == 1)){
+                if(tr.prev('tr').length == 0  || ($(this).attr("type")== 2 && prevVal == 1)){
                      layer.msg('不可上移行！');
                      return false;
                 }
