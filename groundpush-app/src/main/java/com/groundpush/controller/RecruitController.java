@@ -26,8 +26,8 @@ public class RecruitController {
     @Resource
     private CustomerService customerService;
 
-    @GetMapping
-    public String toRecruit(@PathVariable Integer customerId, Model model) {
+    @GetMapping("/{customerId:\\d+}")
+    public String toRecruit(@PathVariable("customerId") Integer customerId, Model model) {
         model.addAttribute("parentCustomerId", customerId);
         return "recruit/recruit";
     }

@@ -3,7 +3,7 @@ package com.groundpush.core.service;
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
-import com.groundpush.core.condition.OrderUpdateCondition;
+import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
@@ -77,7 +77,7 @@ public interface OrderService {
      * 修改订单唯一编码（申请售后）
      * @param condition
      */
-    void updateOrderUniqueCode(OrderUpdateCondition condition);
+    void updateOrderUniqueCode(OrderResultCondition condition);
 
     /**
      * 更新订单

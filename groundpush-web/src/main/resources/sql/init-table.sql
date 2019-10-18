@@ -704,3 +704,8 @@ alter table t_task drop column owner_ratio;
 
 alter table t_task add column task_title VARCHAR(255) default null;
 alter table t_task add column task_content VARCHAR(255) default null;
+
+alter table t_order_log drop column last_modify_time;
+alter table t_order_log drop column unqiue_code;
+alter table t_order_log drop column file_name;
+

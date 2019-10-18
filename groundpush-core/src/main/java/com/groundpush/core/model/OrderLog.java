@@ -25,29 +25,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderLog implements Serializable {
 
-    @ApiModelProperty("logid主键")
+    @ApiModelProperty("订单日志编号")
     private Integer logId;
 
-    @ApiModelProperty("订单id")
+    @NotNull(message = "订单编号不可为空")
+    @ApiModelProperty("订单编号")
     private Integer orderId;
-
-    @ApiModelProperty("渠道对应确认code")
-    private String unqiueCode;
-
 
     @ApiModelProperty("创建时间")
     private LocalDateTime createdTime;
 
-    @ApiModelProperty("最后修改时间")
-    private LocalDateTime lastModifyTime;
-
+    @NotNull(message = "订单日志类型")
     @ApiModelProperty("上传类型 1:任务结果集上传 2：申诉上传")
     private Integer type;
 
-    @ApiModelProperty("文件url")
+    @NotNull(message = "文件URI")
+    @ApiModelProperty("文件URI")
     private String filePath;
-
-    @ApiModelProperty("文件名称 oss key")
-    private String fileName;
-
 }

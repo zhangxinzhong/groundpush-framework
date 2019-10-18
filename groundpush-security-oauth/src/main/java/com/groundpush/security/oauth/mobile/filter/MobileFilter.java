@@ -46,9 +46,6 @@ public class MobileFilter extends OncePerRequestFilter {
     private SecurityProperties securityProperties;
 
     @Resource
-    private ValidateCodeRepository validateCodeRepository;
-
-    @Resource
     private ObjectRepository customerRepository;
 
     @Resource

@@ -7,6 +7,7 @@ import com.groundpush.security.oauth.mobile.config.MobileAuthenticationSecurityC
 import com.groundpush.security.oauth.mobile.filter.MobileFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -52,12 +53,20 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
 
         http
                 .authorizeRequests()
+                //短信验证码登录
                 .antMatchers("/validate/codeSms").permitAll()
-                .antMatchers("/againPath","/path","/img/*").permitAll()
+                //二次跳转
+                .antMatchers("/againPath","/spread/*").permitAll()
+                // 协议及说明
                 .antMatchers("/appPage/*").permitAll()
-                .antMatchers("/aliSts").permitAll()
+                // 招募地推员
+                .antMatchers("/recruit/**").permitAll()
+                // 不需要授权的controller
+                .antMatchers("/unAuthorize/**").permitAll()
+                // 静态资源
+                .antMatchers("/plugin/**","/common/**","/images/**","/static/**","/favicon.ico").permitAll()
+                //swagger
                 .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagge‌​r-ui.html","/swagger-resources/configuration/**").permitAll()
-//                .antMatchers("/swagger-resources/*","/swagger-ui.html/*","/api/v2/api-docs","/api/*","/swagger-ui.html","/webjars/springfox-swagger-ui/*","/swagger-resources/configuration/security","/swagger-resources","/swagger-resources/configuration/").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -65,7 +65,7 @@ public class ValidateController {
      */
     @ResponseBody
     @RequestMapping(value = "/codeSms")
-    public JsonResp getSmsValidationCode(@Valid @RequestParam @NotBlank(message = "设备类型不可为空") String mobileNo, ServletWebRequest request) {
+    public JsonResp getSmsValidationCode(@Valid @RequestParam @NotBlank(message = "手机号不可为空") String mobileNo, ServletWebRequest request) {
         try {
             ValidateCode validateCode = validateCodeRepository.get(request, ValidateCodeType.SMS);
             if (validateCode != null) {

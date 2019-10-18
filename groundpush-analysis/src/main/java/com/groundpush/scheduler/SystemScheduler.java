@@ -1,17 +1,18 @@
 package com.groundpush.scheduler;
 
-import com.groundpush.service.ChannelDataService;
-import com.groundpush.service.ChannelExcelService;
-import com.groundpush.service.OrderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.ChannelExcel;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.ExcelTools;
+import com.groundpush.service.ChannelDataService;
+import com.groundpush.service.ChannelExcelService;
+import com.groundpush.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,9 @@ public class SystemScheduler {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private ObjectMapper objectMapper;
+
     private long count = 0L;
 
     @Scheduled(fixedDelay = 100000)
@@ -63,7 +67,7 @@ public class SystemScheduler {
             ExcelTools excelTools = ExcelTools.getInstance();
             for (ChannelExcel channelExcel : channelExcels) {
                 try {
-                    Map<String, Order> orderMap = orderService.queryOrderByTaskIdAndChannelTimeReturnMap(channelExcel.getTaskId(),channelExcel.getChannelTime());
+                    Map<String, Order> orderMap = orderService.queryOrderByTaskIdAndChannelTimeReturnMap(channelExcel.getTaskId(), channelExcel.getChannelTime());
                     log.info("订单数：{}", orderMap.size());
                     String path = rootPath + File.separator + channelExcel.getFileName();
                     excelTools.openExcel(path);
@@ -144,7 +148,8 @@ public class SystemScheduler {
         Map<String, Object> res = new LinkedHashMap<>();
 
         //excel数据映射到系统内部关系
-        JSONArray mappingRelation = new JSONArray(mapping);
+
+        JSONArray mappingRelation = JSONArray.fromObject(mapping);
         mappingRelation.forEach(obj -> {
             JSONObject mappingObj = (JSONObject) obj;
             String[] mFiled = channelMappingFiled.split(",");

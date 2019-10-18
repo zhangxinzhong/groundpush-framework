@@ -4,7 +4,7 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.OssUtils;
+import com.groundpush.utils.OssUtils;
 import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 文件上传

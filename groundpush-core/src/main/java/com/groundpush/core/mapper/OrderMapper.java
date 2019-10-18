@@ -2,7 +2,7 @@ package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderQueryCondition;
-import com.groundpush.core.condition.OrderUpdateCondition;
+import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskListCount;
@@ -292,6 +292,11 @@ public interface OrderMapper {
     Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
 
 
+    /**
+     *  通过任务编号及客户编号查询订单
+     * @param condition
+     * @return
+     */
     @Select({
             "<script>",
             " SELECT ",
@@ -303,7 +308,7 @@ public interface OrderMapper {
             " AND a.unique_code IS NULL LIMIT 0,1 ",
             "</script>"
     })
-    Optional<Order> queryCodeNullOrderByCustomerIdAndTaskId(OrderUpdateCondition condition);
+    Optional<Order> queryOrderByCustomerIdAndTaskId(OrderResultCondition condition);
 
     /**
      * 查询未上传结果集的订单
@@ -315,8 +320,13 @@ public interface OrderMapper {
     @Select(" select o.* from t_order_task_customer otc inner join t_task t on t.task_id=otc.task_id inner join t_order o on o.order_id = otc.order_id where otc.task_id=${taskId} and o.type=${customerId} and o.unique_code is null ")
     List<Order> queryUnResultOrderByTaskIdAndCustomerId(@Param("taskId") Integer taskId, @Param("customerId") Integer customerId);
 
+    /**
+     * 查询订单唯一编码是否使用
+     * @param condition
+     * @return
+     */
     @Select(" select a.* from t_order a left join t_order_task_customer b on a.order_id= b.order_id where  a.unique_code = #{uniqueCode} and b.task_id = #{taskId}  and DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ")
-    List<Order>  findOrderByUnqiuCode(OrderUpdateCondition condition);
+    List<Order>  findOrderByUnqiuCode(OrderResultCondition condition);
 
 
 

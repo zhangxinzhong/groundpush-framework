@@ -13,9 +13,9 @@ public interface ObjectRepository<T> {
     /**
      * 用于查询或这新增 Customer 和User
      *
-     * @param id
+     * @param loginNo
      * @return
      */
-    Optional<T> queryOrCreate(String id);
+    Optional<T> queryOrCreate(String loginNo);
 
 }

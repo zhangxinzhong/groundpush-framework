@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
-import com.groundpush.core.condition.OrderUpdateCondition;
+import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.mapper.OrderMapper;
@@ -12,7 +12,7 @@ import com.groundpush.core.mapper.OrderTaskCustomerMapper;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.OrderBonusService;
 import com.groundpush.core.service.OrderService;
-import com.groundpush.core.service.OrderUploadLogService;
+import com.groundpush.core.service.OrderLogService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.MathUtil;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -53,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderTaskCustomerMapper orderTaskCustomerMapper;
 
     @Resource
-    private OrderUploadLogService orderUploadLogService;
+    private OrderLogService orderLogService;
 
 
     @Override
@@ -142,15 +141,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateOrderUniqueCode(OrderUpdateCondition condition) {
-
-
-
-
+    public void updateOrderUniqueCode(OrderResultCondition condition) {
         Optional<Order> optionalOrder = null;
         if (condition.getTaskId() != null) {
             //通过任务类型、任务id和客户id获取未提交结果集的某一个订单
-            optionalOrder = orderMapper.queryCodeNullOrderByCustomerIdAndTaskId(condition);
+            optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskId(condition);
         } else {
             //通过订单id获取订单
             optionalOrder = orderMapper.getOrder(condition.getOrderId());
@@ -175,18 +170,8 @@ public class OrderServiceImpl implements OrderService {
                 throw new BusinessException(ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorCode(), ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorMessage());
             }
         }
-        Integer type = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? Constants.LOAD_RESULT_T1 : Constants.LOAD_RESULT_T2;
 
-        //todo 优化任务结果集 log
-        OrderLog orderLog = new OrderLog();
-        orderLog.setOrderId(condition.getOrderId());
-        orderLog.setUnqiueCode(condition.getUniqueCode());
-        orderLog.setType(type);
-        orderLog.setFilePath(condition.getFilePath());
-        orderLog.setFileName(condition.getFileName());
-        orderUploadLogService.createOrderUploadLog(orderLog);
-
-
+        orderLogService.createOrderLog(condition.getList());
         orderMapper.updateOrderUniqueCode(order.getOrderId(), condition.getUniqueCode());
     }
 

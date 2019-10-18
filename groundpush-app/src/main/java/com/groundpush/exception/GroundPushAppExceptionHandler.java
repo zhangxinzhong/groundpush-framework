@@ -87,7 +87,7 @@ public class GroundPushAppExceptionHandler {
         for (FieldError fieldError : e.getFieldErrors()) {
             sb.append(" [").append(fieldError.getDefaultMessage()).append("]");
         }
-        return JsonResp.failure(sb);
+        return JsonResp.failure(e.getMessage(), sb.toString());
     }
 
     /**

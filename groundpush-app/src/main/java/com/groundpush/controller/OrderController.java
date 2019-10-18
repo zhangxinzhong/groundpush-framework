@@ -3,7 +3,7 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderQueryCondition;
-import com.groundpush.core.condition.OrderUpdateCondition;
+import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.PageResult;
@@ -43,7 +43,7 @@ public class OrderController {
 
     @ApiOperation(value = "任务结果集、订单申诉")
     @PutMapping
-    public JsonResp updateOrder(@Valid @RequestBody OrderUpdateCondition condition, BindingResult bindingResult) {
+    public JsonResp updateOrder(@Valid @RequestBody OrderResultCondition condition, BindingResult bindingResult) {
         //TODO 此接口需要在渠道建立后在进行补充
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());

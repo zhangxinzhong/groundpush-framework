@@ -1,58 +1,64 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <script src="jquery/jquery-3.4.1.js"></script>
-    <script src="jquery/jquery.min.js"></script>
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <title>Title</title>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/recruit/js/recruit.js"
+            th:src="@{/common/common.js}"></script>
+    <title>申请成为推广员每天赚现金</title>
     <style>
         body {
             height: 100%;
             width: 100%;
-            background: url('img/1.png') no-repeat;
+            background: url('/static/images/1.png') no-repeat;
             background-size: cover;
             position: absolute;
             overflow: hidden;
         }
-        #contentDiv{
+
+        #contentDiv {
             margin-top: 222px;
             height: 291px;
             text-align: center;
         }
+
+        .btn-style{
+            width: 100%;
+            margin-top: 20px;
+            height: 44px;
+            border-radius: 30px;
+            background:#1481ff;
+            color: #eeeeee;
+        }
     </style>
 </head>
 
-<body background="img/1.png">
+<body>
 <div class="container-fluid">
     <div class="jumbotron" id="contentDiv">
-        <form method="post">
+        <form class="layui-form" action="">
             <div class="row">
-                <img src="img/3.png" style="width: 13%;">
+                <img th:src="@{/images/3.png}" style="width: 13%;">
                 <span style="font-weight: bold;font-size: 18px;padding: 5px">申请推广员</span>
-                <img src="img/2.png" style="width: 13%;">
+                <img th:src="@{/images/2.png}" style="width: 13%;">
             </div>
             <div class="row" style="text-align: center;margin-top: 25px;">
                 <div class="col-xs-10 col-sm-10 col-md-10" style="width: 100%">
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1"><img src="img/phone.png"></span>
-                        <input type="text" class="form-control" placeholder="请输入手机号下载" aria-describedby="basic-addon1" style="height: 44px;">
+                        <span class="input-group-addon" id="basic-addon1"><img th:src="@{/images/phone.png}"></span>
+                        <input type="text" name="mobileNo" id="mobileNo" lay-verify="required|phone" class="form-control" placeholder="请输入手机号下载" aria-describedby="basic-addon1" style="height: 44px;">
                     </div>
                     <div class="input-group" style="margin-top: 20px">
-                        <input type="text" class="form-control" placeholder="请输入验证码" aria-describedby="basic-addon2" style="height: 44px;">
-                        <span class="input-group-addon" id="basic-addon2"><a>获取验证码</a></span>
+                        <input type="text" class="form-control" lay-verify="required" name="mobileCode" placeholder="请输入验证码" aria-describedby="basic-addon2" style="height: 44px;">
+                        <span class="input-group-addon" id="basic-addon2" style="cursor: default" name="sendSms">获取验证码</span>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-xs-10 col-sm-10 col-sm-10" style="width: 100%">
-                    <button class="btn" style="width: 100%;margin-top: 20px;height: 44px;border-radius: 30px;background:#1481ff;color: #eeeeee;">立即下载</button>
+                    <button class="btn btn-style" lay-submit lay-filter="addCustomer">
+                        立即下载
+                    </button>
                 </div>
             </div>
         </form>
