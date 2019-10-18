@@ -186,7 +186,11 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             $('.addResult').on('click',function () {
                 let len =  $('#resultView table tbody tr').length;
                 laytpl($('#resultAdd').html()).render({"seq": ++len}, function(html){
-                    $('#resultView').find('table tbody').append(html);
+                    if(len == 1){
+                        $('#resultView').append(html);
+                    }else{
+                        $('#resultView').find('table tbody').append(html);
+                    }
                 });
                 form.render();
                 eventListener.initOperationTr();
@@ -258,7 +262,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             $('.upTr').click(function (event) {
                 let tr = $(this).parent().parent();
                 let currVal = tr.find('td input[name="seq"]').val(); let prevVal = tr.prev().find('td input[name="seq"]').val();
-                if(tr.prev('tr').length == 0  || ($(this).attr("type")== 2 && prevVal == 1)){
+                if(tr.prev('tr').length == 0  || prevVal == 1){
                      layer.msg('不可上移行！');
                      return false;
                 }
@@ -527,7 +531,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     });
 
                     laytpl($('#resultUpdateEcho').html()).render(resultJsonObjs, function(html){
-                        $('#resultView table tbody').append(html);
+                        $('#resultView').append(html);
 
                     });
                     //添加点击事件

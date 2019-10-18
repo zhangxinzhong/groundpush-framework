@@ -129,8 +129,8 @@
         <td>
             {{# if(d.rowType >1){ }}
                 {{# if(d.seq > 1){ }}
-                <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr" type="2" ></a>
-                <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"  type="2" ></a>
+                <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  ></a>
+                <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"   ></a>
                 {{# }  }}
                 <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
             {{# } }}
@@ -155,6 +155,45 @@
 <!--******************************************用于结果集上传编辑添加修改模板**begin***************************************************-->
 <!-- 用于添加任务结果集-->
 <script id="resultAdd" type="text/html">
+    {{# if(d.seq == 1){ }}
+    <table class="layui-table" lay-skin="line">
+        <colgroup>
+            <col width="6%">
+            <col width="14%">
+            <col width="65%">
+            <col width="15%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>类型</th>
+            <th>类型值</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <input class="form-control col-lg-1" type="text" name="seq" value="{{d.seq}}" readonly="readonly" />
+            </td>
+            <td>
+                <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
+                    <select class="form-control col-lg-1" name="rowType"  disabled>
+                        <option value="1" selected>标题</option>
+                        <option value="2" >图片</option>
+                    </select>
+                    <div>
+            </td>
+            <td>
+                <input class="form-control col-lg-1 content" name="content" value="请输入订单编号"  placeholder="请输入文本内容" />
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {{# }else{ }}
     <tr>
         <td>
             <input class="form-control col-lg-1" type="text" name="seq" value="{{d.seq}}" readonly="readonly" />
@@ -171,37 +210,59 @@
             <input class="form-control col-lg-1 content" name="content" placeholder="请输入文本内容" />
         </td>
         <td>
-            <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  type="3" ></a>
-            <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"  type="3" ></a>
+            <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"   ></a>
+            <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"   ></a>
             <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
         </td>
     </tr>
+    {{# } }}
 </script>
 <!-- 用于修改任务结果集-->
 <script id="resultUpdateEcho" type="text/html">
-    {{# layui.each(d.array, function(index, item){  }}
-    <tr>
-        <td>
-            <input class="form-control col-lg-1" type="text" name="seq" value="{{item.seq}}" readonly="readonly" />
-        </td>
-        <td>
-            <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
-                <select class="form-control col-lg-1" name="rowType"  >
-                    <option value="1" {{ item.rowType==1?'selected':'' }}>标题</option>
-                    <option value="2" {{ item.rowType==2?'selected':'' }}>图片</option>
-                </select>
-                <div>
-        </td>
-        <td>
-            <input class="form-control col-lg-1 content" name="content" value="{{ item.content != '' && item.content != undefined?item.content:'' }}"  placeholder="请输入文本内容" />
-        </td>
-        <td>
-            <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  type="3" ></a>
-            <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr" type="3" ></a>
-            <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
-        </td>
-    </tr>
-    {{# });  }}
+    <table class="layui-table" lay-skin="line">
+        <colgroup>
+            <col width="6%">
+            <col width="14%">
+            <col width="65%">
+            <col width="15%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>类型</th>
+            <th>类型值</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{# layui.each(d.array, function(index, item){  }}
+        <tr>
+            <td>
+                <input class="form-control col-lg-1" type="text" name="seq" value="{{item.seq}}" readonly="readonly" />
+            </td>
+            <td>
+                <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
+                    <select class="form-control col-lg-1" name="rowType" {{ item.seq==1?'disabled':'' }}  >
+                        <option value="1" {{ item.rowType==1?'selected':'' }}>标题</option>
+                        <option value="2" {{ item.rowType==2?'selected':'' }}>图片</option>
+                    </select>
+                    <div>
+            </td>
+            <td>
+                <input class="form-control col-lg-1 content" name="content" value="{{ item.content != '' && item.content != undefined?item.content:'' }}"  placeholder="请输入文本内容" />
+            </td>
+            <td>
+                {{# if(item.seq > 1){ }}
+                    <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"   ></a>
+                    <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"  ></a>
+                    <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
+                {{# } }}
+            </td>
+        </tr>
+        {{# });  }}
+        </tbody>
+    </table>
+
 </script>
 <!--******************************************用于结果集上传编辑添加修改模板**end***************************************************-->
 
@@ -281,8 +342,8 @@
                         <td>
                             {{# if(item.rowType >1){ }}
                                 {{# if(item.seq > 1){ }}
-                                 <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  type="2"></a>
-                                 <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr" type="2"></a>
+                                 <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  ></a>
+                                 <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr" ></a>
                                 {{# }  }}
                                 <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
                             {{# }  }}
@@ -508,8 +569,8 @@
 
                                     <div class="layui-tab">
                                         <ul class="layui-tab-title">
-                                            <li class="layui-this"><span class="required_style">*</span>我的任务编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addPhase" title="添加阶段" id="addPhase"><i class="layui-icon"></i></button></li>
-                                            <li><span class="required_style">*</span>结果集上传编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addResult" title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button></li>
+                                            <li class="layui-this"><span class="required_style">*</span>任务详情&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addPhase" title="添加阶段" id="addPhase"><i class="layui-icon"></i></button></li>
+                                            <li><span class="required_style">*</span>任务结果&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addResult" title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button></li>
                                         </ul>
                                         <div class="layui-tab-content">
                                             <div class="layui-tab-item layui-show">
@@ -519,24 +580,6 @@
                                             </div>
                                             <div class="layui-tab-item">
                                                 <div class="layui-form-item" id="resultView">
-                                                    <table class="layui-table" lay-skin="line">
-                                                        <colgroup>
-                                                            <col width="6%">
-                                                            <col width="14%">
-                                                            <col width="65%">
-                                                            <col width="15%">
-                                                        </colgroup>
-                                                        <thead>
-                                                        <tr>
-                                                            <th>序号</th>
-                                                            <th>类型</th>
-                                                            <th>类型值</th>
-                                                            <th>操作</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
