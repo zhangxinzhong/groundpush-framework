@@ -8,10 +8,12 @@ import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.mapper.TaskAttributeMapper;
 import com.groundpush.core.mapper.TaskLabelMapper;
+import com.groundpush.core.mapper.TaskLocationMapper;
 import com.groundpush.core.mapper.TaskMapper;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskLabel;
+import com.groundpush.core.model.TaskLocation;
 import com.groundpush.core.service.OrderService;
 import com.groundpush.core.service.TaskAttributeService;
 import com.groundpush.core.service.TaskService;
@@ -45,6 +47,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private TaskAttributeService taskAttributeService;
+
+    @Resource
+    private TaskLocationMapper taskLocationMapper;
+
 
     @Override
     public Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
@@ -93,7 +99,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void save(Task task) {
         //添加、更新任务内容
-        boolean taskResult = true;
         Integer taskId = task.getTaskId();
         task.setStatus(Constants.TASK_STATUS_2);
         if (taskId == null) {
@@ -105,18 +110,21 @@ public class TaskServiceImpl implements TaskService {
         //添加标签内容
         taskLabelMapper.deleteTaskLabelByTaskId(taskId);
         //添加
-        String labelIds = task.getLabelIds();
-        if (StringUtils.isNotEmpty(labelIds)) {
-            String[] labelIdList = labelIds.split(",");
-            if (labelIdList != null && labelIdList.length > 0) {
-                for (String labelId : labelIdList) {
-                    TaskLabel taskLabel = new TaskLabel();
-                    taskLabel.setTaskId(taskId);
-                    taskLabel.setLabelId(Integer.parseInt(labelId));
-                    taskLabelMapper.createTaskLabel(taskLabel);
+        if (StringUtils.isNotEmpty(task.getLabelIds())) {
+                for (String labelId : task.getLabelIds().split(",")) {
+                    taskLabelMapper.createTaskLabel(TaskLabel.builder().taskId(taskId).labelId(Integer.parseInt(labelId)).build());
                 }
-            }
         }
+
+        //删除城市关联
+        taskLocationMapper.delTaskLocationByTaskId(taskId);
+        if(StringUtils.isNotEmpty(task.getLocation())){
+              for(String location : task.getLocation().split(",")){
+                  taskLocationMapper.saveTaskLocation(TaskLocation.builder().taskId(taskId).location(location).build());
+              }
+        }
+
+
         //添加任务内容（先删除后添加）
         //删除
         taskAttributeMapper.deleteTaskAttributeByTaskId(taskId);
