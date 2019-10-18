@@ -127,7 +127,13 @@
         </td>
         {{# } }}
         <td>
-            <a class="layui-btn layui-btn-danger layui-btn-sm delPhaseTr" >删除</a>
+            {{# if(d.rowType >1){ }}
+                {{# if(d.seq > 1){ }}
+                <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr" type="2" ></a>
+                <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"  type="2" ></a>
+                {{# }  }}
+                <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
+            {{# } }}
         </td>
     </tr>
 </script>
@@ -165,7 +171,9 @@
             <input class="form-control col-lg-1 content" name="content" placeholder="请输入文本内容" />
         </td>
         <td>
-            <a class="layui-btn layui-btn-danger layui-btn-sm delResultTr" >删除</a>
+            <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  type="3" ></a>
+            <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"  type="3" ></a>
+            <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
         </td>
     </tr>
 </script>
@@ -188,7 +196,9 @@
             <input class="form-control col-lg-1 content" name="content" value="{{ item.content != '' && item.content != undefined?item.content:'' }}"  placeholder="请输入文本内容" />
         </td>
         <td>
-            <a class="layui-btn layui-btn-danger layui-btn-sm delResultTr" >删除</a>
+            <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  type="3" ></a>
+            <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr" type="3" ></a>
+            <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
         </td>
     </tr>
     {{# });  }}
@@ -212,8 +222,8 @@
                     <colgroup>
                         <col width="6%">
                         <col width="14%">
-                        <col width="70%">
-                        <col width="10%">
+                        <col width="65%">
+                        <col width="15%">
                     </colgroup>
                     <thead>
                     <tr>
@@ -269,7 +279,13 @@
                             {{# } }}
                         </td>
                         <td>
-                            <a class="layui-btn layui-btn-danger layui-btn-sm delPhaseTr" >删除</a>
+                            {{# if(item.rowType >1){ }}
+                                {{# if(item.seq > 1){ }}
+                                 <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  type="2"></a>
+                                 <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr" type="2"></a>
+                                {{# }  }}
+                                <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
+                            {{# }  }}
                         </td>
                     </tr>
                     {{# });  }}
@@ -299,7 +315,7 @@
                                 <form  class="layui-form" action="" id="addTaskForm" lay-filter="addTaskForm">
                                     <input hidden type="text" name="taskId" id="taskId" lay-verify="taskId" class="layui-input">
                                     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                                        <legend>&emsp;&emsp;缩&emsp;略&emsp;图 (推荐尺寸：90*75)</legend>
+                                        <legend>&emsp;<span class="required_style">*</span>&emsp;缩&emsp;略&emsp;图 (推荐尺寸：90*75)</legend>
                                     </fieldset>
                                     <div class="layui-form-item">
 
@@ -313,7 +329,7 @@
                                     </div>
 
                                     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                                        <legend>&emsp;&emsp;示&emsp;例&emsp;图 (推荐尺寸：160*95)</legend>
+                                        <legend><span class="required_style">*</span>&emsp;&emsp;示&emsp;例&emsp;图 (推荐尺寸：160*95)</legend>
                                     </fieldset>
                                     <div class="layui-form-item">
                                         <div class="layui-upload">
@@ -326,7 +342,7 @@
                                     </div>
 
                                     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                                        <legend>&emsp;&emsp;封&emsp;面&emsp;图 (推荐尺寸：360*200)</legend>
+                                        <legend><span class="required_style">*</span>&emsp;&emsp;封&emsp;面&emsp;图 (推荐尺寸：360*200)</legend>
                                     </fieldset>
                                     <div class="layui-form-item">
 
@@ -340,21 +356,21 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">标&emsp;&emsp;题:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>标&emsp;&emsp;题:</label>
                                         <div class="col-md-8">
                                             <input class="form-control" name="title" id="title"  lay-verify="title" autocomplete="off" maxlength="120" placeholder="请输入标题" type="text">
                                         </div>
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">简略标题:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>简略标题:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-10" name="briefTitle"  id="briefTitle" lay-verify="briefTitle" autocomplete="off" maxlength="7" placeholder="请输入简略标题（最多7个字符）" type="text">
                                         </div>
                                     </div>
 
                                    <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">标&emsp;&emsp;签:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>标&emsp;&emsp;签:</label>
                                         <div class="col-md-8">
                                             <select class="selectpicker form-control" multiple id="selectLabelIds" name="selectLabelIds"
                                                     data-title="点击选择标签（可多选）"  data-live-search="true"
@@ -364,7 +380,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">公&emsp;&emsp;司:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>公&emsp;&emsp;司:</label>
                                         <div class="col-md-8">
                                             <div class="layui-input-inline layui-form" style="width:30%;" lay-filter="source">
                                                 <select class="form-control col-lg-3" name="source" id="source" placeholder="请输入公司"   >
@@ -381,7 +397,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">单笔佣金:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>单笔佣金:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="amount" id="amount" lay-verify="amount" autocomplete="off" maxlength="8" placeholder="请输入单笔佣金" type="number">
                                         </div>
@@ -390,7 +406,7 @@
 
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">推广总数:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>推广总数:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="spreadTotal" id="spreadTotal" lay-verify="spreadTotal" autocomplete="off" maxlength="11" placeholder="请输入推广总数" type="number">
                                         </div>
@@ -398,7 +414,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">可推广任务数:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>可推广任务数:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="handlerNum" id="handlerNum" lay-verify="handlerNum" autocomplete="off" maxlength="11" placeholder="请输入可推广任务数" type="number">
                                         </div>
@@ -406,7 +422,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">审核天数:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>审核天数:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="auditDuration" id="auditDuration" lay-verify="auditDuration" autocomplete="off" maxlength="11" placeholder="请输入审核天数" type="number">
                                         </div>
@@ -414,7 +430,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">任务耗时:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>任务耗时:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="expendTime" id="expendTime" lay-verify="expendTime" autocomplete="off" maxlength="11" placeholder="请输入任务耗时" type="number">
                                         </div>
@@ -423,7 +439,7 @@
 
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">综合通过率:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>综合通过率:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="completeOdds" id="completeOdds" lay-verify="completeOdds" autocomplete="off" maxlength="11" placeholder="请输入综合通过率" type="number">
                                         </div>
@@ -431,7 +447,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">推广人分成:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>推广人分成:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="spreadRatio" id="spreadRatio" lay-verify="spreadRatio" autocomplete="off" maxlength="11" placeholder="请输入推广人分成" type="number">
                                         </div>
@@ -439,7 +455,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">推广人上级分成:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>推广人上级分成:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="spreadParentRatio" id="spreadParentRatio" lay-verify="spreadParentRatio" autocomplete="off" maxlength="11" placeholder="请输入推广人上级分成" type="number">
                                         </div>
@@ -456,14 +472,14 @@
 
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">介绍标题:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>介绍标题:</label>
                                         <div class="col-md-8">
                                             <input class="form-control col-lg-1" name="taskTitle" id="taskTitle" lay-verify="taskTitle" autocomplete="off" maxlength="200" placeholder="请输入介绍标题" type="text">
                                         </div>
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label col-md-2">介绍内容:</label>
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>介绍内容:</label>
                                         <div class="col-md-8">
                                             <textarea class="form-control col-lg-1" name="taskContent" id="taskContent" lay-verify="taskContent" autocomplete="off" maxlength="500" placeholder="请输入介绍内容" ></textarea>
                                         </div>
@@ -492,8 +508,8 @@
 
                                     <div class="layui-tab">
                                         <ul class="layui-tab-title">
-                                            <li class="layui-this">我的任务编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addPhase" title="添加阶段" id="addPhase"><i class="layui-icon"></i></button></li>
-                                            <li>结果集上传编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addResult" title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button></li>
+                                            <li class="layui-this"><span class="required_style">*</span>我的任务编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addPhase" title="添加阶段" id="addPhase"><i class="layui-icon"></i></button></li>
+                                            <li><span class="required_style">*</span>结果集上传编辑&emsp;&emsp;<button type="button" class="layui-btn  layui-btn-xs layui-btn-small addResult" title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button></li>
                                         </ul>
                                         <div class="layui-tab-content">
                                             <div class="layui-tab-item layui-show">
@@ -507,8 +523,8 @@
                                                         <colgroup>
                                                             <col width="6%">
                                                             <col width="14%">
-                                                            <col width="70%">
-                                                            <col width="10%">
+                                                            <col width="65%">
+                                                            <col width="15%">
                                                         </colgroup>
                                                         <thead>
                                                         <tr>

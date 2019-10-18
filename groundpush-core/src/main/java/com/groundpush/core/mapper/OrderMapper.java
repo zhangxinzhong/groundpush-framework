@@ -178,7 +178,7 @@ public interface OrderMapper {
      * @param order
      * @return
      */
-    @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, type, settlement_amount, settlement_status, created_time)values (#{orderNo},#{channelUri},#{uniqueCode},#{status},#{type},#{settlementAmount},#{settlementStatus},current_timestamp) ")
+    @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, type, settlement_amount, settlement_status, created_time,is_special)values (#{orderNo},#{channelUri},#{uniqueCode},#{status},#{type},#{settlementAmount},#{settlementStatus},current_timestamp,#{isSpecial}) ")
     @Options(useGeneratedKeys = true, keyProperty = "orderId")
     Integer createOrder(Order order);
 
