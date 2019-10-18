@@ -88,6 +88,10 @@ public interface TaskMapper {
     @Select(" select * from t_task t where t.task_id=#{taskId}  ")
     Optional<Task> getTask(@Param("taskId") Integer taskId);
 
+    /**
+     * 获取所有任务中的任务id与任务标题
+     * @return
+     */
     @Select(" select a.task_id,a.title from t_task a ")
     List<Task> queryAllTaskList();
 
@@ -136,11 +140,12 @@ public interface TaskMapper {
     Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition);
 
 
-
-
-
-
-
+    /**
+     * 通过客户id与任务id 获取已创建订单的任务
+     * @param customerId
+     * @param taskId
+     * @return
+     */
     @Select({"<script>",
             " select ",
             " a.spread_total-(select count(1) from t_order_task_customer b left join t_order c on b.order_id = c.order_id where a.task_id = b.task_id and c.type = 2 AND DATE_FORMAT(c.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) sup_total, ",

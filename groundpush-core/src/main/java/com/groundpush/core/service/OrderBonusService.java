@@ -14,6 +14,11 @@ import java.util.List;
 public interface OrderBonusService {
 
 
+    /**
+     * 通过订单id获取所有关联分成
+     * @param orderId
+     * @return
+     */
     List<OrderBonus> findOrderBonusByOrder(Integer orderId);
 
     /**

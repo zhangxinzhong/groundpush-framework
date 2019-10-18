@@ -47,7 +47,5 @@ public interface AuditLogService {
     Page<OrderList> queryOrderListByTaskIdAndOrderId(OrderListQueryCondition condition);
 
 
-    // Optional<AuditLog> findAuditiLongByTaskIdOrderTimeserId(AuditLog auditLog);
-
 
 }

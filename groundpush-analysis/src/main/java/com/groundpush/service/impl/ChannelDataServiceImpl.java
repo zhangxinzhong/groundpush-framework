@@ -49,8 +49,4 @@ public class ChannelDataServiceImpl implements ChannelDataService {
         return channelDataMapper.getChannelDataByUniqueCode(build);
     }
 
-    @Override
-    public void addOrder(Order build) {
-        channelDataMapper.addOrder(build);
-    }
 }

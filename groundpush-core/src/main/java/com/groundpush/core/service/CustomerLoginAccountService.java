@@ -26,6 +26,11 @@ public interface CustomerLoginAccountService {
     void createCustomerLoginAccount(CustomerLoginAccount customerLoginAccount);
 
 
+    /**
+     * 查询符合条件的客户账户list
+     * @param customerAccountQueryCondition
+     * @return
+     */
     List<CustomerLoginAccount> queryCustomerLoginAccount(CustomerAccountQueryCondition customerAccountQueryCondition);
 
     /**
@@ -42,5 +47,10 @@ public interface CustomerLoginAccountService {
      */
     Optional<CustomerLoginAccount> get(Integer customerLoginAccountId);
 
+    /**
+     * 修改客户账户信息
+     * @param customerLoginAccount
+     * @return
+     */
     Boolean updateCustomerLoginAccountLoginNo(CustomerLoginAccount customerLoginAccount);
 }

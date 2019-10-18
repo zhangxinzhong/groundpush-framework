@@ -90,6 +90,11 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyProperty = "userId")
     void createUser(User user);
 
+    /**
+     * 通过userid获取关联角色个数
+     * @param userId
+     * @return
+     */
     @Select(" select count(1) from t_role_user a where a.user_id = #{userId} ")
     Integer findRoleUserByUserId(@Param("userId") Integer userId);
 }

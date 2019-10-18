@@ -55,6 +55,5 @@ public interface ChannelDataMapper {
     @Select(" select * from t_channel_data cd where cd.task_id =#{taskId} and cd.unique_code=#{uniqueCode} and cd.channel_id=#{channelId} ")
     Optional<ChannelData> getChannelDataByUniqueCode(ChannelDataQueryCondition build);
 
-    @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, settlement_amount, settlement_status, created_time)values (#{orderNo},#{channelUri},#{uniqueCode},1,#{settlementAmount},#{settlementStatus},#{createdTime}) ")
-    void addOrder(Order build);
+
 }

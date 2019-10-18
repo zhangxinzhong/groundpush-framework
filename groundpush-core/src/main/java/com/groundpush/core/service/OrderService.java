@@ -148,4 +148,10 @@ public interface OrderService {
      * @return
      */
     Optional<Integer> queryOrderByOrderId(Integer orderId);
+
+    /**
+     *创建订单
+     * @param build
+     */
+    void addOrder(Order build);
 }

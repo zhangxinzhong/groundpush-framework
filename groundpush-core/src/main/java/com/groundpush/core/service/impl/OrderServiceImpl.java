@@ -236,4 +236,9 @@ public class OrderServiceImpl implements OrderService {
     public Optional<Integer> queryOrderByOrderId(Integer orderId) {
         return orderTaskCustomerMapper.queryTaskIdByOrderId(orderId);
     }
+
+    @Override
+    public void addOrder(Order build) {
+        orderMapper.addOrder(build);
+    }
 }
