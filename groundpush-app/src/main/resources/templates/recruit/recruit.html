@@ -10,7 +10,7 @@
         body {
             height: 100%;
             width: 100%;
-            background: url('/static/images/1.png') no-repeat;
+            background: url('/static/images/1.png ') no-repeat;
             background-size: cover;
             position: absolute;
             overflow: hidden;
@@ -33,7 +33,7 @@
     </style>
 </head>
 
-<body>
+<body th:style="'background:url(' + @{'/images/1.png'} + ') no-repeat;height: 100%;width: 100%;background-size: cover;position: absolute;overflow: hidden;' " >
 <div class="container-fluid">
     <div class="jumbotron" id="contentDiv">
         <form class="layui-form" action="">
