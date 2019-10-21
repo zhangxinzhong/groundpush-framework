@@ -10,7 +10,7 @@
         body {
             height: 100%;
             width: 100%;
-            background: url('/static/images/1.png') no-repeat;
+            background: url('/static/images/1.png ') no-repeat;
             background-size: cover;
             position: absolute;
             overflow: hidden;
@@ -33,7 +33,7 @@
     </style>
 </head>
 
-<body>
+<body th:style="'background:url(' + @{'/images/1.png'} + ') no-repeat;height: 100%;width: 100%;background-size: cover;position: absolute;overflow: hidden;' " >
 <div class="container-fluid">
     <div class="jumbotron" id="contentDiv">
         <form class="layui-form" action="">
@@ -50,7 +50,7 @@
                     </div>
                     <div class="input-group" style="margin-top: 20px">
                         <input type="text" class="form-control" lay-verify="required" name="mobileCode" placeholder="请输入验证码" aria-describedby="basic-addon2" style="height: 44px;">
-                        <span class="input-group-addon" id="basic-addon2" style="cursor: default" name="sendSms">获取验证码</span>
+                        <span class="input-group-addon" id="basic-addon2"><a name="sendSms" style="cursor: default;">获取验证码</a></span>
                     </div>
                 </div>
             </div>
