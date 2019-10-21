@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="
+">
 <head>
     <meta charset="UTF-8">
     <title>登录--XXX管理系统</title>
@@ -52,8 +53,8 @@
                     <colgroup>
                         <col width="6%">
                         <col width="14%">
-                        <col width="70%">
-                        <col width="10%">
+                        <col width="65%">
+                        <col width="15%">
                     </colgroup>
                     <thead>
                     <tr>
@@ -127,13 +128,13 @@
         </td>
         {{# } }}
         <td>
-            {{# if(d.rowType >1){ }}
+
                 {{# if(d.seq > 1){ }}
                 <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  ></a>
                 <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"   ></a>
                 {{# }  }}
                 <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
-            {{# } }}
+
         </td>
     </tr>
 </script>
