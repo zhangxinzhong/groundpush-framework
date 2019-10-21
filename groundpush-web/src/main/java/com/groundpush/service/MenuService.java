@@ -47,11 +47,7 @@ public interface MenuService {
      */
     Optional<Menu> queryMenuByCode(String Code);
 
-    /**
-     * 查询所有的菜单
-     * @return
-     */
-    List<Menu> queryAll();
+
 
     /**
      * 通过菜单码查询菜单

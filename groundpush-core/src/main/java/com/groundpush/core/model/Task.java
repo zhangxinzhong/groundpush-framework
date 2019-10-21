@@ -296,4 +296,8 @@ public class Task implements Serializable {
     @JsonView(SimpleTaskView.class)
     private boolean hasOrderResult;
 
+    @ApiModelProperty("是否为特殊任务")
+    @JsonView(SimpleTaskView.class)
+    private boolean hasSpecialTask;
+
 }

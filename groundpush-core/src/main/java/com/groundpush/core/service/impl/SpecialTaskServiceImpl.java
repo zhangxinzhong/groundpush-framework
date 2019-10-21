@@ -5,12 +5,18 @@ import com.github.pagehelper.PageHelper;
 import com.groundpush.core.mapper.SpecialTaskMapper;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.SpecialTask;
+import com.groundpush.core.model.Task;
+import com.groundpush.core.model.Team;
 import com.groundpush.core.service.*;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
+import com.groundpush.core.utils.MathUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,5 +96,29 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
             }
         }
         return Boolean.FALSE;
+    }
+
+    @Override
+    public Page<Task> hasSpecialTask(Page<Task> pages, Integer customerId) {
+
+        List<SpecialTask> specialTasks = specialTaskMapper.queryListIdByTasks(pages.getResult());
+        if(specialTasks.size() > 0){
+            List<Integer> teamIds = new ArrayList<>();
+            List<Integer> taskIds = new ArrayList<>();
+            for(SpecialTask specialTask : specialTasks){
+                teamIds.add(specialTask.getTeamId());
+                taskIds.add(specialTask.getTaskId());
+            }
+
+            List<Integer> teamCustomerList = teamCustomerService.queryTeamReturnCustomerId(teamIds);
+            for (Task task : pages) {
+                // 特殊用户
+                if (teamCustomerList.contains(customerId) && taskIds.contains(task.getTaskId())) {
+                    task.setHasSpecialTask(Boolean.TRUE);
+                }
+            }
+        }
+
+        return pages;
     }
 }

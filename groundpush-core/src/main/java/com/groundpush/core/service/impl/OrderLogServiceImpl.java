@@ -20,10 +20,6 @@ public class OrderLogServiceImpl implements OrderLogService {
     @Resource
     private OrderLogMapper orderLogMapper;
 
-    @Override
-    public void createSingleOrderLog(OrderLog orderLog) {
-        orderLogMapper.createSingleOrderLog(orderLog);
-    }
 
     @Override
     public void createOrderLog(List<OrderLog> list) {

@@ -2,6 +2,7 @@ package com.groundpush.core.service;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.SpecialTask;
+import com.groundpush.core.model.Task;
 
 /**
  * SpecialTaskService
@@ -47,4 +48,13 @@ public interface SpecialTaskService {
      * @return
      */
     Boolean whetherSpecialTask(Integer taskId, Integer customId);
+
+
+    /**
+     * 过滤添加是否为特殊任务
+     * @param pages
+     * @param customerId
+     * @return
+     */
+    Page<Task> hasSpecialTask(Page<Task> pages, Integer customerId);
 }

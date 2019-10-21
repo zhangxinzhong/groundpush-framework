@@ -2,6 +2,8 @@ package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.SpecialTask;
+import com.groundpush.core.model.Task;
+import com.groundpush.core.model.Team;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -58,7 +60,7 @@ public interface SpecialTaskMapper {
      * @return
      */
     @Select(" select * from t_special_task st where st.task_id=#{taskId} ")
-    List<SpecialTask> querySpecialTaskByTaskId(Integer taskId);
+    List<SpecialTask> querySpecialTaskByTaskId(@Param("taskId") Integer taskId);
 
     /**
      * 查询特殊任务 只返回teamId
@@ -67,5 +69,22 @@ public interface SpecialTaskMapper {
      * @return
      */
     @Select(" select st.team_id from t_special_task st where st.status=1 and st.task_id=#{taskId} ")
-    List<Integer> querySpecialTaskByTaskIdReturnTeamId(Integer taskId);
+    List<Integer> querySpecialTaskByTaskIdReturnTeamId(@Param("taskId") Integer taskId);
+
+    /**
+     * 通过任务list 查询出符合条件的team元素
+     * @param tasks
+     * @return
+     */
+    @Select({
+            "<script>",
+            " select st.team_id,st.task_id from t_special_task st where st.task_id in ",
+            "<foreach collection='tasks' item='task' open='(' close=')' separator=','>",
+            " #{task.taskId}",
+            "</foreach>",
+            "</script>"
+    })
+    List<SpecialTask>  queryListIdByTasks(@Param("tasks") List<Task> tasks);
+
+
 }

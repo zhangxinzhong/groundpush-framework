@@ -12,11 +12,6 @@ import java.util.List;
  */
 public interface OrderLogService {
 
-    /**
-     * 创建单条订单日志
-     * @param orderLog
-     */
-    void createSingleOrderLog(OrderLog orderLog);
 
     /**
      * 创建订单日志
