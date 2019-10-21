@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="
-">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>登录--XXX管理系统</title>
@@ -138,18 +137,18 @@
         </td>
     </tr>
 </script>
-<!-- rowType对应类型 -->
-<script id="selectContent" type="text/html">
-    <!-- 内容 -->
+<!-- rowType对应类型   -- 对应“内容”类型暂时注释-->
+<!--<script id="selectContent" type="text/html">
+    &lt;!&ndash; 内容 &ndash;&gt;
     {{# if(d.rowType == 2 ){ }}
-    <textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>
+    <textarea class="form-control col-lg-5 content" name="content" lay-filter="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>
     {{# } }}
-    <!-- 打开URL、保存二维码 -->
+    &lt;!&ndash; 打开URL、保存二维码 &ndash;&gt;
     {{# if(d.rowType == 3 || d.rowType == 4){ }}
         <input type="text" name="content" class="form-control col-lg-1 content" value=""  placeholder="输入文本内容" style="width:85%;float:left;margin-right:3%;">
         <input type="radio" name="createUri" class="form-control createUri" title="生成" style="float:left;" lay-filter="createUri">
     {{# } }}
-</script>
+</script>-->
 <!--******************************************用于我的任务编辑添加模板**end***************************************************-->
 
 
