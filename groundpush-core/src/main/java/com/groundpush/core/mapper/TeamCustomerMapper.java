@@ -17,9 +17,17 @@ import java.util.List;
 public interface TeamCustomerMapper {
 
 
+    /**
+     * 通过团队id与客户id 删除团队用户关联信息
+     * @param teamCustomer
+     */
     @Delete(" delete from t_team_customer where team_id = #{teamId} and  customer_id = #{customerId}")
     void delTeamCustomer(TeamCustomer teamCustomer);
 
+    /**
+     * 创建团队与客户信息
+     * @param teamCustomer
+     */
     @Insert({
             "<script>",
             " insert into t_team_customer(team_id,customer_id,created_by,created_time) values ",
@@ -30,6 +38,10 @@ public interface TeamCustomerMapper {
     })
     void saveTeamCustomer(TeamCustomer teamCustomer);
 
+    /**
+     * 通过团队id 删除团队客户关联信息
+     * @param teamId
+     */
     @Delete(" delete from t_team_customer where team_id = #{teamId} ")
     void delTeamCustomerByTeamId(@Param("teamId") Integer teamId);
 

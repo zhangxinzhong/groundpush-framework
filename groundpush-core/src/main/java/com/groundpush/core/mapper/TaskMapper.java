@@ -88,6 +88,10 @@ public interface TaskMapper {
     @Select(" select * from t_task t where t.task_id=#{taskId}  ")
     Optional<Task> getTask(@Param("taskId") Integer taskId);
 
+    /**
+     * 获取所有任务中的任务id与任务标题
+     * @return
+     */
     @Select(" select a.task_id,a.title from t_task a ")
     List<Task> queryAllTaskList();
 
@@ -116,6 +120,7 @@ public interface TaskMapper {
             " select t1.* ",
             "  from t_task t1  where t1.status=1   ",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
+            " <if test='location != null and location != \"\"'> and  t1.task_id in (select c.task_id from t_task_location c where c.location = #{location}) </if>",
             " <if test='type != null and type != \"\"'> and t1.task_id in (select tb.task_id from t_task_label tb  where  tb.label_id = #{type})   </if> ",
             ")",
             // 若有location则以地址查询 与所有任务结合
@@ -124,7 +129,7 @@ public interface TaskMapper {
             " select t2.* ",
             " from t_task t2 where t2.status=1  ",
             " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
-            " <if test='location != null and location != \"\"'> and  FIND_IN_SET(#{location},t2.location) </if>",
+            " <if test='location != null and location != \"\"'> and t2.task_id in (select c.task_id from t_task_location c where c.location = #{location}) </if>",
             " <if test='type != null and type != \"\"'> and t2.task_id in (select tb.task_id from t_task_label tb  where  tb.label_id = #{type}) </if> ",
             " ) ",
             " </if> ",
@@ -135,11 +140,12 @@ public interface TaskMapper {
     Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition);
 
 
-
-
-
-
-
+    /**
+     * 通过客户id与任务id 获取已创建订单的任务
+     * @param customerId
+     * @param taskId
+     * @return
+     */
     @Select({"<script>",
             " select ",
             " a.spread_total-(select count(1) from t_order_task_customer b left join t_order c on b.order_id = c.order_id where a.task_id = b.task_id and c.type = 2 AND DATE_FORMAT(c.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) sup_total, ",

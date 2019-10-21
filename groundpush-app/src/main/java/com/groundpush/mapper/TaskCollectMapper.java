@@ -66,10 +66,22 @@ public interface TaskCollectMapper {
     })
     Page<Task> queryTaskCollect(TaskQueryCondition taskQueryCondition);
 
+    /**
+     * 通过客户id与任务id 获取符合条件的任务收藏信息
+     * @param taskId
+     * @param customerId
+     * @return
+     */
     @Select(" select a.* from t_task_collect a where a.task_id = #{taskId} and a.customer_id = #{customerId} ")
     Optional<TaskCollect> queryCollectsByTaskId(@Param("taskId") Integer taskId,@Param("customerId") Integer customerId);
 
 
+    /**
+     * 通过客户id与任务id 获取符合条件的任务收藏信息
+     * @param taskId
+     * @param customerId
+     * @return
+     */
     @Select(" select a.* from t_task_collect a where a.task_id = #{taskId} and a.customer_id=#{customerId} ")
     Optional<TaskCollect> queryCollectsByTaskIdAndCustomId(@Param("taskId") Integer taskId,@Param("customerId") Integer customerId);
 }

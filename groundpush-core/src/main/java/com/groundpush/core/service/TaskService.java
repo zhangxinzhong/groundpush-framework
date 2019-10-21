@@ -38,8 +38,16 @@ public interface TaskService {
      */
     Optional<Task> getTask(Integer id);
 
+    /**
+     * 创建任务
+     * @param task
+     */
     void save(Task task);
 
+    /**
+     * 修改任务
+     * @param task
+     */
     void updateTask(Task task);
 
     /**

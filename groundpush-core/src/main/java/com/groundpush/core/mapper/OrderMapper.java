@@ -178,7 +178,7 @@ public interface OrderMapper {
      * @param order
      * @return
      */
-    @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, type, settlement_amount, settlement_status, created_time)values (#{orderNo},#{channelUri},#{uniqueCode},#{status},#{type},#{settlementAmount},#{settlementStatus},current_timestamp) ")
+    @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, type, settlement_amount, settlement_status, created_time,is_special)values (#{orderNo},#{channelUri},#{uniqueCode},#{status},#{type},#{settlementAmount},#{settlementStatus},current_timestamp,#{isSpecial}) ")
     @Options(useGeneratedKeys = true, keyProperty = "orderId")
     Integer createOrder(Order order);
 
@@ -232,6 +232,11 @@ public interface OrderMapper {
     @Update(" update t_order set order_no=#{orderNo} where order_id=#{orderId} ")
     void updateOrderNoByOrderId(Order order);
 
+    /**
+     * 通过任务idlist获取对应任务信息
+     * @param taskIds
+     * @return
+     */
     @Select({
             "<script>",
             " select ",
@@ -248,6 +253,12 @@ public interface OrderMapper {
     List<TaskListCount> queryCountByTaskId(@Param("taskIds") List<Integer> taskIds);
 
 
+    /**
+     * 通过客户id与任务id list 获取符合条件list
+     * @param customId
+     * @param taskIds
+     * @return
+     */
     @Select({
             "<script>",
             " select ",
@@ -263,6 +274,11 @@ public interface OrderMapper {
     })
     List<TaskListCount> queryCountByCustomIdTaskId(@Param("customId") Integer customId, @Param("taskIds") List<Integer> taskIds);
 
+    /**
+     * 通过客户id 获取所有推广（type=2）的任务分页列表
+     * @param customerId
+     * @return
+     */
     @Select({
             "<script>",
             " SELECT ",
@@ -276,6 +292,12 @@ public interface OrderMapper {
     })
     Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId);
 
+    /**
+     * 通过客户id与任务id 获取推广任务中创建的订单数以及相关任务信息
+     * @param customerId
+     * @param taskId
+     * @return
+     */
     @Select({
             "<script>",
             " SELECT ",
@@ -329,6 +351,11 @@ public interface OrderMapper {
     List<Order>  findOrderByUnqiuCode(OrderResultCondition condition);
 
 
-
+    /**
+     * 创建订单
+     * @param build
+     */
+    @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, settlement_amount, settlement_status, created_time)values (#{orderNo},#{channelUri},#{uniqueCode},1,#{settlementAmount},#{settlementStatus},#{createdTime}) ")
+    void addOrder(Order build);
 
 }

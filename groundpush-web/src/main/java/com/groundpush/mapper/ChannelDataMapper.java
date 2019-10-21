@@ -39,9 +39,19 @@ public interface ChannelDataMapper {
     void createChannelData(List<ChannelData> cds);
 
 
+    /**
+     * 通过任务id与订单创建日期获取关联的所有渠道数据
+     * @param taskId
+     * @param orderCreateDate
+     * @return
+     */
     @Select("select a.*,(select b.amount from t_task b where b.task_id = a.task_id) amount from t_channel_data a  where a.is_exist_order=0 and date_format(a.channel_time,'%Y-%m-%d') = date_format(#{orderCreateDate},'%Y-%m-%d') and a.task_id = #{taskId}")
     List<ChannelData> findAllDataByExistTaskId(@Param("taskId") Integer taskId, @Param("orderCreateDate")LocalDateTime orderCreateDate);
 
+    /**
+     * 批量修改渠道数据
+     * @param channelDatas
+     */
     @Update({
             "<script>",
             " update t_channel_data  set is_exist_order = 1  where id in",

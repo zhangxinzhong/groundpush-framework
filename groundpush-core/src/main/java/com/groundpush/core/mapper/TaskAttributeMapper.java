@@ -65,12 +65,12 @@ public interface TaskAttributeMapper {
 
 
     /**
-     *
+     * 通过任务id与任务属性类型 获取某个任务类型属性所有任务属性
      * @param taskId
      * @param type
      * @return
      */
-    @Select(" select a.* from t_task_attribute a where a.task_id= #{taskId}  and a.type= #{type} ")
+    @Select(" select a.* from t_task_attribute a where a.task_id= #{taskId}  and a.type= #{type} order by a.row_type asc,a.seq asc ")
     List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(Integer taskId,Integer type);
 
 

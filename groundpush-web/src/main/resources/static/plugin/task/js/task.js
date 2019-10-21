@@ -72,11 +72,6 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 return '推广人分成不可为空！';
             }
         }
-        , leaderRatio: function (value) {
-            if (value == null || value == undefined || value == '') {
-                return '团队领导分成不可为空！';
-            }
-        }
         , taskTitle: function (value) {
             if (value == null || value == undefined || value == '') {
                 return '介绍标题不可为空！';
@@ -191,25 +186,16 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             $('.addResult').on('click',function () {
                 let len =  $('#resultView table tbody tr').length;
                 laytpl($('#resultAdd').html()).render({"seq": ++len}, function(html){
-                    $('#resultView').find('table tbody').append(html);
+                    if(len == 1){
+                        $('#resultView').append(html);
+                    }else{
+                        $('#resultView').find('table tbody').append(html);
+                    }
                 });
                 form.render();
-                eventListener.initResultEvent();
+                eventListener.initOperationTr();
             })
             
-
-        }
-        //初始化结果集上传编辑事件
-        , initResultEvent: function () {
-            $('.delResultTr').off('click');
-            $('.delResultTr').on('click', function () {
-                $(this).parent().parent().remove();
-                let i = 0;
-                $.each($('#resultView table tbody tr'), function (index, items) {
-                    $(items).find(' input[name="seq"]').val(++i);
-                });
-
-            })
 
         }
         //初始化我的任务编辑中阶段事件
@@ -225,7 +211,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 });
                 form.render();
                 eventListener.initUploadImg({'id': '.imgShow' + imgCode, 'inputId': '.imgVal' + imgCode});
-                eventListener.initDelTr();
+                eventListener.initOperationTr();
             });
             //添加文本
             $('.addPhaseText').off('click');
@@ -236,7 +222,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     currTbody.append(html);
                 });
                 form.render();
-                eventListener.initDelTr();
+                eventListener.initOperationTr();
             });
 
             //删除阶段
@@ -257,10 +243,11 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             });
         }
         //初始化我的任务编辑中的删除
-        , initDelTr: function () {
+        , initOperationTr: function () {
+
             //删除行
-            $('.delPhaseTr').off('click');
-            $('.delPhaseTr').click(function (event) {
+            $('.delTr').off('click');
+            $('.delTr').click(function (event) {
                 let tr = $(this).parent().parent();
                 let tbody = tr.parent();
                 tr.remove();
@@ -269,6 +256,45 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     $(items).find('input[name="seq"]').val(++i);
                 });
             });
+
+            //上移行
+            $('.upTr').off('click');
+            $('.upTr').click(function (event) {
+                let tr = $(this).parent().parent();
+                let currVal = tr.find('td input[name="seq"]').val(); let prevVal = tr.prev().find('td input[name="seq"]').val();
+                if(tr.prev('tr').length == 0  || prevVal == 1){
+                     layer.msg('不可上移行！');
+                     return false;
+                }
+
+                let currContentVal = tr.find('.content').val();let prevContentVal = tr.prev().find('.content').val();
+                let currHtml = tr.html();let prevHtml = tr.prev().html();
+                tr.prev().html(currHtml);
+                tr.html(prevHtml);
+                tr.find('td input[name="seq"]').val(currVal);tr.prev().find('td input[name="seq"]').val(prevVal);
+                tr.find('.content').val(prevContentVal);tr.prev().find('.content').val(currContentVal);
+                eventListener.initOperationTr();
+            });
+
+            //下移行
+            $('.downTr').off('click');
+            $('.downTr').click(function (event) {
+                let tr = $(this).parent().parent();
+                if(tr.next('tr').length == 0){
+                    layer.msg('不可下移行！');
+                    return false;
+                }
+                let currVal = tr.find('td input[name="seq"]').val();let nextVal = tr.next().find('td input[name="seq"]').val();
+                let currContentVal = tr.find('.content').val();let nextContentVal = tr.next().find('.content').val();
+                let currHtml = tr.html();let nextHtml = tr.next().html();
+                tr.next().html(currHtml)
+                tr.html(nextHtml);
+                tr.find('td input[name="seq"]').val(currVal);tr.next().find('td input[name="seq"]').val(nextVal);
+                tr.find('.content').val(nextContentVal);tr.next().find('.content').val(currContentVal);
+                eventListener.initOperationTr();
+            });
+
+
         }
         //初始化modal中省份select
         , initProvinces: function (data) {
@@ -505,7 +531,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     });
 
                     laytpl($('#resultUpdateEcho').html()).render(resultJsonObjs, function(html){
-                        $('#resultView table tbody').append(html);
+                        $('#resultView').append(html);
 
                     });
                     //添加点击事件
@@ -526,9 +552,9 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         ,addButtonEvent:function () {
             //我的任务编辑
             eventListener.initPhaseEvent();
-            eventListener.initDelTr();
+            eventListener.initOperationTr();
             //结果集上传编辑
-            eventListener.initResultEvent();
+            eventListener.initOperationTr();
         }
         //删除或发布任务
         , delOrPublishTask: function (data) {
@@ -590,23 +616,14 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             layer.msg('公司不可为空！');
             return false;
         }
-
+        //任务所在地
+        let province = $('#provinces').selectpicker('val');
+        //城市内容
+        let location = $('#locations').selectpicker('val');
         //标签内容
         let labelIds = $('#selectLabelIds').selectpicker('val');
         if(labelIds == undefined || labelIds == ''){
             layer.msg('标签不可为空！');
-            return false;
-        }
-        //任务所在地
-        let province = $('#provinces').selectpicker('val');
-        if(province == undefined || province == ''){
-            layer.msg('省份不可为空！');
-            return false;
-        }
-        //城市内容
-        let location = $('#locations').selectpicker('val');
-        if(location == undefined || location == ''){
-            layer.msg('城市不可为空！');
             return false;
         }
 

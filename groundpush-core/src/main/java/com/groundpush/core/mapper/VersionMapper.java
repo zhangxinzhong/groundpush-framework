@@ -15,6 +15,11 @@ import java.util.Optional;
  */
 public interface VersionMapper {
 
+    /**
+     * 获取所有版本信息分页
+     * @param version
+     * @return
+     */
     @Select({
             "<script>",
             " select * from t_version where 1=1  ",
@@ -23,6 +28,11 @@ public interface VersionMapper {
     })
     Page<Version> queryVersionPage(Version version);
 
+    /**
+     *  通过版本id 获取某条版本信息
+     * @param versionId
+     * @return
+     */
     @Select({
             "<script>",
             " select * from t_version where version_id=#{versionId}  ",
@@ -30,6 +40,11 @@ public interface VersionMapper {
     })
     Optional<Version> getVersion(@Param("versionId") Integer versionId);
 
+    /**
+     * 创建版本信息
+     * @param version
+     * @return
+     */
     @Insert(" insert into t_version(is_update, new_version, apk_file_url, update_log, target_size, new_md5, is_constraint,type,created_time) values (#{isUpdate},#{newVersion},#{apkFileUrl},#{updateLog},#{targetSize},#{newMd5},#{isConstraint},#{type},current_timestamp) ")
     Integer createVersion(Version version);
 }

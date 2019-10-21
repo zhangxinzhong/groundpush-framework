@@ -64,5 +64,9 @@ public interface UriService {
      */
     Boolean del(Integer uriId);
 
+    /**
+     * 查询所有uri
+     * @return
+     */
     List<Uri> getUriALL();
 }

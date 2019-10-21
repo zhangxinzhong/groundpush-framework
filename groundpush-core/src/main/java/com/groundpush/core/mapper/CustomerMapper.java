@@ -48,6 +48,11 @@ public interface CustomerMapper {
     })
     void updateCustomer(CustomerVo customer);
 
+    /**
+     * 通过客户id 修改客户的邀请码
+     * @param inviteCode
+     * @param customerId
+     */
     @Update(" update  t_customer c set  c.invite_code =#{inviteCode},c.last_modified_time= current_timestamp where c.customer_id=#{customerId} ")
     void updateCustomerInviteCode(@Param("inviteCode") String inviteCode, @Param("customerId") Integer customerId);
 
@@ -84,6 +89,11 @@ public interface CustomerMapper {
     Optional<Customer> queryCustomerByLoginNo(@Param("loginNo") String loginNo);
 
 
+    /**
+     * 查询昵称 获取所有符合条件客户信息
+     * @param customer
+     * @return
+     */
     @Select({
             "<script>",
             " select * from t_customer where 1=1  ",
