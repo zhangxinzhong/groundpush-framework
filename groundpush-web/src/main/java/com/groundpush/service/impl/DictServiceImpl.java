@@ -52,10 +52,10 @@ public class DictServiceImpl implements DictService {
     public Boolean saveDict(Dict dict) {
         Integer dictId = dict.getDictId();
         Boolean dictResult = true;
-        if(dictId == null){
-            dictResult = dictMapper.insertDict(dict)>0?true:false;
-        }else{
-            dictResult = dictMapper.updateDict(dict)>0?true:false;
+        if (dictId == null) {
+            dictResult = dictMapper.insertDict(dict) > 0 ? true : false;
+        } else {
+            dictResult = dictMapper.updateDict(dict) > 0 ? true : false;
         }
         return dictResult;
     }

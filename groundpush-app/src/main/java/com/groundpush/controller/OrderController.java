@@ -44,7 +44,6 @@ public class OrderController {
     @ApiOperation(value = "任务结果集、订单申诉")
     @PutMapping
     public JsonResp updateOrder(@Valid @RequestBody OrderResultCondition condition, BindingResult bindingResult) {
-        //TODO 此接口需要在渠道建立后在进行补充
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }

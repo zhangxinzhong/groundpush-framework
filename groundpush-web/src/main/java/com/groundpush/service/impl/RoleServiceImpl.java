@@ -30,10 +30,9 @@ public class RoleServiceImpl implements RoleService {
     private RoleUserPrivilegeMenuMapper rupmMapper;
 
 
-
     @Override
-    public Page<Role> queryAllRoles(Integer page,Integer limit) {
-        PageHelper.startPage(page,limit);
+    public Page<Role> queryAllRoles(Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
         return roleMapper.queryAllRoles();
     }
 
@@ -58,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
     public void addRoleUser(UpmAddCondition upmAddCondition) {
         rupmMapper.delRoleUser(upmAddCondition.getRoleId());
         List<Integer> ids = upmAddCondition.getIds();
-        if(ids != null && ids.size() > 0){
+        if (ids != null && ids.size() > 0) {
             rupmMapper.addRoleUser(upmAddCondition);
         }
 
@@ -69,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
     public void addPrivilege(UpmAddCondition upmAddCondition) {
         rupmMapper.delRolePrivilege(upmAddCondition.getRoleId());
         List<Integer> ids = upmAddCondition.getIds();
-        if(ids != null && ids.size() > 0){
+        if (ids != null && ids.size() > 0) {
             rupmMapper.addPrivilege(upmAddCondition);
         }
 
@@ -80,47 +79,47 @@ public class RoleServiceImpl implements RoleService {
     public void addRoleMenu(UpmAddCondition upmAddCondition) {
         rupmMapper.delRoleMenu(upmAddCondition.getRoleId());
         List<Integer> ids = upmAddCondition.getIds();
-        if(ids != null && ids.size() > 0){
+        if (ids != null && ids.size() > 0) {
             rupmMapper.addRoleMenu(upmAddCondition);
         }
     }
 
 
     @Override
-    public Page<User> findUsersByRoleId(Integer roleId,Integer page,Integer limit) {
-        PageHelper.startPage(page,limit);
+    public Page<User> findUsersByRoleId(Integer roleId, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
         return rupmMapper.findAllUsersByRoleId(roleId);
     }
 
     @Override
-    public Page<Privilege> findPrivilegesByRoleId(Integer roleId,Integer page,Integer limit) {
-        PageHelper.startPage(page,limit);
+    public Page<Privilege> findPrivilegesByRoleId(Integer roleId, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
         return rupmMapper.findAllPrivilegesByRoleId(roleId);
     }
 
     @Override
-    public Page<Menu> findMenusByRoleId(Integer roleId,Integer page,Integer limit) {
-        PageHelper.startPage(page,limit);
+    public Page<Menu> findMenusByRoleId(Integer roleId, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
         return rupmMapper.findAllMenusByRoleId(roleId);
     }
 
     @Override
-    public Integer  findAllUpmsByRoleId(Integer roleId){
+    public Integer findAllUpmsByRoleId(Integer roleId) {
         return rupmMapper.findAllUpmsByRoleId(roleId);
     }
 
     @Override
-    public List<Integer> findAllUserIdsByRoleId(Integer roleId){
+    public List<Integer> findAllUserIdsByRoleId(Integer roleId) {
         return rupmMapper.findAllUserIdsByRoleId(roleId);
     }
 
     @Override
-    public List<Integer> findAllPriIdsByRoleId(Integer roleId){
+    public List<Integer> findAllPriIdsByRoleId(Integer roleId) {
         return rupmMapper.findAllPriIdsByRoleId(roleId);
     }
 
     @Override
-    public List<Integer> findAllMenuIdsByRoleId(Integer roleId){
+    public List<Integer> findAllMenuIdsByRoleId(Integer roleId) {
         return rupmMapper.findAllMenuIdsByRoleId(roleId);
     }
 

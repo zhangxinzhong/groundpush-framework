@@ -28,8 +28,7 @@ public class TaskLabelServiceImpl implements TaskLabelService {
 
     @Override
     public Optional<TaskLabel> getTaskLabel(Integer id) {
-        Optional<TaskLabel> optionalTask = taskLabelMapper.getTaskLabel(id);
-        return Optional.empty();
+        return  taskLabelMapper.getTaskLabel(id);
     }
 
     @Override

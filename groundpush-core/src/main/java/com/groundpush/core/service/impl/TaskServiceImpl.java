@@ -149,13 +149,6 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.queryAllTaskList();
     }
 
-
-
-
-    //*********************来自App**********************************************
-
-
-
     @Override
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);

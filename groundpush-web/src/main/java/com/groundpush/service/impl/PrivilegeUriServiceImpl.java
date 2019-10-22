@@ -52,7 +52,7 @@ public class PrivilegeUriServiceImpl implements PrivilegeUriService {
     @Override
     public void batchSave(PrivilegeUri privilegeUri) {
         privilegeUriMapper.delByPriId(privilegeUri.getPrivilegeId());
-        if(privilegeUri.getIds() != null && privilegeUri.getIds().size() > 0){
+        if (privilegeUri.getIds() != null && privilegeUri.getIds().size() > 0) {
             privilegeUriMapper.batchInsertPriUri(privilegeUri);
         }
     }
