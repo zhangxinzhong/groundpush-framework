@@ -48,4 +48,24 @@ public class VersionServiceImpl implements VersionService {
     public Boolean createVersion(Version version) {
         return versionMapper.createVersion(version)>0?true:false;
     }
+
+    @Override
+    public void publishVersion(Integer versionId, Integer status) {
+        versionMapper.updateVersion(Version.builder().versionId(versionId).status(status).build());
+    }
+
+    @Override
+    public void editVersion(Version version) {
+        versionMapper.updateVersion(version);
+    }
+
+    @Override
+    public void delVersion(Integer versionId) {
+        versionMapper.delVersion(versionId);
+    }
+
+    @Override
+    public List<Version> queryVersionsByVerIdAndType(Integer type, Integer status) {
+        return versionMapper.queryVersionsByVerIdAndType(type,status);
+    }
 }

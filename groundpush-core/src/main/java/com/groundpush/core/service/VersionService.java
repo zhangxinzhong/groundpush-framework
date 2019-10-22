@@ -6,6 +6,7 @@ import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.Version;
 import com.groundpush.core.vo.CustomerVo;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,4 +38,32 @@ public interface VersionService {
      * @return
      */
     Boolean createVersion(Version version);
+
+    /**
+     * 发布版本
+     * @param versionId
+     * @param status
+     */
+    void publishVersion(Integer versionId,Integer status);
+
+    /**
+     * 编辑版本
+     * @param version
+     */
+    void editVersion(Version version);
+
+    /**
+     * 删除版本信息
+     * @param versionId
+     */
+    void delVersion(Integer versionId);
+
+
+    /**
+     * 通过类型、状态获取版本信息列表
+     * @param type
+     * @param status
+     * @return
+     */
+    List<Version> queryVersionsByVerIdAndType(Integer type, Integer status);
 }

@@ -27,6 +27,8 @@
 <!-- version tobar-->
 <script type="text/html" id="toolbarVersionOperation">
     <a class="layui-btn layui-btn-xs" lay-event="editVersion">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="publishVersion">发布</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delVersion">删除</a>
 </script>
 
 <!-- 添加字典模态框 -->
@@ -51,25 +53,25 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>版本号</label>
                         <div class="col-md-10">
-                            <input type="text" name="newVersion" lay-verify="versionPattern" autocomplete="off" placeholder="请输入版本号" class="layui-input">
+                            <input type="text" name="newVersion" lay-verify="required" autocomplete="off" placeholder="请输入版本号" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>访问地址</label>
                         <div class="col-md-10">
-                            <input type="text" name="apkFileUrl" lay-verify="versionPattern" autocomplete="off" placeholder="请输入访问地址" class="layui-input">
+                            <input type="text" name="apkFileUrl" lay-verify="required" autocomplete="off" placeholder="请输入访问地址" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>更新日志</label>
                         <div class="col-md-10">
-                            <textarea name="updateLog" style="height: 150px;" placeholder="请输入访问地址" class="layui-input"></textarea>
+                            <textarea name="updateLog" style="height: 150px;" placeholder="请输入访问地址" lay-verify="required" class="layui-input"></textarea>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>文件大小</label>
                         <div class="col-md-10">
-                            <input type="text" name="targetSize" lay-verify="versionPattern" autocomplete="off" placeholder="文件大小" class="layui-input">
+                            <input type="text" name="targetSize" lay-verify="required" autocomplete="off" placeholder="文件大小" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -113,6 +115,7 @@
             <div class="modal-body">
                 <form class="layui-form" action="" id="editVersionForm" lay-filter="editVersionForm">
                     <input type="hidden" name="versionId" class="layui-input">
+                    <input type="hidden" name="status" class="layui-input">
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>类型</label>
                         <div class="col-md-10">
@@ -124,25 +127,25 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>版本号</label>
                         <div class="col-md-10">
-                            <input type="text" name="newVersion" lay-verify="versionPattern" autocomplete="off" placeholder="请输入版本号" class="layui-input">
+                            <input type="text" name="newVersion" lay-verify="required" autocomplete="off" placeholder="请输入版本号" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>访问地址</label>
                         <div class="col-md-10">
-                            <input type="text" name="apkFileUrl" lay-verify="versionPattern" autocomplete="off" placeholder="请输入访问地址" class="layui-input">
+                            <input type="text" name="apkFileUrl" lay-verify="required" autocomplete="off" placeholder="请输入访问地址" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>更新日志</label>
                         <div class="col-md-10">
-                            <textarea name="updateLog" style="height: 150px;" placeholder="请输入访问地址" class="layui-input"></textarea>
+                            <textarea name="updateLog" style="height: 150px;" placeholder="请输入访问地址" lay-verify="required" class="layui-input"></textarea>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>文件大小</label>
                         <div class="col-md-10">
-                            <input type="text" name="targetSize" lay-verify="versionPattern" autocomplete="off" placeholder="文件大小" class="layui-input">
+                            <input type="text" name="targetSize" lay-verify="required" autocomplete="off" placeholder="文件大小" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -164,6 +167,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editVersion">提交</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </form>

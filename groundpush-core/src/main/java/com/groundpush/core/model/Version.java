@@ -67,4 +67,8 @@ public class Version implements Serializable {
     @ApiModelProperty(value = "创建时间")
     @JsonView(DetailVersionView.class)
     private LocalDateTime createdTime;
+
+    @ApiModelProperty(value = "是否为发布 1.发布 0.未发布")
+    @JsonView(DetailVersionView.class)
+    private Integer status;
 }
