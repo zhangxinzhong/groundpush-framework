@@ -20,19 +20,12 @@ public interface OrderLogMapper {
      */
     @Insert({
             "<script>",
-            " insert into t_order_log(order_id,created_time,type,file_path)  ",
+            " insert into t_order_log(order_id,created_time,order_log_type,order_result_type,key,value)  ",
             "<foreach collection='orders' item='order' open='(' close=')' separator='),('>",
-            "#{order.orderId},current_timestamp,#{order.type},#{order.filePath}",
+            "#{order.orderId},current_timestamp,#{order.orderLogType},#{order.orderResultType},#{order.key},#{order.value}",
             "</foreach>",
             "</script>"
     })
     void createOrderLog(List<OrderLog> orders);
 
-    /**
-     * 创建订单日志
-     *
-     * @param orderLog
-     */
-    @Insert(" insert into t_order_log(order_id,created_time,type,file_path) values (#{orderId},current_timestamp,#{type},#{filePath})")
-    void createSingleOrderLog(OrderLog orderLog);
 }

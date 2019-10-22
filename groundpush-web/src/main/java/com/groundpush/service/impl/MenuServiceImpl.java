@@ -71,11 +71,6 @@ public class MenuServiceImpl implements MenuService {
         return menuMapper.queryMenuByCode(code);
     }
 
-    @Override
-    public List<Menu> queryAll() {
-//        return menuMapper.queryAll(menuQueryCondition);
-        return null;
-    }
 
     @Override
     public Optional<Menu> getById(Integer menuId) {

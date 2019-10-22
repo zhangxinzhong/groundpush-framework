@@ -708,4 +708,11 @@ alter table t_task add column task_content VARCHAR(255) default null;
 alter table t_order_log drop column last_modify_time;
 alter table t_order_log drop column unqiue_code;
 alter table t_order_log drop column file_name;
-
+-- 任务位置表
+CREATE TABLE `t_task_location` (
+  `task_location_id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` int(11) DEFAULT NULL,
+  `location` varchar(80) DEFAULT NULL,
+  `created_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`task_location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;

@@ -28,7 +28,6 @@ public class OrderLog implements Serializable {
     @ApiModelProperty("订单日志编号")
     private Integer logId;
 
-    @NotNull(message = "订单编号不可为空")
     @ApiModelProperty("订单编号")
     private Integer orderId;
 
@@ -36,10 +35,18 @@ public class OrderLog implements Serializable {
     private LocalDateTime createdTime;
 
     @NotNull(message = "订单日志类型")
-    @ApiModelProperty("上传类型 1:任务结果集上传 2：申诉上传")
-    private Integer type;
+    @ApiModelProperty("订单日志类型 1:任务结果集上传 2：申诉上传")
+    private Integer orderLogType;
 
-    @NotNull(message = "文件URI")
-    @ApiModelProperty("文件URI")
-    private String filePath;
+    @NotNull(message = "上传类型")
+    @ApiModelProperty("上传类型 1:文本 2：图片uri")
+    private Integer orderResultType;
+
+    @NotNull(message = "提示文本")
+    @ApiModelProperty("提示文本")
+    private String key;
+
+    @NotNull(message = "类型值")
+    @ApiModelProperty("类型值")
+    private String value;
 }

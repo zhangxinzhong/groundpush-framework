@@ -5,10 +5,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.*;
-import com.groundpush.core.service.LabelService;
-import com.groundpush.core.service.OrderService;
-import com.groundpush.core.service.OrderTaskCustomerService;
-import com.groundpush.core.service.TaskService;
+import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.service.*;
 import io.swagger.annotations.ApiModel;
@@ -48,6 +45,9 @@ public class TaskController {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private SpecialTaskService specialTaskService;
+
     /**
      * 分页查询任务
      */
@@ -66,6 +66,8 @@ public class TaskController {
             return JsonResp.success(new PageResultModel(taskCollect, list));
         }
         Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageNumber, pageSize);
+        //将符合特殊任务条件的任务 hasSpecialTask 设置为true
+        tasks = specialTaskService.hasSpecialTask(tasks,taskCondition.getCustomerId());
         return JsonResp.success(new PageResultModel(tasks, list));
     }
 

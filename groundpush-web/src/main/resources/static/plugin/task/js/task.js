@@ -268,12 +268,16 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 }
 
                 let currContentVal = tr.find('.content').val();let prevContentVal = tr.prev().find('.content').val();
+                let select = tr.find('select').val();let prevSelect = tr.prev().find('select').val();
                 let currHtml = tr.html();let prevHtml = tr.prev().html();
                 tr.prev().html(currHtml);
                 tr.html(prevHtml);
                 tr.find('td input[name="seq"]').val(currVal);tr.prev().find('td input[name="seq"]').val(prevVal);
                 tr.find('.content').val(prevContentVal);tr.prev().find('.content').val(currContentVal);
+                tr.find('select').val(prevSelect);tr.prev().find('select').val(select);
                 eventListener.initOperationTr();
+                form.render();
+
             });
 
             //下移行
@@ -286,12 +290,15 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 }
                 let currVal = tr.find('td input[name="seq"]').val();let nextVal = tr.next().find('td input[name="seq"]').val();
                 let currContentVal = tr.find('.content').val();let nextContentVal = tr.next().find('.content').val();
+                let select = tr.find('select').val();let nextSelect = tr.next().find('select').val();
                 let currHtml = tr.html();let nextHtml = tr.next().html();
-                tr.next().html(currHtml)
-                tr.html(nextHtml);
+                tr.next().html(currHtml);tr.html(nextHtml);
                 tr.find('td input[name="seq"]').val(currVal);tr.next().find('td input[name="seq"]').val(nextVal);
                 tr.find('.content').val(nextContentVal);tr.next().find('.content').val(currContentVal);
+                tr.find('select').val(nextSelect);tr.next().find('select').val(select);
                 eventListener.initOperationTr();
+                form.render();
+
             });
 
 
@@ -756,13 +763,13 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
 
 
-    //监听select
-    form.on('select(rowType)', function (data) {
+    //监听select  -- 对应“内容”类型暂时注释
+   /* form.on('select(rowType)', function (data) {
         laytpl($('#selectContent').html()).render({'rowType': data.value}, function (html) {
             $(data.elem).parents('td').next().html(html);
-            form.render();
+            form.render("null","content");
         });
-    });
+    });*/
 
     //监听task
     table.on('tool(task)', function (obj) {

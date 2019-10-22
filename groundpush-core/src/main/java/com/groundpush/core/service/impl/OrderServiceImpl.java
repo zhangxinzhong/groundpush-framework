@@ -146,6 +146,11 @@ public class OrderServiceImpl implements OrderService {
         if (condition.getTaskId() != null) {
             //通过任务类型、任务id和客户id获取未提交结果集的某一个订单
             optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskId(condition);
+            if(optionalOrder.isPresent()){
+                for(OrderLog orderLog:condition.getList()){
+                    orderLog.setOrderId(optionalOrder.get().getOrderId());
+                }
+            }
         } else {
             //通过订单id获取订单
             optionalOrder = orderMapper.getOrder(condition.getOrderId());

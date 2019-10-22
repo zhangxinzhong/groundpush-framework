@@ -52,8 +52,8 @@
                     <colgroup>
                         <col width="6%">
                         <col width="14%">
-                        <col width="70%">
-                        <col width="10%">
+                        <col width="65%">
+                        <col width="15%">
                     </colgroup>
                     <thead>
                     <tr>
@@ -127,28 +127,28 @@
         </td>
         {{# } }}
         <td>
-            {{# if(d.rowType >1){ }}
+
                 {{# if(d.seq > 1){ }}
                 <a class="layui-btn layui-btn-sm layui-icon layui-icon-up upTr"  ></a>
                 <a class="layui-btn  layui-btn-sm layui-icon layui-icon-down downTr"   ></a>
                 {{# }  }}
                 <a class="layui-btn layui-btn-danger layui-btn-sm delTr" >删除</a>
-            {{# } }}
+
         </td>
     </tr>
 </script>
-<!-- rowType对应类型 -->
-<script id="selectContent" type="text/html">
-    <!-- 内容 -->
+<!-- rowType对应类型   -- 对应“内容”类型暂时注释-->
+<!--<script id="selectContent" type="text/html">
+    &lt;!&ndash; 内容 &ndash;&gt;
     {{# if(d.rowType == 2 ){ }}
-    <textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>
+    <textarea class="form-control col-lg-5 content" name="content" lay-filter="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>
     {{# } }}
-    <!-- 打开URL、保存二维码 -->
+    &lt;!&ndash; 打开URL、保存二维码 &ndash;&gt;
     {{# if(d.rowType == 3 || d.rowType == 4){ }}
         <input type="text" name="content" class="form-control col-lg-1 content" value=""  placeholder="输入文本内容" style="width:85%;float:left;margin-right:3%;">
         <input type="radio" name="createUri" class="form-control createUri" title="生成" style="float:left;" lay-filter="createUri">
     {{# } }}
-</script>
+</script>-->
 <!--******************************************用于我的任务编辑添加模板**end***************************************************-->
 
 
