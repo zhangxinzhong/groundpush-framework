@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @ApiModel("标签管理")
 @RestController
-@RequestMapping("/labelapp")
+@RequestMapping("/label")
 public class LabelController {
 
     @Resource

@@ -35,6 +35,11 @@ layui.use(['table', 'form', 'layer'], function () {
                             return   d.type == 1?'APP':'';
                         }
                     }
+                    , {field: '', title: '发布类型',
+                        templet: function(d){
+                            return   d.status == 1?'已发布':'未发布';
+                        }
+                    }
                     , {field: '', title: '操作',toolbar: "#toolbarVersionOperation"}
                 ]]
                 ,
@@ -78,11 +83,11 @@ layui.use(['table', 'form', 'layer'], function () {
                 layer.msg(rep.message);
             });
         }, editVersion: function (data) {
-            Utils.putAjax("/version/save", JSON.stringify(data.field), function (rep) {
+            Utils.putAjax("/version/editVersion", JSON.stringify(data.field), function (rep) {
                 if (rep.code == '200') {
                     eventListener.hideEditVersionDialog();
                     eventListener.reloadVersionTable();
-                    layer.msg('URI添加成功');
+                    layer.msg('版本信息更新成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
@@ -101,17 +106,29 @@ layui.use(['table', 'form', 'layer'], function () {
                         , "targetSize": rep.data.targetSize
                         , "isConstraint": rep.data.isConstraint
                         , "type": rep.data.type
+                        ,"status":0
                     })
                     eventListener.showEditVersionDialog();
                 }
             }, function (rep) {
-                //layer.msg(rep.message);
+                layer.msg(rep.message);
             });
         }, delVersion: function (data) {
-            Utils.deleteAjax("/version/del", {versionId: data.versionId}, function (rep) {
+            Utils.deleteAjax("/version/delVersion", {versionId: data.versionId}, function (rep) {
                 if (rep.code == '200') {
                     eventListener.reloadVersionTable();
-                    layer.msg("URI删除成功");
+                    layer.msg("版本信息删除成功");
+                }
+            }, function (rep) {
+                layer.msg(rep.message);
+            });
+        }
+        ,publishVersion:function (data) {
+            Utils.getAjax("/version/publishVersion", {versionId: data.versionId,status:1}, function (rep) {
+                console.log(rep);
+                if (rep.code == '200') {
+                    eventListener.reloadVersionTable();
+                    layer.msg("版本发布成功");
                 }
             }, function (rep) {
                 layer.msg(rep.message);
@@ -133,22 +150,7 @@ layui.use(['table', 'form', 'layer'], function () {
 
     eventListener.initVersionTable();
 
-    table.on('tool(version)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'editVersion') {
-            eventListener.showVersion(data);
-        } else if (obj.event === 'delVersion') {
-            layer.confirm('真的删除行么', function (index) {
-                obj.del();
-                eventListener.delVersion(data);
-                layer.close(index);
-            });
-        } else if (obj.event === 'showVersionDetailListDialog') {
-            $("#versionId").val(data.versionId);
-            eventListener.showVersionDetailListDialog(data);
-            eventListener.initVersionDetailTable(data);
-        }
-    });
+
 
     table.on('toolbar(version)', function (obj) {
         var data = obj.data;
@@ -157,29 +159,29 @@ layui.use(['table', 'form', 'layer'], function () {
         }
     });
 
-    table.on('tool(versionDetail)', function (detailObj) {
-        var data = detailObj.data;
-        if (detailObj.event === 'editVersionDetail') {
-            eventListener.showVersionDetail(data);
-        } else if (detailObj.event === 'delVersionDetail') {
+    table.on('tool(version)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'editVersion') {
+            eventListener.showVersion(data);
+        } else if (obj.event === 'delVersionDetail') {
             layer.confirm('真的删除行么', function (index) {
                 detailObj.del();
-                eventListener.delVersionDetail(data);
+                eventListener.delVersion(data);
+                layer.close(index);
+            });
+        }else if(obj.event === 'publishVersion'){
+            layer.confirm('确定要发布此版本么', function (index) {
+                eventListener.publishVersion(data);
                 layer.close(index);
             });
         }
     });
 
-    table.on('toolbar(versionDetail)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'showVersionDetailDialog') {
-            eventListener.showAddVersionDetailDialog(data);
-        }
-    });
 
 
     //保存Version
     form.on('submit(addVersion)', function (data) {
+        data.field.status = 0;
         eventListener.saveVersion(data);
         //屏蔽表单提交
         return false;

@@ -345,4 +345,15 @@ public class Constants {
      * oss 文件上传路径
      */
     public static final String FILE_UPLOAD_DIR_TASK = "task/";
+
+
+    /**
+     * 版本类型  1：app
+     */
+    public static  final Integer VERSION_TYPE_1 = 1;
+
+    /**
+     * 版本状态  1：已发布
+     */
+    public static  final Integer VERSION_STATUS_1 = 1;
 }
