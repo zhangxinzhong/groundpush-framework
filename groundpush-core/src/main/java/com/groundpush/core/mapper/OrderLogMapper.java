@@ -2,6 +2,7 @@ package com.groundpush.core.mapper;
 
 import com.groundpush.core.model.OrderLog;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,12 +21,12 @@ public interface OrderLogMapper {
      */
     @Insert({
             "<script>",
-            " insert into t_order_log(order_id,created_time,order_log_type,order_result_type,key,value)  ",
+            " insert into t_order_log(order_id,created_time,order_log_type,order_result_type,key,value) values ",
             "<foreach collection='orders' item='order' open='(' close=')' separator='),('>",
             "#{order.orderId},current_timestamp,#{order.orderLogType},#{order.orderResultType},#{order.key},#{order.value}",
             "</foreach>",
             "</script>"
     })
-    void createOrderLog(List<OrderLog> orders);
+    void createOrderLog(@Param("orders") List<OrderLog> orders);
 
 }

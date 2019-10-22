@@ -120,7 +120,7 @@ public interface TaskMapper {
             " select t1.* ",
             "  from t_task t1  where t1.status=1   ",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
-            " <if test='location != null and location != \"\"'> and  t1.task_id in (select c.task_id from t_task_location c where c.location = #{location}) </if>",
+            " and (ISNULL(t1.location)=1 or LENGTH(trim(t1.location)) = 0 )",
             " <if test='type != null and type != \"\"'> and t1.task_id in (select tb.task_id from t_task_label tb  where  tb.label_id = #{type})   </if> ",
             ")",
             // 若有location则以地址查询 与所有任务结合

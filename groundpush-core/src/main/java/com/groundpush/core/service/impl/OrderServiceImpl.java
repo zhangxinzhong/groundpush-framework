@@ -201,9 +201,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId, Pageable pageable) {
+    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId,Integer taskId,Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        return orderMapper.queryPopListByCustomerId(customerId);
+        return orderMapper.queryPopListByCustomerId(customerId,taskId);
     }
 
     @Override

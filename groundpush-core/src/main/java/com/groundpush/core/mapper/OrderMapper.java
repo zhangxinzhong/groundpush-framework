@@ -287,10 +287,10 @@ public interface OrderMapper {
             " b.brief_title,",
             " ( SELECT c.title FROM t_task c WHERE c.task_id = b.task_id ) title ",
             " FROM t_task b LEFT JOIN t_order_task_customer c ON b.task_id = c.task_id LEFT JOIN t_order d ON c.order_id = d.order_id ",
-            " WHERE c.customer_id = #{customerId} AND d.type = 2 ",
+            " WHERE c.customer_id = #{customerId} AND b.task_id = #{taskId} AND d.type = 2 ",
             "</script>"
     })
-    Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId);
+    Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId,@Param("taskId") Integer taskId);
 
     /**
      * 通过客户id与任务id 获取推广任务中创建的订单数以及相关任务信息

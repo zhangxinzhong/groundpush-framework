@@ -115,7 +115,7 @@ public interface OrderService {
      * @param customerId
      * @return
      */
-    Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId, Pageable pageable);
+    Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId,Integer taskId,Pageable pageable);
 
 
     /**

@@ -6,6 +6,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     let laytpl = layui.laytpl;
 
 
+
+
     form.verify({
         thumInput: function (value) {
             if (value == null || value == undefined || value == '') {
@@ -147,12 +149,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         ,showTaskModal:function () {
             eventListener.showAddUpdateTaskDialog();
             eventListener.clearHistory();
-            //初始化缩略图上传
-            eventListener.initUploadImg({'id': '#imgThum', 'inputId': '#thumInput'});
-            //初始化示例图上传
-            eventListener.initUploadImg({'id': '#imgSample', 'inputId': '#sampleInput'});
-            //初始化封面图上传
-            eventListener.initUploadImg({'id': '#imgCover', 'inputId': '#coverInput'});
+
             //初始化标签
             eventListener.initLabel();
             //初始化公司
@@ -315,7 +312,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             }
             $('#provinces').on('change', function (value) {
                 let provinceNames = $('#provinces').selectpicker('val');
-                if (provinceNames.length == 0) {
+                if (provinceNames == undefined || provinceNames.length == 0) {
                     return false;
                 }
                 eventListener.initCity({'provinceNames': provinceNames});
@@ -495,13 +492,6 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     $('#imgThum').attr('src',data.iconUri);
                     $('#imgSample').attr('src',data.exampleImg);
                     $('#imgCover').attr('src',data.imgUri);
-
-                    //初始化回显缩略图上传
-                    eventListener.initUploadImg({'id':'#imgThum','inputId':'#thumInput'});
-                    //初始化回显示例图上传
-                    eventListener.initUploadImg({'id':'#imgSample','inputId':'#sampleInput'});
-                    //初始化回显封面图上传
-                    eventListener.initUploadImg({'id':'#imgCover','inputId':'#coverInput'});
                     //初始化回显标签
                     eventListener.initLabel(data.labelIds);
                     //初始化回显省市
@@ -611,6 +601,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
     };
 
+    //初始化缩略图上传
+    eventListener.initUploadImg({'id': '#imgThum', 'inputId': '#thumInput'});
+    //初始化示例图上传
+    eventListener.initUploadImg({'id': '#imgSample', 'inputId': '#sampleInput'});
+    //初始化封面图上传
+    eventListener.initUploadImg({'id': '#imgCover', 'inputId': '#coverInput'});
     eventListener.initTable();
 
 

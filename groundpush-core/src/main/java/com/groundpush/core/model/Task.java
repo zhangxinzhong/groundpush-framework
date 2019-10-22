@@ -172,7 +172,7 @@ public class Task implements Serializable {
      */
     @NotNull(message = "是否上传结果不可为空")
     @JsonView(SimpleTaskView.class)
-    private Boolean isResult;
+    private Integer isResult;
 
     /**
      * 简略标题
