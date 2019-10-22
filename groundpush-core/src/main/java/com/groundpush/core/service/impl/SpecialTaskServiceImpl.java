@@ -101,7 +101,7 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     @Override
     public Page<Task> hasSpecialTask(Page<Task> pages, Integer customerId) {
 
-        List<SpecialTask> specialTasks = specialTaskMapper.queryListIdByTasks(pages.getResult());
+        List<SpecialTask> specialTasks = specialTaskMapper.querySpecialTaskByTasks(pages.getResult());
         if(specialTasks.size() > 0){
             List<Integer> teamIds = new ArrayList<>();
             List<Integer> taskIds = new ArrayList<>();

@@ -3,7 +3,9 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderListQueryCondition;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
+import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.*;
 import com.groundpush.core.vo.OrderPayVo;
 import com.groundpush.utils.SessionUtils;
@@ -64,7 +66,7 @@ public class PayManageController {
     public JsonResp getTaskOrderlist(Integer page, Integer limit) {
 
         try {
-            Page<TaskOrderList> pageAudit  = auditLogService.findAllPayTaskOrderList(page,limit);
+            Page<TaskOrderList> pageAudit = auditLogService.findAllPayTaskOrderList(page, limit);
             return JsonResp.success(new PageResult(pageAudit));
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -77,17 +79,16 @@ public class PayManageController {
     @RequestMapping(value = "/addAuditLog", method = RequestMethod.POST)
     @ResponseBody
     public JsonResp addAuditLog(@RequestBody @Valid AuditLog auditLog) {
-
         try {
-
-
-            Optional<LoginUserInfo> optional =  sessionUtils.getLogin();
-            if(optional.isPresent()){
+            Optional<LoginUserInfo> optional = sessionUtils.getLogin();
+            if (optional.isPresent()) {
                 LoginUserInfo info = optional.get();
                 auditLog.setUserId(info.getUser().getUserId());
                 auditLog.setCreatedBy(info.getUser().getUserId());
+                auditLogService.addAuditLog(auditLog);
+            } else {
+                throw new SystemException(ExceptionEnum.USER_NOT_EXISTS.getErrorCode(), ExceptionEnum.USER_NOT_EXISTS.getErrorMessage());
             }
-            auditLogService.addAuditLog(auditLog);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -96,14 +97,13 @@ public class PayManageController {
     }
 
 
-
     @ApiOperation(value = "获取订单列表列表")
     @RequestMapping(value = "/queryOrderList", method = RequestMethod.GET)
     @ResponseBody
     public JsonResp queryOrderList(OrderListQueryCondition condition) {
         try {
 
-            Page<OrderList> pageOrderList  = auditLogService.queryOrderListByTaskIdAndOrderId(condition);
+            Page<OrderList> pageOrderList = auditLogService.queryOrderListByTaskIdAndOrderId(condition);
             return JsonResp.success(new PageResult(pageOrderList));
         } catch (Exception e) {
             log.error(e.toString(), e);

@@ -16,6 +16,7 @@ public interface TaskLabelMapper {
 
     /**
      * 添加任务标签关系表数据
+     *
      * @param taskLabel
      * @return
      */
@@ -24,6 +25,7 @@ public interface TaskLabelMapper {
 
     /**
      * 更新任务标签关系表数据
+     *
      * @param taskLabel
      * @return
      */
@@ -41,6 +43,7 @@ public interface TaskLabelMapper {
 
     /**
      * 获取标签关联的list
+     *
      * @param label
      * @return
      */
@@ -49,6 +52,7 @@ public interface TaskLabelMapper {
 
     /**
      * 删除某个任务标签的关联
+     *
      * @param taskId
      * @return
      */
@@ -57,11 +61,21 @@ public interface TaskLabelMapper {
 
     /**
      * 通过任务id获取所有任务标签关联
+     *
      * @param taskId
      * @return
      */
     @Select(" select * from t_task_label t where t.task_id = #{taskId}  ")
     List<TaskLabel> getTaskLabelByTaskId(@Param("taskId") Integer taskId);
+
+    /**
+     * 通过任务id获取所有任务标签关联
+     *
+     * @param taskId
+     * @return labelId
+     */
+    @Select(" select label_id from t_task_label t where t.task_id = #{taskId}  ")
+    List<Integer> getTaskLabelByTaskIdReturnLabelId(@Param("taskId") Integer taskId);
 
 
 }

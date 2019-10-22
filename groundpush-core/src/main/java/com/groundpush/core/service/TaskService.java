@@ -17,6 +17,7 @@ public interface TaskService {
 
     /**
      * 分页查询任务
+     *
      * @param taskQueryCondition
      * @param page
      * @param limit
@@ -26,6 +27,7 @@ public interface TaskService {
 
     /**
      * 新增任务
+     *
      * @param task
      * @return
      */
@@ -33,6 +35,7 @@ public interface TaskService {
 
     /**
      * 获取任务
+     *
      * @param id
      * @return
      */
@@ -40,54 +43,61 @@ public interface TaskService {
 
     /**
      * 创建任务
+     *
      * @param task
      */
     void save(Task task);
 
     /**
      * 修改任务
+     *
      * @param task
      */
     void updateTask(Task task);
 
     /**
      * 获取所有任务
+     *
      * @return
      */
     List<Task> queryAllTaskList();
 
-    //**********************来自APP****************************************
-
     /**
      * 分页查询任务
+     *
      * @param taskQueryCondition
      * @param pageNumber
      * @param pageSize
      * @return
      */
-    Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer  pageSize);
-
+    Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer pageSize);
 
 
     /**
      * 获取任务
+     *
      * @param id
+     * @param taskType
      * @return
      */
-    Optional<Task> getTask(Integer id,Integer taskType);
-
+    Optional<Task> getTask(Integer id, Integer taskType);
 
 
     /**
-     * 设置完成人分成
+     * 设置任务扩展属性值
+     *
      * @param list
      * @return
      */
-    public Page<Task> addCount(Page<Task> list);
+    Page<Task> extendsTask(Page<Task> list);
 
 
     /**
      * 获取每日剩余总数 每人每日剩余总数
+     *
+     * @param customerId
+     * @param taskId
+     * @return
      */
-    public Optional<TaskPopCountVo>  getSupTotalOrCustomCount(Integer customerId, Integer taskId);
+    Optional<TaskPopCountVo> getSupTotalOrCustomCount(Integer customerId, Integer taskId);
 }

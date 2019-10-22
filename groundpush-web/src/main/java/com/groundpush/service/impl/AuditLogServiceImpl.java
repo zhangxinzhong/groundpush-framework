@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+
 /**
  * @description: 订单审核记录
  * @author: zhangxinzhong
@@ -55,30 +56,15 @@ public class AuditLogServiceImpl implements AuditLogService {
             throw new BusinessException(ExceptionEnum.AUDITLOG_EXCEPTION.getErrorCode(), ExceptionEnum.AUDITLOG_EXCEPTION.getErrorMessage());
         }
         auditLogMapper.createAuditLog(auditLog);
-        List<AuditLog> list = auditLogMapper.getAuditListByTaskIdAndTime(auditLog.getTaskId(), dateUtils.localDateTimetransToString(auditLog.getOrderTime(), "yyyy-MM-dd"), null);
-        //为0不操作
-        int isUpdate = 0;
-        if (list != null && list.size() > 0) {
-            //审核通过计数
-            int num = 0;
-            for (AuditLog log : list) {
-                if (Constants.AUDIT_TWO.equals(log.getAuditStatus())) {
-                    //审核不通过
-                    isUpdate = Constants.ORDER_STATUS_REVIEW_FAIL;
-                    break;
-                }
-                if (Constants.AUDIT_ONE.equals(log.getAuditStatus())) {
-                    num++;
-                }
-            }
-            //若为0则表示通过的为一个或多个审核
-            if (isUpdate == 0) {
-                //通过审核数大于等于2时表示审核通过 小于2表示审核中
-                isUpdate = num >= 2 ? Constants.ORDER_STATUS_SUCCESS : Constants.ORDER_STATUS_REVIEW;
-            }
-            orderMapper.updateOrderStatusByTaskIdAndTime(isUpdate, dateUtils.localDateTimetransToString(auditLog.getOrderTime(), "yyyy-MM-dd"), auditLog.getTaskId());
-        }
 
+        // 检查审核记录是否大于2  并更新订单状态
+        checkAuditLogSuccess(auditLog);
+    }
+
+    private void checkAuditLogSuccess(AuditLog auditLog) {
+        if (isAuditPass(auditLog.getTaskId(), auditLog.getOrderTime())) {
+            orderMapper.updateOrderStatusByTaskIdAndTime(Constants.ORDER_STATUS_SUCCESS, dateUtils.localDateTimetransToString(auditLog.getOrderTime(), "yyyy-MM-dd"), auditLog.getTaskId());
+        }
     }
 
     @Override

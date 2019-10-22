@@ -45,7 +45,6 @@ public interface PrivilegeService {
      * @param pageSize
      * @return
      */
-    @OperationLogDetail
     Page<Privilege> queryTaskAll(Privilege privilege, Integer nowPage, Integer pageSize);
 
     /**

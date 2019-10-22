@@ -84,7 +84,7 @@ public interface SpecialTaskMapper {
             "</foreach>",
             "</script>"
     })
-    List<SpecialTask>  queryListIdByTasks(@Param("tasks") List<Task> tasks);
+    List<SpecialTask>  querySpecialTaskByTasks(@Param("tasks") List<Task> tasks);
 
 
 }
