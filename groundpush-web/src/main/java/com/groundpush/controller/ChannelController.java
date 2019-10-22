@@ -23,6 +23,11 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Optional;
 
+/**
+ * @description:渠道管理
+ * @author: zhangxinzhong
+ * @date: 2019-08-29 下午12:02
+ */
 @Slf4j
 @Controller
 @RequestMapping("/channel")

@@ -180,22 +180,6 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateOrderUniqueCode(order.getOrderId(), condition.getUniqueCode());
     }
 
-    /**
-     * 生成订单号
-     * MddHHmmssSSS+orderid
-     *
-     * @return
-     */
-    private String generateOrderNoByOrderId(Integer orderId) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MddHHmmssSSS");
-        StringBuffer stringBuffer = new StringBuffer().append(LocalDateTime.now().format(dtf)).append(String.format("%06d", orderId));
-        Order order = orderMapper.queryOrderByOrderNo(stringBuffer.toString());
-        if (order != null) {
-            throw new BusinessException(ExceptionEnum.ORDERNO_EXISTS.getErrorCode(), ExceptionEnum.ORDERNO_EXISTS.getErrorMessage());
-        }
-        return stringBuffer.toString();
-    }
-
     @Override
     public void updateOrder(Order order) {
         orderMapper.updateOrder(order);

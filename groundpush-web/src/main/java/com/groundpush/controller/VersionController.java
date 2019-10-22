@@ -61,9 +61,9 @@ public class VersionController {
     @JsonView(Version.DetailVersionView.class)
     @GetMapping("/{versionId:\\d+}")
     @ResponseBody
-    public JsonResp getCustomer(@PathVariable Integer versionId) {
-        Optional<Version> optionalCustomer = versionService.getVersion(versionId);
-        return JsonResp.success(optionalCustomer.isPresent() ? optionalCustomer.get() : null);
+    public JsonResp getVersion(@PathVariable Integer versionId) {
+        Optional<Version> optionalVersion = versionService.getVersion(versionId);
+        return JsonResp.success(optionalVersion.isPresent() ? optionalVersion.get() : null);
     }
 
     @ApiOperation(value = "添加版本信息")

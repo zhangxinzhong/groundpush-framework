@@ -99,9 +99,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public Boolean findRolePriByPriId(Integer privilegeId){
+    public Boolean findRolePriByPriId(Integer privilegeId) {
 
-        return privilegeMapper.findRolePriByPriId(privilegeId) > 0?true:false;
+        return privilegeMapper.findRolePriByPriId(privilegeId) > 0 ? true : false;
     }
 
 }

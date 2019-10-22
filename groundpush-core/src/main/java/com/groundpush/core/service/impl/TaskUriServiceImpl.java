@@ -21,7 +21,6 @@ public class TaskUriServiceImpl implements TaskUriService {
     @Resource
     private TaskUriMapper taskUriMapper;
 
-
     @Override
     public Boolean save(List<TaskUri> taskUris) {
         return taskUriMapper.insert(taskUris) > 0 ? true : false;

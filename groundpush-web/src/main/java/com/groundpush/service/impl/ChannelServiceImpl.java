@@ -21,6 +21,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @description: 渠道管理
+ * @author: zhangxinzhong
+ * @date: 2019-08-27 下午7:08
+ */
 @Service
 public class ChannelServiceImpl implements ChannelService {
     @Value("${groundpush.channel.path}")
@@ -58,7 +63,7 @@ public class ChannelServiceImpl implements ChannelService {
         channelMapper.updateChannel(channel);
     }
 
-    @OperationLogDetail(operationType = OperationType.CUSTOMER_ACCOUNT_UPDATE,type = OperationClientType.PC)
+    @OperationLogDetail(operationType = OperationType.CUSTOMER_ACCOUNT_UPDATE, type = OperationClientType.PC)
     @Override
     public Integer addChannelData(Integer channelId, Integer taskId, LocalDateTime channelTime, String fileName, String mapping, InputStream inputStream) throws IOException {
         File file = new File(channelDataFilePath);
@@ -73,7 +78,7 @@ public class ChannelServiceImpl implements ChannelService {
         }
         fileOutputStream.close();
         inputStream.close();
-        return channelMapper.addChannelData(channelId, taskId,channelTime, fileName, mapping);
+        return channelMapper.addChannelData(channelId, taskId, channelTime, fileName, mapping);
     }
 
     @Override

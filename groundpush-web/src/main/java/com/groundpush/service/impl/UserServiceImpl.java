@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService,ObjectRepository<LoginUserInfo> {
+public class UserServiceImpl implements UserService, ObjectRepository<LoginUserInfo> {
 
     @Resource
     private UserMapper userMapper;
@@ -43,8 +43,6 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
 
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
 
 
     @Override
@@ -88,8 +86,8 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
     }
 
     @Override
-    public Page<User> getAllUsersPages(Integer page,Integer limit) {
-        PageHelper.startPage(page,limit);
+    public Page<User> getAllUsersPages(Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
         return userMapper.getAllUsersPages();
     }
 
@@ -111,7 +109,7 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
 
     @Override
     public Page<User> queryAll(UserQueryCondition userQueryCondition, Integer page, Integer limit) {
-        PageHelper.startPage(page,limit);
+        PageHelper.startPage(page, limit);
         return userMapper.queryAll(userQueryCondition);
     }
 
@@ -123,6 +121,6 @@ public class UserServiceImpl implements UserService,ObjectRepository<LoginUserIn
 
     @Override
     public Boolean findRoleUserByUserId(Integer userId) {
-        return userMapper.findRoleUserByUserId(userId) > 0 ? true:false;
+        return userMapper.findRoleUserByUserId(userId) > 0 ? true : false;
     }
 }
