@@ -748,9 +748,9 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //标签内容
         json["labelIds"] = labelIds.join(',');
         //任务所在地
-        json["province"] = province.join(',');
+        json["province"] = province != undefined && province.length > 0?province.join(','):"";
         //城市内容
-        json["location"] = location.join(',');
+        json["location"] = location != undefined && location.length > 0 ?location.join(','):"";
         //任务属性
         json["spreadTaskAttributes"] = params;
         //任务id
