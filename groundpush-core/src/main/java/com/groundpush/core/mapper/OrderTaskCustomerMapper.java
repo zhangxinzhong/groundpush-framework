@@ -51,6 +51,6 @@ public interface OrderTaskCustomerMapper {
      * @return
      */
     @Select(" select distinct task_id from t_order_task_customer where order_id = #{orderId} ")
-    Optional<Integer> queryTaskIdByOrderId(Integer orderId);
+    Optional<Integer> queryTaskIdByOrderId(@Param("orderId") Integer orderId);
 
 }

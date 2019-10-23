@@ -71,7 +71,7 @@ public interface TaskAttributeMapper {
      * @return
      */
     @Select(" select a.* from t_task_attribute a where a.task_id= #{taskId}  and a.type= #{type} order by a.row_type asc,a.seq asc ")
-    List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(Integer taskId,Integer type);
+    List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(@Param("taskId") Integer taskId,@Param("type")  Integer type);
 
 
 }
