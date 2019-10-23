@@ -453,8 +453,10 @@ public final class ExcelTools {
 
     public static void main(String[] args) throws IOException, InvalidFormatException {
         ExcelTools excelTools = ExcelTools.getInstance();
-        excelTools.openExcel("/home/lzq/win7/tb_gd_stock_20190818.xls");
-        excelTools.setRowResult(380, (sheetName, countRow, resultCount, result) -> {
+        //excelTools.openExcel("/home/lzq/win7/tb_gd_stock_20190818.xls");
+        excelTools.openExcel("C:\\Users\\30705\\Desktop\\工作相关\\urllist.xlsx");
+
+        excelTools.setRowResult(100, (sheetName, countRow, resultCount, result) -> {
             result.forEach(res -> {
                 System.out.println(res[0]);
             });
