@@ -22,7 +22,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     , {
                         field: 'args', title: '参数',
                         templet: function (d) {
-                            return '<a onclick="seeArgsContent(this)" args='+ d.args +'>' + d.args + '</a>';
+                            return '<a onclick="seeArgsContent(this)" args='+ d.args +'>参数</a>';
                         }
                     }
                     , {field: 'createdBy', title: '创建人'}
@@ -76,11 +76,11 @@ layui.use(['table', 'form', 'layer'], function () {
 
 //格式化json参数并展示出来
 function seeArgsContent(object) {
-    var obj = $(object);
-    var args = obj.attr("args");
-    var btn = document.querySelector('#json');
-    var jsonData = JSON.parse(args)
+    let obj = $(object);
+    let args = obj.attr("args");
+    let btn = document.querySelector('#json');
+    let jsonData = JSON.parse(args)
     btn.textContent = JSON.stringify(jsonData, null, "\t");
-    var $modal = $('#myModal');
+    let $modal = $('#myModal');
     $modal.modal();
 }

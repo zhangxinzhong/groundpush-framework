@@ -60,7 +60,7 @@ public class TaskController {
                               @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
         //将任务类型list合并到任务list接口中
         List<Label> list = labelService.getLabelByType(Constants.TYPE_ONE);
-        //customerid 不为空 且 类型为空收藏
+        //customerId 不为空 且 类型为收藏
         if (taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), Constants.TASK_TYPE_COLLECT)) {
             Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageNumber, pageSize);
             return JsonResp.success(new PageResultModel(taskCollect, list));

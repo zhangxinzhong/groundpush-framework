@@ -14,7 +14,6 @@ import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskLabel;
 import com.groundpush.core.model.TaskLocation;
-import com.groundpush.core.service.OrderService;
 import com.groundpush.core.service.TaskAttributeService;
 import com.groundpush.core.service.TaskService;
 import com.groundpush.core.utils.Constants;
@@ -51,14 +50,13 @@ public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskLocationMapper taskLocationMapper;
 
-
     @Override
     public Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        Page<Task> tasks = taskMapper.queryTaskAllPC(taskQueryCondition);
-        return tasks;
+        return taskMapper.queryTaskAllPC(taskQueryCondition);
     }
 
+    @OperationLogDetail(operationType = OperationType.TASK_ADD, type = OperationClientType.PC)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void createSingleTask(Task task) {
@@ -66,7 +64,7 @@ public class TaskServiceImpl implements TaskService {
         taskMapper.createSingleTask(task);
     }
 
-    @OperationLogDetail(operationType = OperationType.TASK_GET,type = OperationClientType.PC)
+
     @Override
     public Optional<Task> getTask(Integer id) {
         Optional<Task> optionalTask = taskMapper.getTask(id);
@@ -75,19 +73,8 @@ public class TaskServiceImpl implements TaskService {
             //加载标签
             Integer taskId = task.getTaskId();
             //获取相关标签内容
-            List<TaskLabel> taskLabelList = taskLabelMapper.getTaskLabelByTaskId(taskId);
-            //组labels
-            String labelIds = "";
-            if (taskLabelList != null && taskLabelList.size() > 0) {
-                for (TaskLabel taskLabel : taskLabelList) {
-                    Integer labelId = taskLabel.getLabelId();
-                    labelIds = labelIds + "," + labelId;
-                }
-            }
-            if (StringUtils.isNotEmpty(labelIds)) {
-                labelIds = labelIds.substring(1);
-            }
-            task.setLabelIds(labelIds);
+            List<Integer> labelList = taskLabelMapper.getTaskLabelByTaskIdReturnLabelId(taskId);
+            task.setLabelIds(org.springframework.util.StringUtils.collectionToDelimitedString(labelList, ","));
             //任务添加属性
             addTaskAttr(task);
             return Optional.of(task);
@@ -95,7 +82,7 @@ public class TaskServiceImpl implements TaskService {
         return Optional.empty();
     }
 
-    @OperationLogDetail(operationType = OperationType.TASK_ADD,type = OperationClientType.PC)
+    @OperationLogDetail(operationType = OperationType.TASK_ADD, type = OperationClientType.PC)
     @Override
     public void save(Task task) {
         //添加、更新任务内容
@@ -107,30 +94,30 @@ public class TaskServiceImpl implements TaskService {
             taskMapper.updateTask(task);
         }
         taskId = task.getTaskId();
-        //添加标签内容
-        taskLabelMapper.deleteTaskLabelByTaskId(taskId);
-        //添加
+
+        //添加 标签
         if (StringUtils.isNotEmpty(task.getLabelIds())) {
-                for (String labelId : task.getLabelIds().split(",")) {
-                    taskLabelMapper.createTaskLabel(TaskLabel.builder().taskId(taskId).labelId(Integer.parseInt(labelId)).build());
-                }
-        }
-
-        //删除城市关联
-        taskLocationMapper.delTaskLocationByTaskId(taskId);
-        if(StringUtils.isNotEmpty(task.getLocation())){
-              for(String location : task.getLocation().split(",")){
-                  taskLocationMapper.saveTaskLocation(TaskLocation.builder().taskId(taskId).location(location).build());
-              }
+            taskLabelMapper.deleteTaskLabelByTaskId(taskId);
+            for (String labelId : task.getLabelIds().split(",")) {
+                taskLabelMapper.createTaskLabel(TaskLabel.builder().taskId(taskId).labelId(Integer.parseInt(labelId)).build());
+            }
         }
 
 
-        //添加任务内容（先删除后添加）
-        //删除
-        taskAttributeMapper.deleteTaskAttributeByTaskId(taskId);
+        if (StringUtils.isNotEmpty(task.getLocation())) {
+            //删除城市关联
+            taskLocationMapper.delTaskLocationByTaskId(taskId);
+            for (String location : task.getLocation().split(",")) {
+                taskLocationMapper.saveTaskLocation(TaskLocation.builder().taskId(taskId).location(location).build());
+            }
+        }
+
+
         //添加
         List<TaskAttribute> taskAttributes = task.getSpreadTaskAttributes();
         if (taskAttributes != null && taskAttributes.size() > 0) {
+            //添加任务内容（先删除后添加）
+            taskAttributeMapper.deleteTaskAttributeByTaskId(taskId);
             for (TaskAttribute taskAttribute : taskAttributes) {
                 taskAttribute.setTaskId(taskId);
             }
@@ -138,7 +125,7 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    @OperationLogDetail(operationType = OperationType.TASK_UPDATE,type = OperationClientType.PC)
+    @OperationLogDetail(operationType = OperationType.TASK_UPDATE, type = OperationClientType.PC)
     @Override
     public void updateTask(Task task) {
         taskMapper.updateTask(task);
@@ -153,7 +140,7 @@ public class TaskServiceImpl implements TaskService {
     public Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
         Page<Task> pageTask = taskMapper.queryTaskAll(taskQueryCondition);
-        return pageTask.size() > 0 ? addCount(pageTask) : pageTask;
+        return extendsTask(pageTask);
     }
 
 
@@ -164,14 +151,12 @@ public class TaskServiceImpl implements TaskService {
             Task task = optionalTask.get();
             //获取 任务申请详情页面 或 任务推广页面 金额
             task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
-
             //任务添加属性
             addTaskAttr(task);
             return Optional.of(task);
         }
         return Optional.empty();
     }
-
 
 
     /**
@@ -182,14 +167,11 @@ public class TaskServiceImpl implements TaskService {
     public void addTaskAttr(Task task) {
         if (task.getTaskId() != null) {
             //获取推广任务属性
-             List<TaskAttribute> spreadTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.SPREAD_TASK_ATTRIBUTE);
+            List<TaskAttribute> spreadTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.SPREAD_TASK_ATTRIBUTE);
             task.setSpreadTaskAttributes(spreadTasks);
-
             // 申请任务 添加属性到map中方便app端使用
             task.setSpreadTaskAttributesSet(addTaskAttributeToSet(spreadTasks));
-
         }
-
     }
 
     private Set<List<TaskAttribute>> addTaskAttributeToSet(List<TaskAttribute> taskAttr) {
@@ -211,7 +193,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<Task> addCount(Page<Task> list) {
+    public Page<Task> extendsTask(Page<Task> list) {
         for (Task task : list) {
             BigDecimal amount = task.getAmount();
             task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), amount).toPlainString());
@@ -221,8 +203,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<TaskPopCountVo>  getSupTotalOrCustomCount(Integer customerId, Integer taskId){
-        return taskMapper.getSupTotalOrCustomCount(customerId,taskId);
+    public Optional<TaskPopCountVo> getSupTotalOrCustomCount(Integer customerId, Integer taskId) {
+        return taskMapper.getSupTotalOrCustomCount(customerId, taskId);
     }
 
 }
