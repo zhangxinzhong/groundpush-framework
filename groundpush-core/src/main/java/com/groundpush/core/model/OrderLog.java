@@ -44,9 +44,9 @@ public class OrderLog implements Serializable {
 
     @NotNull(message = "提示文本")
     @ApiModelProperty("提示文本")
-    private String key;
+    private String orderKey;
 
     @NotNull(message = "类型值")
     @ApiModelProperty("类型值")
-    private String value;
+    private String orderValue;
 }

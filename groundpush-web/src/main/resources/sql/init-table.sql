@@ -708,7 +708,9 @@ alter table t_task add column task_content VARCHAR(255) default null;
 alter table t_order_log drop column last_modify_time;
 alter table t_order_log drop column unqiue_code;
 alter table t_order_log drop column file_name;
+
 -- 任务位置表
+DROP TABLE IF EXISTS `t_task_location`;
 CREATE TABLE `t_task_location` (
   `task_location_id` int(11) NOT NULL AUTO_INCREMENT,
   `task_id` int(11) DEFAULT NULL,
@@ -716,3 +718,17 @@ CREATE TABLE `t_task_location` (
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`task_location_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- 订单记录表
+DROP TABLE IF EXISTS `t_order_log`;
+CREATE TABLE `t_order_log` (
+  `log_id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'log主键id',
+  `order_id` int(20) DEFAULT NULL COMMENT '订单id',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `order_log_type` tinyint(4) DEFAULT NULL COMMENT '上传类型 1:任务结果集上传 2：申诉上传',
+  `order_result_type` tinyint(4) DEFAULT NULL COMMENT '文件url',
+  `order_key` varchar(255) DEFAULT NULL,
+  `order_value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+

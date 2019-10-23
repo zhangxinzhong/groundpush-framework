@@ -21,9 +21,9 @@ public interface OrderLogMapper {
      */
     @Insert({
             "<script>",
-            " insert into t_order_log(order_id,created_time,order_log_type,order_result_type,key,value) values ",
+            " insert into t_order_log(order_id,created_time,order_log_type,order_result_type,order_key,order_value) values ",
             "<foreach collection='orders' item='order' open='(' close=')' separator='),('>",
-            "#{order.orderId},current_timestamp,#{order.orderLogType},#{order.orderResultType},#{order.key},#{order.value}",
+            "#{order.orderId},current_timestamp,#{order.orderLogType},#{order.orderResultType},#{order.orderKey},#{order.orderValue}",
             "</foreach>",
             "</script>"
     })
