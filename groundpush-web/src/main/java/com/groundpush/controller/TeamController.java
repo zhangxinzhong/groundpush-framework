@@ -110,7 +110,7 @@ public class TeamController {
     }
 
     @ApiOperation("客户关联团队")
-    @GetMapping("/queryAllCustomers")
+    @PostMapping("/queryAllCustomers")
     @ResponseBody
     public JsonResp queryAllCustomers(@RequestParam(value = "page") Integer page, @RequestParam(value = "limit") Integer limit, @RequestParam(value = "key",required = false) String key) {
         try {

@@ -103,15 +103,13 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
 
         List<Integer> specialTasks = specialTaskMapper.querySpecialTaskByTasks(pages.getResult(),customerId);
         if(specialTasks.size() > 0){
-
             for (Task task : pages) {
-                // 特殊用户
+                // 特殊任务
                 if (specialTasks.contains(task.getTaskId())) {
                     task.setHasSpecialTask(Boolean.TRUE);
                 }
             }
         }
-
         return pages;
     }
 }

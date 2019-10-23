@@ -127,7 +127,7 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             log.info("订单号：{} 的推广人上级分成：{}", orderId, taskSpreadParentCustBonus);
 
             //计算团队领导分成
-            BigDecimal taskLeaderCustBonus = MathUtil.multiply(MathUtil.divide(task.getLeaderRatio(), Constants.PERCENTAGE_100), taskAmount);
+            BigDecimal taskLeaderCustBonus = MathUtil.multiply(MathUtil.divide(task.getLeaderRatio() != null ?task.getLeaderRatio():BigDecimal.valueOf(0), Constants.PERCENTAGE_100), taskAmount);
             log.info("订单号：{} 的团队领导分成：{}", orderId, taskSpreadCustBonus);
 
             // 任务分成集合

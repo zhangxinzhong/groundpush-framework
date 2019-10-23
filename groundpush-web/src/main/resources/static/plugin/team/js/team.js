@@ -64,7 +64,8 @@ layui.use('table', function () {
                     }
                 }
             });
-        }, reloadTeamTable:function() {
+        }, reloadTeamTable:function(key) {
+
             table.reload('team', {
                 where: {
                     curr: 1
@@ -101,6 +102,7 @@ layui.use('table', function () {
             table.render({
                 elem: '#relation'
                 ,cellMinWidth: 200
+                , method:'post'
                 , url: '/team/queryAllCustomers'
                 ,done: function (res, curr, count) {
                     $("#relationDiv table").css("width", "100%");
@@ -123,7 +125,7 @@ layui.use('table', function () {
                 ,
                 parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
                     if(!Utils.isEmpty(res)){
-
+                        $('#key').val('');
                         let datas = res.data.rows;
                         let newDatas = [];
                         for(let i in datas){
@@ -149,11 +151,12 @@ layui.use('table', function () {
 
         }
         , reloadViewTable:function(data) {
+            var key = $('#key').val();
             table.reload('relation', {
                 where: {
                     curr: 1
                     ,limit: Global.PAGE_SISE
-                    ,roleId: data.roleId
+                    ,key:key
                 }
                 ,page: {
                     curr: 1 //重新从第 1 页开始
@@ -281,6 +284,12 @@ layui.use('table', function () {
         eventListener[_method]?eventListener[_method].call(this,$this):'';
     });
 
+
+    $('.keyDiv .layui-btn').on('click', function(){
+        let $this = $(this);
+        let _method = $this.data('method');
+        eventListener[_method]?eventListener[_method].call(this,$this):'';
+    });
 
 });
 
