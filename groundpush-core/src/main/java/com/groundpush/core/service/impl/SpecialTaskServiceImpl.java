@@ -101,19 +101,12 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     @Override
     public Page<Task> hasSpecialTask(Page<Task> pages, Integer customerId) {
 
-        List<SpecialTask> specialTasks = specialTaskMapper.querySpecialTaskByTasks(pages.getResult());
+        List<Integer> specialTasks = specialTaskMapper.querySpecialTaskByTasks(pages.getResult(),customerId);
         if(specialTasks.size() > 0){
-            List<Integer> teamIds = new ArrayList<>();
-            List<Integer> taskIds = new ArrayList<>();
-            for(SpecialTask specialTask : specialTasks){
-                teamIds.add(specialTask.getTeamId());
-                taskIds.add(specialTask.getTaskId());
-            }
 
-            List<Integer> teamCustomerList = teamCustomerService.queryTeamReturnCustomerId(teamIds);
             for (Task task : pages) {
                 // 特殊用户
-                if (teamCustomerList.contains(customerId) && taskIds.contains(task.getTaskId())) {
+                if (specialTasks.contains(task.getTaskId())) {
                     task.setHasSpecialTask(Boolean.TRUE);
                 }
             }

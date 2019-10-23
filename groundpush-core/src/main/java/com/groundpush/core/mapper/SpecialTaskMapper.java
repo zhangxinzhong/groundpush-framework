@@ -71,20 +71,24 @@ public interface SpecialTaskMapper {
     @Select(" select st.team_id from t_special_task st where st.status=1 and st.task_id=#{taskId} ")
     List<Integer> querySpecialTaskByTaskIdReturnTeamId(@Param("taskId") Integer taskId);
 
+
     /**
-     * 通过任务list 查询出符合条件的team元素
+     * 通过任务list和客户id返回特殊任务idlist
      * @param tasks
+     * @param customerId
      * @return
      */
     @Select({
             "<script>",
-            " select st.team_id,st.task_id from t_special_task st where st.task_id in ",
+            " select st.task_id from t_special_task st ",
+            " left join t_team a on a.team_id = st.team_id ",
+            " left join t_team_customer b on a.team_id = b.team_id where b.customer_id = #{customerId} and st.task_id in ",
             "<foreach collection='tasks' item='task' open='(' close=')' separator=','>",
             " #{task.taskId}",
             "</foreach>",
             "</script>"
     })
-    List<SpecialTask>  querySpecialTaskByTasks(@Param("tasks") List<Task> tasks);
+    List<Integer>  querySpecialTaskByTasks(@Param("tasks") List<Task> tasks,@Param("customerId") Integer customerId);
 
 
 }
