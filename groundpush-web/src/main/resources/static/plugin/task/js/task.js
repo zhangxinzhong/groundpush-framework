@@ -661,11 +661,13 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 obj["createUri"] = createUri.is(':checked') ? 1 : 0;
                 params.push(obj);
             });
+
+            if (!success) {
+                return false;
+            }
         });
 
-        if (!success) {
-            return false;
-        }
+
 
         if (labelType == 0) {
             layer.msg('我的任务编辑不可为空！')
@@ -782,7 +784,10 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
     form.on('radio(createUri)',function (data) {
         $('#view div table tbody tr .createUri').each(function (i,o) {
-            $(o).parent('td').find('.content').removeAttr('readonly');
+            let content = $(o).parent('td').find('.content');
+            if(content.attr("readonly") != undefined){
+                content.val('').removeAttr('readonly')
+            }
         });
         $(data.elem).parent('td').find('.content').attr('readonly','readonly').val($("#spread").val());
     });
