@@ -89,8 +89,8 @@ public class CustomerServiceImpl implements CustomerService {
                 }
 
                 //验证互相绑定
-                List<Customer> childCustomer = customerMapper.queryCustomerByParentId(parentCustomer.get().getCustomerId());
-                if(childCustomer.stream().anyMatch(customer -> customerVo.getCustomerId().equals(customer.getCustomerId()))){
+                List<Customer> childCustomer = customerMapper.queryCustomerByParentId(customerVo.getCustomerId());
+                if(childCustomer.stream().anyMatch(customer -> parentCustomer.get().getCustomerId().equals(customer.getCustomerId()))){
                     throw new BusinessException(ExceptionEnum.CUSTOMER_EACH_OTHER.getErrorCode(), ExceptionEnum.CUSTOMER_EACH_OTHER.getErrorMessage());
                 }
 
