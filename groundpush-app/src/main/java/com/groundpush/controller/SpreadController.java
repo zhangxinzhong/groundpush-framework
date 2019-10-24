@@ -15,7 +15,7 @@ import com.groundpush.core.vo.TaskPopCountVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +38,7 @@ import java.util.Optional;
 public class SpreadController {
     @Resource
     private RedisUtils redisUtils;
+
 
     @Resource
     private AesUtils aesUtils;
@@ -65,7 +66,7 @@ public class SpreadController {
         String key = aesUtils.dcodes(spreadQueryCondition.getKey(), Constants.APP_AES_KEY);
         String obj = (String) redisUtils.get(key);
 
-        if (StringUtils.isBlank(key) || !obj.equalsIgnoreCase(key)) {
+        if (StringUtils.isBlank(key) || StringUtils.isBlank(obj) || (StringUtils.isNotBlank(obj) && !obj.equalsIgnoreCase(key))) {
             log.info("跳转页面失败,key 不匹配");
             model.addAttribute("errorMsg", "二维码已失效！");
             return "spread/spread";
