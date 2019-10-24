@@ -775,7 +775,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         } else if (obj.event === 'publish') {
             eventListener.delOrPublishTask({"taskId": data.taskId, "status": 1});
         } else if (obj.event === 'del') {
-            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 0});
+            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 2});
         }
 
     });
