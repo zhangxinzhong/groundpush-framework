@@ -87,7 +87,6 @@ public class TaskServiceImpl implements TaskService {
     public void save(Task task) {
         //添加、更新任务内容
         Integer taskId = task.getTaskId();
-        task.setStatus(Constants.TASK_STATUS_2);
         if (taskId == null) {
             taskMapper.createSingleTask(task);
         } else {

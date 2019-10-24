@@ -11,21 +11,28 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * TaskAttrResult
- * 用于app返回 任务属性list
+ *
+ * 用于app返回 参数 data 或 list
  * @author hss
  * @date 2019/10/18 16:47
  */
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataResult {
 
     @JsonView(View.class)
     private List list;
 
+    @JsonView(View.class)
+    private Object data;
+
     public DataResult(List list){
          this.list = list;
+    }
+    public DataResult(Object data){
+        this.data = data;
     }
 }
