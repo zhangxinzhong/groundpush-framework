@@ -134,7 +134,7 @@ public interface TaskMapper {
             " ) ",
             " </if> ",
             "  ) t ",
-            " <if test='sort != null'> order by ${sort}  </if> ",
+            " <if test='sort != null'> order by ${sort},created_time  </if> ",
             "</script>"
     })
     Page<Task> queryTaskAll(TaskQueryCondition taskQueryCondition);
