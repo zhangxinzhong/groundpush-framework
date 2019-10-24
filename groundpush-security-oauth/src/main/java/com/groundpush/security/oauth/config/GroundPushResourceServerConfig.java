@@ -61,6 +61,8 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
                 .antMatchers("/appPage/*").permitAll()
                 // 招募地推员
                 .antMatchers("/recruit/**").permitAll()
+                // 阿里sts
+                .antMatchers("/aliSts").permitAll()
                 // 不需要授权的controller
                 .antMatchers("/unAuthorize/**").permitAll()
                 // 静态资源
