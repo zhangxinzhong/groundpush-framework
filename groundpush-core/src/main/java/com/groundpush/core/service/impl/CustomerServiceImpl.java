@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateCustomer(CustomerVo customerVo) {
+    public void  updateCustomer(CustomerVo customerVo) {
         try {
 
             //验证邀请码是否是自己
