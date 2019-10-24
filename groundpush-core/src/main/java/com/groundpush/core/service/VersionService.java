@@ -66,4 +66,5 @@ public interface VersionService {
      * @return
      */
     List<Version> queryVersionsByVerIdAndType(Integer type, Integer status);
+
 }

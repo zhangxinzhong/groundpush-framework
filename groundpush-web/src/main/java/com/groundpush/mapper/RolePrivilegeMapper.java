@@ -21,10 +21,10 @@ public interface RolePrivilegeMapper {
     @Select({
             "<script>",
                 " select  p.* from t_privilege p inner join t_role_privilege rp on p.privilege_id = rp.privilege_id where rp.status = 0 and p.status = 0 and rp.role_id in ",
-                    "<foreach collection='list' item='roleId' open='(' separator=',' close=')'>",
+                    "<foreach collection='roleIds' item='roleId' open='(' separator=',' close=')'>",
                         "#{roleId}",
                     "</foreach>",
             "</script>"
     })
-    List<Privilege> queryPrivilegeByRoleIds(@Param("roleIds") List roleIds);
+    List<Privilege> queryPrivilegeByRoleIds(@Param("roleIds") List<Integer> roleIds);
 }
