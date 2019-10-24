@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -72,13 +73,12 @@ public class CustomerServiceImpl implements CustomerService {
     public void updateCustomer(CustomerVo customerVo) {
         try {
 
-            //验证邀请码是否与本邀请码相同
+            //验证邀请码是否是自己
             Optional<Customer> optionalCustomer = customerMapper.getCustomer(customerVo.getCustomerId());
-            if(StringUtils.isNotBlank(customerVo.getInviteCode())){
-                if(optionalCustomer.isPresent()){
-                    if(customerVo.getInviteCode().equals(optionalCustomer.get().getInviteCode())){
-                        throw new BusinessException(ExceptionEnum.CUSTOMER_REPETITION_INVITE.getErrorCode()
-                                ,ExceptionEnum.CUSTOMER_REPETITION_INVITE.getErrorMessage());
+            if (StringUtils.isNotBlank(customerVo.getInviteCode())) {
+                if (optionalCustomer.isPresent()) {
+                    if (customerVo.getInviteCode().equals(optionalCustomer.get().getInviteCode())) {
+                        throw new BusinessException(ExceptionEnum.CUSTOMER_REPETITION_INVITE.getErrorCode(), ExceptionEnum.CUSTOMER_REPETITION_INVITE.getErrorMessage());
                     }
                 }
 
@@ -87,7 +87,15 @@ public class CustomerServiceImpl implements CustomerService {
                 if (!parentCustomer.isPresent()) {
                     throw new BusinessException(ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorCode(), ExceptionEnum.CUSTOMER_NOT_EXISTS.getErrorMessage());
                 }
-                 customerVo.setParentId(parentCustomer.get().getCustomerId());
+
+                //验证互相绑定
+                List<Customer> childCustomer = customerMapper.queryCustomerByParentId(parentCustomer.get().getCustomerId());
+                if(childCustomer.stream().anyMatch(customer -> customerVo.getCustomerId().equals(customer.getCustomerId()))){
+                    throw new BusinessException(ExceptionEnum.CUSTOMER_EACH_OTHER.getErrorCode(), ExceptionEnum.CUSTOMER_EACH_OTHER.getErrorMessage());
+                }
+
+
+                customerVo.setParentId(parentCustomer.get().getCustomerId());
                 List<Order> orders = orderService.queryOrderByCustomerId(customerVo.getCustomerId());
                 if (orders.size() > 0) {
                     throw new BusinessException(ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorCode(), ExceptionEnum.CUSTOMER_EXISTS_ORDER.getErrorMessage());
@@ -103,7 +111,7 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw e;
-        }catch (Throwable e) {
+        } catch (Throwable e) {
             log.error(e.getMessage(), e);
             throw e;
         }
@@ -127,7 +135,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerMapper.createCustomer(customer);
             if (StringUtils.isBlank(customer.getInviteCode())) {
                 String inviteCode = uniqueCode.getNewCode(customer.getCustomerId());
-                customerMapper.updateCustomerInviteCode(inviteCode,customer.getCustomerId());
+                customerMapper.updateCustomerInviteCode(inviteCode, customer.getCustomerId());
             }
             // 创建账号信息
             CustomerLoginAccount customerLoginAccount = CustomerLoginAccount.builder().customerId(customer.getCustomerId()).type(customer.getType()).loginNo(customer.getLoginNo()).build();
@@ -152,7 +160,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-
     @Override
     public Page<Customer> queryCustomerPage(Customer customer, Integer page, Integer limit) {
         return customerMapper.queryCustomerPage(customer);
@@ -164,8 +171,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public Page<Customer>  teamQueryAllCustomerPage(String key,Integer page,Integer limit){
-        PageHelper.startPage(page,limit);
+    public Page<Customer> teamQueryAllCustomerPage(String key, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
         return customerMapper.teamQueryAllCustomerPage(key);
     }
 

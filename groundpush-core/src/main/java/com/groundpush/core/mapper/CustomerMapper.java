@@ -18,6 +18,7 @@ public interface CustomerMapper {
 
     /**
      * 递归查询客户，只查询三级
+     *
      * @param customerId
      * @return
      */
@@ -26,6 +27,7 @@ public interface CustomerMapper {
 
     /**
      * 通过customerid 查询客户
+     *
      * @param customerId
      * @return
      */
@@ -34,6 +36,7 @@ public interface CustomerMapper {
 
     /**
      * 更新客户基本信息
+     *
      * @param customer
      */
     @Update({
@@ -42,7 +45,6 @@ public interface CustomerMapper {
             " <if test='imgUri != null'> c.img_uri =#{imgUri},  </if> ",
             " <if test='nickName != null'> c.nick_name =#{nickName},  </if> ",
             " <if test='parentId != null'> c.parent_id =#{parentId},  </if> ",
-            " <if test='inviteCode != null and inviteCode != \"\"'> c.invite_code =#{inviteCode},  </if> ",
             " c.last_modified_time= current_timestamp where c.customer_id=#{customerId} ",
             "</script>"
     })
@@ -50,6 +52,7 @@ public interface CustomerMapper {
 
     /**
      * 通过客户id 修改客户的邀请码
+     *
      * @param inviteCode
      * @param customerId
      */
@@ -58,6 +61,7 @@ public interface CustomerMapper {
 
     /**
      * 分页查询客户邀请列表
+     *
      * @param customerQueryCondition
      * @return
      */
@@ -66,14 +70,16 @@ public interface CustomerMapper {
 
     /**
      * 新增客户
+     *
      * @param customer
      */
     @Insert(" insert into t_customer(parent_id, nick_name, img_uri, status, invite_code, reputation, created_time) values (#{parentId},#{nickName},#{imgUri},1,#{inviteCode},#{reputation},current_timestamp) ")
-    @Options(useGeneratedKeys=true,keyProperty="customerId")
+    @Options(useGeneratedKeys = true, keyProperty = "customerId")
     void createCustomer(Customer customer);
 
     /**
      * 使用邀请码查询客户
+     *
      * @param inviteCode
      * @return
      */
@@ -82,6 +88,7 @@ public interface CustomerMapper {
 
     /**
      * 通过loginNO查询用户
+     *
      * @param loginNo
      * @return
      */
@@ -91,6 +98,7 @@ public interface CustomerMapper {
 
     /**
      * 查询昵称 获取所有符合条件客户信息
+     *
      * @param customer
      * @return
      */
@@ -106,6 +114,7 @@ public interface CustomerMapper {
 
     /**
      * 通过key获取客户列表 用于团队管理
+     *
      * @param key
      * @return
      */
@@ -117,4 +126,13 @@ public interface CustomerMapper {
             "</script>"
     })
     Page<Customer> teamQueryAllCustomerPage(@Param("key") String key);
+
+    /**
+     * 通过父编号查询客户
+     *
+     * @param customerId
+     * @return
+     */
+    @Select(" select * from t_customer c where c.parent_id=#{customerId} ")
+    List<Customer> queryCustomerByParentId(@Param("customerId") Integer customerId);
 }
