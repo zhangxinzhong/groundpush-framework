@@ -285,19 +285,27 @@ public class Task implements Serializable {
     @JsonView(SimpleTaskView.class)
     private String customPopCount;
 
-    @ApiModelProperty("app任务列表金额 任务金额*完成人分成百分比")
+    @ApiParam("app任务列表金额 任务金额*完成人分成百分比")
     @JsonView(SimpleTaskView.class)
     private String appAmount;
 
     /**
      * 是否需要上传订单结果
      */
-    @ApiModelProperty("是否需要上传订单结果")
+    @ApiParam("是否需要上传订单结果")
     @JsonView(SimpleTaskView.class)
-    private boolean hasOrderResult;
+    private Boolean hasOrderResult;
 
-    @ApiModelProperty("是否为特殊任务")
+    @ApiParam("是否为特殊任务")
     @JsonView(SimpleTaskView.class)
-    private boolean hasSpecialTask;
+    private Boolean hasSpecialTask;
+
+
+    /**
+     *特殊任务下用于被推广人是否需跳转到推广页面
+     */
+    @ApiParam("特殊任务下用于被推广人是否需跳转到推广页面")
+    @JsonView(SimpleTaskView.class)
+    private Boolean hasRedirectRecruit;
 
 }

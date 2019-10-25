@@ -181,7 +181,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> optionalCustomer = customerMapper.queryCustomerByLoginNo(customer.getLoginNo());
         if (!optionalCustomer.isPresent()) {
             customer.setType(Constants.LOGIN_TYPE_1);
-            customerMapper.createCustomer(customer);
+            createCustomer(customer);
             return Optional.of(customer);
         }
         return optionalCustomer;

@@ -104,12 +104,17 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
 
     @Override
     public Page<Task> hasSpecialTask(Page<Task> pages, TaskQueryCondition condition) {
-        List<Integer> specialTasks = specialTaskMapper.querySpecialTaskByTasks(condition.getCustomerId(),condition.getParentId(),condition.getCreatedTime(),pages.getResult());
+        List<Task> specialTasks = specialTaskMapper.querySpecialTaskByTasks(condition.getCustomerId(),condition.getParentId(),condition.getCreatedTime(),pages.getResult());
         if(specialTasks.size() > 0){
             for (Task task : pages) {
                 // 特殊任务
-                if (specialTasks.contains(task.getTaskId())) {
-                    task.setHasSpecialTask(Boolean.TRUE);
+                for (Task specialTask : specialTasks) {
+                    if(specialTask.getTaskId().equals(task.getTaskId())){
+                        task.setHasSpecialTask(Boolean.TRUE);
+                        task.setHasRedirectRecruit(specialTask.getHasRedirectRecruit());
+                        //跳出当前循环
+                        break;
+                    }
                 }
             }
         }
