@@ -158,7 +158,7 @@ public interface SpecialTaskMapper {
     @Select({
             "<script>",
             " select s.*, ",
-                //是否跳转推广页面 为推广人时为true 为被推广人时为false
+                //是否跳转推广页面 为特殊任务推广人时为true 为特殊任务被推广人时为false
                 " if(s.flag=1,1,0) has_redirect_recruit,",
                 //默认为特殊任务
                 " 1 has_special_task",
@@ -183,7 +183,7 @@ public interface SpecialTaskMapper {
                 "				c.customer_id = #{customerId}",
                 "			AND a.task_id = t.task_id) &gt; 0",
                 "		 THEN",
-                            //第1.1步 表示推广人
+                            //第1.1步 表示特殊任务推广人
                 "			1",
                 "		 ELSE",
                             //第1.2步.非特殊任务情况下 若当前客户的parenId为团队一员且与特殊任务关联    为true则执行第1.2.1步 为false则执行第1.2.2步
@@ -209,7 +209,7 @@ public interface SpecialTaskMapper {
                 "							AND o.customer_id = #{customerId}) = 0",
                 "						AND timestampdiff(MINUTE,#{createdTime},SYSDATE()) &lt; 24 * 60 ",
                 "		             THEN",
-                                          //第1.2.1.1步 表示被推广人
+                                          //第1.2.1.1步 表示特殊任务被推广人
                 "		                  2",
                 "					 ELSE",
                                           //第1.2.1.2步 表示非特殊任务
