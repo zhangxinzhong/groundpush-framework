@@ -2,6 +2,7 @@ package com.groundpush.core.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.mapper.SpecialTaskMapper;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.SpecialTask;
@@ -43,6 +44,9 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
 
     @Resource
     private DateUtils dateUtils;
+
+    @Resource
+    private TaskService taskService;
 
     @Override
     public Page<SpecialTask> querySpecialTaskPage(Integer page, Integer limit) {
@@ -99,9 +103,8 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     }
 
     @Override
-    public Page<Task> hasSpecialTask(Page<Task> pages, Integer customerId) {
-
-        List<Integer> specialTasks = specialTaskMapper.querySpecialTaskByTasks(pages.getResult(),customerId);
+    public Page<Task> hasSpecialTask(Page<Task> pages, TaskQueryCondition condition) {
+        List<Integer> specialTasks = specialTaskMapper.querySpecialTaskByTasks(condition.getCustomerId(),condition.getParentId(),condition.getCreatedTime(),pages.getResult());
         if(specialTasks.size() > 0){
             for (Task task : pages) {
                 // 特殊任务
@@ -111,5 +114,11 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
             }
         }
         return pages;
+    }
+
+    @Override
+    public Page<Task> querySepcicalTaskByCondition(TaskQueryCondition condition, Integer pageNumber, Integer pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
+        return taskService.extendsTask(specialTaskMapper.querySepcicalTaskByCondition(condition));
     }
 }

@@ -356,4 +356,16 @@ public class Constants {
      * 版本状态  1：已发布
      */
     public static  final Integer VERSION_STATUS_1 = 1;
+
+
+    /**
+     * 特殊任务标签名称SEPCIAL_LABEL_NAME
+     */
+    public static  final String SEPCIAL_LABEL_NAME = "地推";
+
+
+    /**
+     * 特殊任务标签id SEPCIAL_LABEL_ID
+     */
+    public static  final Integer SEPCIAL_LABEL_ID = 0;
 }

@@ -5,9 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.groundpush.core.mapper.LabelMapper;
 import com.groundpush.core.model.Label;
 import com.groundpush.core.service.LabelService;
+import com.groundpush.core.utils.Constants;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,10 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public List<Label> getLabelByType(Integer type) {
-        return labelMapper.getLabelByType(type);
+        List<Label> list  = new ArrayList<>();
+        list.add(Label.builder().labelName(Constants.SEPCIAL_LABEL_NAME).labelId(Constants.SEPCIAL_LABEL_ID).build());
+        list.addAll(labelMapper.getLabelByType(type));
+        return list;
     }
 
     @Override

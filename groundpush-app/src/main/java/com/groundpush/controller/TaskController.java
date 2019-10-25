@@ -7,7 +7,9 @@ import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.security.oauth.model.CustomerDetail;
 import com.groundpush.service.*;
+import com.groundpush.utils.OauthLoginUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,8 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Integer.*;
+
 /**
  * @description:任务
  * @author: zhanghengquan
@@ -29,6 +33,10 @@ import java.util.Optional;
 @RequestMapping("/task")
 @Controller
 public class TaskController {
+
+    @Resource
+    private OauthLoginUtils oauthLoginUtils;
+
 
     @Resource
     private TaskService taskService;
@@ -65,9 +73,22 @@ public class TaskController {
             Page<Task> taskCollect = taskCollectService.queryTaskCollect(taskCondition, pageNumber, pageSize);
             return JsonResp.success(new PageResultModel(taskCollect, list));
         }
+
+        //获取当前登录客户的个人信息
+        Optional<CustomerDetail> customerDetailOptional = oauthLoginUtils.getLogin();
+        if (customerDetailOptional.isPresent()) {
+            taskCondition.setParentId(customerDetailOptional.get().getCustomer().getParentId());
+            taskCondition.setCreatedTime(customerDetailOptional.get().getCustomer().getCreatedTime());
+        }
+        //判断是否为“地推”标签
+        if (taskCondition.getCustomerId() != null &&  StringUtils.contains(taskCondition.getType(),Constants.SEPCIAL_LABEL_ID.toString()) ) {
+            //查询当前用户的特殊任务
+            Page<Task> sepcialTask = specialTaskService.querySepcicalTaskByCondition(taskCondition,pageNumber,pageSize);
+            return JsonResp.success(new PageResultModel(sepcialTask, list));
+        }
         Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageNumber, pageSize);
         //将符合特殊任务条件的任务 hasSpecialTask 设置为true
-        tasks = specialTaskService.hasSpecialTask(tasks,taskCondition.getCustomerId());
+        tasks = specialTaskService.hasSpecialTask(tasks,taskCondition);
         return JsonResp.success(new PageResultModel(tasks, list));
     }
 

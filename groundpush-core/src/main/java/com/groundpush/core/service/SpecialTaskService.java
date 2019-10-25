@@ -1,6 +1,7 @@
 package com.groundpush.core.service;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.SpecialTask;
 import com.groundpush.core.model.Task;
 
@@ -53,8 +54,18 @@ public interface SpecialTaskService {
     /**
      * 过滤添加是否为特殊任务
      * @param pages
-     * @param customerId
+     * @param condition
      * @return
      */
-    Page<Task> hasSpecialTask(Page<Task> pages, Integer customerId);
+    Page<Task> hasSpecialTask(Page<Task> pages, TaskQueryCondition condition);
+
+
+    /**
+     * 获取customerId的特殊任务
+     * @param condition
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    Page<Task>  querySepcicalTaskByCondition(TaskQueryCondition condition, Integer pageNumber, Integer pageSize);
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @description:任务查询对象
@@ -38,6 +39,13 @@ public class TaskQueryCondition implements Serializable {
      */
     @ApiModelProperty(value = "客户编号")
     private Integer customerId;
+
+
+    @ApiModelProperty(value = "客户customerId的父id")
+    private Integer parentId;
+
+    @ApiModelProperty(value = "客户customerId的创建时间")
+    private LocalDateTime createdTime;
 
 
 
