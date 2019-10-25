@@ -5,6 +5,7 @@ import com.groundpush.core.condition.CustomerQueryCondition;
 import com.groundpush.core.model.Customer;
 import com.groundpush.core.vo.CustomerVo;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 /**
@@ -16,6 +17,7 @@ public interface CustomerService {
 
     /**
      * 获取客户信息
+     *
      * @param customerId
      * @return
      */
@@ -23,12 +25,14 @@ public interface CustomerService {
 
     /**
      * 更新客户信息
+     *
      * @param customerVo
      */
     void updateCustomer(CustomerVo customerVo);
 
     /**
-     *  查询客户信息
+     * 查询客户信息
+     *
      * @param customerQueryCondition
      * @return
      */
@@ -36,12 +40,14 @@ public interface CustomerService {
 
     /**
      * 创建客户信息
+     *
      * @param customer
      */
     void createCustomer(Customer customer);
 
     /**
      * 通过手机查询客户
+     *
      * @param loginNo
      * @return
      */
@@ -49,6 +55,7 @@ public interface CustomerService {
 
     /**
      * 根据条件分页查询客户信息
+     *
      * @param customer
      * @param page
      * @param limit
@@ -59,10 +66,19 @@ public interface CustomerService {
 
     /**
      * 团队管理中获取所有客户列表
+     *
      * @param key
      * @param page
      * @param limit
      * @return
      */
-    Page<Customer>  teamQueryAllCustomerPage(String key,Integer page,Integer limit);
+    Page<Customer> teamQueryAllCustomerPage(String key, Integer page, Integer limit);
+
+    /**
+     * 查询或新增用户
+     *
+     * @param build
+     * @return
+     */
+    Optional<Customer> queryOrCreate(Customer build);
 }

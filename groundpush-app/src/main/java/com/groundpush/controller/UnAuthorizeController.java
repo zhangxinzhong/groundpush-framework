@@ -4,6 +4,7 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.model.Customer;
+import com.groundpush.core.service.CustomerService;
 import com.groundpush.security.core.repository.ObjectRepository;
 import com.groundpush.security.oauth.mobile.smscode.SmsValidateCodeCalibrator;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ import javax.annotation.Resource;
 public class UnAuthorizeController {
 
     @Resource
-    private ObjectRepository<Customer> customerRepository;
+    private CustomerService customerService;
 
     @Resource
     private SmsValidateCodeCalibrator smsValidateCodeCalibrator;
@@ -40,12 +41,13 @@ public class UnAuthorizeController {
     @PostMapping("/createCustomer")
     public JsonResp createCustomer(ServletWebRequest request) {
         String mobileNo = request.getParameter("mobileNo");
+        Integer parentId = Integer.valueOf(request.getParameter("parentId"));
 
-        if (StringUtils.isBlank(mobileNo)) {
+        if (StringUtils.isBlank(mobileNo) || parentId == null) {
             throw new SystemException(ExceptionEnum.CUSTOMER_MOBILE_IS_BLANK.getErrorCode(), ExceptionEnum.CUSTOMER_MOBILE_IS_BLANK.getErrorMessage());
         }
         smsValidateCodeCalibrator.checkSmsValidateCode(request);
-        customerRepository.queryOrCreate(mobileNo);
+        customerService.queryOrCreate(Customer.builder().parentId(parentId).loginNo(mobileNo).build());
         return JsonResp.success();
     }
 

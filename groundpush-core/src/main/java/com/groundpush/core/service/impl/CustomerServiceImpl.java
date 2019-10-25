@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void  updateCustomer(CustomerVo customerVo) {
+    public void updateCustomer(CustomerVo customerVo) {
         try {
 
             //验证邀请码是否是自己
@@ -90,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
 
                 //验证互相绑定
                 List<Customer> childCustomer = customerMapper.queryCustomerByParentId(customerVo.getCustomerId());
-                if(childCustomer.stream().anyMatch(customer -> parentCustomer.get().getCustomerId().equals(customer.getCustomerId()))){
+                if (childCustomer.stream().anyMatch(customer -> parentCustomer.get().getCustomerId().equals(customer.getCustomerId()))) {
                     throw new BusinessException(ExceptionEnum.CUSTOMER_EACH_OTHER.getErrorCode(), ExceptionEnum.CUSTOMER_EACH_OTHER.getErrorMessage());
                 }
 
@@ -176,4 +176,14 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.teamQueryAllCustomerPage(key);
     }
 
+    @Override
+    public Optional<Customer> queryOrCreate(Customer customer) {
+        Optional<Customer> optionalCustomer = customerMapper.queryCustomerByLoginNo(customer.getLoginNo());
+        if (!optionalCustomer.isPresent()) {
+            customer.setType(Constants.LOGIN_TYPE_1);
+            customerMapper.createCustomer(customer);
+            return Optional.of(customer);
+        }
+        return optionalCustomer;
+    }
 }

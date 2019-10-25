@@ -9,6 +9,7 @@ layui.use('table', function () {
         addCustomer: function (data) {
             Utils.postLoginAjax("/unAuthorize/createCustomer", {
                 mobileNo: data.field.mobileNo,
+                parentId: data.field.parentId,
                 mobileCode: data.field.mobileCode
             }, function (rep) {
                 if (rep.code == '200') {
@@ -22,22 +23,6 @@ layui.use('table', function () {
         }
         , sendSms: function (data) {
             Utils.getAjax("/validate/codeSms", {mobileNo: data}, function (rep) {
-            }, function (rep) {
-                layer.msg(rep.message);
-            });
-        }
-        , downloadApp: function (data) {
-            Utils.getAjax("/menu/detail", {menuId: data.menuId}, function (rep) {
-                if (rep.code == '200') {
-                    form.val("editMenuForm", {
-                        "menuId": rep.data.menuId
-                        , "name": rep.data.name
-                        , "parentId": rep.data.parentId
-                        , "path": rep.data.path
-                        , "seq": rep.data.seq
-                        , "leaf": rep.data.leaf
-                    })
-                }
             }, function (rep) {
                 layer.msg(rep.message);
             });
