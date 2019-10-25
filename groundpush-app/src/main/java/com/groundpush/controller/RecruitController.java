@@ -19,7 +19,7 @@ public class RecruitController {
 
     @GetMapping("/{customerId:\\d+}")
     public String toRecruit(@PathVariable("customerId") Integer customerId, Model model) {
-        model.addAttribute("parentCustomerId", customerId);
+        model.addAttribute("parentId", customerId);
         return "recruit/recruit";
     }
 }
