@@ -1,6 +1,7 @@
 package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.model.Order;
@@ -77,18 +78,21 @@ public interface OrderMapper {
             " a.settlement_amount,",
             " a.settlement_status,",
             " a.unique_code,",
-            " b.bonus_type,",
-            " b.bonus_amount,",
-            " c.nick_name",
+            " a.is_special,",
+            " c.login_no",
             "        from",
-            " t_order a",
-            " left join t_order_bonus b on a.order_id = b.order_id",
-            " left join t_customer c on b.customer_id = c.customer_id",
-            " <if test='key != null'> where  a.order_no like '%${key}%' or  c.nick_name like '%${key}%' </if>",
+            " t_order a ",
+            " left join t_order_task_customer b on b.order_id = a.order_id ",
+            " left join t_customer_login_account c on c.customer_id = b.customer_id where c.type = 1 ",
+            " <if test='orderNumber != null and orderNumber !=\"\"'> and  a.order_no like '${orderNumber}%' </if>",
+            " <if test='loginNo != null and loginNo !=\"\"'>  and c.login_no like '${loginNo}%' </if>",
+            " <if test='orderStatus != null and orderStatus !=\"\"'> and  a.status = #{orderStatus} </if>",
+            " <if test='settlementStatus != null and settlementStatus !=\"\"'> and  a.settlement_status = #{settlementStatus} </if>",
+            " <if test='isSepcial != null and isSepcial !=\"\"'> and  a.is_special = #{isSepcial} </if>",
             " order by a.created_time desc ",
             "</script>"
     })
-    Page<Order> queryOrderByKeys(@Param("key") String key);
+    Page<Order> queryOrderByCondition(OrderListQueryCondition condition);
 
 
     /**

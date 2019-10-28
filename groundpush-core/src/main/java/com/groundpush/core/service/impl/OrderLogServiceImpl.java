@@ -3,6 +3,7 @@ package com.groundpush.core.service.impl;
 import com.groundpush.core.mapper.OrderLogMapper;
 import com.groundpush.core.model.OrderLog;
 import com.groundpush.core.service.OrderLogService;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,4 +26,10 @@ public class OrderLogServiceImpl implements OrderLogService {
     public void createOrderLog(List<OrderLog> list) {
         orderLogMapper.createOrderLog(list);
     }
+
+    @Override
+    public List<OrderLog> queryOrderLogByOrderId(Integer orderId){
+        return  orderLogMapper.queryOrderLogByOrderId(orderId);
+    }
+
 }

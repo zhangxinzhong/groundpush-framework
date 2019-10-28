@@ -18,4 +18,12 @@ public interface OrderLogService {
      * @param list
      */
     void createOrderLog(List<OrderLog> list);
+
+
+    /**
+     * 通过orderId 查询订单记录list
+     * @param orderId
+     * @return
+     */
+    List<OrderLog> queryOrderLogByOrderId(Integer orderId);
 }

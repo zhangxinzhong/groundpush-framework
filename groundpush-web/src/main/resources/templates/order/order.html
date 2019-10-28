@@ -9,21 +9,87 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" type="text/css" href="/plugin/order/css/order.css"/>
     <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/order/js/order.js"
             th:src="@{/common/common.js}"></script>
 
 </head>
 <body>
 <!--新增标签-->
-<div class="orderNameTable">
-    搜索：
-    <div class="layui-inline">
-        <input class="layui-input" name="orderNameReload" id="orderNameReload" autocomplete="off" placeholder="请输入订单号或客户名"/>
-    </div>
-    <button class="layui-btn" data-method="reloadOrderTable">搜索</button>
-</div>
+<div>
+    <fieldset class="layui-elem-field" style="width:99.9%">
+        <div class="layui-field-box ">
+            <form class="layui-form" lay-filter="searchForm" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="layui-form-item">
+                        <div class="layui-inline col-md-4">
+                            <label class="layui-form-label col-md-4">订单号:</label>
+                            <div class="layui-input-block">
+                                <div class="layui-input-inline">
+                                    <input class="form-control layui-input" name="orderNumber" id="orderNumber" autocomplete="off" placeholder="请输入订单号"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-inline col-md-4">
+                            <label class="layui-form-label col-md-4">客户账号:</label>
+                            <div class="layui-input-block">
+                                <div class="layui-input-inline">
+                                    <input class="form-control layui-input" name="loginNo" id="loginNo" autocomplete="off" placeholder="请输入客户名"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-inline col-md-3">
+                            <label class="layui-form-label col-md-4">订单状态:</label>
+                            <div class="layui-input-inline">
+                                <select class="form-control col-lg-1" name="orderStatus" id="orderStatus" >
+                                    <option value=""></option>
+                                    <option value="1">已通过</option>
+                                    <option value="2">待审核</option>
+                                    <option value="3">审核中</option>
+                                    <option value="4">审核失败</option>
+                                </select>
+                            </div>
+                        </div>
 
+                    </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline col-md-4">
+                                <label class="layui-form-label col-md-4">订单结算状态:</label>
+                                <div class="layui-input-inline">
+                                    <select class="form-control col-lg-1" name="settlementStatus" id="settlementStatus" >
+                                        <option value=""></option>
+                                        <option value="1">已通过</option>
+                                        <option value="2">待审核</option>
+                                        <option value="3">审核中</option>
+                                        <option value="4">审核失败</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline col-md-4">
+                                <label class="layui-form-label col-md-4">特殊任务:</label>
+                                <div class="layui-input-inline">
+                                    <select class="form-control col-lg-1" name="isSepcial" id="isSepcial" >
+                                        <option value=""></option>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-col-md-offset10">
+                            <div class="layui-input-inline">
+                                <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
+                                <button class="layui-btn layui-btn-danger" th:onclick="javascript:document.form[0].reset();return false;">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </fieldset>
+</div>
 <!-- order table -->
 <div id="orderDiv">
     <table class="layui-hide" id="order" lay-filter="order"></table>
@@ -87,14 +153,33 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="orderBonusModalTitle">订单分成列表</h4>
+                <h4 class="modal-title">订单相关详情</h4>
             </div>
             <div class="modal-body">
                 <div class="modal-body-max no-padding">
                     <div class="page-content">
                         <div class="row">
                             <div class="col-md-12" id="orderBonusDiv">
-                                <table class="layui-hide" id="orderBonus" lay-filter="orderBonus"></table>
+
+                                <div class="layui-tab">
+                                    <ul class="layui-tab-title">
+                                        <li class="layui-this">订单分成列表</li>
+                                        <li>订单结果集列表</li>
+                                    </ul>
+                                    <div class="layui-tab-content">
+                                        <div class="layui-tab-item layui-show">
+                                            <div class="layui-form-item">
+                                                <table class="layui-hide" id="orderBonus" lay-filter="orderBonus"></table>
+                                            </div>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <div class="layui-form-item" >
+                                                <table class="layui-hide" id="orderResult" lay-filter="orderResult"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

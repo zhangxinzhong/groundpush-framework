@@ -3,6 +3,7 @@ package com.groundpush.core.mapper;
 import com.groundpush.core.model.OrderLog;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -29,4 +30,12 @@ public interface OrderLogMapper {
     })
     void createOrderLog(@Param("orders") List<OrderLog> orders);
 
+
+    /**
+     * 通过orderId 查询相关订单记录列表
+     * @param orderId
+     * @return
+     */
+    @Select(" select a.* from t_order_log a where a.order_id = #{orderId} ")
+    List<OrderLog> queryOrderLogByOrderId(@Param("orderId") Integer orderId);
 }

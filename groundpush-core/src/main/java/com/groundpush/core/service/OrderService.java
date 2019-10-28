@@ -34,7 +34,7 @@ public interface OrderService {
      * @param condition
      * @return
      */
-    Page<Order> queryOrderByKeys(OrderListQueryCondition condition);
+    Page<Order> queryOrderByCondition(OrderListQueryCondition condition);
 
 
     /**

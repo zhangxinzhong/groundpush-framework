@@ -62,9 +62,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> queryOrderByKeys(OrderListQueryCondition condition){
+    public Page<Order> queryOrderByCondition(OrderListQueryCondition condition){
         PageHelper.startPage(condition.getPage(),condition.getLimit());
-        return orderMapper.queryOrderByKeys(condition.getKey());
+        return orderMapper.queryOrderByCondition(condition);
     }
 
     @Override
@@ -146,11 +146,7 @@ public class OrderServiceImpl implements OrderService {
         if (condition.getTaskId() != null) {
             //通过任务类型、任务id和客户id获取未提交结果集的某一个订单
             optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskId(condition);
-            if(optionalOrder.isPresent()){
-                for(OrderLog orderLog:condition.getList()){
-                    orderLog.setOrderId(optionalOrder.get().getOrderId());
-                }
-            }
+
         } else {
             //通过订单id获取订单
             optionalOrder = orderMapper.getOrder(condition.getOrderId());
@@ -161,6 +157,13 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }
         Order order = optionalOrder.get();
+
+        for(OrderLog orderLog:condition.getList()){
+            orderLog.setOrderId(order.getOrderId());
+        }
+
+
+
         condition.setTaskId(order.getTaskId());
         List<Order> orders = orderMapper.findOrderByUnqiuCode(condition);
         if(orders != null && orders.size() > 0){

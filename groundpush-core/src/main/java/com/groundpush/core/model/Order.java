@@ -95,8 +95,8 @@ public class Order implements Serializable {
     private Integer customerId;
 
 
-    @ApiModelProperty("客户昵称")
-    private String nickName;
+    @ApiModelProperty("客户账号")
+    private String loginNo;
 
     @ApiModelProperty("客户分成")
     private BigDecimal bonusAmount;

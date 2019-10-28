@@ -44,7 +44,19 @@ public class OrderListQueryCondition implements Serializable {
     private Integer flag;
 
 
-    @ApiModelProperty(value = "用于全文搜索")
-    private String key;
+    @ApiModelProperty(value = "订单号")
+    private String orderNumber;
+
+    @ApiModelProperty(value = "客户名")
+    private String loginNo;
+
+    @ApiModelProperty(value = "订单状态")
+    private Integer orderStatus;
+
+    @ApiModelProperty(value = "订单状态")
+    private Integer settlementStatus;
+
+    @ApiModelProperty(value = "特殊任务")
+    private Integer isSepcial;
 
 }
