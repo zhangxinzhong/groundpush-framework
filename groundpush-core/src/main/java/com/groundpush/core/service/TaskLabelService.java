@@ -18,7 +18,7 @@ public interface TaskLabelService {
      *
      * @param taskLabel
      */
-    void createTaskLabel(TaskLabel taskLabel);
+    void createSingleTaskLabel(TaskLabel taskLabel);
 
     /**
      * 获取任务标签关系表数据

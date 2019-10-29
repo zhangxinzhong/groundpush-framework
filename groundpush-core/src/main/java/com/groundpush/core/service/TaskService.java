@@ -25,13 +25,7 @@ public interface TaskService {
      */
     Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit);
 
-    /**
-     * 新增任务
-     *
-     * @param task
-     * @return
-     */
-    void createSingleTask(Task task);
+
 
     /**
      * 获取任务
@@ -46,7 +40,7 @@ public interface TaskService {
      *
      * @param task
      */
-    void save(Task task);
+    void createSingleTask(Task task);
 
     /**
      * 修改任务
