@@ -1,8 +1,8 @@
-layui.use('table', function () {
+layui.use(['table', 'laytpl'], function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
-
+    let laytpl = layui.laytpl;
     //自定义验证规则
     form.verify({
         auditOpinion: function (value) {
@@ -107,11 +107,10 @@ layui.use('table', function () {
                      , totalRow: true
                      , where:{'taskId':data.taskId,'orderTime':layui.util.toDateString(data.createdTime, "yyyy-MM-dd"),flag:data.flag}
                      , cols: [[
-                           {field: 'title', title: '任务名称', sort: true}
+                           { title: '查看结果集', toolbar:"#showOrderResult"}
+                         , {field: 'title', title: '任务名称'}
                          , {field: 'orderNo', title: '订单号'}
-                         , {field: 'nickName', title: '客户'}
-                         , {field: 'bonusAmount', title: '订单分成'}
-                         , {field: '', title: '订单分成类型',templet: function(d){ return d.bonusType==1?'任务完成人':(d.bonusType==2?'任务推广人':'团队领导') }}
+                         , {field: 'loginNo', title: '客户账号'}
                          , {field: 'createdTime', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
                      ]]
                      ,
@@ -134,6 +133,46 @@ layui.use('table', function () {
                 });
 
          }
+        ,showOrderResultList:function (data) {
+            table.render({
+                elem: '#orderResult'+data.orderId
+                ,cellMinWidth: 200
+                , url: '/order/queryOrderLogByOrderId'
+                , toolbar: true
+                , title: 'orderResult-data'
+                , totalRow: true
+                , where:{'orderId':data.orderId}
+                , cols: [[
+                    {field: 'logId', title: 'ID',width:'5%', sort: true}
+                    , {field: '', title: '订单日志类型',width:'10%',
+                        templet: function(d){
+                            return d.orderLogType==1?'任务结果集上传':'申诉上传';
+                        }
+                    }
+                    , {field: '', title: '上传类型',width:'10%',
+                        templet: function(d){
+                            return d.orderResultType==1?'文本':'图片';
+                        }
+                    }
+                    , {field: 'orderKey', title: '订单上传类型key',width:'20%'}
+                    , {field: 'orderValue', title: '订单上传类型value'}
+                ]]
+                , response:
+                    {
+                        statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                    }
+                ,
+                parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    if(!Utils.isEmpty(res)){
+                        return {
+                            "code": res.code, //解析接口状态
+                            "msg": res.message, //解析提示文本
+                            "data": res.data //解析数据列表
+                        };
+                    }
+                }
+            });
+        }
         ,showAddAuditDialog: function(){
             $('#addAuditDialog').modal('show');
         }
@@ -182,6 +221,28 @@ layui.use('table', function () {
             });
         }
     });
+
+
+
+
+    table.on('tool(view)',function (e) {
+        if(e.event === 'showOrderResult'){
+            let a = $(e.tr).find('a');
+
+            if(a.hasClass('layui-icon-up')){
+                a.removeClass('layui-icon-up').addClass('layui-icon-down');
+                laytpl($('#showOrderResultList').html()).render({'orderId':e.data.orderId}, function(html){
+                    $(e.tr).after(html);
+                });
+                eventListener.showOrderResultList(e.data);
+            }else{
+                a.removeClass('layui-icon-down').addClass('layui-icon-up');
+                $(e.tr).next().remove();
+            }
+
+        }
+
+    })
 
     //新增标签
     form.on('submit(addAudit)',function (data) {

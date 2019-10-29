@@ -41,19 +41,17 @@ public interface OrderMapper {
     @Select({
             "<script>",
             " select ",
+            " a.order_id, ",
             " c.title, ",
             " a.order_no, ",
-            " d.nick_name, ",
-            " e.bonus_amount,",
-            " e.bonus_type, ",
-            " a.created_time ",
+            " a.created_time, ",
+            " d.login_no ",
             " from ",
             " t_order a ",
             " left join t_order_task_customer b on b.order_id = a.order_id ",
             " left join t_task c on b.task_id = c.task_id ",
-            " left join t_order_bonus e on b.order_id = e.order_id ",
-            " left join t_customer d on e.customer_id = d.customer_id",
-            " where b.task_id =#{taskId} and DATE_FORMAT(a.created_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ",
+            " left join t_customer_login_account d on b.customer_id = d.customer_id where d.type = 1 ",
+            " and b.task_id =#{taskId} and DATE_FORMAT(a.created_time,'%Y-%m-%d') = DATE_FORMAT(#{orderTime},'%Y-%m-%d') ",
             " <if test='flag == 2'> and a.settlement_status = 1 </if>",
             " <if test='flag == 3'> and a.settlement_status &lt;&gt; 1 </if>",
             " order by a.created_time desc",
@@ -64,7 +62,7 @@ public interface OrderMapper {
 
     /**
      * 通过关键字以订单或客户昵称分页查询所有订单
-     * @param key
+     * @param condition
      * @return
      */
     @Select({

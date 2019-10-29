@@ -29,6 +29,37 @@
     {{# }}}
 </script>
 
+
+<!-- 订单结果集 操作标识-->
+<script type="text/html" id="showOrderResult">
+    <a class="layui-btn layui-btn-xs layui-icon layui-icon-up" lay-event="showOrderResult"></a>
+
+</script>
+
+<!-- 订单结果集 列表-->
+<script type="text/html" id="showOrderResultList">
+   <tr>
+   <td colspan="5">
+
+       <div style="padding: 20px; background-color: #F2F2F2;">
+           <div class="layui-row layui-col-space15">
+               <div class="layui-col-md12">
+                   <div class="layui-card">
+                       <div class="layui-card-header">订单任务结果集</div>
+                       <div class="layui-card-body">
+                           <table  class="layui-hide" id="orderResult{{d.orderId}}" lay-filter="orderResult{{d.orderId}}"></table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+   </td>
+   </tr>
+</script>
+
+
+
 <!-- 审核模态框 begin -->
 <div class="modal fade bs-example-modal-lg" id="addAuditDialog" tabindex="-1" role="dialog" aria-labelledby="myModalPay" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
