@@ -21,7 +21,7 @@ layui.use('table', function () {
                 ,done: function (res, curr, count) {
                     $("#menuDiv table").css("width", "100%");
                 }
-                , toolbar: true
+                , toolbar: '#toolbarMenu'
                 , title: 'menu-data'
                 , totalRow: true
                 , cols: [[
@@ -29,7 +29,7 @@ layui.use('table', function () {
                     , {field: 'name', title: '菜单名称'}
                     , {field: 'code', title: '菜单编码'}
                     , {field: 'path', title: 'URI'}
-                    , {field: '', title: '操作', toolbar: "#toolbarMenu"}
+                    , {field: '', title: '操作', toolbar: "#toolbarMenuOper"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE

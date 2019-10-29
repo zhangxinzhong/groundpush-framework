@@ -32,7 +32,7 @@ layui.use('table', function () {
                 ,done: function (res, curr, count) {
                     $("#labelDiv table").css("width", "100%");
                 }
-                , toolbar: true
+                , toolbar: '#toolbarLabel'
                 , title: 'label-data'
                 , totalRow: true
                 , cols: [[
@@ -42,7 +42,7 @@ layui.use('table', function () {
                     , {field: 'remark', title: '标签说明'}
                     , {field: 'createdBy', title: '创建人'}
                     , {field: 'createdTime', title: '创建时间',templet: function(d){return   layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss"); }}
-                    , {field: '', title: '操作',toolbar: "#toolbarLabel"}
+                    , {field: '', title: '操作',toolbar: "#toolbarLabelOper"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE

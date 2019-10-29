@@ -93,7 +93,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             table.render({
                 elem: '#task'
                 , url: '/task/getTaskPageList'
-                , toolbar: true
+                , toolbar: '#toolbarTask'
                 , title: 'task-data'
                 , totalRow: true
                 , cols: [[

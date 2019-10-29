@@ -17,10 +17,10 @@
 
 <input  type="hidden" th:value="${spread}" name="spread" id="spread" />
 
-<!--新增角色-->
-<div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-method="showTaskModal" data-custom-event="task">新增任务</button>
-</div>
+<!--新增任务-->
+<script type="text/html" id="toolbarTask">
+    <a class="layui-btn layui-btn-xs" data-method="showTaskModal" data-custom-event="task" >新增任务</a>
+</script>
 
 <!-- task table -->
 <table class="layui-hide" id="task" lay-filter="task"></table>

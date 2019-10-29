@@ -58,7 +58,7 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
                     $("#channelDiv table").css("width", "100%");
                     $("[data-field='taskId']").css('display', 'none');
                 }
-                , toolbar: true
+                , toolbar: '#toolbarChannel'
                 , title: 'channel-data'
                 , totalRow: true
                 , cols: [[
@@ -74,7 +74,7 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
                             return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss");
                         }
                     }
-                    , {field: '', title: '操作', toolbar: "#toolbarChannel"}
+                    , {field: '', title: '操作', toolbar: "#toolbarChannelOper"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
