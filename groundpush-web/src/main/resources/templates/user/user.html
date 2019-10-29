@@ -14,9 +14,9 @@
 </head>
 <body>
 <!--新增用户-->
-<div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-method="showAddUserDialog" data-custom-event="user" id="addUser">新增用户</button>
-</div>
+<script type="text/html" id="toolbarUser">
+    <a class="layui-btn layui-btn-xs" data-method="showAddUserDialog" data-custom-event="user">新增用户</a>
+</script>
 
 <!-- user table -->
 <div id="userDiv">
@@ -24,7 +24,7 @@
 </div>
 
 <!-- user tobar-->
-<script type="text/html" id="toolbarUser">
+<script type="text/html" id="toolbarUserOper">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>

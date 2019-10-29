@@ -16,7 +16,7 @@ layui.use('table', function () {
                 ,done: function (res, curr, count) {
                     $("#specialTaskDiv table").css("width", "100%");
                 }
-                , toolbar: true
+                , toolbar: '#toolbarTask'
                 , title: 'special-data'
                 , totalRow: true
                 , cols: [[

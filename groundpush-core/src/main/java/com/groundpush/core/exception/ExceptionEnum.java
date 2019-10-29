@@ -64,7 +64,7 @@ public enum ExceptionEnum {
     , MENU_AND_DEL_ERROR("M80001", "此菜单与角色关联不可删除，与角色解绑后才可删除！")
     , PRI_AND_DEL_ERROR("PR90001","此权限与角色关联不可删除，与角色解绑后才可删除！")
     , AUDITLOG_EXCEPTION("Al110001","此订单支付记录您已审核过，不可重复审核！")
-    , VERSION_EXIST_EXCEPTION("V120001","s%已存在发布版本！")
+    , VERSION_EXIST_EXCEPTION("V120001"," %s 已存在发布版本！")
     ;
 
     private String errorCode;

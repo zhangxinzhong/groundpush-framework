@@ -34,7 +34,7 @@ layui.use('table', function () {
                 ,done: function (res, curr, count) {
                     $("#roleDiv table").css("width", "100%");
                 }
-                , toolbar: true
+                , toolbar: '#toolbarRole'
                 , title: 'role-data'
                 , totalRow: true
                 , cols: [[
@@ -63,7 +63,7 @@ layui.use('table', function () {
                       }
                     , {field: 'createdName', title: '创建人'}
                     , {field: 'lastModifyedName', title: '修改人'}
-                    , {field: '', title: '操作',toolbar: "#toolRole"}
+                    , {field: '', title: '操作',toolbar: "#toolbarRoleOper"}
                 ]]
                 ,
                 page: true,curr:1, limit: Global.PAGE_SISE
@@ -141,7 +141,7 @@ layui.use('table', function () {
                  table.render({
                                  elem: '#view'
                                  , url: data.urls
-                                 , toolbar: '#toolbarRole'
+                                 , toolbar: '#toolbarRoleUser'
                                  , title: 'view-data'
                                  , totalRow: true
                                  , cols: [data.cols]

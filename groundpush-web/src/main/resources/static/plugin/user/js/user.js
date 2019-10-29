@@ -21,7 +21,7 @@ layui.use('table', function () {
                 ,done: function (res, curr, count) {
                     $("#userDiv table").css("width", "100%");
                 }
-                , toolbar: true
+                , toolbar: '#toolbarUser'
                 , title: 'user-data'
                 , totalRow: true
                 , cols: [[
@@ -31,7 +31,7 @@ layui.use('table', function () {
                     , {field: 'namePinyin', title: '用户名拼音'}
                     , {field: 'mobileNo', title: '用户名手机号'}
                     , {field: 'workEmail', title: '用户名邮箱'}
-                    , {field: '', title: '操作',toolbar: "#toolbarUser"}
+                    , {field: '', title: '操作',toolbar: "#toolbarUserOper"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE

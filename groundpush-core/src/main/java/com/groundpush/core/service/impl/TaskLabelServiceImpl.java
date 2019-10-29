@@ -22,8 +22,8 @@ public class TaskLabelServiceImpl implements TaskLabelService {
     private TaskLabelMapper taskLabelMapper;
 
     @Override
-    public void createTaskLabel(TaskLabel taskLabel) {
-        taskLabelMapper.createTaskLabel(taskLabel);
+    public void createSingleTaskLabel(TaskLabel taskLabel) {
+        taskLabelMapper.createSingleTaskLabel(taskLabel);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TaskLabelServiceImpl implements TaskLabelService {
         Boolean taskLabelResult = true;
         Integer tlId = taskLabel.getTlId();
         if (tlId == null) {
-            taskLabelResult = taskLabelMapper.createTaskLabel(taskLabel) > 0 ? true : false;
+            taskLabelResult = taskLabelMapper.createSingleTaskLabel(taskLabel) > 0 ? true : false;
         } else {
             taskLabelResult = taskLabelMapper.updateTaskLabel(taskLabel) > 0 ? true : false;
         }

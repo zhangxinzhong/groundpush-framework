@@ -21,7 +21,7 @@ public interface TaskLabelMapper {
      * @return
      */
     @Insert(" insert into t_task_label(task_id, label_id, created_time) values (#{taskId},#{labelId},current_timestamp) ")
-    Integer createTaskLabel(TaskLabel taskLabel);
+    Integer createSingleTaskLabel(TaskLabel taskLabel);
 
     /**
      * 更新任务标签关系表数据
@@ -77,5 +77,18 @@ public interface TaskLabelMapper {
     @Select(" select label_id from t_task_label t where t.task_id = #{taskId}  ")
     List<Integer> getTaskLabelByTaskIdReturnLabelId(@Param("taskId") Integer taskId);
 
-
+    /**
+     * 新增多条任务标签
+     *
+     * @param labelList
+     */
+    @Insert({
+            "<script>",
+            " insert into t_task_label(task_id, label_id, created_time) values ",
+            "<foreach collection='list' item='taskLabel' open='(' close=')' separator='),('>",
+            "(#{taskLabel.taskId},#{taskLabel.labelId},current_timestamp)",
+            "</foreach>",
+            "</script>"
+    })
+    void createTaskLabel(List<TaskLabel> labelList);
 }

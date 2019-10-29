@@ -16,9 +16,10 @@
     </head>
     <body>
         <!--新增菜单-->
-        <div class="layui-btn-group demoTable">
-            <button class="layui-btn" data-method="showAddMenuDialog" data-custom-event="menu" id="addMenu">新增菜单</button>
-        </div>
+        <script type="text/html" id="toolbarMenu">
+            <a class="layui-btn layui-btn-xs" data-method="showAddMenuDialog" data-custom-event="menu">新增菜单</a>
+        </script>
+
 
         <!-- menu table -->
         <div id="menuDiv">
@@ -26,7 +27,7 @@
         </div>
 
         <!-- menu tobar-->
-        <script type="text/html" id="toolbarMenu">
+        <script type="text/html" id="toolbarMenuOper">
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>

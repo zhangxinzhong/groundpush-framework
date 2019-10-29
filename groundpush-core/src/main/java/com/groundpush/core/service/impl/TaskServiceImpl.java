@@ -10,10 +10,7 @@ import com.groundpush.core.mapper.TaskAttributeMapper;
 import com.groundpush.core.mapper.TaskLabelMapper;
 import com.groundpush.core.mapper.TaskLocationMapper;
 import com.groundpush.core.mapper.TaskMapper;
-import com.groundpush.core.model.Task;
-import com.groundpush.core.model.TaskAttribute;
-import com.groundpush.core.model.TaskLabel;
-import com.groundpush.core.model.TaskLocation;
+import com.groundpush.core.model.*;
 import com.groundpush.core.service.TaskAttributeService;
 import com.groundpush.core.service.TaskService;
 import com.groundpush.core.utils.Constants;
@@ -56,25 +53,11 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.queryTaskAllPC(taskQueryCondition);
     }
 
-    @OperationLogDetail(operationType = OperationType.TASK_ADD, type = OperationClientType.PC)
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void createSingleTask(Task task) {
-        //创建任务时，需要处理任务属性
-        taskMapper.createSingleTask(task);
-    }
-
-
     @Override
     public Optional<Task> getTask(Integer id) {
         Optional<Task> optionalTask = taskMapper.getTask(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
-            //加载标签
-            Integer taskId = task.getTaskId();
-            //获取相关标签内容
-            List<Integer> labelList = taskLabelMapper.getTaskLabelByTaskIdReturnLabelId(taskId);
-            task.setLabelIds(org.springframework.util.StringUtils.collectionToDelimitedString(labelList, ","));
             //任务添加属性
             addTaskAttr(task);
             return Optional.of(task);
@@ -84,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
 
     @OperationLogDetail(operationType = OperationType.TASK_ADD, type = OperationClientType.PC)
     @Override
-    public void save(Task task) {
+    public void createSingleTask(Task task) {
         //添加、更新任务内容
         Integer taskId = task.getTaskId();
         if (taskId == null) {
@@ -94,29 +77,33 @@ public class TaskServiceImpl implements TaskService {
         }
         taskId = task.getTaskId();
 
+        // 删除城市关联
+        taskLocationMapper.delTaskLocationByTaskId(taskId);
+        //  删除任务相关标签
+        taskLabelMapper.deleteTaskLabelByTaskId(taskId);
+        //添加任务内容（先删除后添加）
+        taskAttributeMapper.deleteTaskAttributeByTaskId(taskId);
+
         //添加 标签
         if (StringUtils.isNotEmpty(task.getLabelIds())) {
-            taskLabelMapper.deleteTaskLabelByTaskId(taskId);
+            List<TaskLabel> labelList = new ArrayList<>();
             for (String labelId : task.getLabelIds().split(",")) {
-                taskLabelMapper.createTaskLabel(TaskLabel.builder().taskId(taskId).labelId(Integer.parseInt(labelId)).build());
+                labelList.add(TaskLabel.builder().taskId(taskId).labelId(Integer.parseInt(labelId)).build());
             }
+            taskLabelMapper.createTaskLabel(labelList);
         }
-
 
         if (StringUtils.isNotEmpty(task.getLocation())) {
-            //删除城市关联
-            taskLocationMapper.delTaskLocationByTaskId(taskId);
+            List<TaskLocation> locationList = new ArrayList<>();
             for (String location : task.getLocation().split(",")) {
-                taskLocationMapper.saveTaskLocation(TaskLocation.builder().taskId(taskId).location(location).build());
+                locationList.add(TaskLocation.builder().taskId(taskId).location(location).build());
             }
+            taskLocationMapper.saveTaskLocation(locationList);
         }
-
 
         //添加
         List<TaskAttribute> taskAttributes = task.getSpreadTaskAttributes();
         if (taskAttributes != null && taskAttributes.size() > 0) {
-            //添加任务内容（先删除后添加）
-            taskAttributeMapper.deleteTaskAttributeByTaskId(taskId);
             for (TaskAttribute taskAttribute : taskAttributes) {
                 taskAttribute.setTaskId(taskId);
             }
@@ -181,7 +168,7 @@ public class TaskServiceImpl implements TaskService {
                 if (taskAttrMap.containsKey(mapKey)) {
                     taskAttrMap.get(mapKey).add(taskAttribute);
                 } else {
-                    List<TaskAttribute> listTaskAttribute = new ArrayList<TaskAttribute>();
+                    List<TaskAttribute> listTaskAttribute = new ArrayList<>();
                     listTaskAttribute.add(taskAttribute);
                     taskAttrMap.put(mapKey, listTaskAttribute);
                 }

@@ -16,9 +16,9 @@
 </head>
 <body>
 <!--新增标签-->
-<div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-method="showAddLabelDialog" data-custom-event="label" id="addLabel">新增标签</button>
-</div>
+<script type="text/html" id="toolbarLabel">
+    <a class="layui-btn layui-btn-xs" data-method="showAddLabelDialog" data-custom-event="label">新增标签</a>
+</script>
 
 <!-- label table -->
 <div id="labelDiv">
@@ -26,7 +26,7 @@
 </div>
 
 <!-- label tobar-->
-<script type="text/html" id="toolbarLabel">
+<script type="text/html" id="toolbarLabelOper">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>

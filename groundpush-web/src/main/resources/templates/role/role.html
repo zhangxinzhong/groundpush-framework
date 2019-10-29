@@ -18,9 +18,10 @@
 
 
 <!--新增角色-->
-<div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-method="showAddRoleDialog" data-custom-event="role" id="addRole">新增角色</button>
-</div>
+<script type="text/html" id="toolbarRole">
+    <a class="layui-btn layui-btn-xs" data-method="showAddRoleDialog" data-custom-event="role">新增角色</a>
+</script>
+
 
 <!-- pay table -->
 <div id="roleDiv">
@@ -28,13 +29,13 @@
 </div>
 
 <!-- role tool-->
-<script type="text/html" id="toolRole">
+<script type="text/html" id="toolbarRoleOper">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 
-<script type="text/html" id="toolbarRole">
+<script type="text/html" id="toolbarRoleUser">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="addUpm" id="addUpm">关联用户</button>
     </div>

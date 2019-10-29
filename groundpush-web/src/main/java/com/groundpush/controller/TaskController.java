@@ -62,7 +62,7 @@ public class TaskController {
     @ResponseBody
     public JsonResp saveTask(@RequestBody Task task) {
         try {
-            taskService.save(task);
+            taskService.createSingleTask(task);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -91,23 +91,10 @@ public class TaskController {
     @ApiOperation("任务查询服务")
     @JsonView(Task.SimpleTaskView.class)
     @RequestMapping("/getTaskPageList")
-    public JsonResp queryTaskAllPC(TaskQueryCondition taskCondition, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage, @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+    public JsonResp queryTaskAllPC(TaskQueryCondition taskCondition, @RequestParam(value = "curr", defaultValue = "1") Integer pageNumber, @RequestParam(value = "limit", defaultValue = "15") Integer pageSize) {
         try {
-            Page<Task> tasks = taskService.queryTaskAllPC(taskCondition, nowPage, pageSize);
+            Page<Task> tasks = taskService.queryTaskAllPC(taskCondition, pageNumber, pageSize);
             return JsonResp.success(new PageResult(tasks));
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
-
-    @PostMapping
-    @ApiOperation("新建任务")
-    @ResponseBody
-    public JsonResp CreateTask(@RequestBody Task task) {
-        try {
-            taskService.createSingleTask(task);
-            return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

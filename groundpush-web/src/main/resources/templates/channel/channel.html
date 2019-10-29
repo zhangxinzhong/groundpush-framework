@@ -16,9 +16,9 @@
 </head>
 <body>
 <!--新增渠道-->
-<div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-method="showAddChannelDialog" data-custom-event="Channel" id="addChannel">新增渠道</button>
-</div>
+<script type="text/html" id="toolbarChannel">
+    <a class="layui-btn layui-btn-xs"  data-method="showAddChannelDialog" data-custom-event="Channel" >新增渠道</a>
+</script>
 
 <!-- menu table -->
 <div id="channelDiv">
@@ -26,7 +26,7 @@
 </div>
 
 <!-- menu tobar-->
-<script type="text/html" id="toolbarChannel">
+<script type="text/html" id="toolbarChannelOper">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs" lay-event="upData">上传数据</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>

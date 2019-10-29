@@ -31,7 +31,7 @@ layui.use('table', function () {
                 ,done: function (res, curr, count) {
                     $("#teamDiv table").css("width", "100%");
                 }
-                , toolbar: true
+                , toolbar: '#toolbarTeam'
                 , title: 'team-data'
                 , totalRow: true
                 , cols: [[
