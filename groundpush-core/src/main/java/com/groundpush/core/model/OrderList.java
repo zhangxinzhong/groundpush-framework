@@ -2,6 +2,7 @@ package com.groundpush.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,11 +29,14 @@ public class OrderList implements Serializable {
     @ApiModelProperty("任务标题")
     private String title;
 
+    @ApiModelProperty("订单ID")
+    private Integer orderId;
+
     @ApiModelProperty("订单号")
     private String orderNo;
 
     @ApiModelProperty("客户昵称")
-    private String nickName;
+    private String loginNo;
 
     @ApiModelProperty("客户分成")
     private BigDecimal bonusAmount;
