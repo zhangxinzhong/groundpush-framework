@@ -28,8 +28,8 @@ layui.use(['table', 'laytpl'], function () {
                 , title: 'pay-data'
                 , totalRow: true
                 , cols: [[
-                     {field: 'companyName', title: '渠道', sort: true}
-                    , {field: 'title', title: '任务名称'}
+                     {field: 'companyName',width:'15%',title: '渠道', sort: true}
+                    , {field: 'title',width:'15%', title: '任务名称'}
                     , {field: 'createdTime', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd"); }}
                     , {field: '', title: '订单总数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewAllOrderList">' + d.orderCount + "</a>"}}
                     , {field: 'orderAmount', title: '订单总金额'}
@@ -107,7 +107,7 @@ layui.use(['table', 'laytpl'], function () {
                      , totalRow: true
                      , where:{'taskId':data.taskId,'orderTime':layui.util.toDateString(data.createdTime, "yyyy-MM-dd"),flag:data.flag}
                      , cols: [[
-                           { title: '查看结果集', toolbar:"#showOrderResult"}
+                           { title: '查看结果集', width:100 ,toolbar:"#showOrderResult"}
                          , {field: 'title', title: '任务名称'}
                          , {field: 'orderNo', title: '订单号'}
                          , {field: 'loginNo', title: '客户账号'}
@@ -151,11 +151,15 @@ layui.use(['table', 'laytpl'], function () {
                     }
                     , {field: '', title: '上传类型',width:'10%',
                         templet: function(d){
-                            return d.orderResultType==1?'文本':'图片';
+                            return d.orderResultType==2?'图片':'文本';
                         }
                     }
                     , {field: 'orderKey', title: '订单上传类型key',width:'20%'}
-                    , {field: 'orderValue', title: '订单上传类型value'}
+                    , {field: '', title: '订单上传类型value',
+                        templet: function(d){
+                            return d.orderResultType==2?'<a href="#" onclick="javascript:window.open(\''+d.orderValue+'\')" download="" >'+d.orderValue+'</a>':d.orderValue;
+                        }
+                    }
                 ]]
                 , response:
                     {

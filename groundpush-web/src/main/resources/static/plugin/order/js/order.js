@@ -159,19 +159,23 @@ layui.use('table', function () {
                 , totalRow: true
                 , where:{'orderId':data.orderId}
                 , cols: [[
-                      {field: 'logId', title: 'ID',width:'5%', sort: true}
-                    , {field: '', title: '订单日志类型',width:'10%',
+                      {field: 'logId', title: 'ID',width:'8%', sort: true}
+                    , {field: '', title: '订单日志类型',width:'20%',
                          templet: function(d){
                            return d.orderLogType==1?'任务结果集上传':'申诉上传';
                          }
                        }
                     , {field: '', title: '上传类型',width:'10%',
                         templet: function(d){
-                            return d.orderResultType==1?'文本':'图片';
+                            return d.orderResultType==2?'图片':'文本';
                         }
                       }
                     , {field: 'orderKey', title: '订单上传类型key',width:'20%'}
-                    , {field: 'orderValue', title: '订单上传类型value'}
+                    , {field: '', title: '订单上传类型value',
+                        templet: function(d){
+                            return d.orderResultType==2?'<a href="#" onclick="javascript:window.open(\''+d.orderValue+'\')" download="" >'+d.orderValue+'</a>':d.orderValue;
+                        }
+                      }
                 ]]
                 , response:
                     {
