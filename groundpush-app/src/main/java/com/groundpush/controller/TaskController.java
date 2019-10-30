@@ -34,9 +34,9 @@ import static java.lang.Integer.*;
 @Controller
 public class TaskController {
 
+
     @Resource
     private OauthLoginUtils oauthLoginUtils;
-
 
     @Resource
     private TaskService taskService;
@@ -80,15 +80,16 @@ public class TaskController {
             taskCondition.setParentId(customerDetailOptional.get().getCustomer().getParentId());
             taskCondition.setCreatedTime(customerDetailOptional.get().getCustomer().getCreatedTime());
         }
-        //判断是否为“地推”标签
-        if (taskCondition.getCustomerId() != null &&  StringUtils.contains(taskCondition.getType(),Constants.SEPCIAL_LABEL_ID.toString()) ) {
-            //查询当前用户的特殊任务
+
+        //查询当前用户的特殊任务
+        if(taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), Constants.SEPCIAL_LABEL_ID.toString())){
             Page<Task> sepcialTask = specialTaskService.querySepcicalTaskByCondition(taskCondition,pageNumber,pageSize);
             return JsonResp.success(new PageResultModel(sepcialTask, list));
         }
+
+
+
         Page<Task> tasks = taskService.queryTaskAll(taskCondition, pageNumber, pageSize);
-        //将符合特殊任务条件的任务 hasSpecialTask 设置为true
-        tasks = specialTaskService.hasSpecialTask(tasks,taskCondition);
         return JsonResp.success(new PageResultModel(tasks, list));
     }
 

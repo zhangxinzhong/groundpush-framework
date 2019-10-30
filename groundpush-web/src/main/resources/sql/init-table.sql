@@ -663,8 +663,9 @@ alter table t_order add column is_special tinyint(1) DEFAULT NULL;
 alter table t_task add column spread_parent_ratio decimal(8,2) DEFAULT NULL;
 alter table t_task drop column owner_ratio;
 
-
----------  2019.10添加sql author：hss----------------------------
+-- ----------------------------
+-- 2019.10添加sql author：hss
+-- ----------------------------
 
 -- 特殊任务表
 DROP TABLE IF EXISTS `t_special_task`;
@@ -686,7 +687,7 @@ CREATE TABLE `t_team` (
   `created_by` int(20) DEFAULT NULL,
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`team_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- 团队客户关联表
 DROP TABLE IF EXISTS `t_team_customer`;
@@ -697,10 +698,7 @@ CREATE TABLE `t_team_customer` (
   `created_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table t_channel_excel add column channel_time datetime;
-alter table t_order add column is_special tinyint(1) DEFAULT NULL;
-alter table t_task add column spread_parent_ratio decimal(8,2) DEFAULT NULL;
-alter table t_task drop column owner_ratio;
+
 
 alter table t_task add column task_title VARCHAR(255) default null;
 alter table t_task add column task_content VARCHAR(255) default null;
@@ -717,7 +715,7 @@ CREATE TABLE `t_task_location` (
   `location` varchar(80) DEFAULT NULL,
   `created_time` datetime DEFAULT NULL,
   PRIMARY KEY (`task_location_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- 订单记录表
 DROP TABLE IF EXISTS `t_order_log`;
@@ -730,5 +728,23 @@ CREATE TABLE `t_order_log` (
   `order_key` varchar(255) DEFAULT NULL,
   `order_value` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- 版本记录表
+DROP TABLE IF EXISTS `t_version`;
+CREATE TABLE `t_version` (
+  `version_id` int(11) NOT NULL AUTO_INCREMENT,
+  `is_update` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否更新（0-否；1-是）',
+  `new_version` varchar(255) DEFAULT NULL COMMENT '新版本号',
+  `apk_file_url` varchar(255) DEFAULT NULL COMMENT 'apk下载地址',
+  `update_log` varchar(255) DEFAULT NULL COMMENT '更新日志',
+  `target_size` varchar(255) DEFAULT NULL COMMENT 'apk文件大小',
+  `new_md5` varchar(255) DEFAULT NULL,
+  `is_constraint` tinyint(4) DEFAULT '0' COMMENT '是否强制更新（0-否；1-是）',
+  `type` tinyint(4) DEFAULT '1' COMMENT '类型（1-app；）',
+  `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `status` tinyint(4) DEFAULT NULL,
+  `last_modified_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`version_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='版本管理表';
 

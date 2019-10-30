@@ -18,4 +18,10 @@ public interface OrderTaskCustomerService {
      */
     List<OrderTaskCustomer>  findOrderByTaskId(Integer taskId, Integer customerId);
 
+
+    /**
+     * 根据taskId查询出所有关联订单
+     * @param taskId
+     */
+    Boolean queryHasSepcialOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId);
 }

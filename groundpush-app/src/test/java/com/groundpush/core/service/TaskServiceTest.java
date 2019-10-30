@@ -55,7 +55,7 @@ public class TaskServiceTest {
             attributes.add(TaskAttribute.builder().content("http://test.oss.zhongdi001.com/task/1571883899064.png").type(2).seq(2).labelType(3).rowType(5).createUri(0).build());
             attributes.add(TaskAttribute.builder().content("请输入订单编号").type(3).seq(1).labelType(1).rowType(1).createUri(0).build());
             task.setSpreadTaskAttributes(attributes);
-            taskService.save(task);
+            taskService.createSingleTask(task);
         }
     }
 }

@@ -46,6 +46,14 @@ public interface OrderTaskCustomerMapper {
 
 
     /**
+     * 根据taskId查询出所有关联订单
+     * @param taskId
+     */
+    @Select(" SELECT count(*) FROM t_order_task_customer a left join t_order b on a.order_id = b.order_id where a.task_id = #{taskId} and a.customer_id = #{customerId} and  b.is_special=1 ")
+    Integer queryHasSepcialOrderByTaskIdAndCustomerId(@Param("taskId") Integer taskId, @Param("customerId") Integer customerId);
+
+
+    /**
      * 通过orderId获取taskId
      * @param orderId
      * @return

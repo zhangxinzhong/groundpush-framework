@@ -16,26 +16,26 @@ layui.use(['table', 'form', 'layer'], function () {
                 , title: 'version-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'versionId', title: 'ID',sort: true}
-                    , {field: 'newVersion', title: '版本号'}
-                    , {field: 'updateLog', title: '更新日志'}
-                    , {field: 'apkFileUrl', title: 'APK下载地址'}
-                    , {field: 'isUpdate', title: '是否更新',
+                    {field: 'versionId', width:'5%',title: 'ID',sort: true}
+                    , {field: 'newVersion', width:'10%', title: '版本号'}
+                    , {field: 'updateLog', width:'10%', title: '更新日志'}
+                    , {field: 'apkFileUrl', width:'20%', title: 'APK下载地址'}
+                    , {field: 'isUpdate', width:'10%', title: '是否更新',
                         templet: function(d){
                             return   d.isUpdate == 1?'是':'否';
                         }
                     }
-                    , {field: 'isConstraint', title: '是否强制更新',
+                    , {field: 'isConstraint', width:'10%', title: '是否强制更新',
                         templet: function(d){
                             return   d.isConstraint == 1?'是':'否';
                         }
                     }
-                    , {field: 'type', title: '类型',
+                    , {field: 'type', width:'10%', title: '类型',
                         templet: function(d){
                             return   d.type == 1?'APP':'';
                         }
                     }
-                    , {field: '', title: '发布类型',
+                    , {field: '', width:'10%', title: '发布类型',
                         templet: function(d){
                             return   d.status == 1?'已发布':'未发布';
                         }

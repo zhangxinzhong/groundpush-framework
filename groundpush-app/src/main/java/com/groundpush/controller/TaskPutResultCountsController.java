@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 /**
- * TaskCountsController
+ * 返回任务结果集推广结果数、推广结果数
  *
  * @author hss
  * @date 2019/9/18 20:29
