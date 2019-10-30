@@ -86,7 +86,7 @@ public interface ChannelMapper {
      * 获取所有渠道
      * @return
      */
-    @Select(" select * from t_channel")
+    @Select(" select * from t_channel where status = 1 ")
     List<Channel> getChannelAll();
 
 }
