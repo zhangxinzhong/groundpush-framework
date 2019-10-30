@@ -61,6 +61,10 @@ INSERT INTO `t_menu` VALUES ('21', '权限管理', null, null, '12', '0', '1', '
 INSERT INTO `t_menu` VALUES ('22', 'URI管理', null, null, '13', '0', '1', '/uri/toUriList', null, '2019-09-18 10:20:20', null, '2019-09-19 13:45:05');
 INSERT INTO `t_menu` VALUES ('23', 'Home', '100022', '0', '13', '0', '1', '/home', null, '2019-09-18 20:09:00', null, null);
 INSERT INTO `t_menu` VALUES ('24', '日志管理', '100023', '0', '14', '0', '1', '/operationLog/toOperationLogList', null, '2019-09-26 09:33:45', null, null);
+INSERT INTO `t_menu` VALUES ('25', '特殊任务管理', null, null, '15', '0', '1', '/specialTask/toSpecialTask', null, '2019-10-11 09:17:01', null, '2019-10-11 09:18:12');
+INSERT INTO `t_menu` VALUES ('26', '客户管理', '100025', '0', '16', '0', '1', '/customer/toCustomerList', null, '2019-10-11 10:00:38', null, null);
+INSERT INTO `t_menu` VALUES ('27', '团队管理', '100026', '0', '17', '0', '1', '/team/toTeam', null, '2019-10-12 10:42:21', null, null);
+INSERT INTO `t_menu` VALUES ('28', '版本管理', '100027', '0', '18', '0', '1', '/version/toVersionList', null, '2019-10-16 10:50:16', null, null);
 
 
 -- 添加超管角色与菜单关联
@@ -100,6 +104,10 @@ INSERT INTO `t_role_menu` VALUES ('1', '24', '1', '2019-09-26 09:35:34', null, n
 -- 添加普通角色与菜单关联
 INSERT INTO `t_role_menu` VALUES ('2', '21', '1', '2019-09-18 18:44:18', null, null, '1');
 INSERT INTO `t_role_menu` VALUES ('3', '22', '1', '2019-09-18 18:44:18', null, null, '1');
+INSERT INTO `t_role_menu` VALUES ('1', '25', '1', '2019-10-16 10:53:00', null, null, '1');
+INSERT INTO `t_role_menu` VALUES ('1', '26', '1', '2019-10-16 10:53:00', null, null, '1');
+INSERT INTO `t_role_menu` VALUES ('1', '27', '1', '2019-10-16 10:53:00', null, null, '1');
+INSERT INTO `t_role_menu` VALUES ('1', '28', '1', '2019-10-16 10:53:00', null, null, '1');
 
 
 
