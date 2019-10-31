@@ -213,6 +213,10 @@ public class Task implements Serializable {
     private String taskContent;
 
 
+    @NotNull(message = "标签内容不可为空")
+    @JsonView(DetailTaskView.class)
+    private String labelIds;
+
 
     /**
      ****************************************** 非数据库字段 **********************************************************
@@ -230,9 +234,7 @@ public class Task implements Serializable {
     @JsonView(DetailTaskView.class)
     private Set<List<TaskAttribute>> spreadTaskAttributesSet;
 
-    @NotNull(message = "标签内容不可为空")
-    @JsonView(DetailTaskView.class)
-    private String labelIds;
+
 
     /**
      * 添加次要标签

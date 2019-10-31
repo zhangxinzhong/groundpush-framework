@@ -1,5 +1,6 @@
 package com.groundpush.controller;
 
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.groundpush.core.utils.StringUtils;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -47,6 +48,8 @@ public class TaskController {
     @Resource
     private TaskAttributeService taskAttributeService;
 
+    @Resource
+    private StringUtils stringUtils;
 
     @Value("${groundpush.app.spread}")
     private String spread;
@@ -147,7 +150,7 @@ public class TaskController {
                     String taskUrl = oneObj[0].toString();
                     TaskUri taskUri = new TaskUri();
                     taskUri.setTaskId(taskId);
-                    taskUri.setUri(taskUrl);
+                    taskUri.setUri(stringUtils.filterString(taskUrl,"\t\n"));
                     taskUriList.add(taskUri);
                 }
                 taskUriService.save(taskUriList);
@@ -158,5 +161,6 @@ public class TaskController {
         }
         return JsonResp.success();
     }
+
 
 }
