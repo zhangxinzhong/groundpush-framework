@@ -75,4 +75,13 @@ public interface TaskUriMapper {
             "</script>"
     })
     void updateTaskUri(TaskUri taskUri);
+
+
+    /**
+     * 获取任务的uri count
+     * @param taskId
+     * @return
+     */
+    @Select(" select count(*) from t_task_uri where task_id = #{taskId}")
+    Integer queryCountByTaskId(@Param("taskId") Integer taskId);
 }

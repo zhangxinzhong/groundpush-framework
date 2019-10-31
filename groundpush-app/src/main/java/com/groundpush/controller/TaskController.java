@@ -82,7 +82,7 @@ public class TaskController {
         }
 
         //查询当前用户的特殊任务
-        if(taskCondition.getCustomerId() != null && StringUtils.contains(taskCondition.getType(), Constants.SEPCIAL_LABEL_ID.toString())){
+        if(taskCondition.getCustomerId() != null && Constants.SEPCIAL_LABEL_ID.toString().equals(taskCondition.getType())){
             Page<Task> sepcialTask = specialTaskService.querySepcicalTaskByCondition(taskCondition,pageNumber,pageSize);
             return JsonResp.success(new PageResultModel(sepcialTask, list));
         }
@@ -111,4 +111,5 @@ public class TaskController {
         return JsonResp.success();
 
     }
+
 }

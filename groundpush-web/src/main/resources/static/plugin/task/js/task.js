@@ -522,11 +522,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                              resultJsonObjs.array.push(object);
                          }
                      });
-
+                    $('#view').html("");
                     laytpl($('#phaseTableEcho').html()).render(phaseJsonObjs, function(html){
                         $('#view').append(html);
                     });
 
+                    $('#resultView').html("");
                     laytpl($('#resultUpdateEcho').html()).render(resultJsonObjs, function(html){
                         $('#resultView').append(html);
 

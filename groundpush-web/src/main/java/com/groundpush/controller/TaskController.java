@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.TaskQueryCondition;
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.model.Task;
 import com.groundpush.core.model.TaskAttribute;
@@ -12,6 +14,7 @@ import com.groundpush.core.model.TaskUri;
 import com.groundpush.core.service.TaskAttributeService;
 import com.groundpush.core.service.TaskService;
 import com.groundpush.core.service.TaskUriService;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.ExcelTools;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -77,6 +80,12 @@ public class TaskController {
     @ResponseBody
     public JsonResp updateTaskStatus(@RequestBody Task task ) {
         try {
+            //若发布任务则判断是否已上传任务uri
+            if(task.getTaskId() != null && Constants.TASK_STATUS_1.equals(task.getStatus())){
+                if(taskUriService.queryCountByTaskId(task.getTaskId()) == 0){
+                    throw new BusinessException(ExceptionEnum.TASK_NOT_PULISH_EXCEPTION.getErrorCode(), ExceptionEnum.TASK_NOT_PULISH_EXCEPTION.getErrorMessage());
+                }
+            }
             taskService.updateTask(task);
             return JsonResp.success();
         } catch (Exception e) {

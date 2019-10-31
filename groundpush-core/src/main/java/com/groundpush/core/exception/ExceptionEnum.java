@@ -27,6 +27,7 @@ public enum ExceptionEnum {
     , TASK_NOT_AMOUNT("T10002", "任务没有分红")
     ,TASK_COLLECT_EXCEPTION("T10003", "任务已经收藏，不可重复收藏！")
     ,TASK_NOT_EXCEPTION("T10004", "任务ID不可为空！")
+    ,TASK_NOT_PULISH_EXCEPTION("T10005", "任务未上传uri，不可发布！")
     , ORDER_CREATE_ORDER_FAIL("O20001", "订单创建失败，系统异常请联系管理员！")
     , ORDER_IS_EXPIRE("O20002", "订单已经过期不可删除")
     , ORDER_NOT_EXISTS("O20003", "订单不存在")

@@ -1,9 +1,11 @@
 package com.groundpush.core.service.impl;
 
+import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
 import com.groundpush.core.mapper.TaskUriMapper;
 import com.groundpush.core.model.TaskUri;
 import com.groundpush.core.service.TaskUriService;
 import com.groundpush.core.utils.Constants;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,4 +51,11 @@ public class TaskUriServiceImpl implements TaskUriService {
 
         return taskUriMapper.queryAllByTaskId(taskId);
     }
+
+    @Override
+    public Integer queryCountByTaskId(Integer taskId){
+        return taskUriMapper.queryCountByTaskId(taskId);
+    }
+
+
 }

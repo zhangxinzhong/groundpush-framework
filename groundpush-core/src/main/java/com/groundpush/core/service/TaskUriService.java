@@ -40,4 +40,11 @@ public interface TaskUriService {
      * @return
      */
     Optional<TaskUri> queryTaskUriByTaskId(Integer taskId);
+
+    /**
+     * 获取任务的uri count
+     * @param taskId
+     * @return
+     */
+    Integer queryCountByTaskId(Integer taskId);
 }
