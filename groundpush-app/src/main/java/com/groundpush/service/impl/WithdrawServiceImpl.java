@@ -8,14 +8,13 @@ import com.groundpush.core.mapper.CustomerLoginAccountMapper;
 import com.groundpush.core.model.CashOutLog;
 import com.groundpush.core.model.CustomerAccount;
 import com.groundpush.core.model.CustomerLoginAccount;
+import com.groundpush.core.service.CashOutLogService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.pay.alipay.GroundPushAliPay;
 import com.groundpush.pay.exception.PayException;
-import com.groundpush.pay.model.AliPayRequest;
 import com.groundpush.pay.model.AliPayResponse;
-import com.groundpush.service.CashOutLogService;
 import com.groundpush.service.WithdrawService;
 import com.groundpush.vo.WithdrawVo;
 import lombok.extern.slf4j.Slf4j;
@@ -82,21 +81,22 @@ public class WithdrawServiceImpl implements WithdrawService {
             //获取转账后客户账户金额
             BigDecimal customerAccountAmount = MathUtil.subtract(customerAccount.getAmount(), orderAmount);
             //变更客户账户余额
-
             customerAccountMapper.subtractCustomerAccountAmount(CustomerAccount.builder().customerId(customerAccount.getCustomerId()).amount(customerAccountAmount).build());
             //提现时需要传入唯一字符串
             String outBizNo = uniqueCode.generateRandomCode(withdrawVo.getCustomerId());
             CashOutLog cashOutLog = CashOutLog.builder().customerId(withdrawVo.getCustomerId()).amount(withdrawVo.getAmount()).type(withdrawVo.getWithdrawType()).outBizNo(outBizNo).build();
             cashOutLogService.createCashOutLog(cashOutLog);
             //构建支付参数
-            AliPayRequest aliPayRequest = AliPayRequest.builder()
-                    .amount(withdrawVo.getAmount().toString())
-                    .payee_real_name(customerLoginAccount.getName())
-                    .payee_account(customerLoginAccount.getLoginNo())
-                    .out_biz_no(outBizNo).build();
+            // todo  因中頔无法使用支付宝导致暂停自动提现
+//            AliPayRequest aliPayRequest = AliPayRequest.builder()
+//                    .amount(withdrawVo.getAmount().toString())
+//                    .payee_real_name(customerLoginAccount.getName())
+//                    .payee_account(customerLoginAccount.getLoginNo())
+//                    .out_biz_no(outBizNo).build();
 
             //转账
-            return aliPay.pay(aliPayRequest);
+//            return aliPay.pay(aliPayRequest);
+            return null;
             // 禁止在调用第三方接口后做其他操作
         } catch (BusinessException e) {
             log.error(e.toString(), e);

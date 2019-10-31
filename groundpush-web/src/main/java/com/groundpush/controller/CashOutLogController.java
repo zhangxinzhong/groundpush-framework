@@ -2,15 +2,17 @@ package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.CashOutLogQueryCondition;
-import com.groundpush.service.CashOutLogService;
+import com.groundpush.core.model.CashOutLog;
+import com.groundpush.core.model.PageResult;
+import com.groundpush.core.service.CashOutLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @description:提现记录
@@ -19,15 +21,21 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RequestMapping("/cashoutlog")
-@RestController
+@Controller
 public class CashOutLogController {
 
     @Resource
     private CashOutLogService cashOutLogService;
 
+    @RequestMapping("/toCashOutLog")
+    public String toCashOutLog() {
+        return "cashOutLog/cashOutLog";
+    }
+
     @GetMapping
-    public JsonResp queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition, @PageableDefault(page = 1,size =20) Pageable pageable){
-        return JsonResp.success(cashOutLogService.queryCashOutLog(cashOutLogQueryCondition,pageable));
+    @ResponseBody
+    public JsonResp queryCashOutLog(@RequestParam(value = "curr", defaultValue = "1") Integer pageNumber, @RequestParam(value = "limit", defaultValue = "10") Integer pageSize) {
+        return JsonResp.success(new PageResult(cashOutLogService.findAll(pageNumber,pageSize)));
     }
 
 }

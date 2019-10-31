@@ -1,4 +1,4 @@
-package com.groundpush.mapper;
+package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.condition.CashOutLogQueryCondition;
@@ -68,4 +68,12 @@ public interface CashOutLogMapper {
             "</script>"
     })
     void updateCashOutLogByOutBizNo(CashOutLog build);
+
+    /**
+     * 分页查询支付记录
+     *
+     * @return
+     */
+    @Select(" select c.nick_name,cla.login_no,cl.* from t_cashout_log cl left join t_customer c on cl.customer_id=c.customer_id left join t_customer_login_account cla on cla.customer_id=cl.customer_id and cla.type=cl.type order by cl.operation_time desc ")
+    Page<CashOutLog> queryAll();
 }
