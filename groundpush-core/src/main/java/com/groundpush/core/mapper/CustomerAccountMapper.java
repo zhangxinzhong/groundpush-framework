@@ -22,7 +22,7 @@ public interface CustomerAccountMapper {
      * @param customerId
      * @return
      */
-    @Select(" select * from t_customer_account where customer_id= #{customerId} ")
+    @Select(" select ca.*,ifnull((select sum(cl.amount)*100 from t_cashout_log cl where cl.customer_id=#{customerId}),0) as total_amount from t_customer_account ca where ca.customer_id=#{customerId} ")
     Optional<CustomerAccount> getCustomerAccount(@Param("customerId") Integer customerId);
 
     /**

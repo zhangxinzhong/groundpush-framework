@@ -64,5 +64,17 @@ public class CashOutLog implements Serializable {
      */
     private LocalDateTime operationTime;
 
+    //------------------------------------------
+
+    /**
+     * 提现客户名称
+     */
+    private String nickName;
+
+    /**
+     * 提现账号
+     */
+    private String loginNo;
+
 
 }
