@@ -748,3 +748,5 @@ CREATE TABLE `t_version` (
   PRIMARY KEY (`version_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='版本管理表';
 
+-- 冗余标签id字段
+alter table t_task add column label_ids VARCHAR(500) default null;

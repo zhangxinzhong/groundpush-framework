@@ -281,4 +281,12 @@ public class StringUtils {
 
         return hexList;
     }
+
+
+    public String filterString(String value,String expression){
+        if(isNotBlank(value)){
+              value.replaceAll(expression,"");
+        }
+        return null;
+    }
 }
