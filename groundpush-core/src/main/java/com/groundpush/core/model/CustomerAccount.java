@@ -47,4 +47,11 @@ public class CustomerAccount {
 
     @JsonView(Customer.DetailCustomerView.class)
     private LocalDateTime lastModifiedTime;
+
+    /**
+     * 账号金额
+     */
+    @ApiModelProperty(value = "账号金额")
+    @JsonView(Customer.DetailCustomerView.class)
+    private BigDecimal totalAmount;
 }
