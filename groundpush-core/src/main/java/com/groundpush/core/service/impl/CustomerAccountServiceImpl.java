@@ -33,6 +33,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         return customerAccountMapper.getCustomerAccount(customerId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createCustomerAccount(CustomerAccount customerAccount) {
         customerAccountMapper.createCustomerAccount(customerAccount);

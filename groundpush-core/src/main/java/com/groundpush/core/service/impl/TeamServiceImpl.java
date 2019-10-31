@@ -8,6 +8,7 @@ import com.groundpush.core.model.TeamCustomer;
 import com.groundpush.core.service.TeamCustomerService;
 import com.groundpush.core.service.TeamService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,12 +34,14 @@ public class TeamServiceImpl implements TeamService {
         return teamMapper.queryTeamPage();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delTeam(Integer teamId) {
         teamMapper.delTeam(teamId);
         teamCustomerService.delTeamCustomerByTeamId(teamId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveTeam(Team team) {
         teamMapper.saveTeam(team);

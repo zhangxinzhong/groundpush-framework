@@ -40,6 +40,7 @@ public class TaskAttributeServiceImpl implements TaskAttributeService {
         taskAttributeMapper.deleteTaskAttributeByTaskId(taskId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Optional<Integer> createTaskAttribute(List<TaskAttribute> taskAttributes) {
         return Optional.of(taskAttributeMapper.createTaskAttribute(taskAttributes));

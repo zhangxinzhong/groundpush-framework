@@ -11,6 +11,7 @@ import com.groundpush.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -96,12 +97,14 @@ public class UserServiceImpl implements UserService, ObjectRepository<LoginUserI
         return getLoginUserInfo(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createUser(User user) {
         userMapper.createUser(user);
         userAccountMapper.createUserAccount(UserAccount.builder().userId(user.getUserId()).password(bCryptPasswordEncoder.encode(Constants.INIT_USER_PASSWORD)).build());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void editUser(User user) {
         userMapper.editUser(user);
@@ -113,6 +116,7 @@ public class UserServiceImpl implements UserService, ObjectRepository<LoginUserI
         return userMapper.queryAll(userQueryCondition);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteUser(Integer userId) {
         userMapper.deleteUser(userId);

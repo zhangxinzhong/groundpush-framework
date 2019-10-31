@@ -11,6 +11,7 @@ import com.groundpush.service.PrivilegeService;
 import com.groundpush.service.PrivilegeUriService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 
@@ -39,16 +40,19 @@ public class PrivilegeUriServiceImpl implements PrivilegeUriService {
         return privilegeUriMapper.queryPrivilegeUriAll(privilegeUri);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean insert(PrivilegeUri privilegeUri) {
         return privilegeUriMapper.insert(privilegeUri) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean update(PrivilegeUri privilegeUri) {
         return privilegeUriMapper.update(privilegeUri) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void batchSave(PrivilegeUri privilegeUri) {
         privilegeUriMapper.delByPriId(privilegeUri.getPrivilegeId());
@@ -62,6 +66,7 @@ public class PrivilegeUriServiceImpl implements PrivilegeUriService {
         return privilegeUriMapper.getPrivilegeUri(privilegeUri);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean del(PrivilegeUri privilegeUri) {
         return privilegeUriMapper.del(privilegeUri) > 0 ? true : false;

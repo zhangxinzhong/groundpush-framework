@@ -5,6 +5,7 @@ import com.groundpush.core.model.OrderLog;
 import com.groundpush.core.service.OrderLogService;
 import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,7 +22,7 @@ public class OrderLogServiceImpl implements OrderLogService {
     @Resource
     private OrderLogMapper orderLogMapper;
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createOrderLog(List<OrderLog> list) {
         orderLogMapper.createOrderLog(list);

@@ -5,6 +5,7 @@ import com.groundpush.core.model.Uri;
 import com.groundpush.mapper.UriMapper;
 import com.groundpush.service.UriService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,6 +27,7 @@ public class UriServiceImpl implements UriService {
         return uriMapper.queryTaskAll();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean insert(Uri uri) {
         return uriMapper.insert(uri) > 0 ? true : false;
@@ -36,6 +38,7 @@ public class UriServiceImpl implements UriService {
         return uriMapper.getUri(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean save(Uri uri) {
         Boolean result = true;
@@ -48,11 +51,13 @@ public class UriServiceImpl implements UriService {
         return result;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean update(Uri uri) {
         return uriMapper.update(uri) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean del(Integer uriId) {
         return uriMapper.del(uriId) > 0 ? true : false;

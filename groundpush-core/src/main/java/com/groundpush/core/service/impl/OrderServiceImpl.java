@@ -67,11 +67,13 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.queryOrderByCondition(condition);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateOrderData(Order order){
         orderMapper.updateOrderData(order);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer updateOrderByUniqueCode(String uniqueCode, Integer settlementStatus, String remark) {
         return orderMapper.updateOrderByUniqueCode(uniqueCode,settlementStatus,remark);
@@ -183,6 +185,7 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.updateOrderUniqueCode(order.getOrderId(), condition.getUniqueCode());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateOrder(Order order) {
         orderMapper.updateOrder(order);
@@ -229,6 +232,7 @@ public class OrderServiceImpl implements OrderService {
         return orderTaskCustomerMapper.queryTaskIdByOrderId(orderId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addOrder(Order build) {
         orderMapper.addOrder(build);

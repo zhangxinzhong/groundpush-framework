@@ -86,7 +86,7 @@ public interface TaskLabelMapper {
             "<script>",
             " insert into t_task_label(task_id, label_id, created_time) values ",
             "<foreach collection='list' item='taskLabel' open='(' close=')' separator='),('>",
-            "(#{taskLabel.taskId},#{taskLabel.labelId},current_timestamp)",
+            "#{taskLabel.taskId},#{taskLabel.labelId},current_timestamp",
             "</foreach>",
             "</script>"
     })

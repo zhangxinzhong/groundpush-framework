@@ -7,6 +7,7 @@ import com.groundpush.core.model.Dict;
 import com.groundpush.mapper.DictMapper;
 import com.groundpush.service.DictService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class DictServiceImpl implements DictService {
     @Resource
     private DictMapper dictMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean insertDict(Dict dict) {
         return dictMapper.insertDict(dict) > 0 ? true : false;
@@ -32,11 +34,13 @@ public class DictServiceImpl implements DictService {
         return dictMapper.getById(dictId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateDict(Dict dict) {
         return dictMapper.updateDict(dict) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteDict(Integer dictId) {
         return dictMapper.deleteDict(dictId) > 0 ? true : false;
@@ -48,6 +52,7 @@ public class DictServiceImpl implements DictService {
         return dictMapper.queryAll(dictQueryCondition);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean saveDict(Dict dict) {
         Integer dictId = dict.getDictId();

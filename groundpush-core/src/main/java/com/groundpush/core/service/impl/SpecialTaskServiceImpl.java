@@ -13,6 +13,7 @@ import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.MathUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -54,6 +55,7 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
         return specialTaskMapper.querySpecialTaskPage();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delSpecialTask(Integer specialTaskId) {
         specialTaskMapper.delSpecialTask(specialTaskId);
@@ -64,6 +66,7 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
         specialTaskMapper.publishSpecialTask(specialTaskId, status);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveSpecialTask(SpecialTask specialTask) {
         specialTaskMapper.saveSpecialTask(specialTask);

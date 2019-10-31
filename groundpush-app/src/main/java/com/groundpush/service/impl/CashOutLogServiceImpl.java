@@ -38,11 +38,13 @@ public class CashOutLogServiceImpl implements CashOutLogService {
         cashOutLogMapper.createCashOutLog(build);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCashOutLog(CashOutLog cashOutLog) {
         cashOutLogMapper.updateCashOutLog(cashOutLog);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCashOutLogByOutBizNo(CashOutLog build) {
         cashOutLogMapper.updateCashOutLogByOutBizNo(build);

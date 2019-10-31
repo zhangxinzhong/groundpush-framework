@@ -36,16 +36,19 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.queryAllRoles();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addRole(Role role) {
         roleMapper.addRole(role);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delRole(Integer roleId) {
         roleMapper.delRole(roleId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateRole(Role role) {
         roleMapper.updateRole(role);

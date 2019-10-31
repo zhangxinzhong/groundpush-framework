@@ -5,6 +5,7 @@ import com.groundpush.core.model.Label;
 import com.groundpush.core.model.TaskLabel;
 import com.groundpush.core.service.TaskLabelService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,6 +22,7 @@ public class TaskLabelServiceImpl implements TaskLabelService {
     @Resource
     private TaskLabelMapper taskLabelMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createSingleTaskLabel(TaskLabel taskLabel) {
         taskLabelMapper.createSingleTaskLabel(taskLabel);
@@ -31,6 +33,7 @@ public class TaskLabelServiceImpl implements TaskLabelService {
         return  taskLabelMapper.getTaskLabel(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean save(TaskLabel taskLabel) {
         Boolean taskLabelResult = true;
