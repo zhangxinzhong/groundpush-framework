@@ -65,6 +65,7 @@ public class TaskServiceImpl implements TaskService {
         return Optional.empty();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @OperationLogDetail(operationType = OperationType.TASK_ADD, type = OperationClientType.PC)
     @Override
     public void createSingleTask(Task task) {
@@ -112,6 +113,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @OperationLogDetail(operationType = OperationType.TASK_UPDATE, type = OperationClientType.PC)
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateTask(Task task) {
         taskMapper.updateTask(task);

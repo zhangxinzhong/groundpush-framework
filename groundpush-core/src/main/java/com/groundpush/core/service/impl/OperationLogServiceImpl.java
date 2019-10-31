@@ -7,6 +7,7 @@ import com.groundpush.core.mapper.OperationLogMapper;
 import com.groundpush.core.model.OperationLog;
 import com.groundpush.core.service.OperationLogService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -21,6 +22,7 @@ public class OperationLogServiceImpl implements OperationLogService {
     @Resource
     private OperationLogMapper operationLogMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createOperationLog(OperationLog operationLog) {
         operationLogMapper.insert(operationLog);

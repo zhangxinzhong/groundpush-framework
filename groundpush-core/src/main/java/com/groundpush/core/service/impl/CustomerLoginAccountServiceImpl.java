@@ -56,6 +56,7 @@ public class CustomerLoginAccountServiceImpl implements CustomerLoginAccountServ
         return customerLoginAccountMapper.get(customerLoginAccountId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateCustomerLoginAccountLoginNo(CustomerLoginAccount customerLoginAccount) {
         return customerLoginAccountMapper.updateCustomerLoginAccountLoginNo(customerLoginAccount)>0?true:false;

@@ -40,7 +40,7 @@ public interface TaskLocationMapper {
             "<script>",
             " insert into t_task_location(task_id,location,created_time) values ",
             "<foreach collection='list' item='taskLocation' open='(' close=')' separator='),('>",
-            "(#{taskLocation.taskId},#{taskLocation.location},current_timestamp)",
+            "#{taskLocation.taskId},#{taskLocation.location},current_timestamp",
             "</foreach>",
             "</script>"
     })

@@ -11,6 +11,7 @@ import com.groundpush.service.ChannelService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -39,13 +40,13 @@ public class ChannelServiceImpl implements ChannelService {
         return channelMapper.getChannels();
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createChannel(Channel channel) {
         channelMapper.createChannel(channel);
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateChannel(Channel channel) {
 
@@ -58,6 +59,7 @@ public class ChannelServiceImpl implements ChannelService {
         return optional;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delById(Channel channel) {
         channelMapper.updateChannel(channel);

@@ -5,6 +5,7 @@ import com.groundpush.core.model.TaskUri;
 import com.groundpush.core.service.TaskUriService;
 import com.groundpush.core.utils.Constants;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -21,16 +22,19 @@ public class TaskUriServiceImpl implements TaskUriService {
     @Resource
     private TaskUriMapper taskUriMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean save(List<TaskUri> taskUris) {
         return taskUriMapper.insert(taskUris) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean del(Integer taskId) {
         return taskUriMapper.del(taskId) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateTaskUri(TaskUri taskUri) {
         taskUriMapper.updateTaskUri(taskUri);

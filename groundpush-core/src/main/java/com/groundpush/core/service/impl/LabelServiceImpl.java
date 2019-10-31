@@ -7,6 +7,7 @@ import com.groundpush.core.model.Label;
 import com.groundpush.core.service.LabelService;
 import com.groundpush.core.utils.Constants;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -39,11 +40,13 @@ public class LabelServiceImpl implements LabelService {
         return labelMapper.getLabel();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createLabel(Label label) {
         labelMapper.createLabel(label);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateLabel(Label label) {
         labelMapper.updateLabel(label);
@@ -55,6 +58,7 @@ public class LabelServiceImpl implements LabelService {
         return optional;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delById(Label label) {
         labelMapper.removeLabel(label);
@@ -64,6 +68,4 @@ public class LabelServiceImpl implements LabelService {
     public List<Label> getLabelAll() {
         return labelMapper.getLabelAll();
     }
-
-
 }

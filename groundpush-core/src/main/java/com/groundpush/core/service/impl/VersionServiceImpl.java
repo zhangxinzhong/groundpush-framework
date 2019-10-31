@@ -44,21 +44,25 @@ public class VersionServiceImpl implements VersionService {
         return versionMapper.getVersion(versionId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean createVersion(Version version) {
         return versionMapper.createVersion(version)>0?true:false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void publishVersion(Integer versionId, Integer status) {
         versionMapper.updateVersion(Version.builder().versionId(versionId).status(status).build());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void editVersion(Version version) {
         versionMapper.updateVersion(version);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delVersion(Integer versionId) {
         versionMapper.delVersion(versionId);

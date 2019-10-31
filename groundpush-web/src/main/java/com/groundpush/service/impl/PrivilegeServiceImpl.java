@@ -11,6 +11,7 @@ import com.groundpush.mapper.PrivilegeUriMapper;
 import com.groundpush.service.PrivilegeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.AntPathMatcher;
 
 import javax.annotation.Resource;
@@ -65,16 +66,19 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return privilegeMapper.queryAllPrivileges();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean insert(Privilege privilege) {
         return privilegeMapper.insert(privilege) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean update(Privilege privilege) {
         return privilegeMapper.update(privilege) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean save(Privilege privilege) {
         //返回结果

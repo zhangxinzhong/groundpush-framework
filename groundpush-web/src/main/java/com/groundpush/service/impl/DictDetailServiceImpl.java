@@ -7,6 +7,7 @@ import com.groundpush.core.model.DictDetail;
 import com.groundpush.mapper.DictDetailMapper;
 import com.groundpush.service.DictDetailService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class DictDetailServiceImpl implements DictDetailService {
     @Resource
     private DictDetailMapper dictDetailMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean insertDictDetail(DictDetail dictDetail) {
         return dictDetailMapper.insertDictDetail(dictDetail) > 0 ? true : false;
@@ -32,11 +34,13 @@ public class DictDetailServiceImpl implements DictDetailService {
         return dictDetailMapper.getById(detailId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateDictDetail(DictDetail dictDetail) {
         return dictDetailMapper.updateDictDetail(dictDetail) > 0 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteDictDetail(Integer detailId) {
         return dictDetailMapper.deleteDictDetail(detailId) > 0 ? true : false;
