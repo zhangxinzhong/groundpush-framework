@@ -32,31 +32,10 @@
 
 <!-- 订单结果集 操作标识-->
 <script type="text/html" id="showOrderResult">
-    <a class="layui-btn layui-btn-xs layui-icon layui-icon-up" lay-event="showOrderResult"></a>
+    <a class="layui-btn layui-btn-sm" lay-event="showOrderResult">查看</a>
 
 </script>
 
-<!-- 订单结果集 列表-->
-<script type="text/html" id="showOrderResultList">
-   <tr>
-   <td colspan="5">
-
-       <div style="padding: 20px; background-color: #F2F2F2;">
-           <div class="layui-row layui-col-space15">
-               <div class="layui-col-md12">
-                   <div class="layui-card">
-                       <div class="layui-card-header">订单任务结果集</div>
-                       <div class="layui-card-body">
-                           <table  class="layui-hide" id="orderResult{{d.orderId}}" lay-filter="orderResult{{d.orderId}}"></table>
-                       </div>
-                   </div>
-               </div>
-           </div>
-       </div>
-
-   </td>
-   </tr>
-</script>
 
 
 
@@ -112,7 +91,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="viewOrderListTitle">任务订单审核</h4>
+                <h4 class="modal-title" id="viewOrderListTitle">任务订单列表</h4>
             </div>
             <div class="modal-body">
                 <div class="modal-body-max no-padding">
@@ -132,5 +111,33 @@
     </div>
 </div>
 <!-- 订单列表模态框 end -->
+
+
+<!-- 订单列表模态框 begin -->
+<div class="modal fade bs-example-modal-lg" id="viewOrderResultDialog" tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" style="width: 90%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="viewOrderResultTitle">任务订单结果集</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form">
+                                  <table  class="layui-hide" id="orderResult" lay-filter="orderResult"></table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 订单列表模态框 end -->
+
 </body>
 </html>
