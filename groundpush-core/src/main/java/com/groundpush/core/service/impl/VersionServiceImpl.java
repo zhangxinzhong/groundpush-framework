@@ -36,6 +36,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public Page<Version> queryVersionPage(Version version, Integer page, Integer limit) {
+        PageHelper.startPage(page,limit);
         return versionMapper.queryVersionPage(version);
     }
 

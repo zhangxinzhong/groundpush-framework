@@ -162,6 +162,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<Customer> queryCustomerPage(Customer customer, Integer page, Integer limit) {
+        PageHelper.startPage(page,limit);
         return customerMapper.queryCustomerPage(customer);
     }
 
