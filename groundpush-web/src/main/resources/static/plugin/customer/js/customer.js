@@ -29,8 +29,7 @@ layui.use(['table', 'form', 'layer'], function () {
                     , {field: 'bonusAmount', title: '帐户余额'}
                     , {field: '', title: '操作',toolbar: "#toolbarCustomerOperationUpdate"}
                 ]]
-                ,
-                page: true, curr: 1, limit: Global.PAGE_SISE
+                ,page: true, curr: 1, limit: Global.PAGE_SISE
                 , response:
                     {
                         statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0

@@ -51,7 +51,7 @@ public class VersionController {
     @ResponseBody
     @ApiOperation("版本信息查询服务")
     @RequestMapping("/getVersionPageList")
-    public JsonResp getCustomerPageList(Version version, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
+    public JsonResp getVersionPageList(Version version, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "20") Integer limit) {
         try {
             Page<Version> versions = versionService.queryVersionPage(version, page, limit);
             return JsonResp.success(new PageResult(versions));
