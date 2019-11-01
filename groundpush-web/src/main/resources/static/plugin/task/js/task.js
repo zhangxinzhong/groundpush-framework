@@ -11,77 +11,77 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     form.verify({
         thumInput: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '缩略图片不可为空！';
+                return '缩略图片不可为空';
             }
         }
         , sampleInput: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '示例图片不可为空！';
+                return '示例图片不可为空';
             }
         }
         , coverInput: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '封面图片不可为空！';
+                return '封面图片不可为空';
             }
         }
         , title: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '标题不能为空！';
+                return '标题不能为空';
             }
         }
         , briefTitle: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '简略标题不可为空！';
+                return '简略标题不可为空';
             }
         }
         , labelIds: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '标签项不可为空！';
+                return '标签项不可为空';
             }
         }
         , amount: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '标单笔佣金不可为空！';
+                return '标单笔佣金不可为空';
             }
         }
         , spreadTotal: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '推广总数不可为空！';
+                return '推广总数不可为空';
             }
         }
         , handlerNum: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '可推广任务数不可为空！';
+                return '可推广任务数不可为空';
             }
         }
         , auditDuration: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '审核天数不可为空！';
+                return '审核天数不可为空';
             }
         }
         , expendTime: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '任务耗时不可为空！';
+                return '任务耗时不可为空';
             }
         }
         , completeOdds: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '综合通过率不可为空！';
+                return '综合通过率不可为空';
             }
         }
         , spreadRatio: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '推广人分成不可为空！';
+                return '推广人分成不可为空';
             }
         }
         , taskTitle: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '介绍标题不可为空！';
+                return '介绍标题不可为空';
             }
         }
         , taskContent: function (value) {
             if (value == null || value == undefined || value == '') {
-                return '介绍内容不可为空！';
+                return '介绍内容不可为空';
             }
         }
     });
@@ -260,7 +260,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 let tr = $(this).parent().parent();
                 let currVal = tr.find('td input[name="seq"]').val(); let prevVal = tr.prev().find('td input[name="seq"]').val();
                 if(tr.prev('tr').length == 0  || prevVal == 1){
-                     layer.msg('不可上移行！');
+                     layer.msg('不可上移行');
                      return false;
                 }
 
@@ -282,7 +282,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             $('.downTr').click(function (event) {
                 let tr = $(this).parent().parent();
                 if(tr.next('tr').length == 0){
-                    layer.msg('不可下移行！');
+                    layer.msg('不可下移行');
                     return false;
                 }
                 let currVal = tr.find('td input[name="seq"]').val();let nextVal = tr.next().find('td input[name="seq"]').val();
@@ -426,7 +426,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 if(rep.code =='200'){
                     eventListener.hideAddUpdateTaskDialog();
                     eventListener.reloadTaskTable();
-                    layer.msg('任务保存成功！');
+                    layer.msg('任务保存成功');
                 } else {
                     layer.msg(rep.message);
                 }
@@ -581,14 +581,14 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 , done: function (res) {
                     let code = res.code;
                     if (code == "200") {
-                        layer.msg('上传文件URL成功！');
+                        layer.msg('上传文件URL成功');
                     } else {
                         layer.msg(res.message)
                     }
                 }
                 , error: function () {
                     //演示失败状态，并实现重传
-                    layer.msg('上传失败！');
+                    layer.msg('上传失败');
                 }
             });
         }
@@ -617,7 +617,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //公司
         let source = $("#source").val();
         if(source == undefined || source == ''){
-            layer.msg('公司不可为空！');
+            layer.msg('公司不可为空');
             return false;
         }
         //任务所在地
@@ -627,7 +627,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //标签内容
         let labelIds = $('#selectLabelIds').selectpicker('val');
         if(labelIds == undefined || labelIds == ''){
-            layer.msg('标签不可为空！');
+            layer.msg('标签不可为空');
             return false;
         }
 
@@ -649,7 +649,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 obj["rowType"] = rowType;
                 let content = $(object).find('.content').val();
                 if (content == undefined || content == '') {
-                    let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值为空！'
+                    let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值为空'
                     layer.msg(msg);
                     success = false;
                     return false;
@@ -671,7 +671,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
 
         if (labelType == 0) {
-            layer.msg('我的任务编辑不可为空！')
+            layer.msg('我的任务编辑不可为空')
             return false;
         }
 
@@ -685,7 +685,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             obj["rowType"] = rowType;
             let content = $(object).find('input[name="content"]').val();
             if (content == undefined || content == '') {
-                let msg = '任务结果集编辑：序号' + seq + '的类型值为空！'
+                let msg = '任务结果集编辑：序号' + seq + '的类型值为空'
                 layer.msg(msg);
                 success = false;
                 return false;
@@ -699,7 +699,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             return false;
         }
         if (seq == 0) {
-            layer.msg('任务结果集不可为空！')
+            layer.msg('任务结果集不可为空')
             return false;
         }
 
@@ -793,12 +793,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         $(data.elem).parent('td').find('.content').attr('readonly','readonly').val($("#spread").val());
     });
 
-
-
-    $('[data-custom-event="task"]').on("click", function () {
-        let $this = $(this);
-        let _method = $this.data('method');
-        eventListener[_method] ? eventListener[_method].call(this, $this) : '';
+    //监听task
+    table.on('toolbar(task)', function (obj) {
+        let data = obj.data;
+        if (obj.event === 'showTaskModal') {
+            eventListener.showTaskModal(data);
+        }
     });
 
 

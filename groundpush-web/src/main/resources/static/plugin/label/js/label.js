@@ -78,7 +78,7 @@ layui.use('table', function () {
                 if(rep.code =='200'){
                     eventListener.hideAddLabelDialog();
                     eventListener.reloadLabelTable();
-                    layer.msg('标签添加成功！');
+                    layer.msg('标签添加成功');
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -104,7 +104,7 @@ layui.use('table', function () {
                 if(rep.code =='200'){
                     eventListener.hideEditLabelDialog();
                     eventListener.reloadLabelTable();
-                    layer.msg('标签修改成功！');
+                    layer.msg('标签修改成功');
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -114,7 +114,7 @@ layui.use('table', function () {
             Utils.postAjax("/label/delLabel",JSON.stringify(data),function(rep) {
                 if(rep.code =='200'){
                     eventListener.reloadLabelTable();
-                    layer.msg("标签删除成功！");
+                    layer.msg("标签删除成功");
                 }else{
                   layer.msg(rep.message);
                 }
@@ -176,11 +176,10 @@ layui.use('table', function () {
         return false;
     });
 
-
-    $('[data-custom-event="label"]').on("click",function () {
-        let $this = $(this);
-        let _method = $this.data('method');
-        eventListener[_method]?eventListener[_method].call(this,$this):'';
+    table.on('toolbar(label)', function (obj) {
+        let data = obj.data;
+        if (obj.event === 'showAddLabelDialog') {
+            eventListener.showAddLabelDialog(data);
+        }
     });
-
 });

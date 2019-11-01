@@ -38,7 +38,7 @@ layui.use(['table', 'form', 'layer'], function () {
     });
 
     //触发事件
-    var eventListener = {
+    let eventListener = {
             initPrivilegeTable: function () {
                 table.render({
                     elem: '#privilege'
@@ -194,7 +194,6 @@ layui.use(['table', 'form', 'layer'], function () {
             }, editPrivilegeUri: function (data) {
                 Utils.putAjax("/privilegeUri/save", JSON.stringify(data.field), function (rep) {
                     if (rep.code == '200') {
-                        eventListener.hideEditPrivilegeUriDialog();
                         eventListener.reloadPrivilegeUriTable();
                         layer.msg('权限URI修改成功');
                     }
@@ -210,7 +209,6 @@ layui.use(['table', 'form', 'layer'], function () {
                                 "privilegeId": rep.data.privilegeId
                                 , "uriId": rep.data.uriId
                             })
-                            eventListener.showEditPrivilegeUriDialog(data.uriId);
                         }
                     }, function (rep) {
                         layer.msg(rep.message);
@@ -375,7 +373,7 @@ layui.use(['table', 'form', 'layer'], function () {
 
    //保存权限uri
     table.on('toolbar(addPrivilegeUri)', function (data) {
-        var datas = {};
+        let datas = {};
         if(data.event === 'priUriSubmit'){
             datas.privilegeId = $("#uriPrivilegeId").val();
             datas.ids = ids;

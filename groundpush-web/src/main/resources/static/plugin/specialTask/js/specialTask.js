@@ -16,7 +16,7 @@ layui.use('table', function () {
                 ,done: function (res, curr, count) {
                     $("#specialTaskDiv table").css("width", "100%");
                 }
-                , toolbar: '#toolbarTask'
+                , toolbar: '#toolbarSpecialTask'
                 , title: 'special-data'
                 , totalRow: true
                 , cols: [[
@@ -148,26 +148,21 @@ layui.use('table', function () {
         }
     });
 
+    //监听新增特殊任务dialog
+    table.on('toolbar(special)', function (obj) {
+        let data = obj.data;
+        if (obj.event === 'showAddSpecialTask') {
+            eventListener.showAddSpecialTask(data);
+        }
+    });
 
-
-
-    //监听新增角色
+    //监听新增特殊任务
     form.on('submit(addSpecialTask)',function (data) {
         layui.form.render();
         eventListener.addSpecialTask(data);
         //屏蔽表单提交
         return false;
     });
-
-
-
-    $('[data-custom-event="special"]').on("click",function () {
-        let $this = $(this);
-        let _method = $this.data('method');
-        eventListener[_method]?eventListener[_method].call(this,$this):'';
-    });
-
-
 });
 
 

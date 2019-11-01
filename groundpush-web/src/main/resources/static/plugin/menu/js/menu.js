@@ -110,12 +110,12 @@ layui.use('table', function () {
                 layer.msg(rep.message);
             });
         }
-        , showAddMenuDialog: function () {
-            $('#addMenuDialog').modal('show');
-        }
         , hideAddMenuDialog: function () {
             $('#addMenuDialog').modal('hide');
             $('#addMenuForm')[0].reset();
+        }
+        , showAddMenuDialog: function () {
+            $('#addMenuDialog').modal('show');
         }
         , showEditMenuDialog: function () {
             $('#editMenuDialog').modal('show');
@@ -155,11 +155,10 @@ layui.use('table', function () {
         return false;
     });
 
-
-    $('[data-custom-event="menu"]').on("click", function () {
-        let $this = $(this);
-        let _method = $this.data('method');
-        eventListener[_method] ? eventListener[_method].call(this, $this) : '';
+    table.on('toolbar(menu)', function (obj) {
+        let data = obj.data;
+        if (obj.event === 'showAddMenuDialog') {
+            eventListener.showAddMenuDialog(data);
+        }
     });
-
 });

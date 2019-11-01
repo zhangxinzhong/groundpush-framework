@@ -10,14 +10,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="/plugin/label/css/label.css"/>
-    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/label/js/label.js"
-            th:src="@{/common/common.js}"></script>
+    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/label/js/label.js" th:src="@{/common/common.js}"></script>
 
 </head>
 <body>
 <!--新增标签-->
 <script type="text/html" id="toolbarLabel">
-    <a class="layui-btn layui-btn-xs" data-method="showAddLabelDialog" data-custom-event="label">新增标签</a>
+    <a class="layui-btn layui-btn-xs" lay-event="showAddLabelDialog">新增标签</a>
 </script>
 
 <!-- label table -->
@@ -32,7 +31,8 @@
 </script>
 
 <!-- 新增标签模态框 begin -->
-<div class="modal fade bs-example-modal-lg" id="addLabelDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+<div class="modal fade bs-example-modal-lg" id="addLabelDialog" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -54,8 +54,8 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>标签类型:</label>
                                         <div class="col-md-10">
-                                            <input type="radio" name="type" value="1" title="主要标签" checked >
-                                            <input type="radio" name="type" value="0" title="次要标签" >
+                                            <input type="radio" name="type" value="1" title="主要标签" checked>
+                                            <input type="radio" name="type" value="0" title="次要标签">
                                         </div>
                                     </div>
 
@@ -67,7 +67,9 @@
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="addLabel">提交</button>
+                                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="addLabel">
+                                            提交
+                                        </button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                     </div>
                                 </form>
@@ -82,7 +84,8 @@
 <!-- 新增标签模态框 end -->
 
 <!-- 编辑标签模态框 begin -->
-<div class="modal fade bs-example-modal-lg" id="editLabelDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+<div class="modal fade bs-example-modal-lg" id="editLabelDialog" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -101,27 +104,31 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>标签名称</label>
                                         <div class="col-md-10">
-                                            <input type="text" name="labelName" lay-verify="labelName" autocomplete="off" placeholder="请输入标签名称" class="layui-input">
+                                            <input type="text" name="labelName" lay-verify="labelName"
+                                                   autocomplete="off" placeholder="请输入标签名称" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>标签类型</label>
                                         <div class="col-md-10">
-                                            <input type="radio" name="type" value="1" title="主要标签" checked >
-                                            <input type="radio" name="type" value="0" title="次要标签" >
+                                            <input type="radio" name="type" value="1" title="主要标签" checked>
+                                            <input type="radio" name="type" value="0" title="次要标签">
                                         </div>
                                     </div>
 
                                     <div class="layui-form-item layui-form-text">
                                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>标签说明</label>
                                         <div class="col-md-10">
-                                            <textarea name="remark" placeholder="请输入标签说明" lay-verify="remark" class="layui-textarea"></textarea>
+                                            <textarea name="remark" placeholder="请输入标签说明" lay-verify="remark"
+                                                      class="layui-textarea"></textarea>
                                         </div>
                                     </div>
 
 
                                     <div class="modal-footer">
-                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="editLabel">更新</button>
+                                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="editLabel">
+                                            更新
+                                        </button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                     </div>
                                 </form>
