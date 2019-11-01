@@ -287,6 +287,6 @@ public class StringUtils {
         if(isNotBlank(value)){
               value.replaceAll(expression,"");
         }
-        return null;
+        return value;
     }
 }
