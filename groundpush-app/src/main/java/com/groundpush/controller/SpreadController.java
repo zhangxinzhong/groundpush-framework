@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.spring.web.json.Json;
 
@@ -61,16 +62,18 @@ public class SpreadController {
 
     @ApiOperation("页面跳转uri")
     @GetMapping
-    public JsonResp toSpread(String paramKey) {
+    public JsonResp toSpread(@RequestParam("paramKey") String paramKey) {
+        SpreadQueryCondition spreadQueryCondition = (SpreadQueryCondition) redisUtils.get(paramKey);
+        if (spreadQueryCondition == null) {
+            return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
+        }
+        String key = aesUtils.dcodes(spreadQueryCondition.getKey(), Constants.APP_AES_KEY);
         try {
-            SpreadQueryCondition spreadQueryCondition = (SpreadQueryCondition) redisUtils.get(paramKey);
 
-            if (spreadQueryCondition == null) {
-                return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
-            }
+
             log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}", spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId(), spreadQueryCondition.getType(), spreadQueryCondition.getKey());
 
-            String key = aesUtils.dcodes(spreadQueryCondition.getKey(), Constants.APP_AES_KEY);
+
             String obj = (String) redisUtils.get(key);
 
             if (StringUtils.isBlank(key) || StringUtils.isBlank(obj) || (StringUtils.isNotBlank(obj) && !obj.equalsIgnoreCase(key))) {
@@ -103,13 +106,14 @@ public class SpreadController {
             orderService.createOrder(order);
             // 使用完url 后需要把最后修改时间改成今天
             taskUriService.updateTaskUri(taskUriOptional.get());
-            redisUtils.del(key);
-            redisUtils.del(paramKey);
 
             return JsonResp.success(taskUriOptional.get().getUri());
         } catch (Exception e) {
             log.error(e.toString(), e);
             return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
+        }finally {
+            redisUtils.del(key);
+            redisUtils.del(paramKey);
         }
     }
 

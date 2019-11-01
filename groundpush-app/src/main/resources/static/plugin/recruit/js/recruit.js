@@ -1,3 +1,16 @@
+function is_weixnOrPay(){
+    let ua = navigator.userAgent.toLowerCase();
+    if(ua.match(/micromessenger/i)=="micromessenger" || ua.match(/alipayclient/i) == "alipayclient") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+if(is_weixnOrPay()){
+    $("#guide_box").show();
+}
+
 layui.use('table', function () {
     let form = layui.form;
     let layer = layui.layer;
