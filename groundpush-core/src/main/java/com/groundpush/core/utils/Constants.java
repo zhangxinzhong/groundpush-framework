@@ -368,4 +368,14 @@ public class Constants {
      * 特殊任务标签id SEPCIAL_LABEL_ID
      */
     public static  final Integer SEPCIAL_LABEL_ID = 0;
+
+    /**
+     * 推广客户
+     */
+    public static final String CUSTOMER_RECRUIT = "recruit";
+
+    /**
+     * 推广任务
+     */
+    public static final String TASK_SPREAD = "spread";
 }

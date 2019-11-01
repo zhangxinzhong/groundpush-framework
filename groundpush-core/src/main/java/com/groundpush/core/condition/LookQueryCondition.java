@@ -7,22 +7,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
 /**
  * LookCondition
  *
  * @author hss
  * @date 2019/11/1 15:29
  */
-@ApiModel(value = "用于跳转页面链接")
+@ApiModel(value = "推广条件")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LookCondition {
-
+public class LookQueryCondition implements Serializable {
     /**
      *客户id
      */
+    @NotNull(message="客户编号不能为空")
     @ApiModelProperty("客户id")
     private Integer customerId;
+
 }

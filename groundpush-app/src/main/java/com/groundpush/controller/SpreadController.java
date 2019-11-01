@@ -57,9 +57,12 @@ public class SpreadController {
 
     @ApiOperation("页面跳转uri")
     @GetMapping
-    public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
+    public String toSpread(String paramKey,Model model) {
+        SpreadQueryCondition spreadQueryCondition = (SpreadQueryCondition) redisUtils.get(paramKey);
+
+        if (spreadQueryCondition == null) {
+            model.addAttribute("errorMsg", "系统请联系管理员!");
+            return "spread/spread";
         }
         log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}", spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId(), spreadQueryCondition.getType(), spreadQueryCondition.getKey());
 
