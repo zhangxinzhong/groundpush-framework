@@ -55,7 +55,4 @@ public class TaskOrderList implements Serializable {
     @ApiModelProperty("失效订单总金额")
     private BigDecimal  failAmount;
 
-    @ApiModelProperty("是否已支付 大于0 则为未支付个数")
-    private Integer hasPay;
-
 }

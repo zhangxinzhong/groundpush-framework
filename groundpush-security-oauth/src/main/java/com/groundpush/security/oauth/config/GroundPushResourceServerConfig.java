@@ -56,11 +56,13 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
                 //短信验证码登录
                 .antMatchers("/validate/codeSms").permitAll()
                 //二次跳转
-                .antMatchers("/againPath","/spread").permitAll()
+                .antMatchers("/spread").permitAll()
                 // 协议及说明
                 .antMatchers("/appPage/*").permitAll()
                 // 招募地推员
                 .antMatchers("/recruit/**").permitAll()
+                //跳转到遮罩页面
+                .antMatchers("/look/**").permitAll()
                 // 阿里sts
                 .antMatchers("/aliSts").permitAll()
                 // 不需要授权的controller
