@@ -163,9 +163,9 @@ layui.use(['table', 'form', 'layer'], function () {
         var data = obj.data;
         if (obj.event === 'editVersion') {
             eventListener.showVersion(data);
-        } else if (obj.event === 'delVersionDetail') {
+        } else if (obj.event === 'delVersion') {
             layer.confirm('真的删除行么', function (index) {
-                detailObj.del();
+                obj.del();
                 eventListener.delVersion(data);
                 layer.close(index);
             });

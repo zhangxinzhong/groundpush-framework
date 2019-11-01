@@ -49,9 +49,9 @@
                 <table class="layui-table" lay-skin="line">
                     <colgroup>
                         <col width="6%">
-                        <col width="14%">
+                        <col width="9%">
                         <col width="65%">
-                        <col width="15%">
+                        <col width="20%">
                     </colgroup>
                     <thead>
                     <tr>
@@ -104,10 +104,9 @@
             </div>
         </td>
         <td>
-            <img class="imgShow{{d.imgCode}} my-img form-control col-lg-1" src="/images/sample_img.png"
-                 style="height: 300px;min-width:100%;display:inline"/>
-            <input type="hidden" class="imgVal{{d.imgCode}} content" name="content" value=""/>
-            <input type="hidden" class="imgCode" name="imgCode" value="{{d.imgCode}}"/>
+            <img class="imgShow{{d.imgCode}} my-img form-control col-lg-1" src="/images/sample_img.png" style="height: 100%;min-width:100%;display:inline"  />
+            <input type="hidden" class="imgVal{{d.imgCode}} content" name="content" value="" />
+            <input type="hidden" class="imgCode" name="imgCode" value="{{d.imgCode}}" />
         </td>
 
         {{# }else{ }}
@@ -346,12 +345,9 @@
 
                             <!-- 图片 -->
                             {{# if(item.rowType == 5){ }}
-                            <img class="imgShow{{item.imgCode}} my-img form-control col-lg-1"
-                                 src="{{ item.content != undefined?item.content:'/images/sample_img.png' }}"
-                                 style="height: 300px;min-width:100%;display:inline"/>
-                            <input type="hidden" class="imgVal{{item.imgCode}} content" name="content"
-                                   value="{{ item.content != undefined?item.content:'' }}"/>
-                            <input type="hidden" class="imgCode" name="imgCode" value="{{item.imgCode}}"/>
+                            <img class="imgShow{{item.imgCode}} my-img form-control col-lg-1" src="{{ item.content != undefined?item.content:'/images/sample_img.png' }}" style="height: 100%;min-width:100%;display:inline"  />
+                            <input type="hidden" class="imgVal{{item.imgCode}} content" name="content" value="{{ item.content != undefined?item.content:'' }}" />
+                            <input type="hidden" class="imgCode" name="imgCode" value="{{item.imgCode}}" />
                             {{# } }}
                         </td>
                         <td>

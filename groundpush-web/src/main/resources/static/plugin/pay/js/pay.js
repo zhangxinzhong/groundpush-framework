@@ -135,27 +135,26 @@ layui.use(['table', 'laytpl'], function () {
          }
         ,showOrderResultList:function (data) {
             table.render({
-                elem: '#orderResult'+data.orderId
-                ,cellMinWidth: 200
+                elem: '#orderResult'
                 , url: '/order/queryOrderLogByOrderId'
                 , toolbar: true
                 , title: 'orderResult-data'
                 , totalRow: true
                 , where:{'orderId':data.orderId}
                 , cols: [[
-                    {field: 'logId', title: 'ID',width:'5%', sort: true}
-                    , {field: '', title: '订单日志类型',width:'10%',
+                    {field: 'logId', title: 'ID',width:100,sort: true}
+                    , {field: '', title: '订单日志类型',width:200,
                         templet: function(d){
                             return d.orderLogType==1?'任务结果集上传':'申诉上传';
                         }
                     }
-                    , {field: '', title: '上传类型',width:'10%',
+                    , {field: '', title: '上传类型',width:200,
                         templet: function(d){
                             return d.orderResultType==2?'图片':'文本';
                         }
                     }
-                    , {field: 'orderKey', title: '订单上传类型key',width:'20%'}
-                    , {field: '', title: '订单上传类型value',
+                    , {field: 'orderKey', title: '订单上传类型key',width:450}
+                    , {field: '', title: '订单上传类型value',width:500,
                         templet: function(d){
                             return d.orderResultType==2?'<a href="#" onclick="javascript:window.open(\''+d.orderValue+'\')" download="" >'+d.orderValue+'</a>':d.orderValue;
                         }
@@ -188,6 +187,12 @@ layui.use(['table', 'laytpl'], function () {
         }
         ,hideViewOrderDialog: function(){
             $('#viewOrderListDialog').modal('hide');
+        }
+        ,showOrderResultDialog: function(){
+            $('#viewOrderResultDialog').modal('show');
+        }
+        ,hideOrderResultDialog: function(){
+            $('#viewOrderResultDialog').modal('hide');
         }
 
     };
@@ -231,19 +236,8 @@ layui.use(['table', 'laytpl'], function () {
 
     table.on('tool(view)',function (e) {
         if(e.event === 'showOrderResult'){
-            let a = $(e.tr).find('a');
-
-            if(a.hasClass('layui-icon-up')){
-                a.removeClass('layui-icon-up').addClass('layui-icon-down');
-                laytpl($('#showOrderResultList').html()).render({'orderId':e.data.orderId}, function(html){
-                    $(e.tr).after(html);
-                });
-                eventListener.showOrderResultList(e.data);
-            }else{
-                a.removeClass('layui-icon-down').addClass('layui-icon-up');
-                $(e.tr).next().remove();
-            }
-
+            eventListener.showOrderResultDialog();
+            eventListener.showOrderResultList(e.data);
         }
 
     })
