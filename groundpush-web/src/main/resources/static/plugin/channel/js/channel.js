@@ -54,7 +54,7 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
             table.render({
                 elem: '#channel'
                 , url: '/channel/getChannelPage'
-                ,done: function (res, curr, count) {
+                , done: function (res, curr, count) {
                     $("#channelDiv table").css("width", "100%");
                     $("[data-field='taskId']").css('display', 'none');
                 }
@@ -110,7 +110,7 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
                 if (rep.code == '200') {
                     eventListener.hideAddChannelDialog();
                     eventListener.reloadChannelTable();
-                    layer.msg('渠道添加成功！');
+                    layer.msg('渠道添加成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
@@ -138,7 +138,7 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
                 if (rep.code == '200') {
                     eventListener.hideEditChannelDialog();
                     eventListener.reloadChannelTable();
-                    layer.msg('渠道修改成功！');
+                    layer.msg('渠道修改成功');
                 }
             }, function (rep) {
                 layer.msg(rep.message);
@@ -148,7 +148,7 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
             Utils.postAjax("/channel/delChannel", JSON.stringify(data), function (rep) {
                 if (rep.code == '200') {
                     eventListener.reloadChannelTable();
-                    layer.msg("渠道删除成功！");
+                    layer.msg("渠道删除成功");
                 } else {
                     layer.msg(rep.message);
                 }
@@ -209,12 +209,13 @@ layui.use(['table', 'form', 'layer', 'upload'], function () {
         return false;
     });
 
-
-    $('[data-custom-event="Channel"]').on("click", function () {
-        let $this = $(this);
-        let _method = $this.data('method');
-        eventListener[_method] ? eventListener[_method].call(this, $this) : '';
+    table.on('toolbar(channel)', function (obj) {
+        let data = obj.data;
+        if (obj.event === 'showAddChannelDialog') {
+            eventListener.showAddChannelDialog(data);
+        }
     });
+
 
     /**
      * 监听tab中下拉选择框事件
@@ -428,11 +429,11 @@ function importEvent() {
 
             let alertTitle = $(laberObj[0]).text();
             if (tmpCache.dataType == ' ') {
-                throw new Error('字段“' + alertTitle + '”映射类型不能为空！');
+                throw new Error('字段“' + alertTitle + '”映射类型不能为空');
             }
 
             if (tmpCache.excelType == ' ') {
-                throw new Error('字段“' + alertTitle + '”数据标题不能为空！');
+                throw new Error('字段“' + alertTitle + '”数据标题不能为空');
             }
 
             tmpArray.push(tmpCache);

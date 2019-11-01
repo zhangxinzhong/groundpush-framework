@@ -179,7 +179,6 @@ layui.use(['table', 'form', 'layer'], function () {
                     eventListener.hideEditCustomerLoginAccount();
                     //重新加载父页面
                     location.reload();
-                    //eventListener.ShowEditCustomerLoginAccount(rep.data);
                     layer.msg('客户登入帐号信息修改成功');
                 }
             }, function (rep) {
@@ -202,8 +201,6 @@ layui.use(['table', 'form', 'layer'], function () {
             });
         } else if (obj.event === 'showCustomerDetailListDialog') {
             $("#customerId").val(data.customerId);
-            eventListener.showCustomerDetailListDialog(data);
-            eventListener.initCustomerDetailTable(data);
         } else if (obj.event === 'showCustomerLoginAccount') {
             eventListener.showCustomerLoginAccount(data);
             eventListener.initCustomerLoginAccountTable(data);
@@ -217,6 +214,13 @@ layui.use(['table', 'form', 'layer'], function () {
         var data = obj.data;
         if (obj.event === 'editCustomerLoginAccount') {
             eventListener.ShowEditCustomerLoginAccount(data);
+        }
+    });
+
+    table.on('toolbar(customer)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'showAddCustomerDialog') {
+            eventListener.showAddCustomerDialog(data);
         }
     });
 

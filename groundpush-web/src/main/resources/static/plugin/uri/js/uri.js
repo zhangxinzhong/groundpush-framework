@@ -1,42 +1,10 @@
 layui.use(['table', 'form', 'layer'], function () {
-    var table = layui.table;
-    var form = layui.form;
-    var layer = layui.layer;
-
-    //自定义验证规则
-    form.verify({
-        uriCode: function (value) {
-            if (Utils.isEmpty(value)) {
-                return '字典编码不可为空';
-            }
-            var message;
-            Utils.getAjax("/uri", {code: value}, function (rep) {
-                if (rep.code == '200' && !Utils.isEmptyArray(rep.data.rows)) {
-                    message = '字典编码已经存在';
-                }
-            }, function (rep) {
-                console.log(rep);
-            });
-            return message;
-        }, uriDetailCode: function (value) {
-            if (Utils.isEmpty(value)) {
-                return '字典项编码不可为空';
-            }
-            var message;
-            var uriId = $("#uriId").val();
-            Utils.getAjax("/uri/" + uriId + "/uriDetail", {code: value}, function (rep) {
-                if (rep.code == '200' && !Utils.isEmptyArray(rep.data.rows)) {
-                    message = '字典项编码已经存在';
-                }
-            }, function (rep) {
-                console.log(rep);
-            });
-            return message;
-        }
-    });
+    let table = layui.table;
+    let form = layui.form;
+    let layer = layui.layer;
 
     //触发事件
-    var eventListener = {
+    let eventListener = {
         initUriTable: function () {
             table.render({
                 elem: '#uri'
@@ -145,7 +113,7 @@ layui.use(['table', 'form', 'layer'], function () {
     eventListener.initUriTable();
 
     table.on('tool(uri)', function (obj) {
-        var data = obj.data;
+        let data = obj.data;
         if (obj.event === 'editUri') {
             eventListener.showUri(data);
         } else if (obj.event === 'delUri') {
@@ -156,38 +124,15 @@ layui.use(['table', 'form', 'layer'], function () {
             });
         } else if (obj.event === 'showUriDetailListDialog') {
             $("#uriId").val(data.uriId);
-            eventListener.showUriDetailListDialog(data);
-            eventListener.initUriDetailTable(data);
         }
     });
 
     table.on('toolbar(uri)', function (obj) {
-        var data = obj.data;
+        let data = obj.data;
         if (obj.event === 'showAddUriDialog') {
             eventListener.showAddUriDialog(data);
         }
     });
-
-    table.on('tool(uriDetail)', function (detailObj) {
-        var data = detailObj.data;
-        if (detailObj.event === 'editUriDetail') {
-            eventListener.showUriDetail(data);
-        } else if (detailObj.event === 'delUriDetail') {
-            layer.confirm('真的删除行么', function (index) {
-                detailObj.del();
-                eventListener.delUriDetail(data);
-                layer.close(index);
-            });
-        }
-    });
-
-    table.on('toolbar(uriDetail)', function (obj) {
-        var data = obj.data;
-        if (obj.event === 'showUriDetailDialog') {
-            eventListener.showAddUriDetailDialog(data);
-        }
-    });
-
 
     //保存Uri
     form.on('submit(addUri)', function (data) {

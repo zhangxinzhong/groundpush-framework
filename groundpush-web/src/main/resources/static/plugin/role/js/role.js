@@ -99,7 +99,7 @@ layui.use('table', function () {
                 if(rep.code =='200'){
                     eventListener.hideAddRoleDialog();
                     eventListener.reloadRoleTable();
-                    layer.msg('角色添加成功！');
+                    layer.msg('角色添加成功');
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -110,7 +110,7 @@ layui.use('table', function () {
                     if(rep.code =='200'){
                         eventListener.reloadRoleTable();
                         eventListener.hideEditRoleDialog();
-                        layer.msg('角色更新成功！');
+                        layer.msg('角色更新成功');
                     }
                 },function (rep) {
                     layer.msg(rep.message);
@@ -128,7 +128,7 @@ layui.use('table', function () {
              Utils.getAjax("/role/delRole",{roleId:data.roleId},function(rep) {
                if(rep.code =='200'){
                    eventListener.reloadRoleTable();
-                   layer.msg("角色删除成功！");
+                   layer.msg("角色删除成功");
                }else{
                  layer.msg(rep.message);
                }
@@ -374,6 +374,13 @@ layui.use('table', function () {
                }
         });
 
+    //监听角色table
+    table.on('toolbar(role)', function (data) {
+        if(data.event === 'showAddRoleDialog'){
+            eventListener.showAddRoleDialog(data);
+        }
+    });
+
      //监听关联table工具栏
      table.on('toolbar(link)', function (obj) {
            var data = {};
@@ -448,14 +455,6 @@ layui.use('table', function () {
         //屏蔽表单提交
         return false;
     });
-
-    $('[data-custom-event="role"]').on("click",function () {
-        let $this = $(this);
-        let _method = $this.data('method');
-        eventListener[_method]?eventListener[_method].call(this,$this):'';
-    });
-
-
 });
 
 
