@@ -26,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -236,5 +238,32 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void addOrder(Order build) {
         orderMapper.addOrder(build);
+    }
+
+
+
+    @Override
+    public List<Order> queryOrderByTaskIdAndChannelTime(Integer taskId, LocalDateTime channelTime) {
+        LocalDateTime beginTime = dateUtils.getMinOfDay(channelTime);
+        LocalDateTime endTime = dateUtils.getMaxOfDay(channelTime);
+        return orderMapper.queryOrderByTaskIdAndChannelTime(taskId, beginTime, endTime);
+    }
+
+    @Override
+    public Map<String, Order> queryOrderByTaskIdAndChannelTimeReturnMap(Integer taskId, LocalDateTime localDateTime) {
+        List<Order> orders = queryOrderByTaskIdAndChannelTime(taskId, localDateTime);
+        Map<String, Order> orderMap = new HashMap<>(orders.size());
+        orders.stream().forEach(order -> {
+            if (!orderMap.containsKey(order.getUniqueCode())) {
+                orderMap.put(order.getUniqueCode(), order);
+            }
+        });
+        return orderMap;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Integer updateOrders(List<Order> existOrder) {
+        return orderMapper.updateOrders(existOrder);
     }
 }

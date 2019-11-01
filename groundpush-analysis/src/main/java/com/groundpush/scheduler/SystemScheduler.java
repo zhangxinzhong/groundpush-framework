@@ -4,11 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.model.ChannelData;
 import com.groundpush.core.model.ChannelExcel;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.service.OrderService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.ExcelTools;
 import com.groundpush.service.ChannelDataService;
 import com.groundpush.service.ChannelExcelService;
-import com.groundpush.service.OrderService;
+
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -119,7 +120,7 @@ public class SystemScheduler {
 
                         // 保存订单数据
                         if (existOrder != null && existOrder.size() > 0) {
-                            orderService.updateOrder(existOrder);
+                            orderService.updateOrders(existOrder);
                             existOrder.clear();
                         }
 

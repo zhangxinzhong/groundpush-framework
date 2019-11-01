@@ -4,7 +4,7 @@ insert into t_user(login_no, name, name_pinyin, mobile_no, work_email, status, p
 
 -- 添加虚拟用户
 insert into t_customer(parent_id, nick_name, img_uri, status, invite_code, reputation, created_time) values (null,'virtual',null,1,null,null,current_timestamp);
-insert into t_customer_login_account (customer_id, login_no, name, password, type, created_time) values (1,'virtual',13333333333,null,1,current_timestamp);
+insert into t_customer_login_account (customer_id, login_no, name, password, type, created_time) values (1,13333333333,'virtual',null,1,current_timestamp);
 insert into t_customer_account(customer_id,created_time) values (1,current_timestamp);
 
 -- 添加admin、manager 相关密码账户信息
@@ -392,3 +392,10 @@ INSERT INTO `t_role_privilege` VALUES ('1', '15', '1', '1', '2019-09-27 16:19:43
 INSERT INTO `t_role_privilege` VALUES ('1', '16', '1', '1', '2019-09-27 16:19:43', null, null);
 INSERT INTO `t_role_privilege` VALUES ('1', '17', '1', '1', '2019-09-27 16:19:43', null, null);
 INSERT INTO `t_role_privilege` VALUES ('1', '18', '1', '1', '2019-09-27 16:19:43', null, null);
+
+-- ----------------------
+-- 设置数据库时区为默认东八时区   注意：！！！必须将mysql配置文件my.ini中的default-time-zone='+08:00'！！！
+-- ----------------------
+set global time_zone = '+08:00';
+set time_zone = '+08:00';
+flush privileges;

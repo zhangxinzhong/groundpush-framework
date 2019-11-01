@@ -9,7 +9,9 @@ import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -154,4 +156,32 @@ public interface OrderService {
      * @param build
      */
     void addOrder(Order build);
+
+
+
+    /**
+     * 通过任务编号查询订单
+     * @param taskId
+     * @param channelTime 渠道时间
+     * @return
+     */
+    List<Order> queryOrderByTaskIdAndChannelTime(Integer taskId, LocalDateTime channelTime);
+
+    /**
+     * 通过任务编号查询订单
+     *
+     * @param taskId
+     * @param channelTime
+     * @return
+     */
+    Map<String, Order> queryOrderByTaskIdAndChannelTimeReturnMap(Integer taskId, LocalDateTime channelTime);
+
+    /**
+     * 修改订单渠道状态 及 备注
+     *
+     * @param existOrder
+     * @param existOrder
+     * @return
+     */
+    Integer updateOrders(List<Order> existOrder);
 }

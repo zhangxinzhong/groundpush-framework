@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableScheduling
 @EnableTransactionManagement
-@MapperScan("com.groundpush.mapper")
+@MapperScan(value = {"com.groundpush.mapper","com.groundpush.core.mapper"})
 public class GroundPushAnalysisApplication {
     public static void main(String[] args) {
         SpringApplication.run(GroundPushAnalysisApplication.class,args);

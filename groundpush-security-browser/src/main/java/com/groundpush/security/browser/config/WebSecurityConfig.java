@@ -112,12 +112,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     public static void main(String[] args) {
-        String pass = "admin";
+        String pass = "manager";
         BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
         String hashPass = bcryptPasswordEncoder.encode(pass);
         System.out.println(hashPass);
 
-        boolean f = bcryptPasswordEncoder.matches("admin",hashPass);
+        boolean f = bcryptPasswordEncoder.matches("g",hashPass);
         System.out.println(f);
     }
 }

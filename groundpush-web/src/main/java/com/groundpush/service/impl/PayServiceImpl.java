@@ -12,6 +12,7 @@ import com.groundpush.core.model.*;
 import com.groundpush.core.service.CustomerAccountService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
+import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.core.vo.OrderPayVo;
 import com.groundpush.mapper.ChannelDataMapper;
 import com.groundpush.utils.SessionUtils;
@@ -55,6 +56,9 @@ public class PayServiceImpl implements PayService {
 
     @Resource
     private SessionUtils sessionUtils;
+
+    @Resource
+    private UniqueCode uniqueCode;
 
 
     @OperationLogDetail(operationType = OperationType.PAY_MANAGE_PAY,type = OperationClientType.PC)
@@ -124,6 +128,13 @@ public class PayServiceImpl implements PayService {
                         .settlementAmount(channelData.getAmount()).uniqueCode(channelData.getUniqueCode()).build();
                 //创建虚拟订单
                 orderMapper.createOrder(order);
+                Integer orderId = order.getOrderId();
+                if (orderId == null || order.getTaskId() == null || order.getCustomerId() == null) {
+                    throw new BusinessException(ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorCode(), ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorMessage());
+                }
+                //生成订单号 并更新订单
+                order.setOrderNo(uniqueCode.generateUniqueCodeByPrimaryKey(orderId));
+                orderMapper.updateOrderNoByOrderId(order);
                 //创建虚拟用户与虚拟订单关联记录
                 orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID)
                         .orderId(order.getOrderId()).taskId(orderPay.getTaskId()).build());

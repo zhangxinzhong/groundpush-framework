@@ -46,7 +46,7 @@ public interface AuditLogMapper {
             "       b.title,",
             "       a.order_id,",
             "       c.settlement_amount,",
-            "       if(c.status = 5,1,0) has_pay,",
+            "       if(c.status = 1,1,0) has_pay,",
             "       if(c.settlement_status = 1,1,0) success_order,",
             "       if(c.settlement_status = 1,ifnull(c.settlement_amount,0),0) success_amount,",
             "       if(c.settlement_status &lt;&gt; 1,1,0) fail_order, ",

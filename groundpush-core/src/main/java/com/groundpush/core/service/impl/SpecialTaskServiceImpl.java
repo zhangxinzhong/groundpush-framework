@@ -95,7 +95,7 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
                         // 校验 customer 的创建时间是否是当天的24点前 并且 校验 customer 是否存在订单
                         LocalDateTime maxCreateTime = dateUtils.getMaxOfDay(customer.getCreatedTime());
                         Boolean isExistOrder = orderService.existOrderByCustomerId(customer.getCustomerId());
-                        if (LocalDateTime.now().isAfter(maxCreateTime) && !isExistOrder) {
+                        if (LocalDateTime.now().isBefore(maxCreateTime) && !isExistOrder) {
                             return Boolean.TRUE;
                         }
                     }
