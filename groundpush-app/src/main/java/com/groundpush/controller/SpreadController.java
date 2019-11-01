@@ -62,14 +62,12 @@ public class SpreadController {
 
     @ApiOperation("页面跳转uri")
     @GetMapping
-    public JsonResp toSpread(@RequestParam("paramKey") String paramKey) {
-        SpreadQueryCondition spreadQueryCondition = (SpreadQueryCondition) redisUtils.get(paramKey);
-        if (spreadQueryCondition == null) {
-            return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
+    public JsonResp toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
         String key = aesUtils.dcodes(spreadQueryCondition.getKey(), Constants.APP_AES_KEY);
         try {
-
 
             log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}", spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId(), spreadQueryCondition.getType(), spreadQueryCondition.getKey());
 
@@ -113,7 +111,6 @@ public class SpreadController {
             return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
         }finally {
             redisUtils.del(key);
-            redisUtils.del(paramKey);
         }
     }
 

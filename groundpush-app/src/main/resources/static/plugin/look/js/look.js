@@ -9,11 +9,12 @@ function is_weixnOrPay(){
 
 
 
-let paramKey = $("#paramKey").val();
+let spreadQueryCondition = $("#spreadQueryCondition").val();
 if(is_weixnOrPay()){
     $("#guide_box").show();
 }else{
-    Utils.getAjax("/spread",{paramKey:paramKey},function (rep) {
+
+    Utils.getAjax("/spread",JSON.parse(spreadQueryCondition),function (rep) {
         if(rep.code == 200 && !Utils.isEmpty(rep.data)){
             location.href = rep.data;
         }else{

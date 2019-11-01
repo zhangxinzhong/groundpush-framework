@@ -1,5 +1,7 @@
 package com.groundpush.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.condition.SpreadQueryCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.utils.Constants;
@@ -29,7 +31,7 @@ import javax.validation.Valid;
 public class LookController {
 
     @Resource
-    private RedisUtils redisUtils;
+    private ObjectMapper objectMapper;
 
     @Resource
     private DateUtils dateUtils;
@@ -40,19 +42,13 @@ public class LookController {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        StringBuffer sb = new StringBuffer();
-        sb.append(Constants.TASK_SPREAD).append("-");
-        sb.append(spreadQueryCondition.getCustomId()).append("-");
-        sb.append(spreadQueryCondition.getTaskId()).append("-");
-        sb.append(spreadQueryCondition.getType());
 
-        String key = sb.toString();
 
-        if (redisUtils.get(key) == null) {
-            redisUtils.set(key, spreadQueryCondition, dateUtils.getIntervalSecond());
+        try {
+            model.addAttribute("spreadQueryCondition", objectMapper.writeValueAsString(spreadQueryCondition));
+        } catch (JsonProcessingException e) {
+            log.error(e.toString(),e);
         }
-        model.addAttribute("paramKey", key);
-
         return "look/look";
     }
 }
