@@ -1,6 +1,8 @@
 package com.groundpush.controller;
 
+import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.SpreadQueryCondition;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.TaskUri;
@@ -21,6 +23,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -34,7 +38,7 @@ import java.util.Optional;
 @Slf4j
 @ApiModel(value = "产品推广")
 @RequestMapping("/spread")
-@Controller
+@RestController
 public class SpreadController {
     @Resource
     private RedisUtils redisUtils;
@@ -57,38 +61,40 @@ public class SpreadController {
 
     @ApiOperation("页面跳转uri")
     @GetMapping
-    public String toSpread(String paramKey,Model model) {
-        SpreadQueryCondition spreadQueryCondition = (SpreadQueryCondition) redisUtils.get(paramKey);
+    public JsonResp toSpread(String paramKey) {
+        try {
+            SpreadQueryCondition spreadQueryCondition = (SpreadQueryCondition) redisUtils.get(paramKey);
 
-        if (spreadQueryCondition == null) {
-            model.addAttribute("errorMsg", "系统请联系管理员!");
-            return "spread/spread";
-        }
-        log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}", spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId(), spreadQueryCondition.getType(), spreadQueryCondition.getKey());
-
-        String key = aesUtils.dcodes(spreadQueryCondition.getKey(), Constants.APP_AES_KEY);
-        String obj = (String) redisUtils.get(key);
-
-        if (StringUtils.isBlank(key) || StringUtils.isBlank(obj) || (StringUtils.isNotBlank(obj) && !obj.equalsIgnoreCase(key))) {
-            log.info("跳转页面失败,key 不匹配");
-            model.addAttribute("errorMsg", "二维码已失效！");
-            return "spread/spread";
-        }
-
-        //获取每日推广剩余次数 每人每日推广剩余次数
-        Optional<TaskPopCountVo> optional = taskService.getSupTotalOrCustomCount(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
-        if (optional.isPresent()) {
-            log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}", optional.get().getSupTotal(), optional.get().getSupCustom());
-            if (optional.get().getSupCustom() <= Constants.ZROE || optional.get().getSupTotal() <= Constants.ZROE) {
-                model.addAttribute("errorMsg", "今日推广次数已达上限!");
-                return "spread/spread";
+            if (spreadQueryCondition == null) {
+                return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
             }
-        }
+            log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}", spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId(), spreadQueryCondition.getType(), spreadQueryCondition.getKey());
 
-        //获取任务uri
-        Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(spreadQueryCondition.getTaskId());
-        if (taskUriOptional.isPresent()) {
-            model.addAttribute("uri", taskUriOptional.get().getUri());
+            String key = aesUtils.dcodes(spreadQueryCondition.getKey(), Constants.APP_AES_KEY);
+            String obj = (String) redisUtils.get(key);
+
+            if (StringUtils.isBlank(key) || StringUtils.isBlank(obj) || (StringUtils.isNotBlank(obj) && !obj.equalsIgnoreCase(key))) {
+                log.info("跳转页面失败,key 不匹配");
+                return JsonResp.failure(ExceptionEnum.TASK_QR_CODE_INVALID.getErrorCode(), ExceptionEnum.TASK_QR_CODE_INVALID.getErrorMessage());
+            }
+
+            //获取每日推广剩余次数 每人每日推广剩余次数
+            Optional<TaskPopCountVo> optional = taskService.getSupTotalOrCustomCount(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
+            if (optional.isPresent()) {
+                log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}", optional.get().getSupTotal(), optional.get().getSupCustom());
+                if (optional.get().getSupCustom() <= Constants.ZROE || optional.get().getSupTotal() <= Constants.ZROE) {
+                    log.error("今日推广次数已达上限");
+                    return JsonResp.failure(ExceptionEnum.TASK_SPREAD_MAX.getErrorCode(), ExceptionEnum.TASK_SPREAD_MAX.getErrorMessage());
+                }
+            }
+
+            //获取任务uri
+            Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(spreadQueryCondition.getTaskId());
+            if (!taskUriOptional.isPresent()) {
+                log.error("任务：{} 的URI 不存在", spreadQueryCondition.getTaskId());
+                return JsonResp.failure(ExceptionEnum.TASK_NOT_URI.getErrorCode(), ExceptionEnum.TASK_NOT_URI.getErrorMessage());
+            }
+
             //1.是否是特殊任务 且 是否是改任务的特殊用户
             //  还需验证当前用户上级是否是特殊用户
             Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId(), spreadQueryCondition.getCustomId());
@@ -97,12 +103,14 @@ public class SpreadController {
             orderService.createOrder(order);
             // 使用完url 后需要把最后修改时间改成今天
             taskUriService.updateTaskUri(taskUriOptional.get());
-        } else {
-            log.info("任务：{} 的URI 不存在");
-            model.addAttribute("errorMsg", "商品不存在!");
+            redisUtils.del(key);
+            redisUtils.del(paramKey);
+
+            return JsonResp.success(taskUriOptional.get().getUri());
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
         }
-        redisUtils.del(key);
-        return "spread/spread";
     }
 
 
