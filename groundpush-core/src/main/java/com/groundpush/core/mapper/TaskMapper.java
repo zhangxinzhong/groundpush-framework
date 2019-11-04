@@ -50,6 +50,7 @@ public interface TaskMapper {
     @Update({
             "<script>",
             " update t_task set  ",
+            " <if test='title != null'> title=#{title},  </if> ",
             " <if test='briefTitle != null'> brief_title=#{briefTitle},  </if> ",
             " <if test='exampleImg != null'> example_img=#{exampleImg},  </if> ",
             " <if test='imgUri != null'> img_uri=#{imgUri},  </if> ",
