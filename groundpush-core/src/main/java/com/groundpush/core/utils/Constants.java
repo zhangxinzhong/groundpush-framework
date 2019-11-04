@@ -369,13 +369,9 @@ public class Constants {
      */
     public static  final Integer SEPCIAL_LABEL_ID = 0;
 
-    /**
-     * 推广客户
-     */
-    public static final String CUSTOMER_RECRUIT = "recruit";
 
     /**
-     * 推广任务
+     * 任务中 任务详情类型
      */
-    public static final String TASK_SPREAD = "spread";
+    public static final Integer TASK_ROW_TYPE_3 = 3;
 }

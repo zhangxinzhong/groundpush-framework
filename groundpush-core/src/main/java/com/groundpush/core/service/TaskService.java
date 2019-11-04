@@ -26,6 +26,14 @@ public interface TaskService {
     Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit);
 
 
+    /**
+     * 获取任务 用于web
+     *
+     * @param taskId
+     * @return
+     */
+    Optional<Task> queryTaskByTaskId(Integer taskId);
+
 
     /**
      * 获取任务

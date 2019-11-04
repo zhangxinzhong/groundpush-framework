@@ -45,7 +45,7 @@ layui.use('table', function () {
             let $sendSmsBtn = $('a[name="sendSms"]');
             $sendSmsBtn.attr('disabled', true).css({'color': '#b5adad'});
             let countdown = setInterval(function () {
-                $sendSmsBtn.html(count + "秒后获取验证码");
+                    $sendSmsBtn.html(count + "秒后获取验证码");
                 if (count == 0) {
                     $sendSmsBtn.html('获取验证码').removeAttr('disabled').css({'color': '#0066cc'});
                     clearInterval(countdown);
