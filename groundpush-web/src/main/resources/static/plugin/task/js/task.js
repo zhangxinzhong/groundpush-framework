@@ -524,12 +524,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                      });
                     $('#view').html("");
                     laytpl($('#phaseTableEcho').html()).render(phaseJsonObjs, function(html){
-                        $('#view').append(html);
+                        $('#view').html(html);
                     });
 
                     $('#resultView').html("");
                     laytpl($('#resultUpdateEcho').html()).render(resultJsonObjs, function(html){
-                        $('#resultView').append(html);
+                        $('#resultView').html(html);
 
                     });
                     //添加点击事件
@@ -654,7 +654,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     success = false;
                     return false;
                 }
-                if(rowType == 3){
+                if(rowType == 3 || rowType == 4){
                     let name = $(object).find('.name').val();
                     if(name == undefined || name == ''){
                         let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值按钮名称不可为空'
@@ -774,12 +774,9 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
 
     //监听select  -- 对应“内容”类型暂时注释
-   /* form.on('select(rowType)', function (data) {
-        laytpl($('#selectContent').html()).render({'rowType': data.value}, function (html) {
-            $(data.elem).parents('td').next().html(html);
-            form.render("null","content");
-        });
-    });*/
+   form.on('select(rowType)', function (data) {
+       $(data.elem).parents('tr').find('.name').val('保存二维码');
+    });
 
     //监听task
     table.on('tool(task)', function (obj) {

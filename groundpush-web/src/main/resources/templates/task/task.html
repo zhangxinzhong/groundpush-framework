@@ -335,24 +335,14 @@
                             <textarea class="form-control col-lg-5 content" name="content"
                                       style="font-family: mFont;height:150px;margin-left: 5px;">{{ item.content != undefined?item.content:'' }}</textarea>
                             {{# } }}
-                            <!-- 打开URL -->
-                            {{# if(item.rowType == 3){ }}
-                            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="{{ item.name != undefined?item.name:'打开链接' }}" placeholder="输入按钮名称"
+                            <!-- 打开URL\保存二维码 -->
+                            {{# if(item.rowType == 3 || item.rowType == 4){ }}
+                            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="{{ item.name != undefined?item.name:(item.rowType = 3?'打开链接':'保存二维码') }}" placeholder="输入按钮名称"
                                    style="width:20%;float:left;margin-right:2%;">
                             <input type="text" name="content" class="form-control col-lg-1 content"
                                    value="{{ item.content != undefined?item.content:'' }}" placeholder="输入url" {{
                                    item.createUri==1?'readonly="readonly"':'' }}
                                    style="width:60%;float:left;margin-right:3%;">
-                            <input type="radio" name="createUri" class="form-control createUri" title="生成"
-                                   style="float:left;" {{ item.createUri==1?'checked':'' }} lay-filter="createUri"/>
-                            {{# } }}
-
-                            <!-- 保存二维码 -->
-                            {{# if(item.rowType == 4){ }}
-                            <input type="text" name="content" class="form-control col-lg-1 content"
-                                   value="{{ item.content != undefined?item.content:'' }}" placeholder="输入url" {{
-                                   item.createUri==1?'readonly="readonly"':'' }}
-                                   style="width:85%;float:left;margin-right:3%;">
                             <input type="radio" name="createUri" class="form-control createUri" title="生成"
                                    style="float:left;" {{ item.createUri==1?'checked':'' }} lay-filter="createUri"/>
                             {{# } }}
@@ -655,8 +645,7 @@
                                         </ul>
                                         <div class="layui-tab-content">
                                             <div class="layui-tab-item layui-show">
-                                                <div class="layui-form-item">
-                                                    <div id="view"></div>
+                                                <div class="layui-form-item" id="view">
                                                 </div>
                                             </div>
                                             <div class="layui-tab-item">
