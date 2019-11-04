@@ -120,14 +120,17 @@ public class TaskController {
     public JsonResp getTask(@PathVariable Integer id) {
         try {
             //获取任务数据
-            Optional<Task> optionalTask = taskService.getTask(id);
-            //获取任务编辑数据
+            Optional<Task> optionalTask = taskService.queryTaskByTaskId(id);
             Task task = optionalTask.get();
-            List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
-            if (taskAttributeList != null && taskAttributeList.size() > 0) {
-                task.setSpreadTaskAttributes(taskAttributeList);
+            //获取任务编辑数据
+            if(optionalTask.isPresent()){
+                List<TaskAttribute> taskAttributeList = taskAttributeService.getTaskAttributeListByTaskId(task.getTaskId());
+                if (taskAttributeList != null && taskAttributeList.size() > 0) {
+                    task.setSpreadTaskAttributes(taskAttributeList);
+                }
             }
-            return JsonResp.success(optionalTask.isPresent() ? task : null);
+
+            return JsonResp.success(task);
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

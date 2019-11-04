@@ -654,6 +654,17 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     success = false;
                     return false;
                 }
+                if(rowType == 3){
+                    let name = $(object).find('.name').val();
+                    if(name == undefined || name == ''){
+                        let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值按钮名称不可为空'
+                        layer.msg(msg)
+                        success = false;
+                        return false;
+                    }
+                    obj["name"] = name;
+                }
+
                 obj["content"] = content;
                 obj["type"] = 2;
                 let imgCode = $(object).find('.imgCode').val();

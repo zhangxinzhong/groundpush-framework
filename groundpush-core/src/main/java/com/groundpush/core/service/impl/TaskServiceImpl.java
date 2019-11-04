@@ -54,6 +54,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Optional<Task> queryTaskByTaskId(Integer taskId) {
+        return taskMapper.getTask(taskId);
+    }
+
+    @Override
     public Optional<Task> getTask(Integer id) {
         Optional<Task> optionalTask = taskMapper.getTask(id);
         if (optionalTask.isPresent()) {
