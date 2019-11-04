@@ -75,18 +75,6 @@ public class OrderController {
         }
     }
 
-    @ApiOperation(value = "订单更新")
-    @PostMapping("/editOrder")
-    @ResponseBody
-    public JsonResp editOrder(@RequestBody Order order) {
-        try {
-            orderService.updateOrderData(order);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
 
     @ApiOperation(value = "查询所有订单分成")
     @GetMapping("/queryOrderBonus")

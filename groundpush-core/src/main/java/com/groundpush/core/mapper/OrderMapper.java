@@ -83,6 +83,7 @@ public interface OrderMapper {
             " t_order a ",
             " left join t_order_task_customer b on b.order_id = a.order_id ",
             " left join t_customer_login_account c on c.customer_id = b.customer_id where c.type = 1 ",
+            " <if test='status != null and status !=\"\"'> and  a.status = #{status} </if>",
             " <if test='orderNumber != null and orderNumber !=\"\"'> and  a.order_no like '${orderNumber}%' </if>",
             " <if test='loginNo != null and loginNo !=\"\"'>  and c.login_no like '${loginNo}%' </if>",
             " <if test='orderStatus != null and orderStatus !=\"\"'> and  a.status = #{orderStatus} </if>",
@@ -109,7 +110,7 @@ public interface OrderMapper {
             " last_modified_time= current_timestamp where order_id=#{orderId} ",
             "</script>"
     })
-    void updateOrderData(Order order);
+    Integer updateOrderStatus(Order order);
 
     /**
      * 通过订单唯一标识修改订单渠道方状态及任务失败原因
@@ -159,21 +160,57 @@ public interface OrderMapper {
             " left join t_order_task_customer otc on otc.order_id = o.order_id ",
             " left join t_task c on otc.task_id = c.task_id ",
             " where otc.customer_id = #{customerId}",
-            " <if test='status != null'> and o.status =#{status}  </if> ",
+            " <if test='status != null'>  and o.status =#{status}  </if> ",
             " <if test='selectTime != null'> and date_format(o.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(o.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
             " order by o.created_time desc",
             "</script>"
     })
     Page<Order> queryOrder(OrderQueryCondition order);
 
+
+    /**
+     * 分页查询订单
+     *
+     * @param order
+     * @return
+     */
+    @Select({
+            "<script>",
+            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title,c.audit_duration,c.amount,c.spread_ratio,c.brief_title,c.example_img from t_order o ",
+            " left join t_order_task_customer otc on otc.order_id = o.order_id ",
+            " left join t_task c on otc.task_id = c.task_id ",
+            " where otc.customer_id = #{customerId}",
+            " <if test='status != null'> ",
+            "  <choose>" +
+                //app查询订单列表时 若订单状态为审核中 则将审核中与申诉中都查询出来
+            "    <when test='status == 3'>" +
+            "         and o.status in (3,6) " +
+            "    </when>" +
+            "    <otherwise>" +
+            "         and o.status =#{status} " +
+            "    </otherwise>" +
+            "  </choose>",
+            " </if> ",
+            " <if test='selectTime != null'> and date_format(o.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(o.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
+            " order by o.created_time desc",
+            "</script>"
+    })
+    Page<Order> queryAppOrder(OrderQueryCondition order);
+
     /**
      * 更新订单结果
      *
-     * @param orderId
-     * @param uniqueCode
+     * @param order
      */
-    @Update(" update t_order t set t.unique_code=#{uniqueCode} where t.order_id=#{orderId} ")
-    void updateOrderUniqueCode(@Param("orderId") Integer orderId, @Param("uniqueCode") String uniqueCode);
+    @Update({
+            "<script>",
+            " update t_order set  ",
+            " <if test='status != null'>  status =#{status},  </if> ",
+            " <if test='uniqueCode != null'>    unique_code =#{uniqueCode},  </if> ",
+            " last_modified_time= current_timestamp where order_id=#{orderId} ",
+            "</script>"
+    })
+    void updateOrderUniqueCode(Order order);
 
     /**
      * 创建订单
@@ -193,14 +230,7 @@ public interface OrderMapper {
     @Select(" select max(t.order_id) from t_order t ")
     Integer queryMaxOrderId();
 
-    /**
-     * 通过任务号查询任务是否存在
-     *
-     * @param orderNo
-     * @return
-     */
-    @Select(" select * from t_order where order_no=#{orderNo} ")
-    Order queryOrderByOrderNo(@Param("orderNo") String orderNo);
+
 
     /**
      * 修改订单
@@ -387,5 +417,14 @@ public interface OrderMapper {
     @Select(" select o.order_id,o.unique_code,o.created_time from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.task_id=#{taskId} and o.created_time between #{beginTime} and #{endTime}  ")
     List<Order> queryOrderByTaskIdAndChannelTime(@Param("taskId") Integer taskId, @Param("beginTime") LocalDateTime beginTime, @Param("endTime") LocalDateTime endTime);
 
+
+    /**
+     * 通过orderId 修改订单的状态
+     * @param status
+     * @param orderId
+     * @return
+     */
+    @Update(" update t_order  set status=#{status}  where order_id = #{orderId}")
+    Integer updateTaskStatusByTaskId(@Param("status") Integer status,@Param("orderId") Integer orderId);
 
 }

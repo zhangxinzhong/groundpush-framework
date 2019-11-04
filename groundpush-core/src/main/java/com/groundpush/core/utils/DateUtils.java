@@ -45,7 +45,7 @@ public class DateUtils {
      * @param date
      * @return
      */
-    public Boolean plusMinutesTime(LocalDateTime date) {
+    public Boolean  plusMinutesTime(LocalDateTime date) {
         LocalDateTime endTime = date.plusMinutes(24 * 60);
         LocalDateTime startTime = LocalDateTime.now();
         Duration duration = java.time.Duration.between(startTime, endTime);

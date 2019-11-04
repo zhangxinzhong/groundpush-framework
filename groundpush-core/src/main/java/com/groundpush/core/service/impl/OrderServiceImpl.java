@@ -1,5 +1,6 @@
 package com.groundpush.core.service.impl;
 
+import com.github.pagehelper.Constant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.condition.OrderListQueryCondition;
@@ -18,7 +19,9 @@ import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.core.vo.OrderBonusVo;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +59,6 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderLogService orderLogService;
 
-
     @Override
     public List<Order> queryOrder(OrderQueryCondition order, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
@@ -69,11 +71,7 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.queryOrderByCondition(condition);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void updateOrderData(Order order){
-        orderMapper.updateOrderData(order);
-    }
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -127,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
-        Page<Order> orders = orderMapper.queryOrder(order);
+        Page<Order> orders = orderMapper.queryAppOrder(order);
         return setOrderSurDay(orders);
     }
 
@@ -154,6 +152,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             //通过订单id获取订单
             optionalOrder = orderMapper.getOrder(condition.getOrderId());
+
         }
 
         //验证订单是否存在
@@ -161,6 +160,13 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }
         Order order = optionalOrder.get();
+
+
+        //订单列表中审核失败申诉上传任务结果集
+        if(Constants.ORDER_STATUS_REVIEW_FAIL.equals(order.getStatus())){
+            //若订单审核失败申诉上传 则将状态改为申诉中
+            order.setStatus(Constants.ORDER_STATUS_COMPLAIIN);
+        }
 
         for(OrderLog orderLog:condition.getList()){
             orderLog.setOrderId(order.getOrderId());
@@ -184,7 +190,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderLogService.createOrderLog(condition.getList());
-        orderMapper.updateOrderUniqueCode(order.getOrderId(), condition.getUniqueCode());
+        orderMapper.updateOrderUniqueCode(order);
     }
 
     @Transactional(rollbackFor = Exception.class)

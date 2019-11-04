@@ -654,7 +654,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     success = false;
                     return false;
                 }
-                if(rowType == 3 || rowType == 4){
+                if(rowType == 2 || rowType == 3 || rowType == 4){
                     let name = $(object).find('.name').val();
                     if(name == undefined || name == ''){
                         let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值按钮名称不可为空'
@@ -773,9 +773,9 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
 
 
-    //监听select  -- 对应“内容”类型暂时注释
+    //监听select
    form.on('select(rowType)', function (data) {
-       $(data.elem).parents('tr').find('.name').val('保存二维码');
+       $(data.elem).parents('tr').find('.name').val(data.value==4?'保存二维码':(data.value==3?'打开链接':'下载APP'));
     });
 
     //监听task

@@ -32,6 +32,9 @@ public class OrderListQueryCondition implements Serializable {
     @ApiModelProperty(value = "页面长度")
     private Integer limit;
 
+    @ApiModelProperty(value = "订单状态")
+    private Integer status;
+
     @ApiModelProperty(value = "任务id")
     private Integer taskId;
 

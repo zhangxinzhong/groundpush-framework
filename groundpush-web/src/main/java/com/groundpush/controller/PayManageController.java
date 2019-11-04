@@ -111,4 +111,18 @@ public class PayManageController {
         }
     }
 
+    @ApiOperation(value = "订单申诉中更新")
+    @PostMapping("/updateOrderStatusAndPay")
+    @ResponseBody
+    public JsonResp updateOrderStatusAndPay(@RequestBody Order order) {
+        try {
+
+            payService.updateOrderStatusAndPay(order);
+            return JsonResp.success();
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
+
 }

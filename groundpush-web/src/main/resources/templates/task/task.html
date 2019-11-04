@@ -113,15 +113,15 @@
         <td>
             <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
                 <select class="form-control col-lg-1 rowType" name="rowType" lay-filter="rowType">
-                    <!--<option value="2" selected>内容</option>-->
-                    <option value="3" selected>打开URL</option>
+                    <option value="2" selected>下载APP</option>
+                    <option value="3">打开URL</option>
                     <option value="4">保存二维码</option>
                 </select>
             </div>
         </td>
         <td>
             <!--<textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>-->
-            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="打开链接" placeholder="输入按钮名称"
+            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="下载APP" placeholder="输入按钮名称"
                    style="width:20%;float:left;margin-right:2%;">
             <input type="text" name="content" class="form-control col-lg-1 content"  value="" placeholder="输入URL"
                    style="width:60%;float:left;margin-right:3%;">
@@ -314,7 +314,7 @@
                                     <option value="1" selected>标题</option>
                                     {{# } }}
                                     {{# if(item.rowType==2 || item.rowType==3 || item.rowType==4){ }}
-                                    <!--<option value="2"  {{ item.rowType==2?'selected':'' }}>内容</option>-->
+                                    <option value="2"  {{ item.rowType==2?'selected':'' }}>下载APP</option>
                                     <option value="3" {{ item.rowType==3?'selected':'' }}>打开URL</option>
                                     <option value="4" {{ item.rowType==4?'selected':'' }}>保存二维码</option>
                                     {{# } }}
@@ -330,14 +330,9 @@
                             <input type="text" name="content" class="form-control col-lg-5 content"
                                    value="{{ item.content != undefined?item.content:'' }}" placeholder="输入文本内容">
                             {{# } }}
-                            <!-- 内容 -->
-                            {{# if(item.rowType == 2){ }}
-                            <textarea class="form-control col-lg-5 content" name="content"
-                                      style="font-family: mFont;height:150px;margin-left: 5px;">{{ item.content != undefined?item.content:'' }}</textarea>
-                            {{# } }}
-                            <!-- 打开URL\保存二维码 -->
-                            {{# if(item.rowType == 3 || item.rowType == 4){ }}
-                            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="{{ item.name != undefined?item.name:(item.rowType = 3?'打开链接':'保存二维码') }}" placeholder="输入按钮名称"
+                            <!-- 下载APP\打开URL\保存二维码 -->
+                            {{# if(item.rowType == 2 || item.rowType == 3 || item.rowType == 4){ }}
+                            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="{{ item.name != undefined?item.name:(item.rowType == 4?'保存二维码':(item.rowType == 3?'打开链接':'下载APP')) }}" placeholder="输入按钮名称"
                                    style="width:20%;float:left;margin-right:2%;">
                             <input type="text" name="content" class="form-control col-lg-1 content"
                                    value="{{ item.content != undefined?item.content:'' }}" placeholder="输入url" {{

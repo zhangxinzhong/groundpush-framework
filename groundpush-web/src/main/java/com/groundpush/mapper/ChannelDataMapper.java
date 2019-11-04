@@ -45,7 +45,7 @@ public interface ChannelDataMapper {
      * @param orderCreateDate
      * @return
      */
-    @Select("select a.*,(select b.amount from t_task b where b.task_id = a.task_id) amount from t_channel_data a  where a.is_exist_order=0 and date_format(a.channel_time,'%Y-%m-%d') = date_format(#{orderCreateDate},'%Y-%m-%d') and a.task_id = #{taskId}")
+    @Select("select a.*,(select b.amount from t_task b where b.task_id = a.task_id) amount from t_channel_data a  where a.is_exist_order=0 and date_format(a.channel_time,'%Y-%m-%d') = date_format(#{orderCreateDate},'%Y-%m-%d') and a.task_id = #{taskId} limit 50 ")
     List<ChannelData> findAllDataByExistTaskId(@Param("taskId") Integer taskId, @Param("orderCreateDate")LocalDateTime orderCreateDate);
 
     /**
