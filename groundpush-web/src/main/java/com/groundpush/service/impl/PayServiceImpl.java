@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description: 订单支付
@@ -114,6 +115,19 @@ public class PayServiceImpl implements PayService {
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateOrderStatusAndPay(Order order) {
+        if(orderMapper.updateOrderStatus(order) > 0
+                && Constants.ORDER_STATUS_REVIEW.equals(order.getStatus())){
+            Optional<Order> optional = orderMapper.getOrder(order.getOrderId());
+            if(optional.isPresent()){
+                pay(OrderPayVo.builder().taskId(optional.get().getTaskId())
+                        .orderCreateDate(optional.get().getCreatedTime()).build());
+            }
         }
     }
 

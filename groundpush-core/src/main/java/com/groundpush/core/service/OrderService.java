@@ -40,12 +40,6 @@ public interface OrderService {
 
 
     /**
-     * 订单修改入口
-     * @param order
-     */
-    void updateOrderData(Order order);
-
-    /**
      * 修改订单状态
      * @param uniqueCode 渠道方订单唯一标识
      * @param settlementStatus 订单状态

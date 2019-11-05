@@ -38,4 +38,12 @@ public interface OrderLogMapper {
      */
     @Select(" select a.* from t_order_log a where a.order_id = #{orderId} ")
     List<OrderLog> queryOrderLogByOrderId(@Param("orderId") Integer orderId);
+
+    /**
+     * 通过orderId 查询orderlog总计
+     * @param orderId
+     * @return
+     */
+    @Select(" select count(*) from t_order_log where order_id = #{orderId} ")
+    Integer queryOrderCountByOrderId(@Param("orderId") Integer orderId);
 }

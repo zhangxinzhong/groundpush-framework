@@ -67,14 +67,36 @@
         </div>
     </fieldset>
 </div>
-<!-- order table -->
-<div id="orderDiv">
-    <table class="layui-hide" id="order" lay-filter="order"></table>
+
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">订单列表（全部）</li>
+        <li>订单列表（申诉中）</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-form-item">
+                <!-- order table -->
+                <div id="orderDiv">
+                    <table class="layui-hide" id="order" lay-filter="order"></table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-form-item" id="resultView">
+                <!-- order table -->
+                <div id="orderComplainDiv">
+                    <table class="layui-hide" id="orderComplain" lay-filter="orderComplain"></table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- order tobar-->
 <script type="text/html" id="toolbarOrder">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
 </script>
 
 <!-- 编辑订单模态框 begin -->
@@ -99,18 +121,12 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label col-md-2"><span class="required_style">*</span>订单状态</label>
                                         <div class="col-md-10">
-                                            <input type="radio" name="status" value="1" title="已通过"  >
-                                            <input type="radio" name="status" value="2" title="待审核"  >
-                                            <input type="radio" name="status" value="3" title="审核中"  >
+                                            <input type="radio" name="status" value="1" title="审核通过"  >
                                             <input type="radio" name="status" value="4" title="审核不通过"  >
                                         </div>
                                     </div>
-
-
-
-
                                     <div class="modal-footer">
-                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="editOrder">更新</button>
+                                        <button type="submit"  class="btn btn-primary" lay-submit lay-filter="editOrderStatus">更新</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                     </div>
                                 </form>

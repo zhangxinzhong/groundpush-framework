@@ -13,15 +13,19 @@
         }
         .show_font {
             display: none;
-            font-size: 20px;
-            font-family: cursive;
+            font-family: "楷体","楷体_GB2312";
             font-size: 50px;
-            margin-top: 60%;
-            margin-left: 35%;
+            color:#C0C0C0;
+            font-weight:bold;
+            margin-top: 10%;
         }
     </style>
 </head>
 <body>
+
+<div align="center" style="margin-top:10%">
+    <img th:src="@{/images/erweimashixiao.png}" width="60%" height="100%">
+</div>
 <input  type="hidden" th:value="${spreadQueryCondition}" name="spreadQueryCondition" id="spreadQueryCondition" />
 <!--分享引导框开始-->
 <div id="guide_box" style="display: none;position:fixed;left:0;top:0;z-index:998;background:#000;width:100%;height: 100%;" >
@@ -29,5 +33,8 @@
 </div>
 
 <p class="show_font" ></p>
+
+<p align="center" class="show_font" ></p>
+
 </body>
 </html>

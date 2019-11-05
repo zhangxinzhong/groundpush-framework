@@ -104,7 +104,7 @@
             </div>
         </td>
         <td>
-            <img class="imgShow{{d.imgCode}} my-img form-control col-lg-1" src="/images/sample_img.png" style="height: 100%;min-width:100%;display:inline"  />
+            <img class="imgShow{{d.imgCode}} my-img form-control col-lg-1" src="/images/sample_img.png" style="min-height:300px;min-width:100%;display:inline"  />
             <input type="hidden" class="imgVal{{d.imgCode}} content" name="content" value="" />
             <input type="hidden" class="imgCode" name="imgCode" value="{{d.imgCode}}" />
         </td>
@@ -113,15 +113,15 @@
         <td>
             <div class="layui-input-inline layui-form" lay-filter="rowTypeDiv">
                 <select class="form-control col-lg-1 rowType" name="rowType" lay-filter="rowType">
-                    <!--<option value="2" selected>内容</option>-->
-                    <option value="3" selected>打开URL</option>
+                    <option value="2" selected>下载APP</option>
+                    <option value="3">打开URL</option>
                     <option value="4">保存二维码</option>
                 </select>
             </div>
         </td>
         <td>
             <!--<textarea class="form-control col-lg-5 content" name="content"  style="font-family: mFont;height:150px;margin-left: 5px;"></textarea>-->
-            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="打开链接" placeholder="输入按钮名称"
+            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="下载APP" placeholder="输入按钮名称"
                    style="width:20%;float:left;margin-right:2%;">
             <input type="text" name="content" class="form-control col-lg-1 content"  value="" placeholder="输入URL"
                    style="width:60%;float:left;margin-right:3%;">
@@ -314,7 +314,7 @@
                                     <option value="1" selected>标题</option>
                                     {{# } }}
                                     {{# if(item.rowType==2 || item.rowType==3 || item.rowType==4){ }}
-                                    <!--<option value="2"  {{ item.rowType==2?'selected':'' }}>内容</option>-->
+                                    <option value="2"  {{ item.rowType==2?'selected':'' }}>下载APP</option>
                                     <option value="3" {{ item.rowType==3?'selected':'' }}>打开URL</option>
                                     <option value="4" {{ item.rowType==4?'selected':'' }}>保存二维码</option>
                                     {{# } }}
@@ -330,14 +330,9 @@
                             <input type="text" name="content" class="form-control col-lg-5 content"
                                    value="{{ item.content != undefined?item.content:'' }}" placeholder="输入文本内容">
                             {{# } }}
-                            <!-- 内容 -->
-                            {{# if(item.rowType == 2){ }}
-                            <textarea class="form-control col-lg-5 content" name="content"
-                                      style="font-family: mFont;height:150px;margin-left: 5px;">{{ item.content != undefined?item.content:'' }}</textarea>
-                            {{# } }}
-                            <!-- 打开URL -->
-                            {{# if(item.rowType == 3){ }}
-                            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="{{ item.name != undefined?item.name:'打开链接' }}" placeholder="输入按钮名称"
+                            <!-- 下载APP\打开URL\保存二维码 -->
+                            {{# if(item.rowType == 2 || item.rowType == 3 || item.rowType == 4){ }}
+                            <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="{{ item.name != undefined?item.name:(item.rowType == 4?'保存二维码':(item.rowType == 3?'打开链接':'下载APP')) }}" placeholder="输入按钮名称"
                                    style="width:20%;float:left;margin-right:2%;">
                             <input type="text" name="content" class="form-control col-lg-1 content"
                                    value="{{ item.content != undefined?item.content:'' }}" placeholder="输入url" {{
@@ -347,19 +342,9 @@
                                    style="float:left;" {{ item.createUri==1?'checked':'' }} lay-filter="createUri"/>
                             {{# } }}
 
-                            <!-- 保存二维码 -->
-                            {{# if(item.rowType == 4){ }}
-                            <input type="text" name="content" class="form-control col-lg-1 content"
-                                   value="{{ item.content != undefined?item.content:'' }}" placeholder="输入url" {{
-                                   item.createUri==1?'readonly="readonly"':'' }}
-                                   style="width:85%;float:left;margin-right:3%;">
-                            <input type="radio" name="createUri" class="form-control createUri" title="生成"
-                                   style="float:left;" {{ item.createUri==1?'checked':'' }} lay-filter="createUri"/>
-                            {{# } }}
-
                             <!-- 图片 -->
                             {{# if(item.rowType == 5){ }}
-                            <img class="imgShow{{item.imgCode}} my-img form-control col-lg-1" src="{{ item.content != undefined?item.content:'/images/sample_img.png' }}" style="height: 100%;min-width:100%;display:inline"  />
+                            <img class="imgShow{{item.imgCode}} my-img form-control col-lg-1" src="{{ item.content != undefined?item.content:'/images/sample_img.png' }}" style="min-height:300px;min-width:100%;display:inline"  />
                             <input type="hidden" class="imgVal{{item.imgCode}} content" name="content" value="{{ item.content != undefined?item.content:'' }}" />
                             <input type="hidden" class="imgCode" name="imgCode" value="{{item.imgCode}}" />
                             {{# } }}
@@ -655,8 +640,7 @@
                                         </ul>
                                         <div class="layui-tab-content">
                                             <div class="layui-tab-item layui-show">
-                                                <div class="layui-form-item">
-                                                    <div id="view"></div>
+                                                <div class="layui-form-item" id="view">
                                                 </div>
                                             </div>
                                             <div class="layui-tab-item">

@@ -11,8 +11,8 @@ import com.groundpush.core.mapper.OrderMapper;
 import com.groundpush.core.mapper.OrderTaskCustomerMapper;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.OrderBonusService;
-import com.groundpush.core.service.OrderService;
 import com.groundpush.core.service.OrderLogService;
+import com.groundpush.core.service.OrderService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.MathUtil;
@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,6 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderLogService orderLogService;
 
-
     @Override
     public List<Order> queryOrder(OrderQueryCondition order, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
@@ -68,12 +66,6 @@ public class OrderServiceImpl implements OrderService {
     public Page<Order> queryOrderByCondition(OrderListQueryCondition condition) {
         PageHelper.startPage(condition.getPage(), condition.getLimit());
         return orderMapper.queryOrderByCondition(condition);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void updateOrderData(Order order) {
-        orderMapper.updateOrderData(order);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -127,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
-        Page<Order> orders = orderMapper.queryOrder(order);
+        Page<Order> orders = orderMapper.queryAppOrder(order);
         return setOrderSurDay(orders);
     }
 
@@ -154,6 +146,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             //通过订单id获取订单
             optionalOrder = orderMapper.getOrder(condition.getOrderId());
+
         }
 
         //验证订单是否存在
@@ -163,6 +156,13 @@ public class OrderServiceImpl implements OrderService {
         Order order = optionalOrder.get();
 
         for (OrderLog orderLog : condition.getList()) {
+
+            //订单列表中审核失败申诉上传任务结果集
+            if (Constants.ORDER_STATUS_REVIEW_FAIL.equals(order.getStatus())) {
+                //若订单审核失败申诉上传 则将状态改为申诉中
+                order.setStatus(Constants.ORDER_STATUS_COMPLAIIN);
+            }
+
             orderLog.setOrderId(order.getOrderId());
         }
 
@@ -183,7 +183,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderLogService.createOrderLog(condition.getList());
-        orderMapper.updateOrderUniqueCode(order.getOrderId(), condition.getUniqueCode());
+        orderMapper.updateOrderUniqueCode(order);
     }
 
     @Transactional(rollbackFor = Exception.class)

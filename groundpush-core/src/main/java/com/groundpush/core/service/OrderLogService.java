@@ -26,4 +26,11 @@ public interface OrderLogService {
      * @return
      */
     List<OrderLog> queryOrderLogByOrderId(Integer orderId);
+
+    /**
+     * 通过orderId 查询订单结果集 计数
+     * @param orderId
+     * @return
+     */
+    Integer queryOrderCountByOrderId(Integer orderId);
 }

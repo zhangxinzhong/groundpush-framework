@@ -83,6 +83,11 @@ public class Constants {
     public static final Integer ORDER_STATUS_PAY_SUCCESS = 5;
 
     /**
+     * 订单状态  申诉中
+     */
+    public static final Integer ORDER_STATUS_COMPLAIIN = 6;
+
+    /**
      * 验证码
      */
     public static final String SESSION_KEY_IMAGE_CODE = "SESSION_KEY_IMAGE_CODE";
@@ -371,7 +376,12 @@ public class Constants {
 
 
     /**
-     * 任务中 任务详情类型
+     * 任务结果集上传 app任务详情页的上传
      */
-    public static final Integer TASK_ROW_TYPE_3 = 3;
+    public static final Integer TASK_RESULT_UPLOAD_1 = 1;
+
+    /**
+     * 任务结果集申诉或重新上传 app订单列表中的重新上传或申诉上传
+     */
+    public static final Integer TASK_RESULT_UPLOAD_2 = 1;
 }
