@@ -298,7 +298,7 @@ public interface OrderMapper {
             " b.task_id,b.customer_id,count(1) custom_pop_count ",
             " from t_order a",
             " left join t_order_task_customer b on a.order_id = b.order_id ",
-            " where a.type = 2 and date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.customer_id = #{customId} and b.task_id in  ",
+            " where date_format(a.created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and b.customer_id = #{customId} and b.task_id in  ",
             "<foreach collection='taskIds' item='taskId' open='(' separator=',' close=')'>",
             "#{taskId}",
             "</foreach>",
@@ -320,7 +320,7 @@ public interface OrderMapper {
             " b.brief_title,",
             " ( SELECT c.title FROM t_task c WHERE c.task_id = b.task_id ) title ",
             " FROM t_task b LEFT JOIN t_order_task_customer c ON b.task_id = c.task_id LEFT JOIN t_order d ON c.order_id = d.order_id ",
-            " WHERE c.customer_id = #{customerId} AND b.task_id = #{taskId} AND d.type = 2 ",
+            " WHERE c.customer_id = #{customerId} AND b.task_id = #{taskId} ",
             "</script>"
     })
     Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId,@Param("taskId") Integer taskId);
@@ -341,7 +341,7 @@ public interface OrderMapper {
             " sum(case when d.unique_code IS NOT NULL then 1 else 0 end) result_count",
             " FROM t_order_task_customer b LEFT JOIN t_order d ON b.order_id = d.order_id ",
             " LEFT JOIN t_task c ON b.task_id = c.task_id ",
-            " WHERE b.customer_id = #{customerId} AND d.type = 2 and b.task_id = #{taskId} ",
+            " WHERE b.customer_id = #{customerId} and b.task_id = #{taskId} ",
             "</script>"
     })
     Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
