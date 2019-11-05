@@ -127,13 +127,13 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             log.info("订单号：{} 的推广人上级分成：{}", orderId, taskSpreadParentCustBonus);
 
             //计算团队领导分成
-            BigDecimal taskLeaderCustBonus = MathUtil.multiply(MathUtil.divide(task.getLeaderRatio() != null ?task.getLeaderRatio():BigDecimal.valueOf(0), Constants.PERCENTAGE_100), taskAmount);
+            BigDecimal taskLeaderCustBonus = MathUtil.multiply(MathUtil.divide(task.getLeaderRatio() != null ? task.getLeaderRatio() : BigDecimal.valueOf(0), Constants.PERCENTAGE_100), taskAmount);
             log.info("订单号：{} 的团队领导分成：{}", orderId, taskSpreadCustBonus);
 
             // 任务分成集合
             List<OrderBonus> list = new ArrayList<>();
             //计算申请任务分成
-            if (Constants.SPREAD_TASK_ATTRIBUTE.equals(order.getType())) {
+            if (Constants.SPREAD_TASK_ATTRIBUTE.equals(order.getType()) || Constants.GET_TASK_ATTRIBUTE.equals(order.getType())) {
                 log.info("计算任务推广...");
                 //计算推广人分成
                 list.add(OrderBonus.builder().customerId(taskOperCust.getCustomerId()).orderId(orderId).bonusType(Constants.TASK_SPREAD_CUSTOMER).bonusAmount(taskSpreadCustBonus).bonusCustomerId(taskOperCust.getParentId()).build());
@@ -170,7 +170,9 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             if (orderBonuses != null && orderBonuses.size() > 0) {
                 throw new BusinessException(ExceptionEnum.ORDER_BONUS_EXISTS.getErrorCode(), ExceptionEnum.ORDER_BONUS_EXISTS.getErrorMessage());
             }
-            orderBonusMapper.createOrderBonus(list);
+            if (list.size() > 0) {
+                orderBonusMapper.createOrderBonus(list);
+            }
 
         } catch (BusinessException e) {
             log.error(e.toString(), e);

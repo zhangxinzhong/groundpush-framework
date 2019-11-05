@@ -81,4 +81,11 @@ public interface CustomerService {
      * @return
      */
     Optional<Customer> queryOrCreate(Customer build);
+
+    /**
+     * 通过客户编号查询客户
+     * @param parentId
+     * @return
+     */
+    Optional<Customer> queryCustomerByCustomerId(Integer parentId);
 }

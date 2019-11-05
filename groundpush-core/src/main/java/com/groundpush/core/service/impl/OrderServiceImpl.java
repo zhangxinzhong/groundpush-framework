@@ -178,7 +178,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new BusinessException(ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorCode(), ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorMessage());
             }
         }
-
+        order.setUniqueCode(condition.getUniqueCode());
         orderLogService.createOrderLog(condition.getList());
         orderMapper.updateOrderUniqueCode(order);
     }
@@ -267,7 +267,7 @@ public class OrderServiceImpl implements OrderService {
         // 1. 检查订单是否存在
         Optional<Order> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskId(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(Constants.GET_TASK_ATTRIBUTE).build());
         // 2. 查询订单是否上传结果集
-        if (optionalOrder.isPresent() && StringUtils.isNotBlank(optionalOrder.get().getUniqueCode())) {
+        if (optionalOrder.isPresent() && StringUtils.isBlank(optionalOrder.get().getUniqueCode())) {
             return optionalOrder;
         }
         return Optional.empty();

@@ -87,7 +87,7 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
             if (customerOptional.isPresent()) {
                 Customer customer = customerOptional.get();
                 // 当前推广任务客户的上级
-                Optional<Customer> parentCustomerOptional = customerService.getCustomer(customer.getParentId());
+                Optional<Customer> parentCustomerOptional = customerService.queryCustomerByCustomerId(customer.getParentId());
                 if (parentCustomerOptional.isPresent()) {
                     Customer parentCustomer = parentCustomerOptional.get();
                     // 校验 parentCustomer 是否是特殊用户

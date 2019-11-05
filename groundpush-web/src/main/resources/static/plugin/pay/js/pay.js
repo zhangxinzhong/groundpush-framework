@@ -76,7 +76,7 @@ layui.use(['table', 'laytpl'], function () {
                     layer.msg('审核成功！');
                 }
             },function (rep) {
-                layer.msg(rep);
+                layer.msg(rep.message);
             });
         }
         ,showAuditLog:function(data) {

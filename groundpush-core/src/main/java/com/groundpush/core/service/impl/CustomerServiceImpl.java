@@ -162,7 +162,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<Customer> queryCustomerPage(Customer customer, Integer page, Integer limit) {
-        PageHelper.startPage(page,limit);
+        PageHelper.startPage(page, limit);
         return customerMapper.queryCustomerPage(customer);
     }
 
@@ -186,5 +186,10 @@ public class CustomerServiceImpl implements CustomerService {
             return Optional.of(customer);
         }
         return optionalCustomer;
+    }
+
+    @Override
+    public Optional<Customer> queryCustomerByCustomerId(Integer parentId) {
+        return customerMapper.getCustomer(parentId);
     }
 }
