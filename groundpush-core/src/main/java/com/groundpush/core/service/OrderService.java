@@ -184,4 +184,12 @@ public interface OrderService {
      * @return
      */
     Integer updateOrders(List<Order> existOrder);
+
+    /**
+     * 校验订单是否存在且是否上传过结果集
+     * @param customId
+     * @param taskId
+     * @return
+     */
+    Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId);
 }

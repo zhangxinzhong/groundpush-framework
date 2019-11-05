@@ -32,7 +32,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 /**
- * @description:跳转产品推广
+ * @description:推广任务
  * @author: hss
  * @date: 2019-09-17
  */
@@ -43,7 +43,6 @@ import java.util.Optional;
 public class SpreadController {
     @Resource
     private RedisUtils redisUtils;
-
 
     @Resource
     private AesUtils aesUtils;
@@ -96,6 +95,14 @@ public class SpreadController {
                 return JsonResp.failure(ExceptionEnum.TASK_NOT_URI.getErrorCode(), ExceptionEnum.TASK_NOT_URI.getErrorMessage());
             }
 
+            // 如果任务类型为申请任务且订单未上传结果集不重复创建订单
+            if (Constants.ONE.equals(spreadQueryCondition.getType())) {
+                Optional<Order> orderOptional = orderService.checkOrderIsExistAndIsUploadResult(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
+                if (orderOptional.isPresent()) {
+                    return JsonResp.success(StringUtils.isBlank(orderOptional.get().getChannelUri()) ? taskUriOptional.get().getUri() : orderOptional.get().getChannelUri());
+                }
+            }
+
             //1.是否是特殊任务 且 是否是改任务的特殊用户
             //  还需验证当前用户上级是否是特殊用户
             Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId(), spreadQueryCondition.getCustomId());
@@ -109,7 +116,7 @@ public class SpreadController {
         } catch (Exception e) {
             log.error(e.toString(), e);
             return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
-        }finally {
+        } finally {
             redisUtils.del(key);
         }
     }

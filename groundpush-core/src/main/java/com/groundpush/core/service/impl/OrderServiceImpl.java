@@ -19,6 +19,7 @@ import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.core.vo.OrderBonusVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,28 +60,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> queryOrder(OrderQueryCondition order, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(),pageable.getPageSize());
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         return orderMapper.queryOrder(order);
     }
 
     @Override
-    public Page<Order> queryOrderByCondition(OrderListQueryCondition condition){
-        PageHelper.startPage(condition.getPage(),condition.getLimit());
+    public Page<Order> queryOrderByCondition(OrderListQueryCondition condition) {
+        PageHelper.startPage(condition.getPage(), condition.getLimit());
         return orderMapper.queryOrderByCondition(condition);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateOrderData(Order order){
+    public void updateOrderData(Order order) {
         orderMapper.updateOrderData(order);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer updateOrderByUniqueCode(String uniqueCode, Integer settlementStatus, String remark) {
-        return orderMapper.updateOrderByUniqueCode(uniqueCode,settlementStatus,remark);
+        return orderMapper.updateOrderByUniqueCode(uniqueCode, settlementStatus, remark);
     }
-
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -162,15 +162,14 @@ public class OrderServiceImpl implements OrderService {
         }
         Order order = optionalOrder.get();
 
-        for(OrderLog orderLog:condition.getList()){
+        for (OrderLog orderLog : condition.getList()) {
             orderLog.setOrderId(order.getOrderId());
         }
 
 
-
         condition.setTaskId(order.getTaskId());
         List<Order> orders = orderMapper.findOrderByUnqiuCode(condition);
-        if(orders != null && orders.size() > 0){
+        if (orders != null && orders.size() > 0) {
             throw new BusinessException(ExceptionEnum.ORDER_UNIQUECODE.getErrorCode(), ExceptionEnum.ORDER_UNIQUECODE.getErrorMessage());
         }
 
@@ -209,9 +208,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId,Integer taskId,Pageable pageable) {
+    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId, Integer taskId, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        return orderMapper.queryPopListByCustomerId(customerId,taskId);
+        return orderMapper.queryPopListByCustomerId(customerId, taskId);
     }
 
     @Override
@@ -241,7 +240,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
     @Override
     public List<Order> queryOrderByTaskIdAndChannelTime(Integer taskId, LocalDateTime channelTime) {
         LocalDateTime beginTime = dateUtils.getMinOfDay(channelTime);
@@ -265,5 +263,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer updateOrders(List<Order> existOrder) {
         return orderMapper.updateOrders(existOrder);
+    }
+
+    @Override
+    public Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId) {
+        // 1. 检查订单是否存在
+        Optional<Order> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskId(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(Constants.GET_TASK_ATTRIBUTE).build());
+        // 2. 查询订单是否上传结果集
+        if (optionalOrder.isPresent() && StringUtils.isNotBlank(optionalOrder.get().getUniqueCode())) {
+            return optionalOrder;
+        }
+        return Optional.empty();
     }
 }

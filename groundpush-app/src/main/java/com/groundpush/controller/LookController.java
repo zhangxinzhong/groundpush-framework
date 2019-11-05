@@ -33,21 +33,16 @@ public class LookController {
     @Resource
     private ObjectMapper objectMapper;
 
-    @Resource
-    private DateUtils dateUtils;
-
-
     @GetMapping("/spread")
     public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
 
-
         try {
             model.addAttribute("spreadQueryCondition", objectMapper.writeValueAsString(spreadQueryCondition));
         } catch (JsonProcessingException e) {
-            log.error(e.toString(),e);
+            log.error(e.toString(), e);
         }
         return "look/look";
     }
