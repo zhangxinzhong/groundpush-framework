@@ -154,15 +154,12 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }
         Order order = optionalOrder.get();
-
+        //订单列表中审核失败申诉上传任务结果集
+        if (Constants.ORDER_STATUS_REVIEW_FAIL.equals(order.getStatus())) {
+            //若订单审核失败申诉上传 则将状态改为申诉中
+            order.setStatus(Constants.ORDER_STATUS_COMPLAIIN);
+        }
         for (OrderLog orderLog : condition.getList()) {
-
-            //订单列表中审核失败申诉上传任务结果集
-            if (Constants.ORDER_STATUS_REVIEW_FAIL.equals(order.getStatus())) {
-                //若订单审核失败申诉上传 则将状态改为申诉中
-                order.setStatus(Constants.ORDER_STATUS_COMPLAIIN);
-            }
-
             orderLog.setOrderId(order.getOrderId());
         }
 

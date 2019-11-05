@@ -424,6 +424,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         ,saveUpdateTask:function (data) {
             Utils.postAjax("/task/save",data,function(rep) {
                 if(rep.code =='200'){
+                    $("#addUpdateTask").removeAttr('disabled');
                     eventListener.hideAddUpdateTaskDialog();
                     eventListener.reloadTaskTable();
                     layer.msg('任务保存成功');
@@ -613,6 +614,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
     //监听角色编辑角色
     form.on('submit(addUpdateTask)',function (data) {
+        $("#addUpdateTask").attr('disabled');
         let json = {};
         //公司
         let source = $("#source").val();

@@ -12,7 +12,7 @@ $(function () {
             let spreadQueryCondition = $("#spreadQueryCondition").val();
             if (!eventListener.is_weixnOrPay()) {
                 Utils.getAjax("/spread", JSON.parse(spreadQueryCondition), function (rep) {
-                    if (!Utils.isEmpty(rep.data)) {
+                    if (rep.code == 200 && !Utils.isEmpty(rep.data)) {
                         location.href = rep.data;
                     } else {
                         $(".show_font").show().html(rep.message);
@@ -25,4 +25,5 @@ $(function () {
             }
         }
     };
+    eventListener.init();
 });
