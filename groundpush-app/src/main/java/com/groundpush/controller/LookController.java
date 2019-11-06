@@ -8,6 +8,7 @@ import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.RedisUtils;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,5 +46,12 @@ public class LookController {
             log.error(e.toString(), e);
         }
         return "look/look";
+    }
+
+
+    @ApiOperation("提示页面")
+    @GetMapping("/prompt")
+    public String toSpread() {
+        return "prompt/prompt";
     }
 }
