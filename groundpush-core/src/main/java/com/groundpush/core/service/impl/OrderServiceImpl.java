@@ -125,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Page<Order> setOrderSurDay(Page<Order> page) {
         for (Order order : page) {
-            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) : 0L;
+            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) && dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) > 0 ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()): 0L;
             order.setIntervalDays(days.intValue());
             Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? dateUtils.plusMinutesTime(order.getCreatedTime()) : false;
             order.setHasReUpload(reUpload);
