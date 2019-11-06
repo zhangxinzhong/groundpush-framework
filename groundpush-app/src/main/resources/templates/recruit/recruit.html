@@ -10,7 +10,7 @@
         body {
             height: 100%;
             width: 100%;
-            background: url('/static/images/1.png ') no-repeat;
+            background: url('http://oss.zhongdi001.com/app/recruit/1.png') no-repeat;
             background-size: cover;
             position: absolute;
             overflow: hidden;
@@ -22,40 +22,45 @@
             text-align: center;
         }
 
-        .btn-style{
+        .btn-style {
             width: 100%;
             margin-top: 20px;
             height: 44px;
             border-radius: 30px;
-            background:#1481ff;
+            background: #1481ff;
             color: #eeeeee;
         }
     </style>
 </head>
 
-<body th:style="'background:url(' + @{'/images/1.png'} + ') no-repeat;height: 100%;width: 100%;background-size: cover;position: absolute;overflow: hidden;' " >
+<body style="background:url('http://oss.zhongdi001.com/app/recruit/1.png') no-repeat;height: 100%;width: 100%;background-size: cover;position: absolute;overflow: hidden; ">
 
 <!--分享引导框开始-->
-<div id="guide_box" style="display:none;position:fixed;left:0;top:0;z-index:998;background:#000;width:100%;height: 100%;" >
-    <img th:src="@{/images/wx_1.png}" width="100%" height="100%">
+<div id="guide_box"
+     style="display:none;position:fixed;left:0;top:0;z-index:998;background:#000;width:100%;height: 100%;">
+    <img src="http://oss.zhongdi001.com/app/recruit/wx_1.png" width="100%" height="100%">
 </div>
 <div class="container-fluid">
     <div class="jumbotron" id="contentDiv">
         <form class="layui-form" action="">
             <div class="row">
-                <img th:src="@{/images/3.png}" style="width: 13%;">
+                <img src="http://oss.zhongdi001.com/app/recruit/3.png" style="width: 13%;">
                 <span style="font-weight: bold;font-size: 18px;padding: 5px">申请推广员</span>
-                <img th:src="@{/images/2.png}" style="width: 13%;">
+                <img src="http://oss.zhongdi001.com/app/recruit/2.png" style="width: 13%;">
             </div>
             <div class="row" style="text-align: center;margin-top: 25px;">
-                <input  type="hidden" th:value="${parentId}" name="parentId" id="parentId" />
+                <input type="hidden" th:value="${parentId}" name="parentId" id="parentId"/>
                 <div class="col-xs-10 col-sm-10 col-md-10" style="width: 100%">
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1"><img th:src="@{/images/phone.png}"></span>
-                        <input type="text" name="mobileNo" id="mobileNo" lay-verify="required|phone" class="form-control" placeholder="请输入手机号下载" aria-describedby="basic-addon1" style="height: 44px;">
+                        <span class="input-group-addon" id="basic-addon1"><img
+                                src="http://oss.zhongdi001.com/app/recruit/phone.png"></span>
+                        <input type="text" name="mobileNo" id="mobileNo" lay-verify="required|phone"
+                               class="form-control" placeholder="请输入手机号下载" aria-describedby="basic-addon1"
+                               style="height: 44px;">
                     </div>
                     <div class="input-group" style="margin-top: 20px">
-                        <input type="text" class="form-control" lay-verify="required" name="mobileCode" placeholder="请输入验证码" aria-describedby="basic-addon2" style="height: 44px;">
+                        <input type="text" class="form-control" lay-verify="required" name="mobileCode"
+                               placeholder="请输入验证码" aria-describedby="basic-addon2" style="height: 44px;">
                         <span class="input-group-addon" id="basic-addon2"><a name="sendSms" style="cursor: default;">获取验证码</a></span>
                     </div>
                 </div>
