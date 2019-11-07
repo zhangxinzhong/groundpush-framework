@@ -7,16 +7,15 @@ import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.mapper.OrderMapper;
 import com.groundpush.core.mapper.OrderTaskCustomerMapper;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.OrderBonusService;
 import com.groundpush.core.service.OrderLogService;
 import com.groundpush.core.service.OrderService;
-import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.DateUtils;
-import com.groundpush.core.utils.MathUtil;
-import com.groundpush.core.utils.UniqueCode;
+import com.groundpush.core.service.PayService;
+import com.groundpush.core.utils.*;
 import com.groundpush.core.vo.OrderBonusVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -55,6 +54,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private OrderLogService orderLogService;
+
+    @Resource
+    private PayService payService;
+
+    @Resource
+    private LoginUtils loginUtils;
 
     @Override
     public List<Order> queryOrder(OrderQueryCondition order, Pageable pageable) {
@@ -271,5 +276,28 @@ public class OrderServiceImpl implements OrderService {
             return optionalOrder;
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void updateOrderStatusAndPay(Order order) {
+        if (orderMapper.updateOrderStatus(order) > 0 && Constants.ORDER_STATUS_REVIEW.equals(order.getStatus())) {
+            List<OrderBonus> list = orderBonusService.findOrderBonusByOrder(order.getOrderId());
+            Optional<LoginUserInfo> optionalLoginUserInfo = loginUtils.getLogin();
+            if(!optionalLoginUserInfo.isPresent()){
+                throw  new SystemException(ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorCode(),ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorMessage());
+            }
+
+            for (OrderBonus orderBonus : list) {
+                payService.orderPay(orderBonus, optionalLoginUserInfo.get().getUser());
+            }
+
+        }
+    }
+
+    @Override
+    public List<Order> queryOrderByTaskIdAndChannelTimeAndStatus(Integer taskId, LocalDateTime orderTime, Integer settlementStatus) {
+        LocalDateTime beginTime = dateUtils.getMinOfDay(orderTime);
+        LocalDateTime endTime = dateUtils.getMaxOfDay(orderTime);
+        return orderMapper.queryOrderByTaskIdAndChannelTimeAndStatus(taskId, beginTime, endTime, settlementStatus);
     }
 }

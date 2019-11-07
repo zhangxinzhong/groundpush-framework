@@ -1,11 +1,8 @@
 package com.groundpush.utils;
 
 import com.groundpush.core.model.LoginUserInfo;
-import com.groundpush.core.model.User;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.LoginUtils;
-import org.apache.poi.ss.formula.functions.T;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

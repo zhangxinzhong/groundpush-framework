@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
-public class TokenAuthenticationFailHander extends SimpleUrlAuthenticationFailureHandler {
+public class TokenAuthenticationFailHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Resource
     private ObjectMapper objectMapper;

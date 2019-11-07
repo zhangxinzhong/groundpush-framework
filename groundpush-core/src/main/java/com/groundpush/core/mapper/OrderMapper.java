@@ -427,4 +427,14 @@ public interface OrderMapper {
     @Update(" update t_order  set status=#{status}  where order_id = #{orderId}")
     Integer updateTaskStatusByTaskId(@Param("status") Integer status,@Param("orderId") Integer orderId);
 
+    /**
+     * 通过任务、渠道时间状态 查询订单
+     * @param taskId
+     * @param beginTime
+     * @param endTime
+     * @param settlementStatus
+     * @return
+     */
+    @Select(" select o.order_id,o.unique_code,o.created_time from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.task_id=#{taskId} and o.created_time between #{beginTime} and #{endTime} and o.settlement_status=#{settlementStatus} ")
+    List<Order> queryOrderByTaskIdAndChannelTimeAndStatus(@Param("taskId") Integer taskId, @Param("beginTime") LocalDateTime beginTime, @Param("endTime") LocalDateTime endTime, @Param("settlementStatus") Integer settlementStatus);
 }

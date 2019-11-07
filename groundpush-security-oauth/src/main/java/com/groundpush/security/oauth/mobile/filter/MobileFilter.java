@@ -9,10 +9,7 @@ import com.groundpush.security.core.common.SecurityConstants;
 import com.groundpush.security.core.exception.ValidateCodeException;
 import com.groundpush.security.core.properties.SecurityProperties;
 import com.groundpush.security.core.repository.ObjectRepository;
-import com.groundpush.security.core.validatecode.ValidateCode;
-import com.groundpush.security.core.validatecode.ValidateCodeRepository;
-import com.groundpush.security.core.validatecode.ValidateCodeType;
-import com.groundpush.security.oauth.TokenAuthenticationFailHander;
+import com.groundpush.security.oauth.TokenAuthenticationFailHandler;
 import com.groundpush.security.oauth.mobile.processor.OneClickLoginProcessor;
 import com.groundpush.security.oauth.mobile.smscode.SmsValidateCodeCalibrator;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +24,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -40,7 +36,7 @@ import java.util.Optional;
 public class MobileFilter extends OncePerRequestFilter {
 
     @Resource
-    private TokenAuthenticationFailHander tokenAuthenticationFailHander;
+    private TokenAuthenticationFailHandler tokenAuthenticationFailHandler;
 
     @Resource
     private SecurityProperties securityProperties;
@@ -63,7 +59,7 @@ public class MobileFilter extends OncePerRequestFilter {
             }
         } catch (ValidateCodeException e) {
             log.error(e.toString(), e);
-            tokenAuthenticationFailHander.onAuthenticationFailure(request, response, e);
+            tokenAuthenticationFailHandler.onAuthenticationFailure(request, response, e);
             return;
         }
         filterChain.doFilter(request, response);

@@ -100,6 +100,18 @@ public class OrderController {
         }
     }
 
+    @ApiOperation(value = "订单申诉")
+    @PutMapping("/updateOrderStatus")
+    @ResponseBody
+    public JsonResp updateOrderStatus(@RequestBody Order order) {
+        try {
+            orderService.updateOrderStatusAndPay(order);
+            return JsonResp.success();
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
 
 
 }

@@ -104,4 +104,12 @@ public interface CustomerLoginAccountMapper {
             "</script>"
     })
     Integer updateCustomerLoginAccountLoginNo(CustomerLoginAccount customerLoginAccount);
+
+    /**
+     * 通过客户编号及类型查询客户账号
+     * @param customerId
+     * @param type
+     * @return
+     */
+    Optional<CustomerLoginAccount> queryCustomerLOginAccountByCustomerIdAndType(Integer customerId, Integer type);
 }

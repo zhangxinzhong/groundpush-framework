@@ -5,7 +5,7 @@ import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.SystemException;
 import com.groundpush.security.oauth.model.CustomerDetail;
-import com.groundpush.utils.OauthLoginUtils;
+import com.groundpush.security.oauth.utils.OauthUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +27,12 @@ import java.util.Optional;
 public class MeController {
 
     @Resource
-    private OauthLoginUtils oauthLoginUtils;
+    private OauthUtils oauthUtils;
 
     @GetMapping
     public JsonResp getCurrentUser() {
         try {
-            Optional<CustomerDetail> customerDetailOptional = oauthLoginUtils.getLogin();
+            Optional<CustomerDetail> customerDetailOptional = oauthUtils.getLogin();
             if (customerDetailOptional.isPresent()) {
                 return JsonResp.success(customerDetailOptional.get());
             }

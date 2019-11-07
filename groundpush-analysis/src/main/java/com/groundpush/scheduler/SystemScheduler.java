@@ -52,9 +52,6 @@ public class SystemScheduler {
     @Resource
     private OrderService orderService;
 
-    @Resource
-    private ObjectMapper objectMapper;
-
     private long count = 0L;
 
     @Scheduled(fixedDelay = 100000)
@@ -75,7 +72,7 @@ public class SystemScheduler {
                     final Object[] title = excelTools.getExcelTitle();
                     final String mapping = channelExcel.getMapping();
                     List<ChannelData> cds = new ArrayList<>();
-                    List<Order> existOrder = new ArrayList<>();
+                    List<Order> orderList = new ArrayList<>();
 
                     excelTools.setRowResult(1000, (sheetName, countRow, resultCount, objects) -> {
 
@@ -92,10 +89,14 @@ public class SystemScheduler {
                                 if (order != null) {
                                     if (orderMap.containsKey(uniqueCode)) {
                                         isExistOrder = true;
+                                        order.setSettlementStatus(Constants.ORDER_STATUS_SUCCESS);
+                                        order.setStatus(Constants.ORDER_STATUS_SUCCESS);
+                                    } else {
+                                        order.setSettlementStatus(Constants.ORDER_STATUS_REVIEW_FAIL);
+                                        order.setStatus(Constants.ORDER_STATUS_REVIEW_FAIL);
+                                        order.setRemark(failureResult);
                                     }
-                                    order.setSettlementStatus(isExistOrder ? Constants.ORDER_STATUS_SUCCESS : Constants.ORDER_STATUS_REVIEW_FAIL);
-                                    order.setRemark(failureResult);
-                                    existOrder.add(order);
+                                    orderList.add(order);
                                 }
                                 log.info("数据文件:{},count:{},参数：uniqueCode:{},isExistOrder:{},produceTime:{},isEffective:{},failureResult:{}", path, count, uniqueCode, isExistOrder, analysisResult.get("produceTime"), isEffective, failureResult);
                                 try {
@@ -119,9 +120,9 @@ public class SystemScheduler {
                         cds.clear();
 
                         // 保存订单数据
-                        if (existOrder != null && existOrder.size() > 0) {
-                            orderService.updateOrders(existOrder);
-                            existOrder.clear();
+                        if (orderList != null && orderList.size() > 0) {
+                            orderService.updateOrders(orderList);
+                            orderList.clear();
                         }
 
                     });

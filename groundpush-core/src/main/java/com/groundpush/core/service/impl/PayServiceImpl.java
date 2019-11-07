@@ -1,23 +1,24 @@
-package com.groundpush.service.impl;
+package com.groundpush.core.service.impl;
 
 import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
+import com.groundpush.core.mapper.ChannelDataMapper;
 import com.groundpush.core.mapper.OrderBonusMapper;
 import com.groundpush.core.mapper.OrderMapper;
 import com.groundpush.core.mapper.OrderTaskCustomerMapper;
 import com.groundpush.core.model.*;
+import com.groundpush.core.service.AuditLogService;
 import com.groundpush.core.service.CustomerAccountService;
+import com.groundpush.core.service.PayService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
+import com.groundpush.core.utils.LoginUtils;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.core.vo.OrderPayVo;
-import com.groundpush.mapper.ChannelDataMapper;
-import com.groundpush.utils.SessionUtils;
-import com.groundpush.service.AuditLogService;
-import com.groundpush.service.PayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +57,7 @@ public class PayServiceImpl implements PayService {
     private AuditLogService auditLogService;
 
     @Resource
-    private SessionUtils sessionUtils;
+    private LoginUtils loginUtils;
 
     @Resource
     private UniqueCode uniqueCode;
@@ -86,7 +87,12 @@ public class PayServiceImpl implements PayService {
                 throw new BusinessException(String.format(ExceptionEnum.ORDER_BONUS_SUCCESS_NOT_EXISTS.getErrorMessage(), orderPay.getTaskId()));
             }
             // 获取当前登录用户
-            User user = sessionUtils.getLogin().isPresent()?sessionUtils.getLogin().get().getUser():null;
+            Optional<LoginUserInfo> optionalLoginUserInfo = loginUtils.getLogin();
+            if(!optionalLoginUserInfo.isPresent()){
+                throw  new SystemException(ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorCode(),ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorMessage());
+            }
+
+            User user = optionalLoginUserInfo.get().getUser();
             for (OrderBonus orderBonus : orderBonuses) {
                 orderPay(orderBonus, user);
             }
@@ -118,18 +124,7 @@ public class PayServiceImpl implements PayService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void updateOrderStatusAndPay(Order order) {
-        if(orderMapper.updateOrderStatus(order) > 0
-                && Constants.ORDER_STATUS_REVIEW.equals(order.getStatus())){
-            Optional<Order> optional = orderMapper.getOrder(order.getOrderId());
-            if(optional.isPresent()){
-                pay(OrderPayVo.builder().taskId(optional.get().getTaskId())
-                        .orderCreateDate(optional.get().getCreatedTime()).build());
-            }
-        }
-    }
+
 
 
     private void batchOrder(OrderPayVo orderPay){

@@ -1,13 +1,12 @@
 package com.groundpush.security.oauth.config;
 
 import com.groundpush.security.core.properties.SecurityProperties;
-import com.groundpush.security.oauth.TokenAuthenticationFailHander;
+import com.groundpush.security.oauth.TokenAuthenticationFailHandler;
 import com.groundpush.security.oauth.TokenAuthenticationSuccessHandler;
 import com.groundpush.security.oauth.mobile.config.MobileAuthenticationSecurityConfig;
 import com.groundpush.security.oauth.mobile.filter.MobileFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,7 +26,7 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
     private TokenAuthenticationSuccessHandler tokenAuthenticationSuccessHandler;
 
     @Resource
-    private TokenAuthenticationFailHander tokenAuthenticationFailHander;
+    private TokenAuthenticationFailHandler tokenAuthenticationFailHandler;
 
     @Resource
     private SecurityProperties securityProperties;
@@ -49,7 +48,7 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
                 //登录需要经过的url请求
                 .loginProcessingUrl(securityProperties.getOauth().getProcessingUri())
                 .successHandler(tokenAuthenticationSuccessHandler)
-                .failureHandler(tokenAuthenticationFailHander);
+                .failureHandler(tokenAuthenticationFailHandler);
 
         http
                 .authorizeRequests()

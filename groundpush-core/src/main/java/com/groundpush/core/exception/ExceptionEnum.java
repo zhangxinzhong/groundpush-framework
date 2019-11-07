@@ -22,7 +22,8 @@ package com.groundpush.core.exception;
 public enum ExceptionEnum {
 
     EXCEPTION("O0000", "系统异常，请联系管理员！")
-    ,EXCEPTION_UNKNOWN_LOGIN_TYPE("O0000", "未知的登录方式！")
+    ,EXCEPTION_UNKNOWN_LOGIN_TYPE("O0001", "未知的登录方式！")
+    ,EXCEPTION_SESSION_INVALID("O0002", "会话失效，请重新登录")
     , TASK_NOT_EXISTS("T10001", "任务不存在")
     , TASK_NOT_AMOUNT("T10002", "任务没有分红")
     ,TASK_COLLECT_EXCEPTION("T10003", "任务已经收藏，不可重复收藏！")
@@ -31,6 +32,7 @@ public enum ExceptionEnum {
     ,TASK_QR_CODE_INVALID("T10006", "二维码已失效")
     ,TASK_SPREAD_MAX("T10007", "今日推广已达上限")
     ,TASK_NOT_URI("T10008", "商品不存在")
+    ,TASK_NOT_UPLOAD_CHANNEL("T10009", "任务还上传渠道数据")
     , ORDER_CREATE_ORDER_FAIL("O20001", "订单创建失败，系统异常请联系管理员！")
     , ORDER_IS_EXPIRE("O20002", "订单已经过期不可删除")
     , ORDER_NOT_EXISTS("O20003", "订单不存在")

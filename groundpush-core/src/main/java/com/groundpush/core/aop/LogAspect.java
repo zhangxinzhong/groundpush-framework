@@ -36,8 +36,10 @@ public class LogAspect {
 
     @Resource
     private ObjectMapper objectMapper;
+
     @Resource
     private LoginUtils loginUtils;
+
     @Resource
     private OperationLogService operationLogService;
 

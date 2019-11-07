@@ -27,7 +27,7 @@ public class CustomerLoginAccountController {
     @Resource
     private CustomerLoginAccountService customerLoginAccountService;
 
-    @ApiOperation(value = "修改手机号")
+    @ApiOperation(value = "修改手机号、昵称")
     @PutMapping
     public JsonResp updateCustomerLoginAccount(@RequestBody CustomerLoginAccount customerLoginAccount) {
         customerLoginAccountService.updateCustomerLoginAccount(customerLoginAccount);

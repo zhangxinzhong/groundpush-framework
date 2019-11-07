@@ -186,4 +186,19 @@ public interface OrderService {
      * @return
      */
     Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId);
+
+    /**
+     * 修改订单状态 及 支付此订单金额
+     * @param order
+     */
+    void updateOrderStatusAndPay(Order order);
+
+    /**
+     *  通过任务、渠道审核状态和订单时间查询审核后订单
+     * @param taskId
+     * @param orderTime
+     * @param orderStatusReviewFail
+     * @return
+     */
+    List<Order> queryOrderByTaskIdAndChannelTimeAndStatus(Integer taskId, LocalDateTime orderTime, Integer orderStatusReviewFail);
 }

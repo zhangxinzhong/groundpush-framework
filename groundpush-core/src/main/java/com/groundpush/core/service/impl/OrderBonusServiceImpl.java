@@ -89,7 +89,8 @@ public class OrderBonusServiceImpl implements OrderBonusService {
 
             //计算任务订单分成
             if (optionalOrder.get().getIsSpecial()) {
-                log.info("Order :{},为特殊订单。不计算分成", optionalOrder.get().toString());
+                log.info("Order :{},为特殊订单。特殊任务分成金额为0", optionalOrder.get().toString());
+                orderBonusMapper.createSimpleOrderBonus(OrderBonus.builder().customerId(taskOperCust.get().getCustomerId()).orderId(optionalOrder.get().getOrderId()).bonusType(Constants.TASK_SPECIAL_BONUS).bonusAmount(new BigDecimal(Constants.ZROE)).bonusCustomerId(taskOperCust.get().getCustomerId()).build());
             } else {
                 CalculationOrderBonus(taskOperCust.get(), optionalTask.get(), optionalOrder.get());
             }

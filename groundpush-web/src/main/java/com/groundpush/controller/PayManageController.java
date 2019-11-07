@@ -3,14 +3,13 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderListQueryCondition;
-import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
-import com.groundpush.core.exception.SystemException;
-import com.groundpush.core.model.*;
+import com.groundpush.core.model.OrderList;
+import com.groundpush.core.model.PageResult;
+import com.groundpush.core.model.TaskOrderList;
+import com.groundpush.core.service.AuditLogService;
+import com.groundpush.core.service.PayService;
 import com.groundpush.core.vo.OrderPayVo;
-import com.groundpush.utils.SessionUtils;
-import com.groundpush.service.AuditLogService;
-import com.groundpush.service.PayService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.Optional;
 
 
 /**
@@ -35,8 +33,7 @@ public class PayManageController {
     @Resource
     private PayService payService;
 
-    @Resource
-    private SessionUtils sessionUtils;
+
 
     @Resource
     private AuditLogService auditLogService;
@@ -75,26 +72,7 @@ public class PayManageController {
     }
 
 
-    @ApiOperation(value = "任务订单审核")
-    @RequestMapping(value = "/addAuditLog", method = RequestMethod.POST)
-    @ResponseBody
-    public JsonResp addAuditLog(@RequestBody @Valid AuditLog auditLog) {
-        try {
-            Optional<LoginUserInfo> optional = sessionUtils.getLogin();
-            if (optional.isPresent()) {
-                LoginUserInfo info = optional.get();
-                auditLog.setUserId(info.getUser().getUserId());
-                auditLog.setCreatedBy(info.getUser().getUserId());
-                auditLogService.addAuditLog(auditLog);
-            } else {
-                throw new SystemException(ExceptionEnum.USER_NOT_EXISTS.getErrorCode(), ExceptionEnum.USER_NOT_EXISTS.getErrorMessage());
-            }
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
+
 
 
     @ApiOperation(value = "获取订单列表列表")
@@ -111,18 +89,6 @@ public class PayManageController {
         }
     }
 
-    @ApiOperation(value = "订单申诉中更新")
-    @PostMapping("/updateOrderStatusAndPay")
-    @ResponseBody
-    public JsonResp updateOrderStatusAndPay(@RequestBody Order order) {
-        try {
 
-            payService.updateOrderStatusAndPay(order);
-            return JsonResp.success();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
 
 }

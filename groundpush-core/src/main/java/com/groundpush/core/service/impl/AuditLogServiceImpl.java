@@ -1,4 +1,4 @@
-package com.groundpush.service.impl;
+package com.groundpush.core.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -8,14 +8,14 @@ import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.mapper.AuditLogMapper;
 import com.groundpush.core.mapper.OrderMapper;
 import com.groundpush.core.model.AuditLog;
 import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskOrderList;
+import com.groundpush.core.service.AuditLogService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
-import com.groundpush.mapper.AuditLogMapper;
-import com.groundpush.service.AuditLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,9 +56,6 @@ public class AuditLogServiceImpl implements AuditLogService {
             throw new BusinessException(ExceptionEnum.AUDITLOG_EXCEPTION.getErrorCode(), ExceptionEnum.AUDITLOG_EXCEPTION.getErrorMessage());
         }
         auditLogMapper.createAuditLog(auditLog);
-
-        // 检查审核记录是否大于2  并更新订单状态
-        checkAuditLogSuccess(auditLog);
     }
 
     private void checkAuditLogSuccess(AuditLog auditLog) {

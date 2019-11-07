@@ -53,6 +53,11 @@ public class Constants {
     public static final Integer TASK_VIRTUAL_CUSTOMER = 4;
 
     /**
+     * 特殊任务分成
+     */
+    public static final Integer TASK_SPECIAL_BONUS = 5;
+
+    /**
      * 百分比
      */
     public static final BigDecimal PERCENTAGE_100 = BigDecimal.valueOf(100);

@@ -69,7 +69,7 @@ layui.use(['table', 'laytpl'], function () {
             });
         }
         ,addAuditLog:function(data) {
-            Utils.postAjax("/payManage/addAuditLog",JSON.stringify(data.field),function(rep) {
+            Utils.postAjax("/auditLog",JSON.stringify(data.field),function(rep) {
                 if(rep.code =='200'){
                     eventListener.hideAddAuditDialog();
                     eventListener.reloadLabelTable();
@@ -211,7 +211,7 @@ layui.use(['table', 'laytpl'], function () {
             eventListener.showViewOrderList(data);
         }else if (obj.event === 'check') {
             if(data.successOrder == 0){
-                layer.msg("未生效订单为0，不可审核！")
+                layer.msg("生效订单为0，不可审核！")
                 return false;
             }
 

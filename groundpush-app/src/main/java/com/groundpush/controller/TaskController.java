@@ -8,8 +8,8 @@ import com.groundpush.core.model.*;
 import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.security.oauth.model.CustomerDetail;
+import com.groundpush.security.oauth.utils.OauthUtils;
 import com.groundpush.service.*;
-import com.groundpush.utils.OauthLoginUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
-
-import static java.lang.Integer.*;
 
 /**
  * @description:任务
@@ -34,9 +32,8 @@ import static java.lang.Integer.*;
 @Controller
 public class TaskController {
 
-
     @Resource
-    private OauthLoginUtils oauthLoginUtils;
+    private OauthUtils oauthUtils;
 
     @Resource
     private TaskService taskService;
@@ -75,7 +72,7 @@ public class TaskController {
         }
 
         //获取当前登录客户的个人信息
-        Optional<CustomerDetail> customerDetailOptional = oauthLoginUtils.getLogin();
+        Optional<CustomerDetail> customerDetailOptional = oauthUtils.getLogin();
         if (customerDetailOptional.isPresent()) {
             taskCondition.setParentId(customerDetailOptional.get().getCustomer().getParentId());
             taskCondition.setCreatedTime(customerDetailOptional.get().getCustomer().getCreatedTime());

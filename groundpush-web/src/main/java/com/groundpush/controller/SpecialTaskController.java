@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Optional;
@@ -41,19 +42,13 @@ public class SpecialTaskController {
     @Resource
     private TeamService teamService;
 
-
     @Resource
     private SessionUtils sessionUtils;
-
 
     @RequestMapping("/toSpecialTask")
     public String getTaskList() {
         return "specialTask/specialTask";
     }
-
-
-
-
 
     /**
      * 分页查询任务
@@ -71,7 +66,6 @@ public class SpecialTaskController {
         }
     }
 
-
     @ResponseBody
     @ApiOperation("删除特殊任务服务")
     @GetMapping("/delSpecialTask")
@@ -85,7 +79,6 @@ public class SpecialTaskController {
         }
     }
 
-
     @ResponseBody
     @ApiOperation("发布特殊任务服务")
     @GetMapping("/publishSpecialTask")
@@ -98,7 +91,6 @@ public class SpecialTaskController {
             throw e;
         }
     }
-
 
     @ResponseBody
     @ApiOperation("发布特殊任务服务")
@@ -117,7 +109,6 @@ public class SpecialTaskController {
             throw e;
         }
     }
-
 
     @ApiOperation("获取所有任务、所有团队")
     @GetMapping("/queryAllList")

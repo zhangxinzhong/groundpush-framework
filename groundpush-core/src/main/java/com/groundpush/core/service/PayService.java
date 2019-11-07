@@ -1,6 +1,5 @@
-package com.groundpush.service;
+package com.groundpush.core.service;
 
-import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderBonus;
 import com.groundpush.core.model.User;
 import com.groundpush.core.vo.OrderPayVo;
@@ -24,11 +23,4 @@ public interface PayService {
      * @param user 操作用户
      */
     void orderPay(OrderBonus orderBonus, User user);
-
-
-    /**
-     * 修改订单 并支付（若订单为已通过，则支付）
-     * @param order
-     */
-    void updateOrderStatusAndPay(Order order);
 }

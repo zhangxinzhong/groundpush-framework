@@ -1,4 +1,4 @@
-package com.groundpush.utils;
+package com.groundpush.security.oauth.utils;
 
 import com.groundpush.core.exception.BusinessException;
 import com.groundpush.core.exception.ExceptionEnum;
@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Component
-public class OauthLoginUtils extends LoginUtils<CustomerDetail> {
+public class OauthUtils extends LoginUtils<CustomerDetail> {
 
     @Override
     public Optional<CustomerDetail> getLogin() {

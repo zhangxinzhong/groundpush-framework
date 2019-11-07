@@ -1,6 +1,6 @@
 package com.groundpush.security.oauth.mobile.config;
 
-import com.groundpush.security.oauth.TokenAuthenticationFailHander;
+import com.groundpush.security.oauth.TokenAuthenticationFailHandler;
 import com.groundpush.security.oauth.TokenAuthenticationSuccessHandler;
 import com.groundpush.security.oauth.mobile.MobileAuthenticationFilter;
 import com.groundpush.security.oauth.mobile.MobileAuthenticationProvider;
@@ -26,7 +26,7 @@ public class MobileAuthenticationSecurityConfig extends SecurityConfigurerAdapte
     private TokenAuthenticationSuccessHandler tokenAuthenticationSuccessHandler;
 
     @Resource
-    private TokenAuthenticationFailHander tokenAuthenticationFailHander;
+    private TokenAuthenticationFailHandler tokenAuthenticationFailHandler;
 
     @Resource
     private UserDetailsService userDetailsService;
@@ -37,7 +37,7 @@ public class MobileAuthenticationSecurityConfig extends SecurityConfigurerAdapte
         MobileAuthenticationFilter mobileAuthenticationFilter = new MobileAuthenticationFilter();
         mobileAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         mobileAuthenticationFilter.setAuthenticationSuccessHandler(tokenAuthenticationSuccessHandler);
-        mobileAuthenticationFilter.setAuthenticationFailureHandler(tokenAuthenticationFailHander);
+        mobileAuthenticationFilter.setAuthenticationFailureHandler(tokenAuthenticationFailHandler);
 
         MobileAuthenticationProvider mobileAuthenticationProvider = new MobileAuthenticationProvider();
         mobileAuthenticationProvider.setUserDetailsService(userDetailsService);
