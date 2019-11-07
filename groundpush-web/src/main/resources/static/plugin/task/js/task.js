@@ -6,7 +6,19 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     let laytpl = layui.laytpl;
 
 
+    let addDisabledBtn = function(data){
+        // 增加样式
+        $(data.elem).addClass('layui-btn-disabled');
+        // 增加属性
+        $(data.elem).attr('disabled', 'disabled');
+    }
 
+    let removeDisableBtn = function(){
+        // 增加样式
+        $("#addUpdateTask").removeClass('layui-btn-disabled');
+        // 增加属性
+        $("#addUpdateTask").removeAttr('disabled');
+    }
 
     form.verify({
         thumInput: function (value) {
@@ -434,13 +446,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 if(rep.code =='200'){
                     eventListener.hideAddUpdateTaskDialog();
                     eventListener.reloadTaskTable({table:'task',type:1});
-                    eventListener.reloadTaskTable({table:'sepcial',type:2});
+                    eventListener.reloadTaskTable({table:'special',type:2});
                     layer.msg('任务保存成功');
-                } else {
-                    layer.msg(rep.message);
                 }
             }, function (rep) {
                 layer.msg(rep.message);
+                removeDisableBtn();
             });
         }
         //清空遗留数据
@@ -568,7 +579,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             Utils.postAjax("/task/updateTaskStatus", JSON.stringify(data), function (rep) {
                 if (rep.code == '200') {
                     eventListener.reloadTaskTable({table:'task',type:1});
-                    eventListener.reloadTaskTable({table:'sepcial',type:2});
+                    eventListener.reloadTaskTable({table:'special',type:2});
                     layer.msg('任务发布成功');
                 } else {
                     layer.msg(rep.message);
@@ -605,10 +616,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //新增任务modal
         ,showAddUpdateTaskDialog: function(){
             $('#addUpdateTaskDialog').modal('show');
-            // 增加样式
-            $("#addUpdateTask").removeClass('layui-btn-disabled');
-            // 增加属性
-            $("#addUpdateTask").removeAttr('disabled');
+            removeDisableBtn();
         }
         ,hideAddUpdateTaskDialog: function(){
             $('#addUpdateTaskDialog').modal('hide');
@@ -616,10 +624,10 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //----------------------  任务与特殊任务同步 部分 begin -----------------------------------------//
         //同步特殊任务
         , syncTask:function (data) {
-            Utils.getAjax('/task/syncTask',{taskId:data.taskId,sepcialTaskId:data.sepcialTaskId},function(rep){
+            Utils.getAjax('/task/syncTask',{taskId:data.taskId,specialTaskId:data.specialTaskId},function(rep){
                 if (rep.code == '200') {
                     eventListener.reloadTaskTable({table:'task',type:1});
-                    eventListener.reloadTaskTable({table:'sepcial',type:2});
+                    eventListener.reloadTaskTable({table:'special',type:2});
                     layer.msg('创建特殊成功');
                 }
             },function (rep) {
@@ -628,7 +636,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         }
         //显示同步任务modal框并获取普通任务数据
         ,showSyncTask:function (data) {
-            Utils.postAjax('/task/querySepcialTasks',{},function(rep){
+            Utils.postAjax('/task/querySpecialTasks',{},function(rep){
                 if (rep.code == '200') {
                     if(rep.data != undefined && rep.data.length > 0){
                         form.val('syncTaskTaskForm',{
@@ -640,7 +648,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                         for(let i in rep.data){
                             html += "<option value='" + rep.data[i].taskId + "'>" + rep.data[i].title +"</option>";
                         }
-                        $('#sepcialTaskId').html(html)
+                        $('#specialTaskId').html(html)
                         form.render();
                     }else{
                         layer.msg("没有已创建特殊任务不可同步哦")
@@ -664,27 +672,28 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     eventListener.initTable({'elem':'#task','type':1});
 
     //初始化特殊任务table列表
-    eventListener.initTable({'elem':'#sepcial','type':2});
+    eventListener.initTable({'elem':'#special','type':2});
 
     //监听任务
     form.on('submit(syncTask)',function (data) {
-        eventListener.syncTask({taskId:data.field.taskId,sepcialTaskId:data.field.sepcialTaskId})
+        eventListener.syncTask({taskId:data.field.taskId,specialTaskId:data.field.specialTaskId})
     });
+
+
+
+
 
 
     //监听角色编辑角色
     form.on('submit(addUpdateTask)',function (data) {
 
-        // 单击之后提交按钮不可选,防止重复提交
-        // 增加样式
-        $(data.elem).addClass('layui-btn-disabled');
-        // 增加属性
-        $(data.elem).attr('disabled', 'disabled');
+        addDisabledBtn(data);
         let json = {};
         //公司
         let source = $("#source").val();
         if(source == undefined || source == ''){
             layer.msg('公司不可为空');
+            removeDisableBtn();
             return false;
         }
         //任务所在地
@@ -695,6 +704,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         let labelIds = $('#selectLabelIds').selectpicker('val');
         if(labelIds == undefined || labelIds == ''){
             layer.msg('标签不可为空');
+            removeDisableBtn();
             return false;
         }
 
@@ -719,6 +729,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值为空'
                     layer.msg(msg);
                     success = false;
+                    removeDisableBtn();
                     return false;
                 }
                 if(rowType == 2 || rowType == 3 || rowType == 4){
@@ -727,6 +738,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                         let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值按钮名称不可为空'
                         layer.msg(msg)
                         success = false;
+                        removeDisableBtn();
                         return false;
                     }
                     obj["name"] = name;
@@ -741,6 +753,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             });
 
             if (!success) {
+                removeDisableBtn();
                 return false;
             }
         });
@@ -748,7 +761,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
 
         if (labelType == 0) {
-            layer.msg('我的任务编辑不可为空')
+            layer.msg('我的任务编辑不可为空');
+            removeDisableBtn();
             return false;
         }
 
@@ -765,6 +779,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 let msg = '任务结果集编辑：序号' + seq + '的类型值为空'
                 layer.msg(msg);
                 success = false;
+                removeDisableBtn();
                 return false;
             }
             obj["content"] = content;
@@ -773,10 +788,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         });
 
         if (!success) {
+            removeDisableBtn();
             return false;
         }
         if (seq == 0) {
-            layer.msg('任务结果集不可为空')
+            layer.msg('任务结果集不可为空');
+            removeDisableBtn();
             return false;
         }
 
@@ -870,7 +887,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     });
 
     //监听特殊task
-    table.on('tool(sepcial)', function (obj) {
+    table.on('tool(special)', function (obj) {
         toolOn(obj);
     });
 

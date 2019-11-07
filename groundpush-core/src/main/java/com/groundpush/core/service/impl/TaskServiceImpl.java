@@ -204,16 +204,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void syncTask(Integer taskId,Integer sepcialTaskId) {
+    public void syncTask(Integer taskId,Integer specialTaskId) {
         Optional<Task> optional = taskMapper.getTask(taskId);
         if(optional.isPresent()){
             Task task = optional.get();
             task.setType(Constants.TASK_SEPCAIL_TYPE_2);
             task.setStatus(Constants.TASK_STATUS_0);
-            if(sepcialTaskId == null){
+            if(specialTaskId == null){
                 taskMapper.createSingleTask(task);
             }else{
-                task.setTaskId(sepcialTaskId);
+                task.setTaskId(specialTaskId);
                 taskMapper.updateTask(task);
             }
 
@@ -249,7 +249,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> querySepcialTasks(Integer type) {
+    public List<Task> querySpecialTasks(Integer type) {
         return taskMapper.queryTasksByType(type);
     }
 

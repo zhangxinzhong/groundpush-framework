@@ -87,7 +87,7 @@ layui.use('table', function () {
                     ,loginNo:field.loginNo
                     ,orderStatus:field.orderStatus
                     ,settlementStatus:field.settlementStatus
-                    ,isSepcial:field.isSepcial
+                    ,isSpecial:field.isSpecial
 
                 }
                 ,page: {
@@ -170,7 +170,7 @@ layui.use('table', function () {
                     ,loginNo:field.loginNo
                     ,orderStatus:field.orderStatus
                     ,settlementStatus:field.settlementStatus
-                    ,isSepcial:field.isSepcial
+                    ,isSpecial:field.isSpecial
 
                 }
                 ,page: {

@@ -107,9 +107,9 @@ public interface TaskService {
     /**
      * 通过任务id 创建一个与此任务相同的特殊任务
      * @param taskId
-     * @param sepcialTaskId
+     * @param specialTaskId
      */
-    void syncTask(Integer taskId,Integer sepcialTaskId);
+    void syncTask(Integer taskId,Integer specialTaskId);
 
 
     /**
@@ -117,5 +117,5 @@ public interface TaskService {
      * @param type
      * @return
      */
-    List<Task>  querySepcialTasks(Integer type);
+    List<Task>  querySpecialTasks(Integer type);
 }

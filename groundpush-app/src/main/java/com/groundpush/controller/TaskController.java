@@ -8,6 +8,7 @@ import com.groundpush.core.model.*;
 import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
+import com.groundpush.core.utils.LoginUtils;
 import com.groundpush.security.oauth.model.CustomerDetail;
 import com.groundpush.security.oauth.utils.OauthUtils;
 import com.groundpush.service.*;
@@ -78,7 +79,7 @@ public class TaskController {
         }
 
         //查询当前用户的特殊任务
-        if(taskCondition.getCustomerId() != null && Constants.SEPCIAL_LABEL_ID.toString().equals(taskCondition.getType())){
+        if(taskCondition.getCustomerId() != null && Constants.SPECIAL_LABEL_ID.toString().equals(taskCondition.getType())){
             Optional<CustomerDetail> customerDetailOptional = oauthUtils.getLogin();
             if (customerDetailOptional.isPresent()) {
                 Customer customer = customerDetailOptional.get().getCustomer();
