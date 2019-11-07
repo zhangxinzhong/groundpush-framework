@@ -7,6 +7,7 @@ import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.DateUtils;
 import com.groundpush.security.oauth.model.CustomerDetail;
 import com.groundpush.service.*;
 import com.groundpush.utils.OauthLoginUtils;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +41,9 @@ public class TaskController {
     private OauthLoginUtils oauthLoginUtils;
 
     @Resource
+    private DateUtils dateUtils;
+
+    @Resource
     private TaskService taskService;
 
     @Resource
@@ -55,6 +60,7 @@ public class TaskController {
 
     @Resource
     private SpecialTaskService specialTaskService;
+
 
     /**
      * 分页查询任务
@@ -75,14 +81,19 @@ public class TaskController {
         }
 
         //获取当前登录客户的个人信息
-        Optional<CustomerDetail> customerDetailOptional = oauthLoginUtils.getLogin();
-        if (customerDetailOptional.isPresent()) {
-            taskCondition.setParentId(customerDetailOptional.get().getCustomer().getParentId());
-            taskCondition.setCreatedTime(customerDetailOptional.get().getCustomer().getCreatedTime());
-        }
+
 
         //查询当前用户的特殊任务
         if(taskCondition.getCustomerId() != null && Constants.SEPCIAL_LABEL_ID.toString().equals(taskCondition.getType())){
+            Optional<CustomerDetail> customerDetailOptional = oauthLoginUtils.getLogin();
+            if (customerDetailOptional.isPresent()) {
+                Customer customer = customerDetailOptional.get().getCustomer();
+                //判断当前时间是否超过客户创建时间且没有订单
+                if(LocalDateTime.now().isBefore(dateUtils.getMaxOfDay(customer.getCreatedTime()))
+                        && orderTaskCustomerService.queryOrderCountByCustomerId(customer.getCustomerId()) == 0){
+                    taskCondition.setParentId(customer.getParentId());
+                }
+            }
             Page<Task> sepcialTask = specialTaskService.querySepcicalTaskByCondition(taskCondition,pageNumber,pageSize);
             return JsonResp.success(new PageResultModel(sepcialTask, list));
         }

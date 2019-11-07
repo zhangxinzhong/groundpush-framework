@@ -4,8 +4,6 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     let layer = layui.layer;
     let upload = layui.upload;
     let laytpl = layui.laytpl;
-    //防止重复提交
-    let submitFlag = 0;
 
 
 
@@ -91,28 +89,32 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
     //触发事件
     let eventListener = {
-        initTable: function () {
+
+        initTable: function (data) {
             table.render({
-                elem: '#task'
+                elem: data.elem
                 , url: '/task/getTaskPageList'
-                , toolbar: '#toolbarTask'
+                , where:{
+                    type:data.type
+                }
+                , toolbar: data.type == 1?'#toolbarTask':true
                 , title: 'task-data'
                 , totalRow: true
                 , cols: [[
-                    {field: 'title', title: '任务标题', width: '10%', sort: true}
-                    , {field: 'amount', title: '单笔佣金', width: '10%'}
-                    , {field: 'source', title: '所属公司', width: '10%'}
+                    {field: 'title', title: '任务标题', width: '15%', sort: true}
+                    , {field: 'amount', title: '单笔佣金', width: '5%'}
+                    , {field: 'source', title: '所属公司', width: '8%'}
                     , {field: 'spreadTotal', title: '每日推广任务总数', width: '10%'}
                     , {field: 'handlerNum', title: '单人每日可做任务数', width: '10%'}
                     , {field: 'spreadRatio', title: '推广人分成比', width: '10%'}
                     , {field: 'leaderRatio', title: '推广领导分成比', width: '10%'}
                     , {
-                        field: '', title: '发布类型', width: '10%',
+                        field: '', title: '发布类型', width: '8%',
                         templet: function (d) {
                             return d.status == 0 ? "未发布" : (d.status == 1 ? "已发布" : "已过期");
                         }
                     }
-                    , {field: '', title: '操作', width: '20%', toolbar: "#toolTask"}
+                    , {field: '', title: '操作', width: '24%', toolbar: "#toolTask"}
                 ]]
                 , page: true, curr: 1, limit: Global.PAGE_SISE
                 , response:
@@ -136,11 +138,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     });
                 }
             });
-        }, reloadTaskTable: function () {
-            table.reload('task', {
+        }, reloadTaskTable: function (data) {
+            table.reload(data.table, {
                 where: {
                     curr: 1
                     , limit: Global.PAGE_SISE
+                    ,type:data.type
                 }
                 , page: {
                     curr: 1 //重新从第 1 页开始
@@ -430,7 +433,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             Utils.postAjax("/task/save",data,function(rep) {
                 if(rep.code =='200'){
                     eventListener.hideAddUpdateTaskDialog();
-                    eventListener.reloadTaskTable();
+                    eventListener.reloadTaskTable({table:'task',type:1});
+                    eventListener.reloadTaskTable({table:'sepcial',type:2});
                     layer.msg('任务保存成功');
                 } else {
                     layer.msg(rep.message);
@@ -489,7 +493,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                         "taskTitle":data.taskTitle,
                         //是否上传结果
                         "isResult":data.isResult,
-                        //任务类型
+                        //type 1.普通任务 2.特殊任务
                         "type":data.type
                    });
                     eventListener.showAddUpdateTaskDialog();
@@ -563,7 +567,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         , delOrPublishTask: function (data) {
             Utils.postAjax("/task/updateTaskStatus", JSON.stringify(data), function (rep) {
                 if (rep.code == '200') {
-                    eventListener.reloadTaskTable();
+                    eventListener.reloadTaskTable({table:'task',type:1});
+                    eventListener.reloadTaskTable({table:'sepcial',type:2});
                     layer.msg('任务发布成功');
                 } else {
                     layer.msg(rep.message);
@@ -608,7 +613,44 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         ,hideAddUpdateTaskDialog: function(){
             $('#addUpdateTaskDialog').modal('hide');
         }
+        //----------------------  任务与特殊任务同步 部分 begin -----------------------------------------//
+        //同步特殊任务
+        , syncTask:function (data) {
+            Utils.getAjax('/task/syncTask',{taskId:data.taskId,sepcialTaskId:data.sepcialTaskId},function(rep){
+                if (rep.code == '200') {
+                    eventListener.reloadTaskTable({table:'task',type:1});
+                    eventListener.reloadTaskTable({table:'sepcial',type:2});
+                    layer.msg('创建特殊成功');
+                }
+            },function (rep) {
+                layer.msg(rep.message);
+            });
+        }
+        //显示同步任务modal框并获取普通任务数据
+        ,showSyncTask:function (data) {
+            Utils.postAjax('/task/querySepcialTasks',{},function(rep){
+                if (rep.code == '200') {
+                    if(rep.data != undefined && rep.data.length > 0){
+                        form.val('syncTaskTaskForm',{
+                             'taskId':data.taskId
+                        });
+                        $('#syncTaskDialog').modal('show');
 
+                        let html = "";
+                        for(let i in rep.data){
+                            html += "<option value='" + rep.data[i].taskId + "'>" + rep.data[i].title +"</option>";
+                        }
+                        $('#sepcialTaskId').html(html)
+                        form.render();
+                    }else{
+                        layer.msg("没有已创建特殊任务不可同步哦")
+                    }
+                }
+            },function (rep) {
+                layer.msg(rep.message);
+            });
+        }
+        //----------------------  任务与特殊任务同步 部分 end -----------------------------------------//
     };
 
     //初始化缩略图上传
@@ -617,7 +659,17 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     eventListener.initUploadImg({'id': '#imgSample', 'inputId': '#sampleInput'});
     //初始化封面图上传
     eventListener.initUploadImg({'id': '#imgCover', 'inputId': '#coverInput'});
-    eventListener.initTable();
+
+    //初始化普通任务table列表
+    eventListener.initTable({'elem':'#task','type':1});
+
+    //初始化特殊任务table列表
+    eventListener.initTable({'elem':'#sepcial','type':2});
+
+    //监听任务
+    form.on('submit(syncTask)',function (data) {
+        eventListener.syncTask({taskId:data.field.taskId,sepcialTaskId:data.field.sepcialTaskId})
+    });
 
 
     //监听角色编辑角色
@@ -679,9 +731,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     }
                     obj["name"] = name;
                 }
-
-                obj["content"] = content;
                 obj["type"] = 2;
+                obj["content"] = content;
                 let imgCode = $(object).find('.imgCode').val();
                 obj["imgCode"] = imgCode != undefined ? imgCode : '';
                 let createUri = $(object).find(".createUri");
@@ -766,8 +817,6 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         json["taskTitle"] = data.field.taskTitle;
         //是否上传结果
         json["isResult"] = data.field.isResult;
-        //任务类型
-        json["type"] = data.field.type;
         //公司
         json["source"] = source;
         //标签内容
@@ -781,6 +830,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //任务id
         json["taskId"] = data.field.taskId;
 
+        //设置任务类型 1：普通任务 2：特殊任务
+        json["type"] = data.field.type;
         eventListener.saveUpdateTask(JSON.stringify(json))
         //屏蔽表单提交
         return false;
@@ -793,18 +844,36 @@ layui.use(['table', 'laytpl', 'upload'], function () {
        $(data.elem).parents('tr').find('.name').val(data.value==4?'保存二维码':(data.value==3?'打开链接':'下载APP'));
     });
 
-    //监听task
-    table.on('tool(task)', function (obj) {
-        let data = obj.data;
-        if (obj.event === 'check') {
-            eventListener.showData(data);
-        } else if (obj.event === 'publish') {
-            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 1});
-        } else if (obj.event === 'del') {
-            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 2});
-        }
 
+   let toolOn = function (obj) {
+       let data = obj.data;
+       if (obj.event === 'check') {
+           eventListener.showData(data);
+       } else if (obj.event === 'publish') {
+           eventListener.delOrPublishTask({"taskId": data.taskId, "status": 1});
+       } else if (obj.event === 'del') {
+           eventListener.delOrPublishTask({"taskId": data.taskId, "status": 2});
+       } else if(obj.event === 'sync') {
+           layer.confirm('确认要同步创建于此任务相同的特殊任务么',{btn: ['创建特殊任务', '同步特殊任务']}, function (index) {
+               eventListener.syncTask(data);
+               layer.close(index);
+           },function (index) {
+               layer.close(index);
+               eventListener.showSyncTask(data);
+           });
+       }
+   }
+
+    //监听普通task
+    table.on('tool(task)', function (obj) {
+        toolOn(obj);
     });
+
+    //监听特殊task
+    table.on('tool(sepcial)', function (obj) {
+        toolOn(obj);
+    });
+
 
     form.on('radio(createUri)',function (data) {
         $('#view div table tbody tr .createUri').each(function (i,o) {

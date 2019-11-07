@@ -91,11 +91,12 @@ public interface TaskMapper {
     Optional<Task> getTask(@Param("taskId") Integer taskId);
 
     /**
-     * 获取所有任务中的任务id与任务标题
+     * 通过type 获取所有特殊任务中的任务id与任务标题
+     * @param type
      * @return
      */
-    @Select(" select a.task_id,a.title from t_task a ")
-    List<Task> queryAllTaskList();
+    @Select(" select a.task_id,a.title from t_task a where a.type = #{type}")
+    List<Task> queryAllTaskListByType(@Param("type") Integer type);
 
 
 
@@ -118,7 +119,7 @@ public interface TaskMapper {
             // 根据条件查出所有任务
             "(",
             " select t1.* ",
-            "  from t_task t1  where t1.status=1   ",
+            "  from t_task t1  where t1.status=1 and t1.type = 1 ",
             " and (ISNULL(t1.location)=1 or LENGTH(trim(t1.location)) = 0 )",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='type != null and type != \"\"'> and t1.task_id in (select tb.task_id from t_task_label tb  where  tb.label_id = #{type})   </if> ",
@@ -127,7 +128,7 @@ public interface TaskMapper {
             " <if test='location != null and location != \"\" '>  ",
             " union ( ",
             " select t2.* ",
-            " from t_task t2 where t2.status=1  ",
+            " from t_task t2 where t2.status=1 and t2.type = 1 ",
             " and t2.task_id in (select c.task_id from t_task_location c where c.location = #{location}) ",
             " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='type != null and type != \"\"'> and t2.task_id in (select tb.task_id from t_task_label tb  where  tb.label_id = #{type}) </if> ",
@@ -155,6 +156,14 @@ public interface TaskMapper {
     })
     Optional<TaskPopCountVo> getSupTotalOrCustomCount(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
 
+
+    /**
+     * 通过任务type 查询所有特殊任务
+     * @param type
+     * @return
+     */
+    @Select(" select a.task_id,a.title from t_task a where a.type = #{type} ")
+    List<Task> queryTasksByType(@Param("type") Integer type);
 
 
 }

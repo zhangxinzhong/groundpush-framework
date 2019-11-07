@@ -24,4 +24,13 @@ public interface OrderTaskCustomerService {
      * @param taskId
      */
     Boolean queryHasSepcialOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId);
+
+
+    /**
+     * 通过客户id 获取添加订单数
+     * @param customerId
+     * @return
+     */
+    Integer queryOrderCountByCustomerId(Integer customerId);
+
 }

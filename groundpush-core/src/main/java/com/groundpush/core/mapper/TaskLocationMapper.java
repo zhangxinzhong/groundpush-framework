@@ -4,6 +4,7 @@ import com.groundpush.core.model.TaskLocation;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -45,4 +46,12 @@ public interface TaskLocationMapper {
             "</script>"
     })
     void saveTaskLocation(List<TaskLocation> locationList);
+
+    /**
+     * 通过任务id 获取任务关联的地址
+     * @param taskId
+     * @return
+     */
+    @Select(" select a.* from t_task_location a where a.task_id = #{taskId} ")
+    List<TaskLocation> queryTaskLocationByTaskId(@Param("taskId") Integer taskId);
 }

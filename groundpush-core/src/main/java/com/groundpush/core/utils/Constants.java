@@ -124,12 +124,12 @@ public class Constants {
     /**
      * 任务状态（2-已保存未发布）
      */
-    public static final Integer TASK_STATUS_2 = 2;
+    public static final Integer TASK_STATUS_0 = 0;
 
     /**
      * 任务状态（3-已过期）
      */
-    public static final Integer TASK_STATUS_3 = 3;
+    public static final Integer TASK_STATUS_2 = 2;
 
     /**
      * 可用状态 表示可见
@@ -384,4 +384,14 @@ public class Constants {
      * 任务结果集申诉或重新上传 app订单列表中的重新上传或申诉上传
      */
     public static final Integer TASK_RESULT_UPLOAD_2 = 1;
+
+    /**
+     * 普通任务
+     */
+    public static final Integer TASK_NORMAL_TYPE_1 = 1;
+
+    /**
+     * 特殊任务
+     */
+    public static final Integer TASK_SEPCAIL_TYPE_2 = 2;
 }

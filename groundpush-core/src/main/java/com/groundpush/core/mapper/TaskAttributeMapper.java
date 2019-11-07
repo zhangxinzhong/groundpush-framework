@@ -74,4 +74,12 @@ public interface TaskAttributeMapper {
     List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(@Param("taskId") Integer taskId,@Param("type")  Integer type);
 
 
+    /**
+     * 通过id获取所有对应任务属性
+     * @param taskId
+     * @return
+     */
+    @Select(" select a.* from t_task_attribute a where a.task_id = #{taskId} ")
+    List<TaskAttribute> queryTaskAttrListByTaskId(@Param("taskId") Integer taskId);
+
 }

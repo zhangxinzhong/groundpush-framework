@@ -78,7 +78,7 @@ public class Task implements Serializable {
      * 任务类型
      */
     //TODO 未赋值检查是否删除
-    @NotNull(message = "任务类型不可为空")
+    @NotNull(message = "任务类型不可为空 1:普通任务 2:特殊任务")
     @JsonView(SimpleTaskView.class)
     private Integer type;
 
@@ -303,11 +303,5 @@ public class Task implements Serializable {
     private Boolean hasSpecialTask;
 
 
-    /**
-     *特殊任务下用于被推广人是否需跳转到推广页面
-     */
-    @ApiParam("特殊任务下用于被推广人是否需跳转到推广页面")
-    @JsonView(SimpleTaskView.class)
-    private Boolean hasRedirectRecruit;
 
 }

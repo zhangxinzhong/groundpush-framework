@@ -51,14 +51,6 @@ public interface SpecialTaskService {
     Boolean whetherSpecialTask(Integer taskId, Integer customId);
 
 
-    /**
-     * 过滤添加是否为特殊任务
-     * @param pages
-     * @param condition
-     * @return
-     */
-    Page<Task> hasSpecialTask(Page<Task> pages, TaskQueryCondition condition);
-
 
     /**
      * 获取customerId的特殊任务

@@ -10,6 +10,7 @@ import com.groundpush.core.model.TaskTeamList;
 import com.groundpush.core.service.SpecialTaskService;
 import com.groundpush.core.service.TaskService;
 import com.groundpush.core.service.TeamService;
+import com.groundpush.core.utils.Constants;
 import com.groundpush.utils.SessionUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -124,7 +125,7 @@ public class SpecialTaskController {
     @ResponseBody
     public JsonResp queryAllList() {
         try {
-            return JsonResp.success(new TaskTeamList(teamService.queryAllTeamList(),taskService.queryAllTaskList()));
+            return JsonResp.success(new TaskTeamList(teamService.queryAllTeamList(),taskService.queryAllTaskList(Constants.TASK_SEPCAIL_TYPE_2)));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

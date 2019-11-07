@@ -58,11 +58,11 @@ public interface TaskService {
     void updateTask(Task task);
 
     /**
-     * 获取所有任务
+     * 通过type 获取所有特殊任务中的任务id与任务标题
      *
      * @return
      */
-    List<Task> queryAllTaskList();
+    List<Task> queryAllTaskList(Integer type);
 
     /**
      * 分页查询任务
@@ -102,4 +102,20 @@ public interface TaskService {
      * @return
      */
     Optional<TaskPopCountVo> getSupTotalOrCustomCount(Integer customerId, Integer taskId);
+
+
+    /**
+     * 通过任务id 创建一个与此任务相同的特殊任务
+     * @param taskId
+     * @param sepcialTaskId
+     */
+    void syncTask(Integer taskId,Integer sepcialTaskId);
+
+
+    /**
+     * 通过任务type 获取特殊任务
+     * @param type
+     * @return
+     */
+    List<Task>  querySepcialTasks(Integer type);
 }
