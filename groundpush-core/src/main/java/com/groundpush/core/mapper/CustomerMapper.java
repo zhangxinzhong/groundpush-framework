@@ -73,7 +73,7 @@ public interface CustomerMapper {
      *
      * @param customer
      */
-    @Insert(" insert into t_customer(parent_id, nick_name, img_uri, status, invite_code, reputation, created_time) values (#{parentId},#{nickName},#{imgUri},1,#{inviteCode},#{reputation},current_timestamp) ")
+    @Insert(" insert into t_customer(parent_id, nick_name, img_uri, status, invite_code, reputation, created_time) values (#{parentId},#{nickName},#{imgUri},1,#{inviteCode},#{reputation},#{createdTime}) ")
     @Options(useGeneratedKeys = true, keyProperty = "customerId")
     void createCustomer(Customer customer);
 
