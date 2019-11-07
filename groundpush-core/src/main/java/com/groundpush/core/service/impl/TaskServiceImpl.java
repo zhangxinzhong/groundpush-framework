@@ -6,10 +6,7 @@ import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
-import com.groundpush.core.mapper.TaskAttributeMapper;
-import com.groundpush.core.mapper.TaskLabelMapper;
-import com.groundpush.core.mapper.TaskLocationMapper;
-import com.groundpush.core.mapper.TaskMapper;
+import com.groundpush.core.mapper.*;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.TaskAttributeService;
 import com.groundpush.core.service.TaskService;
@@ -47,6 +44,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private TaskLocationMapper taskLocationMapper;
+
+    @Resource
+    private TaskUriMapper taskUriMapper;
 
     @Override
     public Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
@@ -221,6 +221,8 @@ public class TaskServiceImpl implements TaskService {
                 taskLocationMapper.delTaskLocationByTaskId(specialTaskId);
                 //删除任务关联标签
                 taskLabelMapper.deleteTaskLabelByTaskId(specialTaskId);
+                //删除任务关联标签
+                taskUriMapper.del(specialTaskId);
             }
 
 
@@ -253,6 +255,14 @@ public class TaskServiceImpl implements TaskService {
                 }
                 taskLocationMapper.saveTaskLocation(taskLocations);
             }
+
+            //创建任务uri
+            List<TaskUri> taskUris = taskUriMapper.queryTaskUriByTaskId(taskId);
+            if(taskUris.size() > 0){
+               for(TaskUri taskUri : taskUris){
+                   taskUri.setTaskId(task.getTaskId());
+               }
+               taskUriMapper.insert(taskUris);            }
         }
     }
 

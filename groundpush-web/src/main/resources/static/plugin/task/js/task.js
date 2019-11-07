@@ -871,7 +871,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
        } else if (obj.event === 'del') {
            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 2});
        } else if(obj.event === 'sync') {
-           layer.confirm('确认要同步创建于此任务相同的特殊任务么',{btn: ['创建特殊任务', '同步特殊任务']}, function (index) {
+           layer.confirm('确认要同步创建于此任务相同的特殊任务么',{btn: ['创建特殊任务']}, function (index) {
                eventListener.syncTask(data);
                layer.close(index);
            },function (index) {
