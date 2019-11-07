@@ -364,15 +364,15 @@ public class Constants {
 
 
     /**
-     * 特殊任务标签名称SEPCIAL_LABEL_NAME
+     * 特殊任务标签名称SPECIAL_LABEL_NAME
      */
-    public static  final String SEPCIAL_LABEL_NAME = "地推";
+    public static  final String SPECIAL_LABEL_NAME = "地推";
 
 
     /**
-     * 特殊任务标签id SEPCIAL_LABEL_ID
+     * 特殊任务标签id SPECIAL_LABEL_ID
      */
-    public static  final Integer SEPCIAL_LABEL_ID = 0;
+    public static  final Integer SPECIAL_LABEL_ID = 0;
 
 
     /**

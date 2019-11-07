@@ -60,6 +60,6 @@ public class OrderListQueryCondition implements Serializable {
     private Integer settlementStatus;
 
     @ApiModelProperty(value = "特殊任务")
-    private Integer isSepcial;
+    private Integer isSpecial;
 
 }

@@ -84,7 +84,7 @@ public class TaskController {
 
 
         //查询当前用户的特殊任务
-        if(taskCondition.getCustomerId() != null && Constants.SEPCIAL_LABEL_ID.toString().equals(taskCondition.getType())){
+        if(taskCondition.getCustomerId() != null && Constants.SPECIAL_LABEL_ID.toString().equals(taskCondition.getType())){
             Optional<CustomerDetail> customerDetailOptional = oauthLoginUtils.getLogin();
             if (customerDetailOptional.isPresent()) {
                 Customer customer = customerDetailOptional.get().getCustomer();
@@ -94,8 +94,8 @@ public class TaskController {
                     taskCondition.setParentId(customer.getParentId());
                 }
             }
-            Page<Task> sepcialTask = specialTaskService.querySepcicalTaskByCondition(taskCondition,pageNumber,pageSize);
-            return JsonResp.success(new PageResultModel(sepcialTask, list));
+            Page<Task> specialTask = specialTaskService.querySepcicalTaskByCondition(taskCondition,pageNumber,pageSize);
+            return JsonResp.success(new PageResultModel(specialTask, list));
         }
 
 

@@ -29,7 +29,7 @@ public class LabelServiceImpl implements LabelService {
     @Override
     public List<Label> getLabelByType(Integer type) {
         List<Label> list  = new ArrayList<>();
-        list.add(Label.builder().labelName(Constants.SEPCIAL_LABEL_NAME).labelId(Constants.SEPCIAL_LABEL_ID).build());
+        list.add(Label.builder().labelName(Constants.SPECIAL_LABEL_NAME).labelId(Constants.SPECIAL_LABEL_ID).build());
         list.addAll(labelMapper.getLabelByType(type));
         return list;
     }

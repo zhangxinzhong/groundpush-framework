@@ -88,7 +88,7 @@ public interface OrderMapper {
             " <if test='loginNo != null and loginNo !=\"\"'>  and c.login_no like '${loginNo}%' </if>",
             " <if test='orderStatus != null and orderStatus !=\"\"'> and  a.status = #{orderStatus} </if>",
             " <if test='settlementStatus != null and settlementStatus !=\"\"'> and  a.settlement_status = #{settlementStatus} </if>",
-            " <if test='isSepcial != null and isSepcial !=\"\"'> and  a.is_special = #{isSepcial} </if>",
+            " <if test='isSpecial != null and isSpecial !=\"\"'> and  a.is_special = #{isSpecial} </if>",
             " order by a.created_time desc ",
             "</script>"
     })

@@ -50,7 +50,7 @@ public interface OrderTaskCustomerMapper {
      * @param taskId
      */
     @Select(" SELECT count(*) FROM t_order_task_customer a left join t_order b on a.order_id = b.order_id where a.task_id = #{taskId} and a.customer_id = #{customerId} and  b.is_special=1 ")
-    Integer queryHasSepcialOrderByTaskIdAndCustomerId(@Param("taskId") Integer taskId, @Param("customerId") Integer customerId);
+    Integer queryHasSpecialOrderByTaskIdAndCustomerId(@Param("taskId") Integer taskId, @Param("customerId") Integer customerId);
 
 
     /**

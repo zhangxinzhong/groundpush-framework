@@ -23,7 +23,7 @@ public interface OrderTaskCustomerService {
      * 根据taskId查询出所有关联订单
      * @param taskId
      */
-    Boolean queryHasSepcialOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId);
+    Boolean queryHasSpecialOrderByTaskIdAndCustomerId(Integer taskId, Integer customerId);
 
 
     /**
