@@ -83,21 +83,20 @@ public interface SpecialTaskMapper {
      */
     @Select({
             "<script>",
-            " select s.*, ",
-                "  from(",
                 " select t.*, ",
                 //今日您剩余推广次数
                 " (SELECT t.handler_num-count(1) FROM t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id WHERE b.customer_id = #{customerId} AND DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') AND b.task_id = t.task_id ) sur_pop_count, ",
                 //任务参与人
                 " (SELECT count(1) FROM  t_order_task_customer  a LEFT JOIN  t_order b ON a.order_id = b.order_id WHERE a.task_id = t.task_id AND DATE_FORMAT(b.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) task_person, ",
-                " has_special_task 1 ",
+                //用于默认为特殊任务
+                "  1 has_special_task ",
                 " FROM ",
                 " (" ,
                         //location不为空时 查询所有未设置任务位置的任务
                         " (SELECT	t1.*  FROM	t_task t1 where t1.status=1 and t1.type = 2 ",
                         " and t1.task_id in  ",
                         " (select c.task_id from t_special_task c left join t_team_customer b on  c.team_id = b.team_id where b.customer_id in ",
-                        " (#{customerId}<if test='parenId != null and parentId != \"\"'>,#{parentId}</if>))",
+                        " (#{customerId}<if test='parentId != null and parentId != \"\"'>,#{parentId}</if>))",
 
                         " <if test='location != null and location != \"\"'> and (ISNULL(t1.location)=1 or LENGTH(trim(t1.location)) = 0 ) </if>",
                         " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if>)",
@@ -107,13 +106,12 @@ public interface SpecialTaskMapper {
                         " select t2.* from  t_task t2  where t2.status=1 and t2.type = 2 ",
                         " and t2.task_id in  ",
                         " (select c.task_id from t_special_task c left join t_team_customer b on  c.team_id = b.team_id where b.customer_id in ",
-                        " (#{customerId}<if test='parenId != null and parentId != \"\"'>,#{parentId}</if>))",
+                        " (#{customerId}<if test='parentId != null and parentId != \"\"'>,#{parentId}</if>))",
 
                         " and t2.task_id in (select c.task_id from t_task_location c where c.location = #{location}) ",
                         " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
                         " )</if> ",
                 " ) t ",
-            " ) s  ",
             " <if test='sort != null'> order by ${sort} </if> ",
             "</script>"
     })
