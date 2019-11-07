@@ -215,7 +215,15 @@ public class TaskServiceImpl implements TaskService {
             }else{
                 task.setTaskId(specialTaskId);
                 taskMapper.updateTask(task);
+                //删除任务属性关联
+                taskAttributeMapper.deleteTaskAttributeByTaskId(specialTaskId);
+                //删除任务位置关联
+                taskLocationMapper.delTaskLocationByTaskId(specialTaskId);
+                //删除任务关联标签
+                taskLabelMapper.deleteTaskLabelByTaskId(specialTaskId);
             }
+
+
 
             //创建任务关联属性
             List<TaskAttribute> taskAttributes  = taskAttributeMapper.queryTaskAttrListByTaskId(taskId);
