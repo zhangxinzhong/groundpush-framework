@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Page<Order> setOrderSurDay(Page<Order> page) {
         for (Order order : page) {
-            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) : 0L;
+            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) && dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) > 0 ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()): 0L;
             order.setIntervalDays(days.intValue());
             Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? dateUtils.plusMinutesTime(order.getCreatedTime()) : false;
             order.setHasReUpload(reUpload);
@@ -145,8 +145,8 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrderUniqueCode(OrderResultCondition condition) {
         Optional<Order> optionalOrder = null;
         if (condition.getTaskId() != null) {
-            //通过任务类型、任务id和客户id获取未提交结果集的某一个订单
-            optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskId(condition);
+            //通过任务类型、任务id和客户id获取未提交结果集的某一个订单 （只可上传当天的订单）
+            optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreatedime(condition);
 
         } else {
             //通过订单id获取订单
