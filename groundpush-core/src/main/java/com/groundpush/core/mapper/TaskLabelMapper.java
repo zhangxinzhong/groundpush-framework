@@ -91,4 +91,13 @@ public interface TaskLabelMapper {
             "</script>"
     })
     void createTaskLabel(List<TaskLabel> labelList);
+
+
+    /**
+     * 通过任务id 获取任务相关标签
+     * @param taskId
+     * @return
+     */
+    @Select(" select a.* from t_task_label a where a.task_id = #{taskId}")
+    List<TaskLabel> queryTaskLabelByTaskId(@Param("taskId") Integer taskId);
 }

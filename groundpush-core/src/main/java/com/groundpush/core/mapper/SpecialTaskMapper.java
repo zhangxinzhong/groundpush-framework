@@ -74,74 +74,6 @@ public interface SpecialTaskMapper {
     List<Integer> querySpecialTaskByTaskIdReturnTeamId(@Param("taskId") Integer taskId);
 
 
-    /**
-     * 通过任务list和客户id返回特殊任务idlist
-     * @param tasks
-     * @param customerId
-     * @param parentId
-     * @param createdTime
-     * @return
-     */
-    @Select({
-            "<script>",
-            " SELECT t.task_id, ",
-            //是否跳转推广页面 为推广人时为true 为被推广人时为false
-            " if(t.flag=1,1,0) has_redirect_recruit,",
-            //默认为特殊任务
-            " 1 has_special_task",
-            " FROM (SELECT  t1.task_id, ",
-            //判断是否为礼品 即特殊任务 has_special_task=1：特殊任务 has_special_task=0：非特殊任务
-            "		(CASE WHEN",
-                        //第一步.当前客户为团队一员 且此与特殊任务关联  为true则执行第1.1步 为false则执行第1.2步
-            "			(SELECT",
-            "				COUNT(*)",
-            "			FROM",
-            "				t_special_task a",
-            "			LEFT JOIN t_team b ON a.team_id = b.team_id",
-            "			LEFT JOIN t_team_customer c ON b.team_id = c.team_id",
-            "			WHERE  a.status=1 ",
-            "			AND c.customer_id = #{customerId}",
-            "			AND a.task_id = t1.task_id) &gt; 0",
-            "		 THEN",
-                        //第1.1步 表示推广人
-            "			1",
-            "		 ELSE",
-                        //第1.2步.非特殊任务情况下 若当前客户的parenId为团队一员且与特殊任务关联    为true则执行第1.2.1步 为false则执行第1.2.2步
-            "			(CASE WHEN",
-            "					(SELECT",
-            "						COUNT(*)",
-            "					FROM",
-            "						t_special_task a",
-            "					LEFT JOIN t_team b ON a.team_id = b.team_id",
-            "					LEFT JOIN t_team_customer c ON b.team_id = c.team_id ",
-            "					WHERE a.status=1",
-            "					AND c.customer_id = #{parentId}",
-            "					AND a.task_id = t.task_id) &gt; 0 ",
-            "					AND (SELECT",
-            "								COUNT(*)",
-            "							FROM",
-            "								t_order_task_customer o",
-            "							WHERE",
-            "								o.task_id = t.task_id",
-            "							AND o.customer_id = #{customerId}) = 0",
-            "					AND STR_TO_DATE(#{createdTime},'%Y-%m-%d %H:%i:%s') &lt; STR_TO_DATE(CONCAT(DATE_FORMAT(#{createdTime},'%Y-%m-%d'),' 23:59:00'),'%Y-%m-%d %H:%i:%s')",
-            "			 THEN",
-                                //第1.2.1步 表示特殊任务被推广人
-            "		           2",
-            "			  ELSE",
-                                //第1.2.2步 表示非特殊任务
-            "					0",
-            "			  END)",
-            "		   END) flag ",
-
-            " FROM t_task t1 WHERE t1.task_id in ",
-            "   <foreach collection='tasks' item='task' open='(' close=')' separator=','>",
-            "      #{task.taskId}",
-            "   </foreach>",
-            ") t WHERE t.flag &gt; 0 ",
-            "</script>"
-    })
-    List<Task>  querySpecialTaskByTasks(@Param("customerId") Integer customerId, @Param("parentId") Integer parentId, @Param("createdTime") LocalDateTime createdTime, @Param("tasks") List<Task> tasks);
 
 
     /**
@@ -151,77 +83,35 @@ public interface SpecialTaskMapper {
      */
     @Select({
             "<script>",
-            " select s.*, ",
-                //是否跳转推广页面 为特殊任务推广人时为true 为特殊任务被推广人时为false
-                " if(s.flag=1,1,0) has_redirect_recruit,",
-                //默认为特殊任务
-                " 1 has_special_task",
-                "  from(",
                 " select t.*, ",
                 //今日您剩余推广次数
                 " (SELECT t.handler_num-count(1) FROM t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id WHERE b.customer_id = #{customerId} AND DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') AND b.task_id = t.task_id ) sur_pop_count, ",
                 //任务参与人
                 " (SELECT count(1) FROM  t_order_task_customer  a LEFT JOIN  t_order b ON a.order_id = b.order_id WHERE a.task_id = t.task_id AND DATE_FORMAT(b.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d')) task_person, ",
-
-                //判断是否为礼品 即特殊任务 has_special_task=1：特殊任务 has_special_task=0：非特殊任务
-                "		(CASE WHEN",
-                           //第1步.当前客户为团队一员 且此与特殊任务关联  为true则执行第1.1步 为false则执行第1.2步
-                "			(SELECT",
-                "				COUNT(*)",
-                "			FROM",
-                "				t_special_task a",
-                "			LEFT JOIN t_team b ON a.team_id = b.team_id",
-                "			LEFT JOIN t_team_customer c ON b.team_id = c.team_id",
-                "			WHERE a.status=1",
-                "			AND c.customer_id = #{customerId}",
-                "			AND a.task_id = t.task_id) &gt; 0",
-                "		 THEN",
-                            //第1.1步 表示特殊任务推广人
-                "			1",
-                "		 ELSE",
-                            //第1.2步.非特殊任务情况下 若当前客户的parenId为团队一员且与特殊任务关联    为true则执行第1.2.1步 为false则执行第1.2.2步
-                "			(CASE WHEN",
-                "					(SELECT",
-                "						COUNT(*)",
-                "					FROM",
-                "						t_special_task a",
-                "					LEFT JOIN t_team b ON a.team_id = b.team_id",
-                "					LEFT JOIN t_team_customer c ON b.team_id = c.team_id ",
-                "					WHERE a.status=1",
-                "					AND c.customer_id = #{parentId}",
-                "					AND a.task_id = t.task_id) &gt; 0 ",
-                "					AND (SELECT",
-                "								COUNT(*)",
-                "							FROM",
-                "								t_order_task_customer o",
-                "							WHERE",
-                "								o.task_id = t.task_id",
-                "							AND o.customer_id = #{customerId}) = 0",
-                "					AND STR_TO_DATE(#{createdTime},'%Y-%m-%d %H:%i:%s') &lt; STR_TO_DATE(CONCAT(DATE_FORMAT(#{createdTime},'%Y-%m-%d'),' 23:59:00'),'%Y-%m-%d %H:%i:%s')",
-                "			 THEN",
-                                   //第1.2.1步 表示特殊任务被推广人
-                "		           2",
-                "			  ELSE",
-                                  //第1.2.2步 表示非特殊任务
-                "					0",
-                "			  END)",
-                "		   END) flag ",
-
+                //用于默认为特殊任务
+                "  1 has_special_task ",
                 " FROM ",
                 " (" ,
                         //location不为空时 查询所有未设置任务位置的任务
-                        " (SELECT	t1.*  FROM	t_task t1 where t1.status=1 ",
+                        " (SELECT	t1.*  FROM	t_task t1 where t1.status=1 and t1.type = 2 ",
+                        " and t1.task_id in  ",
+                        " (select c.task_id from t_special_task c left join t_team_customer b on  c.team_id = b.team_id where b.customer_id in ",
+                        " (#{customerId}<if test='parentId != null and parentId != \"\"'>,#{parentId}</if>))",
+
                         " <if test='location != null and location != \"\"'> and (ISNULL(t1.location)=1 or LENGTH(trim(t1.location)) = 0 ) </if>",
                         " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if>)",
                         //location不为空时 查询所有符合任务位置条件的任务
                         " <if test='location != null and location != \"\" '> ",
                         " union (",
-                        " select t2.* from  t_task t2  where t2.status=1 ",
+                        " select t2.* from  t_task t2  where t2.status=1 and t2.type = 2 ",
+                        " and t2.task_id in  ",
+                        " (select c.task_id from t_special_task c left join t_team_customer b on  c.team_id = b.team_id where b.customer_id in ",
+                        " (#{customerId}<if test='parentId != null and parentId != \"\"'>,#{parentId}</if>))",
+
                         " and t2.task_id in (select c.task_id from t_task_location c where c.location = #{location}) ",
                         " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
                         " )</if> ",
                 " ) t ",
-            " ) s where s.flag &gt; 0 ",
             " <if test='sort != null'> order by ${sort} </if> ",
             "</script>"
     })

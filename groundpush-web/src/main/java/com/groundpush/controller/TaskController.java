@@ -175,4 +175,38 @@ public class TaskController {
     }
 
 
+    /**
+     * taskId不为空则创建任务 taskId与sepcialTaskId不为空则修改任务
+     * @param taskId
+     * @param sepcialTaskId
+     * @return
+     */
+    @GetMapping("/syncTask")
+    @ResponseBody
+    public JsonResp syncTask(@RequestParam("taskId") Integer taskId,@RequestParam(value = "sepcialTaskId",required = false) Integer sepcialTaskId){
+
+        try {
+            taskService.syncTask(taskId,sepcialTaskId);
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+        return JsonResp.success();
+    }
+
+    /**
+     * 获取所有特殊任务列表
+     * @return
+     */
+    @PostMapping("/querySepcialTasks")
+    @ResponseBody
+    public JsonResp querySepcialTasks(){
+        try {
+            return JsonResp.success(taskService.querySepcialTasks(Constants.TASK_SEPCAIL_TYPE_2));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+
+    }
 }

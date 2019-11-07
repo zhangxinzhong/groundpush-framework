@@ -31,5 +31,10 @@ public class OrderTaskCustomerServiceImpl implements OrderTaskCustomerService {
         return orderTaskCustomerMapper.queryHasSepcialOrderByTaskIdAndCustomerId(taskId,customerId).intValue() > 0 ?true:false;
     }
 
+    @Override
+    public Integer queryOrderCountByCustomerId(Integer customerId) {
+        return orderTaskCustomerMapper.queryOrderCountByCustomerId(customerId);
+    }
+
 
 }

@@ -61,4 +61,13 @@ public interface OrderTaskCustomerMapper {
     @Select(" select distinct task_id from t_order_task_customer where order_id = #{orderId} ")
     Optional<Integer> queryTaskIdByOrderId(@Param("orderId") Integer orderId);
 
+
+    /**
+     * 通过客户id 获取该客户创建的订单
+     * @param customerId
+     * @return
+     */
+    @Select(" select count(*) from t_order_task_customer where customer_id = #{customerId} ")
+    Integer queryOrderCountByCustomerId(@Param("customerId") Integer customerId);
+
 }

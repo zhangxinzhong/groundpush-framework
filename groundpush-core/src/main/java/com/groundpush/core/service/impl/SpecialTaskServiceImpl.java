@@ -73,56 +73,14 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     }
 
     @Override
-    public Boolean whetherSpecialTask(Integer taskId, Integer customId) {
-        List<Integer> teamIds = specialTaskMapper.querySpecialTaskByTaskIdReturnTeamId(taskId);
-        if (teamIds.size() > 0) {
-            List<Integer> teamCustomerList = teamCustomerService.queryTeamReturnCustomerId(teamIds);
-            // 特殊用户
-            if (teamCustomerList.contains(customId)) {
-                return Boolean.TRUE;
-            }
-            // 验证当前用户的父是否是特殊用户
-            // 当前推广任务客户
-            Optional<Customer> customerOptional = customerService.getCustomer(customId);
-            if (customerOptional.isPresent()) {
-                Customer customer = customerOptional.get();
-                // 当前推广任务客户的上级
-                Optional<Customer> parentCustomerOptional = customerService.queryCustomerByCustomerId(customer.getParentId());
-                if (parentCustomerOptional.isPresent()) {
-                    Customer parentCustomer = parentCustomerOptional.get();
-                    // 校验 parentCustomer 是否是特殊用户
-                    if (teamCustomerList.contains(parentCustomer.getCustomerId())) {
-                        // 校验 customer 的创建时间是否是当天的24点前 并且 校验 customer 是否存在订单
-                        LocalDateTime maxCreateTime = dateUtils.getMaxOfDay(customer.getCreatedTime());
-                        Boolean isExistOrder = orderService.existOrderByCustomerId(customer.getCustomerId());
-                        if (LocalDateTime.now().isBefore(maxCreateTime) && !isExistOrder) {
-                            return Boolean.TRUE;
-                        }
-                    }
-                }
-            }
+    public Boolean whetherSpecialTask(Integer taskId) {
+        Optional<Task> task = taskService.queryTaskByTaskId(taskId);
+        if(task.isPresent() && Constants.TASK_SEPCAIL_TYPE_2.equals(task.get().getType())){
+           return  Boolean.TRUE;
         }
         return Boolean.FALSE;
     }
 
-    @Override
-    public Page<Task> hasSpecialTask(Page<Task> pages, TaskQueryCondition condition) {
-        List<Task> specialTasks = specialTaskMapper.querySpecialTaskByTasks(condition.getCustomerId(),condition.getParentId(),condition.getCreatedTime(),pages.getResult());
-        if(specialTasks.size() > 0){
-            for (Task task : pages) {
-                // 特殊任务
-                for (Task specialTask : specialTasks) {
-                    if(specialTask.getTaskId().equals(task.getTaskId())){
-                        task.setHasSpecialTask(Boolean.TRUE);
-                        task.setHasRedirectRecruit(specialTask.getHasRedirectRecruit());
-                        //跳出当前循环
-                        break;
-                    }
-                }
-            }
-        }
-        return pages;
-    }
 
     @Override
     public Page<Task> querySepcicalTaskByCondition(TaskQueryCondition condition, Integer pageNumber, Integer pageSize) {

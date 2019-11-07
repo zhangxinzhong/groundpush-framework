@@ -105,7 +105,7 @@ public class SpreadController {
 
             //1.是否是特殊任务 且 是否是改任务的特殊用户
             //  还需验证当前用户上级是否是特殊用户
-            Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId(), spreadQueryCondition.getCustomId());
+            Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId());
             Order order = Order.builder().customerId(spreadQueryCondition.getCustomId()).type(spreadQueryCondition.getType()).taskId(spreadQueryCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).channelUri(taskUriOptional.get().getUri()).isSpecial(isSpecialTask).build();
             //2.创建用户订单
             orderService.createOrder(order);

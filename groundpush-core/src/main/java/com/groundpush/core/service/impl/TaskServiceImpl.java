@@ -16,6 +16,7 @@ import com.groundpush.core.service.TaskService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.vo.TaskPopCountVo;
+import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,8 +126,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> queryAllTaskList() {
-        return taskMapper.queryAllTaskList();
+    public List<Task> queryAllTaskList(Integer type) {
+        return taskMapper.queryAllTaskListByType(type);
     }
 
     @Override
@@ -198,6 +199,58 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Optional<TaskPopCountVo> getSupTotalOrCustomCount(Integer customerId, Integer taskId) {
         return taskMapper.getSupTotalOrCustomCount(customerId, taskId);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void syncTask(Integer taskId,Integer sepcialTaskId) {
+        Optional<Task> optional = taskMapper.getTask(taskId);
+        if(optional.isPresent()){
+            Task task = optional.get();
+            task.setType(Constants.TASK_SEPCAIL_TYPE_2);
+            task.setStatus(Constants.TASK_STATUS_0);
+            if(sepcialTaskId == null){
+                taskMapper.createSingleTask(task);
+            }else{
+                task.setTaskId(sepcialTaskId);
+                taskMapper.updateTask(task);
+            }
+
+            //创建任务关联属性
+            List<TaskAttribute> taskAttributes  = taskAttributeMapper.queryTaskAttrListByTaskId(taskId);
+            if(taskAttributes.size() > 0){
+                for(TaskAttribute taskAttribute : taskAttributes){
+                    taskAttribute.setTaskId(task.getTaskId());
+                }
+                taskAttributeMapper.createTaskAttribute(taskAttributes);
+            }
+
+
+            //创建任务标签关联
+            List<TaskLabel> taskLabels = taskLabelMapper.queryTaskLabelByTaskId(taskId);
+            if(taskLabels.size() > 0){
+                for(TaskLabel taskLabel : taskLabels){
+                    taskLabel.setTaskId(task.getTaskId());
+                }
+                taskLabelMapper.createTaskLabel(taskLabels);
+            }
+
+
+            //创建任务位置关联
+            List<TaskLocation> taskLocations = taskLocationMapper.queryTaskLocationByTaskId(taskId);
+            if(taskLocations.size() > 0){
+                for(TaskLocation taskLocation : taskLocations){
+                    taskLocation.setTaskId(task.getTaskId());
+                }
+                taskLocationMapper.saveTaskLocation(taskLocations);
+            }
+        }
+    }
+
+    @Override
+    public List<Task> querySepcialTasks(Integer type) {
+        return taskMapper.queryTasksByType(type);
     }
 
 }
