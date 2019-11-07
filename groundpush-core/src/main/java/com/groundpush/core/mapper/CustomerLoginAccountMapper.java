@@ -76,6 +76,7 @@ public interface CustomerLoginAccountMapper {
 
     /**
      * 获取客户登入帐号信息
+     *
      * @param customerId
      * @return
      */
@@ -84,6 +85,7 @@ public interface CustomerLoginAccountMapper {
 
     /**
      * 根据ID获取具体信息
+     *
      * @param customerLoginAccountId
      * @return
      */
@@ -92,6 +94,7 @@ public interface CustomerLoginAccountMapper {
 
     /**
      * 更新客户登入帐号信息
+     *
      * @param customerLoginAccount
      * @return
      */
@@ -106,9 +109,11 @@ public interface CustomerLoginAccountMapper {
 
     /**
      * 通过客户编号及类型查询客户账号
+     *
      * @param customerId
      * @param type
      * @return
      */
-    Optional<CustomerLoginAccount> queryCustomerLOginAccountByCustomerIdAndType(Integer customerId, Integer type);
+    @Select(" select * from t_customer_login_account ca where ca.customer_id=#{customerId} and ca.type=#{type} ")
+    Optional<CustomerLoginAccount> queryCustomerLoginAccountByCustomerIdAndType(@Param("customerId") Integer customerId, @Param("type") Integer type);
 }

@@ -32,7 +32,7 @@ public class CustomerLoginAccountServiceImpl implements CustomerLoginAccountServ
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void createCustomerLoginAccount(CustomerLoginAccount customerLoginAccount) {
-        Optional<CustomerLoginAccount> account = customerLoginAccountMapper.queryCustomerLOginAccountByCustomerIdAndType(customerLoginAccount.getCustomerId(), customerLoginAccount.getType());
+        Optional<CustomerLoginAccount> account = customerLoginAccountMapper.queryCustomerLoginAccountByCustomerIdAndType(customerLoginAccount.getCustomerId(), customerLoginAccount.getType());
         if (account.isPresent()) {
             customerLoginAccount.setCustomerLoginAccountId(account.get().getCustomerLoginAccountId());
             customerLoginAccountMapper.updateCustomerLoginAccount(customerLoginAccount);
