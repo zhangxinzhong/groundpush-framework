@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -132,6 +133,7 @@ public class CustomerServiceImpl implements CustomerService {
             if (StringUtils.isBlank(customer.getNickName())) {
                 customer.setNickName(generateNickName());
             }
+            customer.setCreatedTime(LocalDateTime.now());
             customerMapper.createCustomer(customer);
             if (StringUtils.isBlank(customer.getInviteCode())) {
                 String inviteCode = uniqueCode.getNewCode(customer.getCustomerId());

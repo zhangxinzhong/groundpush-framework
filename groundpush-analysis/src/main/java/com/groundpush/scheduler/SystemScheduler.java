@@ -81,7 +81,7 @@ public class SystemScheduler {
                             Object[] excelRowData = obj;
                             if (!StringUtils.equals(String.valueOf(excelRowData[0]), String.valueOf(title[0]))) {
                                 Map<String, Object> analysisResult = analysisSingletData(obj, mapping);
-                                String uniqueCode = String.valueOf(analysisResult.get("uniqueCode"));
+                                String uniqueCode = StringUtils.trim(String.valueOf(analysisResult.get("uniqueCode")));
                                 String failureResult = String.valueOf(analysisResult.get("failureResult"));
                                 String isEffective = String.valueOf(analysisResult.get("isEffective"));
                                 boolean isExistOrder = false;

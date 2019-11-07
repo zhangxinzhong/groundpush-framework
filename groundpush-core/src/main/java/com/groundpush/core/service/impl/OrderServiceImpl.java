@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Page<Order> setOrderSurDay(Page<Order> page) {
         for (Order order : page) {
-            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) && dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) > 0 ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()): 0L;
+            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) && dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) > 0 ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) : 0L;
             order.setIntervalDays(days.intValue());
             Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? dateUtils.plusMinutesTime(order.getCreatedTime()) : false;
             order.setHasReUpload(reUpload);
@@ -254,8 +254,11 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = queryOrderByTaskIdAndChannelTime(taskId, localDateTime);
         Map<String, Order> orderMap = new HashMap<>(orders.size());
         orders.stream().forEach(order -> {
-            if (!orderMap.containsKey(order.getUniqueCode())) {
-                orderMap.put(order.getUniqueCode(), order);
+            String uniqueCode = StringUtils.trim(order.getUniqueCode());
+            if (StringUtils.isNotBlank(uniqueCode)) {
+                if (!orderMap.containsKey(order.getUniqueCode())) {
+                    orderMap.put(order.getUniqueCode(), order);
+                }
             }
         });
         return orderMap;
@@ -283,8 +286,8 @@ public class OrderServiceImpl implements OrderService {
         if (orderMapper.updateOrderStatus(order) > 0 && Constants.ORDER_STATUS_REVIEW.equals(order.getStatus())) {
             List<OrderBonus> list = orderBonusService.findOrderBonusByOrder(order.getOrderId());
             Optional<LoginUserInfo> optionalLoginUserInfo = loginUtils.getLogin();
-            if(!optionalLoginUserInfo.isPresent()){
-                throw  new SystemException(ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorCode(),ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorMessage());
+            if (!optionalLoginUserInfo.isPresent()) {
+                throw new SystemException(ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorCode(), ExceptionEnum.EXCEPTION_SESSION_INVALID.getErrorMessage());
             }
 
             for (OrderBonus orderBonus : list) {
