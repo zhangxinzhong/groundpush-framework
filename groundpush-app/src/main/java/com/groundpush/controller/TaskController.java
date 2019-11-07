@@ -36,7 +36,7 @@ import java.util.Optional;
 public class TaskController {
 
     @Resource
-    private OauthUtils oauthUtils;
+    private CustomerService customerService;
 
     @Resource
     private DateUtils dateUtils;
@@ -80,9 +80,9 @@ public class TaskController {
 
         //查询当前用户的特殊任务
         if(taskCondition.getCustomerId() != null && Constants.SPECIAL_LABEL_ID.toString().equals(taskCondition.getType())){
-            Optional<CustomerDetail> customerDetailOptional = oauthUtils.getLogin();
+            Optional<Customer> customerDetailOptional = customerService.getCustomer(taskCondition.getCustomerId());
             if (customerDetailOptional.isPresent()) {
-                Customer customer = customerDetailOptional.get().getCustomer();
+                Customer customer = customerDetailOptional.get();
                 //判断当前时间是否超过客户创建时间且没有订单
                 if(LocalDateTime.now().isBefore(dateUtils.getMaxOfDay(customer.getCreatedTime()))
                         && orderTaskCustomerService.queryOrderCountByCustomerId(customer.getCustomerId()) == 0){
