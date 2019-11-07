@@ -1,7 +1,6 @@
 package com.groundpush.core.mapper;
 
 import com.groundpush.core.condition.CustomerAccountQueryCondition;
-import com.groundpush.core.model.Customer;
 import com.groundpush.core.model.CustomerLoginAccount;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;

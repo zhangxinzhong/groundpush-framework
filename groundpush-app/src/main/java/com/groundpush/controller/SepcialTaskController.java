@@ -24,26 +24,17 @@ import java.util.Optional;
 @RequestMapping("/sepcialTask")
 public class SepcialTaskController {
 
-
-
     @Resource
     private OrderService orderService;
 
     @Resource
-    private LabelService labelService;
-
-    @Resource
     private TaskService taskService;
-
-
 
     @Resource
     private TaskCollectService taskCollectService;
 
     @Resource
     private OrderTaskCustomerService orderTaskCustomerService;
-
-
 
     @ApiOperation("获取特殊任务")
     @ResponseBody
