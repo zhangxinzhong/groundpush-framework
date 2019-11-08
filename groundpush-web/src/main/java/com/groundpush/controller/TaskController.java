@@ -72,6 +72,7 @@ public class TaskController {
                 task.setType(Constants.TASK_SEPCAIL_TYPE_2);
                 taskService.createSingleTask(task);
             }
+            task.setType(Constants.TASK_NORMAL_TYPE_1);
             taskService.createSingleTask(task);
             return JsonResp.success();
         } catch (Exception e) {
