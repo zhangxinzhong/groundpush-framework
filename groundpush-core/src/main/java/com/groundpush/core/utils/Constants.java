@@ -16,9 +16,16 @@ public class Constants {
     public static final String SUPER_ADMIN = "super_admin";
 
     /**
-     * 特殊情况  是否为用户自己修改链接
+     * 特殊情况  用户自己修改链接
      */
     public  static  final String  USER_UPDATE_LINK = "/updateUser";
+
+    /**
+     * 特殊情况 用户自己修改密码
+     */
+    public  static  final String  USER_UPDATE_PWD_LINK = "/updateUserPwdByUserId";
+
+
 
     public static final int MENU_CODE = 1000;
 

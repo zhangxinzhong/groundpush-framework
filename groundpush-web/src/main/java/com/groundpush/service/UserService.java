@@ -75,4 +75,12 @@ public interface UserService {
      * @param userId
      */
     void resetPassword(Integer userId);
+
+
+    /**
+     * 通过用户id修改密码
+     * @param userId
+     * @param password
+     */
+    void updateUserPwdByUserId(Integer userId,String password);
 }

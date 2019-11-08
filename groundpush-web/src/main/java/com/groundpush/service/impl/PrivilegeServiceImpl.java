@@ -41,7 +41,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         List<Uri> uris = queryUriByLoginNo(LoginNo);
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         //特殊情况  用户修改信息
-        if(antPathMatcher.match(uri,Constants.USER_UPDATE_LINK)){
+        if(antPathMatcher.match(uri,Constants.USER_UPDATE_LINK)
+        || antPathMatcher.match(uri,Constants.USER_UPDATE_PWD_LINK)){
             return true;
         }
         if (uris.size() > 0) {

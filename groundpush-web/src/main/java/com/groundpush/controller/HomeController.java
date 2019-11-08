@@ -12,10 +12,7 @@ import com.groundpush.utils.SessionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -83,7 +80,19 @@ public class HomeController {
         }catch (Exception e){
             throw e;
         }
-
-
     }
+
+
+    @GetMapping("/updateUserPwdByUserId")
+    @ResponseBody
+    public JsonResp updateUserPwdByUserId(@RequestParam("userId") Integer userId,@RequestParam("password") String password){
+        try{
+            userService.updateUserPwdByUserId(userId,password);
+            return JsonResp.success();
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+
 }

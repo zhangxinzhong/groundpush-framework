@@ -138,4 +138,15 @@ public class UserServiceImpl implements UserService, ObjectRepository<LoginUserI
             userAccountMapper.updateUserAccount(userAccount);
         }
     }
+    @Override
+    public void updateUserPwdByUserId(Integer userId,String password) {
+        Optional<UserAccount> optionalUserAccount = userAccountMapper.getUserAccountByUserId(userId);
+        if(optionalUserAccount.isPresent()){
+            UserAccount userAccount = optionalUserAccount.get();
+            userAccount.setHistoryPassword(userAccount.getPassword());
+            userAccount.setPassword(bCryptPasswordEncoder.encode(password));
+            userAccountMapper.updateUserAccount(userAccount);
+        }
+    }
+
 }
