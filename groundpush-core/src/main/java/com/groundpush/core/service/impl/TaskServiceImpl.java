@@ -273,4 +273,16 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.queryTasksByType(type);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void createTaskAndSpecialTask(Task task) {
+        if(task.getTaskId() == null){
+            task.setType(Constants.TASK_SEPCAIL_TYPE_2);
+            createSingleTask(task);
+        }
+        task.setType(Constants.TASK_NORMAL_TYPE_1);
+        task.setTaskId(null);
+        createSingleTask(task);
+    }
+
 }

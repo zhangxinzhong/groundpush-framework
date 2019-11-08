@@ -118,4 +118,10 @@ public interface TaskService {
      * @return
      */
     List<Task>  querySpecialTasks(Integer type);
+
+    /**
+     * 创建普通任务与特殊任务
+     * @param task
+     */
+    void createTaskAndSpecialTask(Task task);
 }

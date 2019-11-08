@@ -68,12 +68,7 @@ public class TaskController {
     @ResponseBody
     public JsonResp saveTask(@RequestBody Task task) {
         try {
-            if(task.getTaskId() == null){
-                task.setType(Constants.TASK_SEPCAIL_TYPE_2);
-                taskService.createSingleTask(task);
-            }
-            task.setType(Constants.TASK_NORMAL_TYPE_1);
-            taskService.createSingleTask(task);
+            taskService.createTaskAndSpecialTask(task);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
