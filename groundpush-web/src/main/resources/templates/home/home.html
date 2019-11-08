@@ -14,11 +14,11 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="/images/photo.jpg" class="layui-nav-img"> 贤心
+                    <img src="/images/photo.jpg" class="layui-nav-img"> <span th:text="${user != null && user.name != null? user.name:''}"></span>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="Javascript:;" id="user-info">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="Javascript:;" id="user-info" >基本资料</a></dd>
+                    <!--<dd><a href="">安全设置</a></dd>-->
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="/logout">logOut</a></li>
@@ -45,5 +45,73 @@
         <!-- 底部固定区域 -->
     </div>
 </div>
+
+<!-- 新增用户模态框 -->
+<div class="modal fade bs-example-modal-lg" id="updateUserDialog" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="updateUserModalLabel">更新用户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="layui-form" action="" id="updateUserForm" lay-filter="updateUserForm" th:object="${user}">
+
+                                    <input hidden type="text" name="userId" class="layui-input" th:field="*{userId}" />
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>登录名</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="loginNo" th:field="*{loginNo}" lay-verify="required" autocomplete="off" placeholder="请输入登录名" class="layui-input" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>用户名</label>
+                                        <div class=" col-md-10">
+                                            <input type="text" name="name" th:field="*{name}" lay-verify="required" autocomplete="off" placeholder="请输入用户名" class="layui-input" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">用户名拼音</label>
+                                        <div class=" col-md-10">
+                                            <input type="text" name="namePinyin" th:field="*{namePinyin}" autocomplete="off" placeholder="请输入用户名拼音" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>用户手机号</label>
+                                        <div class=" col-md-10">
+                                            <input type="text" name="mobileNo" th:field="*{mobileNo}" lay-verify="required|phone" autocomplete="off" placeholder="请输入用户手机号" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2"><span class="required_style">*</span>用户邮箱</label>
+                                        <div class=" col-md-10">
+                                            <input type="text" name="workEmail" th:field="*{workEmail}"  lay-verify="required|email" autocomplete="off" placeholder="请输入用户邮箱" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" lay-submit lay-filter="updateUser">更新</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

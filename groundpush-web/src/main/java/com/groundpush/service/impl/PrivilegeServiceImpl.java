@@ -1,5 +1,6 @@
 package com.groundpush.service.impl;
 
+import com.github.pagehelper.Constant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.groundpush.core.annotation.OperationLogDetail;
@@ -13,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.AntPathMatcher;
-
+import com.groundpush.core.utils.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,10 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     public boolean hasPrivilege(String LoginNo, String uri) {
         List<Uri> uris = queryUriByLoginNo(LoginNo);
         AntPathMatcher antPathMatcher = new AntPathMatcher();
+        //特殊情况  用户修改信息
+        if(antPathMatcher.match(uri,Constants.USER_UPDATE_LINK)){
+            return true;
+        }
         if (uris.size() > 0) {
             for (Uri url : uris) {
                 if (antPathMatcher.match(url.getUriPattern(), uri)) {

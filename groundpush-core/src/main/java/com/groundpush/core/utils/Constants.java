@@ -14,6 +14,12 @@ public class Constants {
      * 超级管理员
      */
     public static final String SUPER_ADMIN = "super_admin";
+
+    /**
+     * 特殊情况  是否为用户自己修改链接
+     */
+    public  static  final String  USER_UPDATE_LINK = "/updateUser";
+
     public static final int MENU_CODE = 1000;
 
     /**
