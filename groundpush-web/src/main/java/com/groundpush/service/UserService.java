@@ -69,4 +69,10 @@ public interface UserService {
      * @return
      */
     Boolean findRoleUserByUserId(Integer userId);
+
+    /**
+     * 重置用户密码
+     * @param userId
+     */
+    void resetPassword(Integer userId);
 }

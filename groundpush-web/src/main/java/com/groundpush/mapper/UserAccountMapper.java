@@ -39,4 +39,19 @@ public interface UserAccountMapper {
      */
     @Update("  update t_user_account set status=0 where user_id = #{userId} ")
     void deleteUserAccount(@Param("userId") Integer userId);
+
+    /**
+     * 修改用户密码
+     * @param userAccount
+     */
+    @Update({
+            "<script>",
+            " update t_user_account set  ",
+            " <if test='password != null'> password=#{password},  </if> ",
+            " <if test='historyPassword != null'> history_password=#{historyPassword},  </if> ",
+            " last_modified_time = CURRENT_TIMESTAMP ",
+            "where user_id=#{userId}",
+            "</script>"
+    })
+    void updateUserAccount(UserAccount userAccount);
 }
