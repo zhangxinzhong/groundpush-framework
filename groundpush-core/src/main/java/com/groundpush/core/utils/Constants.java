@@ -206,7 +206,7 @@ public class Constants {
     public static final Integer USER_STATUS_DEL = 0;
 
 
-    public static final String INIT_USER_PASSWORD = "Abcd112233";
+    public static final String INIT_USER_PASSWORD = "Abcd@112233";
     /**
      * 二维码key 前缀
      */
