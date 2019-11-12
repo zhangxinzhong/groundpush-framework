@@ -68,7 +68,7 @@ public class TaskController {
     @ResponseBody
     public JsonResp saveTask(@RequestBody Task task) {
         try {
-            taskService.createTaskAndSpecialTask(task);
+            taskService.createSingleTask(task);
             return JsonResp.success();
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -186,6 +186,8 @@ public class TaskController {
     public JsonResp syncTask(@RequestParam("taskId") Integer taskId,@RequestParam(value = "specialTaskId",required = false) Integer specialTaskId){
 
         try {
+
+
             taskService.syncTask(taskId,specialTaskId);
         } catch (Exception e) {
             log.error(e.toString(), e);

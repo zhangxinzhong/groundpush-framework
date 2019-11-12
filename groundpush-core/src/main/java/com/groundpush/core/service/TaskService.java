@@ -59,10 +59,11 @@ public interface TaskService {
 
     /**
      * 通过type 获取所有特殊任务中的任务id与任务标题
-     *
+     * @param type
+     * @param status
      * @return
      */
-    List<Task> queryAllTaskList(Integer type);
+    List<Task> queryAllTaskList(Integer type,Integer status);
 
     /**
      * 分页查询任务
@@ -119,9 +120,4 @@ public interface TaskService {
      */
     List<Task>  querySpecialTasks(Integer type);
 
-    /**
-     * 创建普通任务与特殊任务
-     * @param task
-     */
-    void createTaskAndSpecialTask(Task task);
 }

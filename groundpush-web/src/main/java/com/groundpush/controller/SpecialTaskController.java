@@ -116,7 +116,7 @@ public class SpecialTaskController {
     @ResponseBody
     public JsonResp queryAllList() {
         try {
-            return JsonResp.success(new TaskTeamList(teamService.queryAllTeamList(),taskService.queryAllTaskList(Constants.TASK_SEPCAIL_TYPE_2)));
+            return JsonResp.success(new TaskTeamList(teamService.queryAllTeamList(),taskService.queryAllTaskList(Constants.TASK_SEPCAIL_TYPE_2,Constants.TASK_STATUS_1)));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

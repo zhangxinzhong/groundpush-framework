@@ -6,6 +6,8 @@ import com.groundpush.core.annotation.OperationLogDetail;
 import com.groundpush.core.condition.TaskQueryCondition;
 import com.groundpush.core.enums.OperationClientType;
 import com.groundpush.core.enums.OperationType;
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.mapper.*;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.TaskAttributeService;
@@ -128,8 +130,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> queryAllTaskList(Integer type) {
-        return taskMapper.queryAllTaskListByType(type);
+    public List<Task> queryAllTaskList(Integer type,Integer status) {
+        return taskMapper.queryAllTaskListByType(type,status);
     }
 
     @Override
@@ -208,8 +210,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void syncTask(Integer taskId,Integer specialTaskId) {
         Optional<Task> optional = taskMapper.getTask(taskId);
+
         if(optional.isPresent()){
             Task task = optional.get();
+            if(StringUtils.isNotEmpty(task.getTitle())
+                    && taskMapper.queryCountByTitleAndType(task.getTitle(),Constants.TASK_SEPCAIL_TYPE_2) > 0){
+                throw new BusinessException(ExceptionEnum.TASK_SPECIAL_EXIST.getErrorCode(), ExceptionEnum.TASK_SPECIAL_EXIST.getErrorMessage());
+            }
+
             task.setType(Constants.TASK_SEPCAIL_TYPE_2);
             task.setStatus(Constants.TASK_STATUS_0);
             if(specialTaskId == null){
@@ -273,16 +281,6 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.queryTasksByType(type);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void createTaskAndSpecialTask(Task task) {
-        if(task.getTaskId() == null){
-            task.setType(Constants.TASK_SEPCAIL_TYPE_2);
-            createSingleTask(task);
-        }
-        task.setType(Constants.TASK_NORMAL_TYPE_1);
-        task.setTaskId(null);
-        createSingleTask(task);
-    }
+
 
 }
