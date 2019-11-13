@@ -146,7 +146,7 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> optionalOrder = null;
         if (condition.getTaskId() != null) {
             //通过任务类型、任务id和客户id获取未提交结果集的某一个订单 （只可上传当天的订单）
-            optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreatedime(condition);
+            optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreateTime(condition);
 
         } else {
             //通过订单id获取订单
@@ -272,8 +272,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId) {
-        // 1. 检查订单是否存在
-        Optional<Order> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskId(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(Constants.GET_TASK_ATTRIBUTE).build());
+        // 1. 检查当天订单是否存在
+        Optional<Order> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(Constants.GET_TASK_ATTRIBUTE).build());
         // 2. 查询订单是否上传结果集
         if (optionalOrder.isPresent() && StringUtils.isBlank(optionalOrder.get().getUniqueCode())) {
             return optionalOrder;

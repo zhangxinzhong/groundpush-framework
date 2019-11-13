@@ -1,17 +1,26 @@
-function is_weixnOrPay(){
-    let ua = navigator.userAgent.toLowerCase();
-    if(ua.match(/micromessenger/i)=="micromessenger" || ua.match(/alipayclient/i) == "alipayclient") {
-        return true;
-    } else {
-        return false;
-    }
+$(document).ready(function(){
+    alert(123123123);
+});
+
+
+// function is_weixnOrPay(){
+//     let ua = navigator.userAgent.toLowerCase();
+//     if(ua.match(/micromessenger/i)=="micromessenger" || ua.match(/alipayclient/i) == "alipayclient") {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
+//
+// if(is_weixnOrPay()){
+//     $("#guide_box").show();
+// }
+
+function sendSms() {
+    alert(123);
 }
 
-if(is_weixnOrPay()){
-    $("#guide_box").show();
-}
-
-layui.use('table', function () {
+/*layui.use('table', function () {
     let form = layui.form;
     let layer = layui.layer;
     let isSendSms = true;
@@ -80,4 +89,4 @@ layui.use('table', function () {
 
 
     });
-});
+});*/

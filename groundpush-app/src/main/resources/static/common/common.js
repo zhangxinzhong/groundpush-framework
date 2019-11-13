@@ -13,14 +13,12 @@ window.onload = function () {
             rootPath + 'plugin/bootstrap/js/bootstrap.min.js',
             rootPath + 'utils/utils.js',
             rootPath + 'utils/city.js',
-            rootPath + 'global/global.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js'
+            rootPath + 'global/global.js'
         ],
         cssPath: [
             rootPath + 'plugin/layui/css/layui.css',
             rootPath + 'plugin/bootstrap/css/bootstrap.min.css',
-            rootPath + 'css/common.css',
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css'
+            rootPath + 'css/common.css'
         ]
     };
 

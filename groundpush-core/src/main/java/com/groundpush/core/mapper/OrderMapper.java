@@ -380,7 +380,7 @@ public interface OrderMapper {
             " AND a.unique_code IS NULL AND DATE_FORMAT(a.created_time ,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d') LIMIT 0,1 ",
             "</script>"
     })
-    Optional<Order> queryOrderByCustomerIdAndTaskIdAndCreatedime(OrderResultCondition condition);
+    Optional<Order> queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition condition);
 
     /**
      * 查询未上传结果集的订单
