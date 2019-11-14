@@ -51,8 +51,15 @@ public interface OrderService {
     /**
      * 创建订单
      * @param order
+     * @return
      */
-    void createOrder(Order order);
+    Order createOrder(Order order);
+
+    /**
+     * 创建订单并生成分成
+     * @param order
+     */
+    void createOrderAndOrderBonus(Order order);
 
     /**
      * 删除订单

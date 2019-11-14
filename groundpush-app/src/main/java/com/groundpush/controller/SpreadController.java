@@ -108,7 +108,7 @@ public class SpreadController {
             Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId());
             Order order = Order.builder().customerId(spreadQueryCondition.getCustomId()).type(spreadQueryCondition.getType()).taskId(spreadQueryCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).channelUri(taskUriOptional.get().getUri()).isSpecial(isSpecialTask).build();
             //2.创建用户订单
-            orderService.createOrder(order);
+            orderService.createOrderAndOrderBonus(order);
             // 使用完url 后需要把最后修改时间改成今天
             taskUriService.updateTaskUri(taskUriOptional.get());
 

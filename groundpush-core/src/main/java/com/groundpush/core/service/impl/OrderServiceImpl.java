@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void createOrder(Order order) {
+    public Order createOrder(Order order) {
         try {
             //保存订单
             orderMapper.createOrder(order);
@@ -95,8 +95,7 @@ public class OrderServiceImpl implements OrderService {
             orderMapper.updateOrderNoByOrderId(order);
             //保存客户任务订单关联关系
             orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().orderId(orderId).taskId(order.getTaskId()).customerId(order.getCustomerId()).build());
-            //根据任务计算结果分成
-            orderBonusService.generateOrderBonus(OrderBonusVo.builder().orderId(orderId).customerId(order.getCustomerId()).taskId(order.getTaskId()).build());
+            return order;
         } catch (BusinessException e) {
             log.error(e.getCode(), e.getMessage(), e);
             throw e;
@@ -104,6 +103,14 @@ public class OrderServiceImpl implements OrderService {
             log.error(e.getMessage(), e);
             throw e;
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void createOrderAndOrderBonus(Order order) {
+        order = this.createOrder(order);
+        //根据任务计算结果分成
+        orderBonusService.generateOrderBonus(OrderBonusVo.builder().orderId(order.getOrderId()).customerId(order.getCustomerId()).taskId(order.getTaskId()).build());
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -412,4 +412,17 @@ public class Constants {
      * 特殊任务
      */
     public static final Integer TASK_SEPCAIL_TYPE_2 = 2;
+
+    /**
+     * 任务推广
+     */
+    public static final String TASK_SPREAD = "spread";
+
+    /**
+     * 任务申请
+     */
+    public static final String TASK_GET = "get";
+
+
+
 }
