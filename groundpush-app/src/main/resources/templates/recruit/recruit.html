@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <script type="text/javascript" id="groundpush-scrpit" pageSrc="/plugin/recruit/js/recruit.js"
-            th:src="@{/common/common.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css">
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
     <title>申请成为推广员每天赚现金</title>
     <style>
         body {
             height: 100%;
             width: 100%;
-            background: url('http://oss.zhongdi001.com/app/recruit/1.png') no-repeat;
+            background: url('/static/images/1.png ') no-repeat;
             background-size: cover;
             position: absolute;
             overflow: hidden;
@@ -31,49 +34,161 @@
             color: #eeeeee;
         }
     </style>
+
 </head>
 
-<body style="background:url('http://oss.zhongdi001.com/app/recruit/1.png') no-repeat;height: 100%;width: 100%;background-size: cover;position: absolute;overflow: hidden; ">
+<body th:style="'background:url(' + @{'/images/1.png'} + ') no-repeat;height: 100%;width: 100%;background-size: cover;position: absolute;overflow: hidden;' ">
 
 <!--分享引导框开始-->
 <div id="guide_box"
-     style="display:none;position:fixed;left:0;top:0;z-index:998;background:#000;width:100%;height: 100%;">
-    <img src="http://oss.zhongdi001.com/app/recruit/wx_1.png" width="100%" height="100%">
+     style="display:none;position:fixed;left:0;top:0;z-index:998;background:#000;width:100%;height: 100%">
+    <img th:src="@{/images/ww_1.jpg}" width="100%" height="100%">
 </div>
 <div class="container-fluid">
     <div class="jumbotron" id="contentDiv">
-        <form class="layui-form" action="">
+        <form action="" autocomplete="off">
             <div class="row">
-                <img src="http://oss.zhongdi001.com/app/recruit/3.png" style="width: 13%;">
+                <img th:src="@{/images/3.png}" style="width: 13%;">
                 <span style="font-weight: bold;font-size: 18px;padding: 5px">申请推广员</span>
-                <img src="http://oss.zhongdi001.com/app/recruit/2.png" style="width: 13%;">
+                <img th:src="@{/images/2.png}" style="width: 13%;">
             </div>
             <div class="row" style="text-align: center;margin-top: 25px;">
                 <input type="hidden" th:value="${parentId}" name="parentId" id="parentId"/>
                 <div class="col-xs-10 col-sm-10 col-md-10" style="width: 100%">
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1"><img
-                                src="http://oss.zhongdi001.com/app/recruit/phone.png"></span>
-                        <input type="text" name="mobileNo" id="mobileNo" lay-verify="required|phone"
-                               class="form-control" placeholder="请输入手机号下载" aria-describedby="basic-addon1"
-                               style="height: 44px;">
+                        <span class="input-group-addon" id="basic-addon1"><img th:src="@{/images/phone.png}"></span>
+                        <input type="text" name="mobileNo" id="mobileNo" class="form-control" placeholder="请输入手机号下载"
+                               aria-describedby="basic-addon1" style="height: 44px;">
                     </div>
                     <div class="input-group" style="margin-top: 20px">
-                        <input type="text" class="form-control" lay-verify="required" name="mobileCode"
-                               placeholder="请输入验证码" aria-describedby="basic-addon2" style="height: 44px;">
-                        <span class="input-group-addon" id="basic-addon2"><a name="sendSms" style="cursor: default;">获取验证码</a></span>
+                        <input type="text" class="form-control" id="mobileCode" name="mobileCode" placeholder="请输入验证码"
+                               aria-describedby="basic-addon2" style="height: 44px;">
+                        <span class="input-group-addon" id="basic-addon2"><a id="sendSms"
+                                                                             style="cursor: default;">获取验证码</a></span>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-xs-10 col-sm-10 col-sm-10" style="width: 100%">
-                    <button class="btn btn-style" lay-submit lay-filter="addCustomer">
-                        立即下载
-                    </button>
+                    <button class="btn btn-style" id="downloadApp"> 立即下载</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
+<script>
+
+    function is_weixnOrPay() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/micromessenger/i) == "micromessenger" || ua.match(/alipayclient/i) == "alipayclient") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if (is_weixnOrPay()) {
+        $("#guide_box").show();
+    }
+
+    $(function () {
+
+        var isSendSms = true;
+
+        //触发事件
+        var eventListener = {
+            addCustomer: function (data) {
+                $.ajax({
+                    data: data,
+                    type: "POST",
+                    url: "/unAuthorize/createCustomer",
+                    contentType: "application/x-www-form-urlencoded",
+                    success: function (rep) {
+                    },
+                    error: function (rep) {
+                        alert(rep.message);
+                    }
+                });
+                eventListener.download();
+            }
+
+            , sendSms: function (data) {
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json;charset=UTF-8",
+                    url: "/validate/codeSms",
+                    data: {mobileNo: data},
+                    success: function (rep) {
+                        alert("短信验证码发送成功");
+                    },
+                    error: function (rep) {
+                        alert(rep);
+                    }
+                });
+            }
+            , countDown: function () {
+                var count = 60; // 发送频率/秒
+                var $sendSmsBtn = $('#sendSms');
+                $sendSmsBtn.attr('disabled', true).css({'color': '#b5adad'});
+                var countdown = setInterval(function () {
+                    $sendSmsBtn.html(count + "秒后获取验证码");
+                    if (count == 0) {
+                        $sendSmsBtn.html('获取验证码').removeAttr('disabled').css({'color': '#0066cc'});
+                        clearInterval(countdown);
+                        isSendSms = true;
+                    }
+                    count--;
+                }, 1000);
+            }
+            , download: function () {
+                window.open('http://entryport.unimedia.net.cn/DTAPP/lukeditui.apk');
+            }
+        };
+
+        $("#downloadApp").on("click", function () {
+            var parentId = $("#parentId").val();
+            var mobileNo = $("#mobileNo").val();
+            var mobileCode = $("#mobileCode").val();
+
+            if (mobileNo == null || mobileNo === undefined || mobileNo === "") {
+                alert("手机号不可为空")
+                return false;
+            }
+
+            if (mobileCode == null || mobileCode === undefined || mobileCode === "") {
+                alert("验证码不可为空");
+                return false;
+            }
+
+            if (parentId == null || parentId === undefined || parentId === "") {
+                alert("跳转URL错误");
+                return false;
+            }
+
+            var data = {
+                parentId: parentId,
+                mobileNo: mobileNo,
+                mobileCode: mobileCode
+            };
+            eventListener.addCustomer(data);
+        });
+
+        $('#sendSms').on("click", function () {
+            if (isSendSms) {
+                var mobileNo = $("#mobileNo").val();
+                if (!(/^1[3456789]\d{9}$/.test(mobileNo))) {
+                    alert("请输入正确的手机号");
+                    return false;
+                }
+                isSendSms = false;
+                eventListener.sendSms(mobileNo);
+                eventListener.countDown();
+            } else {
+                return false;
+            }
+        });
+    });
+
+</script>
 </body>
 </html>

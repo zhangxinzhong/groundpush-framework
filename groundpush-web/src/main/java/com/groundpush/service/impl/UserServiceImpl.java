@@ -127,4 +127,26 @@ public class UserServiceImpl implements UserService, ObjectRepository<LoginUserI
     public Boolean findRoleUserByUserId(Integer userId) {
         return userMapper.findRoleUserByUserId(userId) > 0 ? true : false;
     }
+
+    @Override
+    public void resetPassword(Integer userId) {
+        Optional<UserAccount> optionalUserAccount = userAccountMapper.getUserAccountByUserId(userId);
+        if(optionalUserAccount.isPresent()){
+            UserAccount userAccount = optionalUserAccount.get();
+            userAccount.setHistoryPassword(userAccount.getPassword());
+            userAccount.setPassword(bCryptPasswordEncoder.encode(Constants.INIT_USER_PASSWORD));
+            userAccountMapper.updateUserAccount(userAccount);
+        }
+    }
+    @Override
+    public void updateUserPwdByUserId(Integer userId,String password) {
+        Optional<UserAccount> optionalUserAccount = userAccountMapper.getUserAccountByUserId(userId);
+        if(optionalUserAccount.isPresent()){
+            UserAccount userAccount = optionalUserAccount.get();
+            userAccount.setHistoryPassword(userAccount.getPassword());
+            userAccount.setPassword(bCryptPasswordEncoder.encode(password));
+            userAccountMapper.updateUserAccount(userAccount);
+        }
+    }
+
 }

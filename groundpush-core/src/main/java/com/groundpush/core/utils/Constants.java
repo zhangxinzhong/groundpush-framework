@@ -14,6 +14,19 @@ public class Constants {
      * 超级管理员
      */
     public static final String SUPER_ADMIN = "super_admin";
+
+    /**
+     * 特殊情况  用户自己修改链接
+     */
+    public  static  final String  USER_UPDATE_LINK = "/updateUser";
+
+    /**
+     * 特殊情况 用户自己修改密码
+     */
+    public  static  final String  USER_UPDATE_PWD_LINK = "/updateUserPwdByUserId";
+
+
+
     public static final int MENU_CODE = 1000;
 
     /**
@@ -200,7 +213,7 @@ public class Constants {
     public static final Integer USER_STATUS_DEL = 0;
 
 
-    public static final String INIT_USER_PASSWORD = "Abcd112233";
+    public static final String INIT_USER_PASSWORD = "Abcd@112233";
     /**
      * 二维码key 前缀
      */

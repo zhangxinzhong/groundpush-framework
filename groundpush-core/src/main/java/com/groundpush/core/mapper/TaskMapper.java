@@ -93,10 +93,11 @@ public interface TaskMapper {
     /**
      * 通过type 获取所有特殊任务中的任务id与任务标题
      * @param type
+     * @param status
      * @return
      */
-    @Select(" select a.task_id,a.title from t_task a where a.type = #{type}")
-    List<Task> queryAllTaskListByType(@Param("type") Integer type);
+    @Select(" select a.task_id,a.title from t_task a where a.type = #{type} and a.status = #{status}")
+    List<Task> queryAllTaskListByType(@Param("type") Integer type,@Param("status") Integer status);
 
 
 
@@ -165,5 +166,14 @@ public interface TaskMapper {
     @Select(" select a.task_id,a.title from t_task a where a.type = #{type} ")
     List<Task> queryTasksByType(@Param("type") Integer type);
 
+
+    /**
+     * 通过任务标题和任务类型 查找任务数
+     * @param title
+     * @param type
+     * @return
+     */
+    @Select(" select count(*) from t_task a where a.title = #{title} and a.type = #{type} ")
+    Integer queryCountByTitleAndType(@Param("title") String title,@Param("type") Integer type);
 
 }

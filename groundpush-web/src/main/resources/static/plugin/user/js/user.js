@@ -18,7 +18,7 @@ layui.use('table', function () {
             table.render({
                 elem: '#user'
                 , url: '/user'
-                ,done: function (res, curr, count) {
+                , done: function (res, curr, count) {
                     $("#userDiv table").css("width", "100%");
                 }
                 , toolbar: '#toolbarUser'
@@ -31,7 +31,7 @@ layui.use('table', function () {
                     , {field: 'namePinyin', title: '用户名拼音'}
                     , {field: 'mobileNo', title: '用户名手机号'}
                     , {field: 'workEmail', title: '用户名邮箱'}
-                    , {field: '', title: '操作',toolbar: "#toolbarUserOper"}
+                    , {field: '', title: '操作', toolbar: "#toolbarUserOper"}
                 ]]
                 ,
                 page: true, curr: 1, limit: Global.PAGE_SISE
@@ -77,7 +77,7 @@ layui.use('table', function () {
             });
         }
         , detailUser: function (data) {
-            Utils.getAjax("/user/"+data.userId, null, function (rep) {
+            Utils.getAjax("/user/" + data.userId, null, function (rep) {
                 if (rep.code == '200') {
                     form.val("editUserForm", {
                         "userId": rep.data.userId
@@ -108,8 +108,14 @@ layui.use('table', function () {
             Utils.deleteAjax("/user", {userId: data.userId}, function (rep) {
                 if (rep.code == '200') {
                     eventListener.reloadUserTable();
-                    layer.msg("菜单删除成功");
+                    layer.msg("用户删除成功");
                 }
+            }, function (rep) {
+                layer.msg(rep.message);
+            });
+        }, resetPassword: function (data) {
+            Utils.putAjax("/user/" + data.userId + "/resetPassword", null, function (rep) {
+                layer.msg("密码重置成功");
             }, function (rep) {
                 layer.msg(rep.message);
             });
@@ -142,6 +148,11 @@ layui.use('table', function () {
                 eventListener.delUser(data);
                 layer.close(index);
             });
+        } else if (obj.event === 'resetPassword') {
+            layer.confirm('真的重置密码么', function (index) {
+                eventListener.resetPassword(data);
+                layer.close(index);
+            });
         }
     });
 
@@ -159,11 +170,10 @@ layui.use('table', function () {
         return false;
     });
 
-
-    $('[data-custom-event="user"]').on("click", function () {
-        let $this = $(this);
-        let _method = $this.data('method');
-        eventListener[_method] ? eventListener[_method].call(this, $this) : '';
+    table.on('toolbar(user)', function (obj) {
+        let data = obj.data;
+        if (obj.event === 'showAddUserDialog') {
+            eventListener.showAddUserDialog(data);
+        }
     });
-
 });

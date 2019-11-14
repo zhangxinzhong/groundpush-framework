@@ -33,6 +33,7 @@ public enum ExceptionEnum {
     ,TASK_SPREAD_MAX("T10007", "今日推广已达上限")
     ,TASK_NOT_URI("T10008", "商品不存在")
     ,TASK_NOT_UPLOAD_CHANNEL("T10009", "任务还上传渠道数据")
+    ,TASK_SPECIAL_EXIST("T10010", "特殊任务已存在不可创建")
     , ORDER_CREATE_ORDER_FAIL("O20001", "订单创建失败，系统异常请联系管理员！")
     , ORDER_IS_EXPIRE("O20002", "订单已经过期不可删除")
     , ORDER_NOT_EXISTS("O20003", "订单不存在")
