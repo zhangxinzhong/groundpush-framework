@@ -7,6 +7,7 @@ import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.PageResult;
+import com.groundpush.core.service.OrderLogService;
 import com.groundpush.core.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class OrderController {
 
     @Resource
     private OrderService orderService;
+
+    @Resource
+    private OrderLogService orderLogService;
 
 
     @ApiOperation(value = "创建订单")
@@ -67,5 +71,10 @@ public class OrderController {
                                @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer  pageSize) {
         Page<Order> orders = orderService.queryOrder(orderQueryCondition, pageNumber,pageSize);
         return JsonResp.success(new PageResult(orders));
+    }
+
+    @GetMapping("/{orderId:\\d+}/orderLog")
+    public JsonResp queryOrderLog(@PathVariable Integer orderId){
+        return JsonResp.success(orderLogService.queryOrderLogByOrderId(orderId));
     }
 }

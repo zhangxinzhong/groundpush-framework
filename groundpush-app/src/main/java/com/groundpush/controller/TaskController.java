@@ -103,9 +103,9 @@ public class TaskController {
     @ResponseBody
     @GetMapping("/{id:\\d+}")
     @JsonView(Task.DetailTaskView.class)
-    public JsonResp getTask(@PathVariable Integer id, @RequestParam(value = "customerId") Integer customerId, @RequestParam(value = "taskType") Integer taskType) {
+    public JsonResp getTask(@PathVariable Integer id, @RequestParam(value = "customerId") Integer customerId) {
         //获取任务数据
-        Optional<Task> optionalTask = taskService.getTask(id, taskType);
+        Optional<Task> optionalTask = taskService.getTask(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             //添加任务中是否有订单判断

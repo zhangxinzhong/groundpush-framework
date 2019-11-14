@@ -36,7 +36,7 @@ public interface OrderLogMapper {
      * @param orderId
      * @return
      */
-    @Select(" select a.* from t_order_log a where a.order_id = #{orderId} ")
+    @Select(" select a.* from t_order_log a where a.order_id = #{orderId} order by a.log_id ")
     List<OrderLog> queryOrderLogByOrderId(@Param("orderId") Integer orderId);
 
     /**
