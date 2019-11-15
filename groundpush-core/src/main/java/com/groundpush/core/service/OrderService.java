@@ -1,6 +1,7 @@
 package com.groundpush.core.service;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.ExportWordCondition;
 import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
@@ -208,4 +209,12 @@ public interface OrderService {
      * @return
      */
     List<Order> queryOrderByTaskIdAndChannelTimeAndStatus(Integer taskId, LocalDateTime orderTime, Integer orderStatusReviewFail);
+
+
+    /**
+     * 通过任务id 订单时间获取符合条件的所有订单
+     * @param condition
+     * @return
+     */
+    List<Order> queryOrderLogOfOrder(ExportWordCondition condition);
 }

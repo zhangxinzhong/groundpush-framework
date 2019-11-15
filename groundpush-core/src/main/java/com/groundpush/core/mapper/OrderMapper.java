@@ -1,6 +1,7 @@
 package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
+import com.groundpush.core.condition.ExportWordCondition;
 import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
@@ -454,4 +455,15 @@ public interface OrderMapper {
      */
     @Select(" select o.order_id,o.unique_code,o.created_time from t_order o inner join t_order_task_customer otc on otc.order_id = o.order_id where otc.task_id=#{taskId} and o.created_time between #{beginTime} and #{endTime} and o.settlement_status=#{settlementStatus} ")
     List<Order> queryOrderByTaskIdAndChannelTimeAndStatus(@Param("taskId") Integer taskId, @Param("beginTime") LocalDateTime beginTime, @Param("endTime") LocalDateTime endTime, @Param("settlementStatus") Integer settlementStatus);
+
+
+    /**
+     * 查询符合条件的订单
+     * @param condition
+     * @return
+     */
+    @Select(" select a.order_id,a.order_no,a.unique_code from t_order a left join t_order_task_customer b on a.order_id = b.order_id where b.task_id = #{taskId} and a.settlement_status = #{settlementStatus} and a.created_time between #{startDateTime} and #{endDateTime} order by a.order_id ")
+    List<Order> queryOrderLogOfOrder(ExportWordCondition condition);
+
+
 }

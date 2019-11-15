@@ -269,4 +269,9 @@ public class OssUtils {
     public void delFile(String key,String rootDir) {
         deleteFile(bucketName, rootDir, key);
     }
+
+    public InputStream getInputStreamOss(String imgUrl){
+        OSSObject o = getOSSClient().getObject(bucketName,imgUrl.replaceAll(baseUrl,""));
+        return o.getObjectContent();
+    }
 }

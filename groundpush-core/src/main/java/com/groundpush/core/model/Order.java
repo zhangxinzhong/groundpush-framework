@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @description:订单model
@@ -81,6 +82,12 @@ public class Order implements Serializable {
     /**
      * *****************非数据库字段********************
      */
+
+
+    /**
+     * 订单记录list
+     */
+    private List<OrderLog> orderLogs;
 
     /**
      * 任务id

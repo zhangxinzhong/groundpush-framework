@@ -40,6 +40,7 @@
         <apache.poi.version>3.9</apache.poi.version>
         <baidu.sdk.version>4.8.0</baidu.sdk.version>
         <aliyun-sdk-oss.version>2.2.1</aliyun-sdk-oss.version>
+        <freemarker.version>2.3.29</freemarker.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -339,6 +340,13 @@
                 <groupId>com.baidu.aip</groupId>
                 <artifactId>java-sdk</artifactId>
                 <version>${baidu.sdk.version}</version>
+            </dependency>
+
+            <!-- maven freemark更新 -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
             </dependency>
         </dependencies>
 

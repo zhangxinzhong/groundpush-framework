@@ -33,4 +33,12 @@ public interface OrderLogService {
      * @return
      */
     Integer queryOrderCountByOrderId(Integer orderId);
+
+
+    /**
+     * 通过orderIds 查询订单记录list
+     * @param orderIds
+     * @return
+     */
+    List<OrderLog> queryOrderLogByOrderIds(List<Integer> orderIds);
 }
