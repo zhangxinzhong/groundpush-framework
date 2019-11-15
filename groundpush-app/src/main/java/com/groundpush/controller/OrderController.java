@@ -41,7 +41,7 @@ public class OrderController {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        orderService.createOrder(order);
+        orderService.createOrderAndOrderBonus(order);
         return JsonResp.success();
     }
 
@@ -75,6 +75,6 @@ public class OrderController {
 
     @GetMapping("/{orderId:\\d+}/orderLog")
     public JsonResp queryOrderLog(@PathVariable Integer orderId){
-        return JsonResp.success(orderLogService.queryOrderLogByOrderId(orderId));
+        return JsonResp.success(new PageResult((Page) orderLogService.queryOrderLogByOrderId(orderId)));
     }
 }

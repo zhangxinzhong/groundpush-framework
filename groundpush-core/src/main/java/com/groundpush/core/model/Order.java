@@ -34,7 +34,6 @@ public class Order implements Serializable {
     /**
      * 渠道uri
      */
-    @NotNull(message = "渠道URI不可为空")
     private String channelUri;
 
     @NotNull(message = "任务类型不可为空，实例：申请任务=1 推广任务=2")
