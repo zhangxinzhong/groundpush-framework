@@ -425,4 +425,28 @@ public class Constants {
 
 
 
+
+    /**
+     * 编码格式
+     */
+    public static final String ENCODING_UTF8 = "UTF-8";
+
+
+    /**
+     * freemarker模板
+     */
+    public static final String TEMPLATE_FTL = "template.ftl";
+
+
+    /**
+     *  订单生效状态
+     */
+    public static final Integer ORDER_STTLEMENT_STATUS_1 = 1;
+
+
+    /**
+     * 订单结果集类型 2 图片
+     */
+    public static final Integer ORDER_RESULT_TYPE_2 = 2;
+
 }

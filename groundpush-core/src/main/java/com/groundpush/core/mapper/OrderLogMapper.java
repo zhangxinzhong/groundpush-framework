@@ -46,4 +46,21 @@ public interface OrderLogMapper {
      */
     @Select(" select count(*) from t_order_log where order_id = #{orderId} ")
     Integer queryOrderCountByOrderId(@Param("orderId") Integer orderId);
+
+
+    /**
+     * 查询所有orderId在orderIds中的所有订单记录list
+     * @param orderIds
+     * @return
+     */
+    @Select({
+            "<script>",
+            " select a.* from t_order_log a where a.order_id in ",
+            "<foreach collection='orderIds' item='orderId' open='(' close=')' separator=','>",
+            "#{orderId}",
+            "</foreach>",
+            " order by a.order_id ",
+            "</script>"
+    })
+    List<OrderLog> queryOrderLogByOrderIds(@Param("orderIds") List<Integer> orderIds);
 }

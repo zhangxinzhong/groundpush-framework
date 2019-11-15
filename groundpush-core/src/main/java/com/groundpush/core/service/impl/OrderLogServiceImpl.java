@@ -38,4 +38,9 @@ public class OrderLogServiceImpl implements OrderLogService {
         return orderLogMapper.queryOrderCountByOrderId(orderId);
     }
 
+    @Override
+    public List<OrderLog> queryOrderLogByOrderIds(List<Integer> orderIds) {
+        return orderLogMapper.queryOrderLogByOrderIds(orderIds);
+    }
+
 }

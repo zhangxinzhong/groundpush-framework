@@ -2,6 +2,7 @@ package com.groundpush.core.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.groundpush.core.condition.ExportWordCondition;
 import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
@@ -25,10 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -310,4 +309,22 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime endTime = dateUtils.getMaxOfDay(orderTime);
         return orderMapper.queryOrderByTaskIdAndChannelTimeAndStatus(taskId, beginTime, endTime, settlementStatus);
     }
+
+    @Override
+    public List<Order> queryOrderLogOfOrder(ExportWordCondition condition) {
+        condition.setStartDateTime(dateUtils.getMinOfDay(condition.getOrderTime()));
+        condition.setEndDateTime(dateUtils.getMaxOfDay(condition.getOrderTime()));
+        condition.setSettlementStatus(Constants.ORDER_STTLEMENT_STATUS_1);
+        List<Order> orders = orderMapper.queryOrderLogOfOrder(condition);
+        List<Integer> orderIds = new ArrayList<>(orders.size());
+        //提出所有orderId list
+        orders.forEach(order -> orderIds.add(order.getOrderId()));
+        List<OrderLog> orderLogs = orderLogService.queryOrderLogByOrderIds(orderIds);
+        //设置订单中订单记录list
+        orders.forEach(order -> {
+            order.setOrderLogs(orderLogs.stream().filter(orderLog -> order.getOrderId().equals(orderLog.getOrderId())).collect(Collectors.toList()));
+        });
+        return orders;
+    }
+
 }

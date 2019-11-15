@@ -30,13 +30,13 @@ layui.use(['table', 'laytpl'], function () {
                 , cols: [[
                      {field: 'companyName',width:'15%',title: '渠道', sort: true}
                     , {field: 'title',width:'15%', title: '任务名称'}
-                    , {field: 'createdTime', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd"); }}
-                    , {field: '', title: '订单总数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewAllOrderList">' + d.orderCount + "</a>"}}
-                    , {field: 'orderAmount', title: '订单总金额'}
-                    , {field: '', title: '生效订单数', templet: function(d){ return '<a class="layui-table-link" lay-event="viewPassOrderList">' + d.successOrder + "</a>"}}
-                    , {field: 'successAmount', title: '生效订单金额'}
-                    , {field: '', title: '未生效订单数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewFailOrderList">' + d.failOrder + "</a>"}}
-                    , {field: 'failAmount', title: '未生效订单金额',}
+                    , {field: 'createdTime',width:'8%', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd"); }}
+                    , {field: '',width:'8%', title: '订单总数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewAllOrderList">' + d.orderCount + "</a>"}}
+                    , {field: 'orderAmount',width:'8%', title: '订单总金额'}
+                    , {field: '',width:'8%', title: '生效订单数', templet: function(d){ return '<a class="layui-table-link" lay-event="viewPassOrderList">' + d.successOrder + "</a>"}}
+                    , {field: 'successAmount',width:'8%', title: '生效订单金额'}
+                    , {field: '',width:'8%', title: '未生效订单数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewFailOrderList">' + d.failOrder + "</a>"}}
+                    , {field: 'failAmount',width:'8%', title: '未生效订单金额',}
                     , {field: '', title: '操作',toolbar: "#toolbarPay"}
                 ]]
                 ,
@@ -93,6 +93,9 @@ layui.use(['table', 'laytpl'], function () {
             },function (rep) {
                 layer.msg(rep.message);
             });
+        }
+        ,exportWord:function (data) {
+          window.location.href = '/payManage/exportOrderWord?taskId='+data.taskId+'&orderTime='+data.orderTime;
         }
         ,showViewOrderList:function(data) {
                  table.render({
@@ -226,6 +229,11 @@ layui.use(['table', 'laytpl'], function () {
                 dates.taskId = data.taskId;
                 dates.orderCreateDate = layui.util.toDateString(data.createdTime, "yyyy-MM-dd HH:mm:ss");
                 eventListener.confirmPay(dates);
+                layer.close(index);
+            });
+        }else if (obj.event === 'export') {
+            layer.confirm('确认导出此任务关联的生效订单以及结果集word文档么', function (index) {
+                eventListener.exportWord({taskId:data.taskId,orderTime:layui.util.toDateString(data.createdTime, "yyyy-MM-dd HH:mm:ss")});
                 layer.close(index);
             });
         }
