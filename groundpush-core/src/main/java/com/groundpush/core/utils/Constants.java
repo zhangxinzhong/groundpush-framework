@@ -449,8 +449,4 @@ public class Constants {
      */
     public static final Integer ORDER_RESULT_TYPE_2 = 2;
 
-    /**
-     * 编码格式
-     */
-    public static final String TEMP_WORD_FILENAME = "tempWordFileName.doc";
 }
