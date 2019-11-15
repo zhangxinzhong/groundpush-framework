@@ -49,4 +49,13 @@ public class OrderLog implements Serializable {
     @NotNull(message = "类型值")
     @ApiModelProperty("类型值")
     private String orderValue;
+
+    /**
+     * *****************非数据库字段********************
+     */
+    @ApiModelProperty("用于word导出图片")
+    private String  binaryData;
+
+    @ApiModelProperty("用于word导出图片的扩展名")
+    private String  fileExt;
 }

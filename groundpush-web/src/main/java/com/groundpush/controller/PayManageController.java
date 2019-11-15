@@ -115,25 +115,22 @@ public class PayManageController {
         if(optional.isPresent()){
             response.setCharacterEncoding(Constants.ENCODING_UTF8);
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-disposition", "attachment;filename=" + new String(optional.get().getTitle().concat(".doc").getBytes("utf-8"), "ISO8859-1"));
+            response.setHeader("Content-disposition", "attachment;filename=" + new String(optional.get().getTitle().concat(".docx").getBytes("utf-8"), "ISO8859-1"));
             response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "No-cache");
             List<Order> orders = orderService.queryOrderLogOfOrder(condition);
             WordDataMap dataMap = WordDataMap.builder().taskName(optional.get().getTitle()).orders(orders).build();
             //获取orderLog订单记录中类型为图片的log
             orders.forEach(order ->{
-                List<WordXmlImg> image = new ArrayList<>();
                 order.getOrderLogs().stream().filter(orderLog ->
                         Constants.ORDER_RESULT_TYPE_2.equals(orderLog.getOrderResultType())).forEach(orderLog -> {
                     try {
-                        image.add(WordXmlImg.builder().orderLogId(orderLog.getLogId())
-                                .binaryData(exportUtils.getByteArrayByImgUrl(orderLog.getOrderValue()))
-                                .fileName(orderLog.getOrderValue().substring(orderLog.getOrderValue().lastIndexOf("/"))).build());
+                        orderLog.setBinaryData(exportUtils.getByteArrayByImgUrl(orderLog.getOrderValue()));
+                        orderLog.setFileExt(orderLog.getOrderValue().substring(orderLog.getOrderValue().lastIndexOf(".")+1));
                     } catch (Exception e) {
                         log.error("图片转换错误imgurl:{}",orderLog.getOrderValue());
                     }
                 });
-                dataMap.setImages(image);
             });
 
             exportUtils.exportWord(Constants.TEMPLATE_FTL,dataMap,response.getOutputStream());
