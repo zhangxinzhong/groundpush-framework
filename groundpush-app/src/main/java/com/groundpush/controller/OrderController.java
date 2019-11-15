@@ -5,6 +5,7 @@ import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
+import com.groundpush.core.model.DataResult;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.PageResult;
 import com.groundpush.core.service.OrderLogService;
@@ -75,6 +76,6 @@ public class OrderController {
 
     @GetMapping("/{orderId:\\d+}/orderLog")
     public JsonResp queryOrderLog(@PathVariable Integer orderId){
-        return JsonResp.success(new PageResult((Page) orderLogService.queryOrderLogByOrderId(orderId)));
+        return JsonResp.success(new DataResult(orderLogService.queryOrderLogByOrderId(orderId)));
     }
 }
