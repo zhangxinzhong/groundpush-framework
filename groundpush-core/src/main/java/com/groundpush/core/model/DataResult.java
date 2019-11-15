@@ -18,8 +18,6 @@ import java.util.List;
  */
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataResult {
 
@@ -29,10 +27,16 @@ public class DataResult {
     @JsonView(View.class)
     private Object data;
 
-    public DataResult(List list){
-         this.list = list;
-    }
-    public DataResult(Object data){
+    public DataResult(Object data) {
         this.data = data;
+    }
+
+    public DataResult(List list) {
+        this.list = list;
+    }
+
+    public DataResult( Object data,List list) {
+        this.data = data;
+        this.list = list;
     }
 }

@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
+import com.groundpush.core.exception.BusinessException;
+import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.DataResult;
 import com.groundpush.core.model.Order;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * @description: 订单
@@ -68,14 +71,25 @@ public class OrderController {
     @ApiOperation(value = "查询订单")
     @GetMapping
     public JsonResp queryOrder(OrderQueryCondition orderQueryCondition,
-                               @RequestParam(value = "pageNumber",required = false,defaultValue = "1") Integer pageNumber,
-                               @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer  pageSize) {
-        Page<Order> orders = orderService.queryOrder(orderQueryCondition, pageNumber,pageSize);
+                               @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
+                               @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
+        Page<Order> orders = orderService.queryOrder(orderQueryCondition, pageNumber, pageSize);
         return JsonResp.success(new PageResult(orders));
     }
 
     @GetMapping("/{orderId:\\d+}/orderLog")
-    public JsonResp queryOrderLog(@PathVariable Integer orderId){
+    public JsonResp queryOrderLog(@PathVariable Integer orderId) {
         return JsonResp.success(new DataResult(orderLogService.queryOrderLogByOrderId(orderId)));
+    }
+
+    @GetMapping("/{orderId:\\d+}")
+    public JsonResp getOrder(@PathVariable Integer orderId) {
+
+        Optional<Order> optionalOrder = orderService.queryOrderByOrderIdReturnOrder(orderId);
+        if (!optionalOrder.isPresent()) {
+            throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
+        }
+
+        return JsonResp.success(new DataResult(optionalOrder.get(), orderLogService.queryOrderLogByOrderId(orderId)));
     }
 }

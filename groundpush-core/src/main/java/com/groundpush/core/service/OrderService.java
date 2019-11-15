@@ -217,4 +217,11 @@ public interface OrderService {
      * @return
      */
     List<Order> queryOrderLogOfOrder(ExportWordCondition condition);
+
+    /**
+     *  通过订单编号查询订单
+     * @param orderId
+     * @return
+     */
+    Optional<Order> queryOrderByOrderIdReturnOrder(Integer orderId);
 }

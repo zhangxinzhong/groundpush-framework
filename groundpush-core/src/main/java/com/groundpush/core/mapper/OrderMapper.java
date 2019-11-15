@@ -23,9 +23,9 @@ import java.util.Optional;
 public interface OrderMapper {
 
 
-
     /**
      * 通过任务id和时间修改订单状态
+     *
      * @param status
      * @param orderTime
      * @param taskId
@@ -35,6 +35,7 @@ public interface OrderMapper {
 
     /**
      * 通过任务、时间、状态分页查询所有订单列表
+     *
      * @param taskId
      * @param orderTime
      * @param flag
@@ -64,6 +65,7 @@ public interface OrderMapper {
 
     /**
      * 通过关键字以订单或客户昵称分页查询所有订单
+     *
      * @param condition
      * @return
      */
@@ -98,6 +100,7 @@ public interface OrderMapper {
 
     /**
      * 修改订单
+     *
      * @param order
      */
     @Update({
@@ -183,14 +186,14 @@ public interface OrderMapper {
             " where otc.customer_id = #{customerId}",
             " <if test='status != null'> ",
             "  <choose>" +
-                //app查询订单列表时 若订单状态为审核中 则将审核中与申诉中都查询出来
-            "    <when test='status == 3'>" +
-            "         and o.status in (3,6) " +
-            "    </when>" +
-            "    <otherwise>" +
-            "         and o.status =#{status} " +
-            "    </otherwise>" +
-            "  </choose>",
+                    //app查询订单列表时 若订单状态为审核中 则将审核中与申诉中都查询出来
+                    "    <when test='status == 3'>" +
+                    "         and o.status in (3,6) " +
+                    "    </when>" +
+                    "    <otherwise>" +
+                    "         and o.status =#{status} " +
+                    "    </otherwise>" +
+                    "  </choose>",
             " </if> ",
             " <if test='selectTime != null'> and date_format(o.created_time,'%Y-%m-%d') &lt;= date_format(now(),'%Y-%m-%d') and date_format(o.created_time,'%Y-%m-%d') &gt;= date_format(date_sub(now(),interval ${selectTime}-1 day),'%Y-%m-%d')  </if> ",
             " order by o.created_time desc",
@@ -232,7 +235,6 @@ public interface OrderMapper {
     Integer queryMaxOrderId();
 
 
-
     /**
      * 修改订单
      *
@@ -268,6 +270,7 @@ public interface OrderMapper {
 
     /**
      * 通过任务idlist获取对应任务信息
+     *
      * @param taskIds
      * @return
      */
@@ -289,6 +292,7 @@ public interface OrderMapper {
 
     /**
      * 通过客户id与任务id list 获取符合条件list
+     *
      * @param customId
      * @param taskIds
      * @return
@@ -310,6 +314,7 @@ public interface OrderMapper {
 
     /**
      * 通过客户id 获取所有推广（type=2）的任务分页列表
+     *
      * @param customerId
      * @return
      */
@@ -324,10 +329,11 @@ public interface OrderMapper {
             " WHERE c.customer_id = #{customerId} AND b.task_id = #{taskId} ",
             "</script>"
     })
-    Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId,@Param("taskId") Integer taskId);
+    Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
 
     /**
      * 通过客户id与任务id 获取推广任务中创建的订单数以及相关任务信息
+     *
      * @param customerId
      * @param taskId
      * @return
@@ -349,7 +355,8 @@ public interface OrderMapper {
 
 
     /**
-     *  通过任务编号及客户编号查询订单
+     * 通过任务编号及客户编号查询订单
+     *
      * @param condition
      * @return
      */
@@ -367,7 +374,8 @@ public interface OrderMapper {
 
 
     /**
-     *  通过只查询今天任务编号及客户编号查询订单
+     * 通过只查询今天任务编号及客户编号查询订单
+     *
      * @param condition
      * @return
      */
@@ -395,15 +403,17 @@ public interface OrderMapper {
 
     /**
      * 查询订单唯一编码是否使用
+     *
      * @param condition
      * @return
      */
     @Select(" select a.* from t_order a left join t_order_task_customer b on a.order_id= b.order_id where  a.unique_code = #{uniqueCode} and b.task_id = #{taskId}  and DATE_FORMAT(a.created_time, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ")
-    List<Order>  findOrderByUnqiuCode(OrderResultCondition condition);
+    List<Order> findOrderByUnqiuCode(OrderResultCondition condition);
 
 
     /**
      * 创建订单
+     *
      * @param build
      */
     @Insert(" insert into t_order(order_no, channel_uri, unique_code, status, settlement_amount, settlement_status, created_time)values (#{orderNo},#{channelUri},#{uniqueCode},1,#{settlementAmount},#{settlementStatus},#{createdTime}) ")
@@ -426,7 +436,8 @@ public interface OrderMapper {
     Integer updateOrders(@Param("orders") List<Order> orders);
 
     /**
-     *  通过任务 及渠道时间查询当天订单
+     * 通过任务 及渠道时间查询当天订单
+     *
      * @param taskId
      * @param beginTime
      * @param endTime
@@ -438,15 +449,17 @@ public interface OrderMapper {
 
     /**
      * 通过orderId 修改订单的状态
+     *
      * @param status
      * @param orderId
      * @return
      */
     @Update(" update t_order  set status=#{status}  where order_id = #{orderId}")
-    Integer updateTaskStatusByTaskId(@Param("status") Integer status,@Param("orderId") Integer orderId);
+    Integer updateTaskStatusByTaskId(@Param("status") Integer status, @Param("orderId") Integer orderId);
 
     /**
      * 通过任务、渠道时间状态 查询订单
+     *
      * @param taskId
      * @param beginTime
      * @param endTime
@@ -459,11 +472,19 @@ public interface OrderMapper {
 
     /**
      * 查询符合条件的订单
+     *
      * @param condition
      * @return
      */
     @Select(" select a.order_id,a.order_no,a.unique_code from t_order a left join t_order_task_customer b on a.order_id = b.order_id where b.task_id = #{taskId} and a.settlement_status = #{settlementStatus} and a.created_time between #{startDateTime} and #{endDateTime} order by a.order_id ")
     List<Order> queryOrderLogOfOrder(ExportWordCondition condition);
 
-
+    /**
+     * 通过订单编号查询订单
+     *
+     * @param orderId
+     * @return
+     */
+    @Select(" select o.*,t.img_uri from t_order o left join t_order_task_customer otc on otc.order_id = o.order_id left join t_task t on t.task_id = otc.task_id where o.order_id=#{orderId} ")
+    Optional<Order> queryOrderByOrderId(@Param("orderId") Integer orderId);
 }

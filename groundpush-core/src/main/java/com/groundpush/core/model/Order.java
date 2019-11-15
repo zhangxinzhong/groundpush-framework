@@ -114,6 +114,8 @@ public class Order implements Serializable {
     @ApiModelProperty("缩略图")
     private String iconUri;
 
+    @ApiModelProperty("任务详情图片")
+    private String imgUri;
 
     @ApiModelProperty("任务标题")
     private String title;
@@ -123,7 +125,6 @@ public class Order implements Serializable {
 
     @ApiModelProperty("任务金额")
     private BigDecimal amount;
-
 
     @ApiModelProperty("推广人分成比")
     private BigDecimal spreadRatio;
