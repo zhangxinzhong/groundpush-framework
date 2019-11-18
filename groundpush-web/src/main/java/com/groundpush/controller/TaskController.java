@@ -199,8 +199,6 @@ public class TaskController {
     public JsonResp syncTask(@RequestParam("taskId") Integer taskId,@RequestParam(value = "specialTaskId",required = false) Integer specialTaskId){
 
         try {
-
-
             taskService.syncTask(taskId,specialTaskId);
         } catch (Exception e) {
             log.error(e.toString(), e);

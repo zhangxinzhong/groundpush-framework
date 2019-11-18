@@ -389,7 +389,7 @@
 <!-- task tool-->
 <script type="text/html" id="toolTask">
     <!-- 为普通任务时 才可现实 同步 -->
-    {{# if(d.type == 1){ }}
+    {{# if(d.type == 1 || d.type == 4){ }}
     <a class="layui-btn layui-btn-xs" lay-event="sync">同步</a>
     {{# } }}
     <a class="layui-btn layui-btn-xs" lay-event="check">查看任务</a>
