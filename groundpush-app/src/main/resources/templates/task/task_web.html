@@ -1,0 +1,97 @@
+<!doctype html>
+<html class="no-js" lang="utf-8" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/plugin/task/css/task_web.css"/>
+    <script type="text/javascript" th:src="@{/common/plugin/jquery/jquery-3.4.1.js}"></script>
+    <script type="text/javascript" th:src="@{/common/plugin/jquery/jquery.call.interface.js}"></script>
+    <script type="text/javascript" th:src="@{/common/plugin/qrcode/jquery.qrcode.min.js}"></script>
+    <script type="text/javascript" th:src="@{/common/utils/utils.js}"></script>
+    <script type="text/javascript" th:src="@{/plugin/task/js/task_web.js}"></script>
+    <meta name="theme-color" content="#fafafa">
+</head>
+<body>
+<div class="container task-btn">
+    <div class="container_top">
+        <h3>
+            <img th:src="@{/images/zsfz.png}"/>
+            <span>注意事项</span>
+            <img th:src="@{/images/zsfy.png}"/>
+        </h3>
+        <ul></ul>
+
+        <div class="div_step">
+            <b>1</b>
+            <div class="step_title">请点击以下按钮开始任务</div>
+            <div class="QR_code_div">
+                <h5 class="btn_h5">任务已开始</h5>
+            </div>
+        </div>
+
+        <div class="div_step">
+            <b>2</b>
+            <div class="step_title">保存以下二维码，点击微信扫一扫，选择从相册选取二维码，选择二维码参加活动</div>
+            <div class="QR_code_div">
+                <img th:src="@{/images/qr_code.jpg}" alt="图片"/>
+                <h5 class="btn_h5">美团外卖二维码</h5>
+            </div>
+
+            <div class="show_img_div">
+                <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg" alt="图片">
+                <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg" alt="图片">
+            </div>
+        </div>
+
+        <div class="div_step">
+            <b>3</b>
+            <div class="step_title">领取红包后，当日务必使用红包购买一单外卖美食，记录订单号</div>
+            <div class="show_img_div">
+                <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg" alt="图片">
+            </div>
+        </div>
+
+        <div class="div_step">
+            <b>4</b>
+            <div class="step_title">完成任务后请点击上传结果，上传手机号码+订单号码</div>
+            <div class="show_img_div">
+            </div>
+        </div>
+    </div>
+
+    <div class="container_bottom">
+        <h5 class="btn_h5" data-method="upload">上传结果</h5>
+        <h5 class="btn_h5" data-method="down_app">下载路客</h5>
+    </div>
+
+    <div class="upload_result_div_mask">
+        <div class="upload_result_div_body">
+            <div class="title_div">
+                <b>任务结果上传</b>
+            </div>
+
+            <div class="content_div">
+                <span>任务推广数:1，已提交结果数：0</span><br/>
+                <input type="number" placeholder="请输入电话号码"/>
+                <input type="number" placeholder="请输入订单号"/>
+                <div class="res_img_div">
+                    <p>我的订单截图</p>
+                    <button>上传</button>
+                </div>
+                <div class="example_img_div">
+                    <p style="">照片示范</p>
+                    <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg">
+                </div>
+            </div>
+
+            <div class="bottom_div">
+                <h5 class="btn_h5" data-method="mask_cancel">取消</h5>
+                <h5 class="btn_h5" data-method="mask_enter">确定</h5>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
