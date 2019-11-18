@@ -129,7 +129,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     , {
                         field: '', title: '任务类型', width: '6%',
                         templet: function (d) {
-                            return d.type == TaskTypeGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == TaskTypeGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无上传结果集任务");
+                            return d.type == TaskTypeGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == TaskTypeGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无结果集任务");
                         }
                     }
                     , {field: '', title: '操作', toolbar: "#toolTask"}
