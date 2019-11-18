@@ -26,7 +26,7 @@ public interface TaskMapper {
             " select * from t_task where 1=1 ",
             " <if test='title != null'> and title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='type != null'>  ",
-                     //特殊处理 若任务type为1时则type同时查询出普通任务与无上传结果集  为3时则特殊任务
+                     //特殊处理 若任务type为1时则type同时查询出普通任务(type=1)与无上传结果集(type=4)  为3时则特殊任务
                     " <if test='type = 1'> and type in (1,4)  </if> ",
                     " <if test='type = 3'> and type = #{type}  </if> ",
             " </if> ",
