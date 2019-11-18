@@ -41,7 +41,7 @@ public class TaskAttributeController {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        return JsonResp.success(new DataResult(taskAttributeService.queryTaskAttributeListByTaskIdAndType(condition.getTaskId(),condition.getOrderId(),Constants.TASK_TYPE_3)));
+        return JsonResp.success(new DataResult(taskAttributeService.queryTaskAttributeListByTaskIdAndType(condition.getTaskId(),condition.getOrderId(),Constants.TASK_ATTRIBUTE_RESULT)));
     }
 
 }

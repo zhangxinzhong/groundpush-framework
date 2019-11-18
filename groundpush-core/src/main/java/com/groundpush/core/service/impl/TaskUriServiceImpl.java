@@ -57,5 +57,8 @@ public class TaskUriServiceImpl implements TaskUriService {
         return taskUriMapper.queryCountByTaskId(taskId);
     }
 
-
+    @Override
+    public Optional<TaskUri> getTaskUri(Integer taskUriId) {
+        return taskUriMapper.getTaskUri(taskUriId);
+    }
 }

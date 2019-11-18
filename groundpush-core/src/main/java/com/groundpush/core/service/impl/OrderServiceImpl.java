@@ -277,9 +277,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId) {
+    public Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId, Integer type) {
         // 1. 检查当天订单是否存在
-        Optional<Order> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(Constants.GET_TASK_ATTRIBUTE).build());
+        Optional<Order> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(type).build());
         // 2. 查询订单是否上传结果集
         if (optionalOrder.isPresent() && StringUtils.isBlank(optionalOrder.get().getUniqueCode())) {
             return optionalOrder;

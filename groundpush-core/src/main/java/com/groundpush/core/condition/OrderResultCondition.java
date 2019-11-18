@@ -40,7 +40,8 @@ public class OrderResultCondition implements Serializable {
     @ApiModelProperty(value = "客户id")
     private Integer customerId;
 
-    @ApiModelProperty(value = "任务类型 1：申请 2：推广")
+    @NotNull(message = "任务类型不可为空")
+    @ApiModelProperty(value = "任务类型 1：申请 2：推广 3:特殊任务")
     private Integer taskType;
 
     @NotNull(message = "任务结果集不可以为空")

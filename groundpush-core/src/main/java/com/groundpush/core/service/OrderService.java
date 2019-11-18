@@ -191,9 +191,10 @@ public interface OrderService {
      * 校验订单是否存在且是否上传过结果集
      * @param customId
      * @param taskId
+     * @param type
      * @return
      */
-    Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId);
+    Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId, Integer type);
 
     /**
      * 修改订单状态 及 支付此订单金额

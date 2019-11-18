@@ -15,6 +15,7 @@ public interface TaskUriMapper {
 
     /**
      * 通过任务id删除与uri之间的关联
+     *
      * @param taskId
      * @return
      */
@@ -23,6 +24,7 @@ public interface TaskUriMapper {
 
     /**
      * 添加任务与uri的关联
+     *
      * @param taskUris
      * @return
      */
@@ -38,9 +40,9 @@ public interface TaskUriMapper {
     Integer insert(List<TaskUri> taskUris);
 
 
-
     /**
      * 查询任务uri
+     *
      * @param taskId
      * @return
      */
@@ -58,11 +60,13 @@ public interface TaskUriMapper {
 
     /**
      * 查询任务uri
+     *
      * @param taskId
      * @return
      */
     @Select(" SELECT a.* from t_task_uri a WHERE a.task_id = #{taskId} ")
     List<TaskUri> queryTaskUriByTaskId(@Param("taskId") Integer taskId);
+
     /**
      * 修改taskUri
      *
@@ -79,9 +83,19 @@ public interface TaskUriMapper {
 
     /**
      * 获取任务的uri count
+     *
      * @param taskId
      * @return
      */
     @Select(" select count(*) from t_task_uri where task_id = #{taskId}")
     Integer queryCountByTaskId(@Param("taskId") Integer taskId);
+
+    /**
+     * 获取任务URI 通过编号
+     *
+     * @param taskUriId
+     * @return
+     */
+    @Select(" select * from t_task_uri where task_uri_id = #{taskUriId} ")
+    Optional<TaskUri> getTaskUri(@Param("taskUriId") Integer taskUriId);
 }

@@ -39,6 +39,11 @@ public class Constants {
      */
     public static final Integer SPREAD_TASK_ATTRIBUTE = 2;
 
+    /**
+     *  任务结果集上传页面布局
+     */
+    public static final Integer TASK_ATTRIBUTE_RESULT = 3;
+
 
     /**
      * 订单过期时间（订单24小时后无法删除）

@@ -1,15 +1,15 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.condition.SpreadCreateCondition;
 import com.groundpush.core.condition.SpreadQueryCondition;
 import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.Task;
+import com.groundpush.core.model.TaskAttribute;
 import com.groundpush.core.model.TaskUri;
-import com.groundpush.core.service.OrderService;
-import com.groundpush.core.service.SpecialTaskService;
-import com.groundpush.core.service.TaskService;
-import com.groundpush.core.service.TaskUriService;
+import com.groundpush.core.service.*;
 import com.groundpush.core.utils.AesUtils;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.RedisUtils;
@@ -21,14 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.spring.web.json.Json;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,7 +36,7 @@ import java.util.Optional;
 @Slf4j
 @ApiModel(value = "产品推广")
 @RequestMapping("/spread")
-@RestController
+@Controller
 public class SpreadController {
     @Resource
     private RedisUtils redisUtils;
@@ -49,6 +46,9 @@ public class SpreadController {
 
     @Resource
     private OrderService orderService;
+
+    @Resource
+    private TaskAttributeService taskAttributeService;
 
     @Resource
     private TaskUriService taskUriService;
@@ -61,63 +61,62 @@ public class SpreadController {
 
     @ApiOperation("页面跳转uri")
     @GetMapping
-    public JsonResp toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult) {
+    public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
-        String key = aesUtils.dcodes(spreadQueryCondition.getKey(), Constants.APP_AES_KEY);
-        try {
 
-            log.info("跳转页面方法传参：用户id:{},任务id:{},任务类型:{},二维码key:{}", spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId(), spreadQueryCondition.getType(), spreadQueryCondition.getKey());
-
-
-            String obj = (String) redisUtils.get(key);
-
-            if (StringUtils.isBlank(key) || StringUtils.isBlank(obj) || (StringUtils.isNotBlank(obj) && !obj.equalsIgnoreCase(key))) {
-                log.info("跳转页面失败,key 不匹配");
-                return JsonResp.failure(ExceptionEnum.TASK_QR_CODE_INVALID.getErrorCode(), ExceptionEnum.TASK_QR_CODE_INVALID.getErrorMessage());
+        //获取每日推广剩余次数 每人每日推广剩余次数
+        Optional<TaskPopCountVo> optional = taskService.getSupTotalOrCustomCount(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
+        if (optional.isPresent()) {
+            log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}", optional.get().getSupTotal(), optional.get().getSupCustom());
+            if (optional.get().getSupCustom() <= Constants.ZROE || optional.get().getSupTotal() <= Constants.ZROE) {
+                log.error("今日推广次数已达上限");
+                return "error";
             }
+        }
 
-            //获取每日推广剩余次数 每人每日推广剩余次数
-            Optional<TaskPopCountVo> optional = taskService.getSupTotalOrCustomCount(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
-            if (optional.isPresent()) {
-                log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}", optional.get().getSupTotal(), optional.get().getSupCustom());
-                if (optional.get().getSupCustom() <= Constants.ZROE || optional.get().getSupTotal() <= Constants.ZROE) {
-                    log.error("今日推广次数已达上限");
-                    return JsonResp.failure(ExceptionEnum.TASK_SPREAD_MAX.getErrorCode(), ExceptionEnum.TASK_SPREAD_MAX.getErrorMessage());
-                }
-            }
-
-            //获取任务uri
+        // 1. 通过任务编号查询任务
+        Optional<Task> optionalTask = taskService.getTask(spreadQueryCondition.getTaskId());
+        // 2. 查询任务结果集布局
+        List<TaskAttribute> taskAttributeList = taskAttributeService.queryTaskAttributeListByTaskIdAndType(spreadQueryCondition.getTaskId(), Constants.TASK_ATTRIBUTE_RESULT);
+        if (optionalTask.isPresent()) {
+            model.addAttribute("task", optionalTask.get());
+            model.addAttribute("taskResult", taskAttributeList);
+            // 3. 通过任务查询任务所有推广链接
             Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(spreadQueryCondition.getTaskId());
-            if (!taskUriOptional.isPresent()) {
-                log.error("任务：{} 的URI 不存在", spreadQueryCondition.getTaskId());
-                return JsonResp.failure(ExceptionEnum.TASK_NOT_URI.getErrorCode(), ExceptionEnum.TASK_NOT_URI.getErrorMessage());
+            model.addAttribute("taskUri", taskUriOptional.isPresent() ? taskUriOptional.get() : null);
+        }
+
+        return "spread/spread";
+    }
+
+    @PostMapping
+    @ResponseBody
+    public JsonResp spread(@Valid SpreadCreateCondition spreadCreateCondition, BindingResult bindingResult) {
+        try {
+            if (bindingResult.hasErrors()) {
+                throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
             }
 
-            // 如果任务类型为申请任务且订单未上传结果集不重复创建订单
-            if (Constants.ONE.equals(spreadQueryCondition.getType())) {
-                Optional<Order> orderOptional = orderService.checkOrderIsExistAndIsUploadResult(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
-                if (orderOptional.isPresent()) {
-                    return JsonResp.success(StringUtils.isBlank(orderOptional.get().getChannelUri()) ? taskUriOptional.get().getUri() : orderOptional.get().getChannelUri());
-                }
-            }
+            Optional<TaskUri> optionalTaskUri = taskUriService.getTaskUri(spreadCreateCondition.getTaskUriId());
 
             //1.是否是特殊任务 且 是否是改任务的特殊用户
             //  还需验证当前用户上级是否是特殊用户
-            Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadQueryCondition.getTaskId());
-            Order order = Order.builder().customerId(spreadQueryCondition.getCustomId()).type(spreadQueryCondition.getType()).taskId(spreadQueryCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).channelUri(taskUriOptional.get().getUri()).isSpecial(isSpecialTask).build();
+            Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadCreateCondition.getTaskId());
+            Order order = Order.builder().customerId(spreadCreateCondition.getCustomId()).type(spreadCreateCondition.getType()).taskId(spreadCreateCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).isSpecial(isSpecialTask).build();
+
+            if(optionalTaskUri.isPresent()){
+                taskUriService.updateTaskUri(optionalTaskUri.get());
+                order.setChannelUri(optionalTaskUri.get().getUri());
+            }
+
             //2.创建用户订单
             orderService.createOrderAndOrderBonus(order);
-            // 使用完url 后需要把最后修改时间改成今天
-            taskUriService.updateTaskUri(taskUriOptional.get());
 
-            return JsonResp.success(taskUriOptional.get().getUri());
+            return JsonResp.success();
         } catch (Exception e) {
-            log.error(e.toString(), e);
-            return JsonResp.failure(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
-        } finally {
-            redisUtils.del(key);
+            return JsonResp.failure();
         }
     }
 

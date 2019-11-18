@@ -63,5 +63,8 @@ public class TaskAttributeServiceImpl implements TaskAttributeService {
         return taskAttributeMapper.queryTaskAttributeListByTaskIdAndType(taskId,type);
     }
 
-
+    @Override
+    public List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(Integer taskId, Integer type) {
+        return taskAttributeMapper.queryTaskAttributeListByTaskIdAndType(taskId,type);
+    }
 }

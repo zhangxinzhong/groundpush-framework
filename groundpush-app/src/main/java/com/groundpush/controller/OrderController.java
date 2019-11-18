@@ -10,10 +10,14 @@ import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.DataResult;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.PageResult;
+import com.groundpush.core.model.TaskUri;
 import com.groundpush.core.service.OrderLogService;
 import com.groundpush.core.service.OrderService;
+import com.groundpush.core.service.TaskUriService;
+import com.groundpush.core.utils.Constants;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +42,9 @@ public class OrderController {
     @Resource
     private OrderLogService orderLogService;
 
+    @Resource
+    private TaskUriService taskUriService;
+
 
     @ApiOperation(value = "创建订单")
     @PostMapping
@@ -45,8 +52,17 @@ public class OrderController {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
+        // 检查用户是否存在此任务订单
+        Optional<Order> orderOptional = orderService.checkOrderIsExistAndIsUploadResult(order.getCustomerId(), order.getTaskId(),order.getType());
+        if (orderOptional.isPresent()) {
+            return JsonResp.success(orderOptional.get().getChannelUri());
+        }
+
+        //获取任务uri
+        Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(order.getTaskId());
+        order.setChannelUri(taskUriOptional.isPresent() ? taskUriOptional.get().getUri() : null);
         orderService.createOrderAndOrderBonus(order);
-        return JsonResp.success();
+        return JsonResp.success(taskUriOptional.isPresent() ? taskUriOptional.get().getUri() : null);
     }
 
     @ApiOperation(value = "任务结果集、订单申诉")

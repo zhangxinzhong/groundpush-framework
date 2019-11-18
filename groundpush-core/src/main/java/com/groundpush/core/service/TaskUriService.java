@@ -47,4 +47,11 @@ public interface TaskUriService {
      * @return
      */
     Integer queryCountByTaskId(Integer taskId);
+
+    /**
+     *   后去任务uri 通过编号
+     * @param taskUriId
+     * @return
+     */
+    Optional<TaskUri> getTaskUri(Integer taskUriId);
 }

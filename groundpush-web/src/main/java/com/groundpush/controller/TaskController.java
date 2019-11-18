@@ -217,7 +217,7 @@ public class TaskController {
     @ResponseBody
     public JsonResp querySpecialTasks(){
         try {
-            return JsonResp.success(taskService.querySpecialTasks(Constants.TASK_SEPCAIL_TYPE_2));
+            return JsonResp.success(taskService.querySpecialTasks(Constants.TASK_SEPCAIL_TYPE_3));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

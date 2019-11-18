@@ -49,4 +49,12 @@ public interface TaskAttributeService {
      * @return
      */
     List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(Integer taskId,Integer orderId,Integer type);
+
+    /**
+     * 查询任务上传结果页布局
+     * @param taskId
+     * @param type
+     * @return
+     */
+    List<TaskAttribute> queryTaskAttributeListByTaskIdAndType(Integer taskId, Integer type);
 }
