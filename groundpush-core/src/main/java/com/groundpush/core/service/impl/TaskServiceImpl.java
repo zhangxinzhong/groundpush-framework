@@ -169,6 +169,9 @@ public class TaskServiceImpl implements TaskService {
             task.setSpreadTaskAttributes(spreadTasks);
             // 申请任务 添加属性到map中方便app端使用
             task.setSpreadTaskAttributesSet(addTaskAttributeToSet(spreadTasks));
+            //获取任务推广按钮链接
+            List<TaskAttribute> popTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.POP_TASK_ATTRIBUTE);
+            task.setTaskPopAttribute(popTasks);
         }
     }
 

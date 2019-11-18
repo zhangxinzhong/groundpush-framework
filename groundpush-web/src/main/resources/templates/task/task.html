@@ -349,12 +349,25 @@
     </div>
     {{# });  }}
 </script>
-
 <!--******************************************用于我的任务编辑回显修改模板**end***************************************************-->
 
 
-
-
+<!--******************************************用于任务推广************************************************************************-->
+<script type="text/html" id="taskPop">
+    <div class="layui-form-item">
+        推广按钮：<div class="layui-inline" style="width: 10%">
+                    <select class="form-control col-lg-3 rowType" name="rowType">
+                        <option value="1"  {{ d.rowType==1?'selected':'' }} >推广</option>
+                        <option value="2"  {{ d.rowType==2?'selected':'' }} >招募</option>
+                        <option value="3"  {{ d.rowType==3?'selected':'' }} >自定义</option>
+                    </select>
+                </div>
+        <div class="layui-inline" style="width: 65%">
+        <input type="text" name="content" class="form-control content"
+                       value="{{d.content != undefined?d.content:'' }}" placeholder="输入推广按钮链接">
+        </div>
+    </div>
+</script>
 
 
 
@@ -707,14 +720,23 @@
                                                     class="layui-btn  layui-btn-xs layui-btn-small addResult"
                                                     title="添加任务结果集" id="addResult"><i class="layui-icon"></i></button>
                                             </li>
+                                            <li><span class="required_style">*</span>任务推广&emsp;&emsp;</button>
+                                            </li>
                                         </ul>
                                         <div class="layui-tab-content">
                                             <div class="layui-tab-item layui-show">
+                                                <!-- 对应任务详情 -->
                                                 <div class="layui-form-item" id="view">
                                                 </div>
                                             </div>
                                             <div class="layui-tab-item">
+                                                <!-- 对应任务结果 -->
                                                 <div class="layui-form-item" id="resultView">
+                                                </div>
+                                            </div>
+                                            <div class="layui-tab-item">
+                                                <!-- 对应任务推广 -->
+                                                <div class="layui-form-item" id="popView">
                                                 </div>
                                             </div>
                                         </div>

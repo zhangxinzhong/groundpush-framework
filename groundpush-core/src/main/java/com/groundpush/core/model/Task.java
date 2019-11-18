@@ -222,6 +222,10 @@ public class Task implements Serializable {
      ****************************************** 非数据库字段 **********************************************************
      */
 
+
+    @ApiModelProperty("任务推广链接")
+    private List<TaskAttribute> taskPopAttribute;
+
     /**
      * 推广任务
      */
