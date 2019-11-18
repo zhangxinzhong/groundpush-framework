@@ -174,6 +174,7 @@ b,
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   z-index: 2;
+  display: none;
 }
 .container .upload_result_div_mask .upload_result_div_body {
   background-color: #ffffff;
@@ -274,5 +275,9 @@ b,
   color: #333333;
 }
 .container .upload_result_div_mask .show_img {
-  padding: 20px;
+  padding: 60px;
+}
+.container .upload_result_div_mask .show_img img {
+  width: 100%;
+  height: 100%;
 }

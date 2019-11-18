@@ -1,82 +1,77 @@
-let SERVER = '';
 let hasOrderResult=true;
+let resMessage='';
 let saveImageName='test';
+let isUploadBtnOpen=false;//是否已打开上传结果框，主要是区分图片放大显示
 
-let requet_url = {
-    task: SERVER+'/spread'
-};
+function initPage() {
+    let taskCache=JSON.parse($('.taskCache').val());
+    let taskResultCache=JSON.parse($('.taskResultCache').val());
 
-function requestTaskInfo() {
-    let data = {
-        'customerId': 71,
-        'taskType': 2
-    };
+    let noteContentArray = taskCache.taskContent.split('\n');
+    let container = $('.container_top');
 
-    let result = callInterface('GET', requet_url.task, data, false);
-    if (result.code == '200') {
-        let data = result.data;
-        let noteContentArray = data.taskContent.split('\n');
-        let container = $('.container_top');
+    //设置标题和内容
+    container.find("h3 span").text(taskCache.taskTitle)
+    let ulObj = container.find("ul");
+    ulObj.empty();
+    $.each(noteContentArray, function (i, res) {
+        ulObj.append('<li>' + res + '</li>')
+    });
 
-        //设置标题和内容
-        container.find("h3 span").text(data.taskTitle)
-        let ulObj = container.find("ul");
-        ulObj.empty();
-        $.each(noteContentArray, function (i, res) {
-            ulObj.append('<li>' + res + '</li>')
-        });
+    let taskAttr = taskCache.spreadTaskAttributesSet;
+    $('.div_step').remove();
+    let taskStep = '';
+    $.each(taskAttr, function (i, res) {
+        let index=title=qrBtn=qrCode=undefined;
+        let isShowQR=false;
+        let showImg='';
 
-        let taskAttr = data.spreadTaskAttributesSet;
-        $('.div_step').remove();
-        let taskStep = '';
-        $.each(taskAttr, function (i, res) {
-            let index=title=qrBtn=qrCode=undefined;
-            let isShowQR=false;
-            let showImg='';
-
-            $.each(res, function (j, rs) {
-                let rowType=rs.rowType;
-                if(rs.imgCode!=''){
-                    showImg+='<img src="'+rs.content+'"/>';
+        $.each(res, function (j, rs) {
+            let rowType=rs.rowType;
+            if(rs.imgCode!=''){
+                showImg+='<img src="'+rs.content+'" data-method="show_img"/>';
+            }else{
+                if (rowType==1) {
+                    index=rs.labelType;
+                    title=rs.content;
                 }else{
-                    if (rowType==1) {
-                        index=rs.labelType;
-                        title=rs.content;
-                    }else{
-                        if(rowType==4){
-                            isShowQR=true;
-                        }
-                        qrBtn=rs.name;
-                        qrCode=rs.content;
+                    if(rowType==4){
+                        isShowQR=true;
                     }
+                    qrBtn=rs.name;
+                    qrCode=rs.content;
                 }
-            });
-
-            taskStep += formatStepHtml(index, title, qrCode, qrBtn,showImg,isShowQR);
+            }
         });
 
-        ulObj.after(taskStep);
+        taskStep += formatStepHtml(index, title, qrCode, qrBtn,showImg,isShowQR);
+    });
 
-        //是否存在订单
-        if(data.hasOrder){
+    ulObj.after(taskStep);
 
-        }
+    if(taskCache.isResult==1){
+        let tashPushCount=taskCache.spreadTotal;
+        let upResultCount=taskCache.customPopCount;
+        let isShowPhone=false;
+        let isShowOrder=false;
+        let isShowImg=false;
+        let imgSrc=taskCache.exampleImg;
+        $.each(taskResultCache,function (i,rs) {
+            if(rs.content.indexOf("手机") != -1){
+                isShowPhone=true;
+            }else if(rs.content.indexOf("订单") != -1){
+                isShowOrder=true;
+            }else if(rs.content.indexOf("截图") != -1){
+                isShowImg=true;
+            }
+        });
 
-        //上传结果
-        hasOrderResult=data.hasOrderResult;
-        if(data.isResult==1){
-            let tashPushCount=data.customPopCount;
-            let upResultCount=2;
-            let isShowPhone=true;
-            let isShowOrder=true;
-            let isShowImg=true;
-            let imgSrc=data.exampleImg;
-
-            let contentDiv=$('.content_div');
-            contentDiv.empty();
-            contentDiv.append(formatResultHtml(tashPushCount,upResultCount,isShowPhone,
-                isShowOrder,isShowImg,imgSrc));
-        }
+        let contentDiv=$('.content_div');
+        contentDiv.empty();
+        contentDiv.append(formatResultHtml(tashPushCount,upResultCount,isShowPhone,
+            isShowOrder,isShowImg,imgSrc));
+    }else{
+        resMessage='没有未完成的订单！';
     }
 }
 
@@ -95,7 +90,7 @@ function formatStepHtml(index, title, qrCode, qrBtn, showImg,isShowQR) {
         let isOpenApp=true;
         if(isShowQR){
             isOpenApp=false;
-            result+='<img src="'+SERVER+'/images/qr_code.jpg" alt="图片"/><div class="qrcode_data" style="display: none;"></div>';
+            result+='<img src="/images/qr_code.jpg" alt="图片"/><div class="qrcode_data" style="display: none;"></div>';
         }
         result+='<h5 class="btn_h5" data-method="qrcode" is_open="'+isOpenApp+'">{qr_btn}</h5></div>';
     }
@@ -125,8 +120,8 @@ function formatResultHtml(tashPushCount,upResultCount,isShowPhone,isShowOrder,is
 
     if(isShowOrder){
         result+='<div class="res_img_div"><p>我的订单截图</p><button>上传</button></div>';
-        result+='<div class="example_img_div"><p style="">照片示范</p><img src="{img_src}"></div>';
     }
+    result+='<div class="example_img_div"><p style="">照片示范</p><img src="{img_src}" data-method="show_img"></div>';
 
     return result.format({task_push_count:tashPushCount,up_rs_count:upResultCount,img_src:imgSrc});
 }
@@ -154,10 +149,19 @@ let activeEvent={
         // window.location.href=SERVER+"/recruit/"+new Date().getSeconds();
     },
     upload:function () {
-        maskStyl('block');
+        isUploadBtnOpen=true;
+        if(hasOrderResult){
+            maskStyl('block');
+        }else{
+            alert(resMessage);
+        }
     },
     mask_cancel:function () {
+        isUploadBtnOpen=false;
         maskStyl('none');
+    },
+    mask_enter:function () {
+        maskEnter();
     },
     qrcode:function () {
         if($(this).attr('is_open')){
@@ -169,15 +173,68 @@ let activeEvent={
         }else{
 
         }
+    },
+    show_img:function () {
+        showImag(true,$(this));
+    },
+    clos_img:function () {
+        showImag(false,$(this));
+
+        if(isUploadBtnOpen){
+            $(".upload_result_div_mask")
+                .stop()
+                .css({
+                    display:'block',
+                    maxHeight:'100%',
+                    maxWidth:'100%'
+                });
+        }
     }
 };
+
+/**
+ * 提交结果
+ */
+function maskEnter() {
+
+}
+
+/**
+ * 点击显示大图
+ * @param isShowFlag
+ * @param _this
+ */
+function showImag(isShowFlag,_this) {
+    let imageSrc=_this.attr('src');
+    let upRsDiv=$(".upload_result_div_mask");
+    upRsDiv.css({'display':!isShowFlag?'none':'block'});
+    $.each(upRsDiv.children(),function (i,rs) {
+        let element=$(rs);
+        let eClsName=element.attr('class');
+        if(eClsName=='upload_result_div_body'){
+            element.css({'display':isShowFlag?'none':'block'});
+        }else if(eClsName=='show_img'){
+            element.css(
+                {
+                    'display':!isShowFlag?'none':'block'
+                }).empty().append('<img src="'+imageSrc+'"/>');
+        }
+    });
+
+    upRsDiv.stop().css({
+        maxWidth:'0%',maxHeight:'0%'
+    }).animate({
+        maxWidth:'100%',
+        maxHeight:'100%',
+    }, 500);
+}
 
 /**
  * 弹出蒙版样式
  * @param dplayFlag
  */
 function maskStyl(dplayFlag) {
-    $('.upload_result_div_mask').css({'display':dplayFlag});
+    $('.upload_result_div_mask').css({'display':dplayFlag}).find('.upload_result_div_body').css({'display':dplayFlag});
 }
 
 
@@ -185,9 +242,9 @@ function maskStyl(dplayFlag) {
  * js入口主方法
  */
 $(function () {
-    requestTaskInfo();
+    initPage();
 
-    $('body .btn_h5,button').on('click', function(){
+    $('body .btn_h5,button,img,.show_img').on('click', function(){
         let obj=this;
         let othis=$(obj),method=othis.data('method');
         if(!method){
@@ -198,3 +255,8 @@ $(function () {
     });
 });
 
+// var mobileNo = $("#mobileNo").val();
+// if (!(/^1[3456789]\d{9}$/.test(mobileNo))) {
+//     alert("请输入正确的手机号");
+//     return false;
+// }
