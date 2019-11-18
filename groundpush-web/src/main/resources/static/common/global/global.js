@@ -35,7 +35,10 @@ var Global = {
 
 
 var TaskTypeGlobal = {
+	//普通任务
 	TASK_NORMAL_TYPE_1:1,
+	//特殊任务
 	TASK_SEPCAIL_TYPE_3:3,
+	//无上传结果集任务
 	TASK_NONRESULT_TYPE_4:4
 }
