@@ -1,0 +1,320 @@
+@main_bg_color:#f1f4fb;@btn_color: #1481FF;@top_div_bg_color:#ffffff;@auxiliary_color:#cccccc;
+@div_angle:5px;@btn_angle:10px;@serial_number_angle:10px;
+@title_text_size:14pt;@content_text_size:12pt;@span_text_size:10pt;
+@media_width:768px;
+
+.frame_angle(@angle){
+  border-radius:@angle;
+  -moz-border-radius:@angle; /* Old Firefox */
+}
+
+@media screen and (min-width: @media_width) {
+  .container{
+    .btn_h5{
+      font-size: 16pt;
+    }
+
+    .container_top {
+      .step_title{
+        width: 95%;
+      }
+      h3 {
+        font-size: 16pt;
+
+        img {
+          width: 6%;
+        }
+      }
+    }
+
+    .upload_result_div_mask{
+      .upload_result_div_body{
+        margin-top: 6%;
+
+        .example_img_div{
+          height: 80%;
+
+          img{
+            max-height: 75%;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: @media_width) {
+  .container{
+    .btn_h5{
+      font-size: 8pt;
+      margin-top: 2%;
+    }
+
+    .container_top{
+      .step_title{
+        width: 85%;
+      }
+
+      h3 {
+        font-size: @title_text_size;
+        img {
+          width: 10%;
+        }
+      }
+    }
+
+    .upload_result_div_mask{
+      .upload_result_div_body{
+        margin-top: 12%;
+
+        .example_img_div{
+
+          height: 65%;
+          img{
+            max-height: 85%;
+          }
+        }
+      }
+    }
+  }
+}
+
+body,div{
+  width: auto;
+  margin: 0 auto;
+  font-size: @content_text_size;
+}
+
+h3,ul,.div_step{
+  margin: 10px 5%;
+  text-align: left;
+}
+
+b,.btn_h5{
+  color: #ffffff;
+  background-color: @btn_color;
+}
+
+.container{
+  overflow: auto;
+  height:100vh;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+
+  .btn_h5{
+    width: 50%;
+    padding: 5px 1%;
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+    .frame_angle(@btn_angle);
+  }
+
+  .container_top{
+    width: 100%;
+    height: 90%;
+    overflow: scroll;
+    background-color: @main_bg_color;
+    text-align: center;
+    &::-webkit-scrollbar {display:none};
+
+    &>h3{
+      text-align: center;
+
+      img{
+        height:auto;
+        max-width: 100%;
+      }
+    }
+
+    ul{
+      background-color: @top_div_bg_color;
+      .frame_angle(30px);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      li{list-style-type: none}
+    }
+
+    .div_step{
+      .frame_angle(@div_angle);
+      background-color: @top_div_bg_color;
+      border: 1px solid @btn_color;
+      padding: 15px;
+
+      b{
+        padding: 4px 8px;
+        margin-top: 20px;
+        .frame_angle(90px);
+        border: 1px solid;
+      }
+
+      .step_title{
+        float: right;
+        line-height: 20px;
+        font-weight: bold;
+      }
+
+      .QR_code_div{
+        text-align: center;
+        margin-top: 30px;
+
+        img{
+          width: 40%;
+          padding: 2px;
+          border: 1px solid @auxiliary_color;
+          .frame_angle(8px);
+        }
+      }
+
+      .show_img_div{
+        margin-top: 20px;
+        text-align: center;
+        img{
+          width: 40%;
+          height: 245px;
+          padding: 10px;
+        }
+        img:first-child{
+          padding-left: 0px;
+        }
+      }
+    }
+  }
+
+  .container_bottom{
+    width: 100%;
+    height: 10%;
+    background-color: @top_div_bg_color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid @auxiliary_color;
+
+    h5{
+      width: 40%;
+      background-color: #f97669
+    }
+
+    h5:first-child{
+      background-color: @btn_color
+    }
+  }
+
+  .upload_result_div_mask{
+    width: 100%;
+    height:100%;
+    margin: 0 auto;
+    background:rgba(0, 0, 0, 0.5);
+    position: fixed;
+    z-index: 2;
+
+    .upload_result_div_body{
+      background-color: @top_div_bg_color;
+      width: 80%;
+      height: 80%;
+      text-align: center;
+      display: none;
+      .frame_angle(5px);
+
+      .title_div{
+        height: 6%;
+        border-bottom: 1px solid @auxiliary_color;
+        padding: 10px;
+
+        b{
+          color: black;
+          background-color: @top_div_bg_color;
+        }
+      }
+
+      .content_div{
+        height: 78%;
+        font-size: @span_text_size;
+        text-align: left;
+        padding: 5px 10px;
+
+        span{
+          width: 100%;
+          color: @auxiliary_color;
+          font-size: 8pt;
+        }
+
+        input{
+          width: 80%;
+          font-size: 10pt;
+          padding: 6px;
+          border: 1px solid @auxiliary_color;
+          margin-top: 10px;
+          .frame_angle(2px);
+        }
+
+        .res_img_div{
+          text-align: left;
+          background-color: black;
+
+          p{
+            width: 46%;
+            font-size: @span_text_size;
+            padding: 6px;
+            border: 1px solid @btn_color;
+            text-align: center;
+            .frame_angle(2px);
+            float: left;
+          }
+
+          button{
+            width: 30%;
+            font-size: @span_text_size;
+            color: @top_div_bg_color;
+            background-color: @btn_color;
+            border: 0px;
+            .frame_angle(2px);
+            padding: 7px 4%;
+            float: left;
+            margin: 13px;
+          }
+        }
+
+        .example_img_div{
+          text-align: center;
+
+          p{
+            clear: both;
+            text-align: left;
+            font-size:@span_text_size;
+            color: @btn_color
+          }
+
+          img{
+            width: auto;
+            height: auto;
+            max-width: 80%;
+          }
+        }
+      }
+
+      .bottom_div{
+        height: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid @auxiliary_color;
+
+        h5{
+          width: 35%;
+          background-color: @btn_color;
+        }
+
+        h5:first-child{
+          background-color: #CBE3FF;
+          border: 1px solid #E8F3FF;
+          color: #333333;
+        }
+      }
+    }
+
+    .show_img{
+      padding: 20px;
+    }
+  }
+}
