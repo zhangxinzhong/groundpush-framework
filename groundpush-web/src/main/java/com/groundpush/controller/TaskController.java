@@ -199,8 +199,6 @@ public class TaskController {
     public JsonResp syncTask(@RequestParam("taskId") Integer taskId,@RequestParam(value = "specialTaskId",required = false) Integer specialTaskId){
 
         try {
-
-
             taskService.syncTask(taskId,specialTaskId);
         } catch (Exception e) {
             log.error(e.toString(), e);
@@ -217,7 +215,7 @@ public class TaskController {
     @ResponseBody
     public JsonResp querySpecialTasks(){
         try {
-            return JsonResp.success(taskService.querySpecialTasks(Constants.TASK_SEPCAIL_TYPE_2));
+            return JsonResp.success(taskService.querySpecialTasks(Constants.TASK_SEPCAIL_TYPE_3));
         } catch (Exception e) {
             log.error(e.toString(), e);
             throw e;

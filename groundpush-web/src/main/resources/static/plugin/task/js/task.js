@@ -114,25 +114,25 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 , totalRow: true
                 , cols: [[
                     {field: 'title', title: '任务标题', width: '15%', sort: true}
-                    , {field: 'amount', title: '单笔佣金', width: '5%'}
-                    , {field: 'source', title: '所属公司', width: '8%'}
+                    , {field: 'amount', title: '单笔佣金', width: '6%'}
+                    , {field: 'source', title: '所属公司', width: '6%'}
                     , {field: 'spreadTotal', title: '每日推广任务总数', width: '10%'}
                     , {field: 'handlerNum', title: '单人每日可做任务数', width: '10%'}
-                    , {field: 'spreadRatio', title: '推广人分成比', width: '10%'}
-                    , {field: 'leaderRatio', title: '推广领导分成比', width: '10%'}
+                    , {field: 'spreadRatio', title: '推广人分成比', width: '8%'}
+                    , {field: 'leaderRatio', title: '推广领导分成比', width: '8%'}
                     , {
-                        field: '', title: '发布类型', width: '8%',
+                        field: '', title: '发布类型', width: '6%',
                         templet: function (d) {
                             return d.status == 0 ? "未发布" : (d.status == 1 ? "已发布" : "已过期");
                         }
                     }
                     , {
-                        field: '', title: '任务类型', width: '8%',
+                        field: '', title: '任务类型', width: '6%',
                         templet: function (d) {
                             return d.type == TaskTypeGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == TaskTypeGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无上传结果集任务");
                         }
                     }
-                    , {field: '', title: '操作', width: '24%', toolbar: "#toolTask"}
+                    , {field: '', title: '操作', toolbar: "#toolTask"}
                 ]]
                 , page: true, curr: 1, limit: Global.PAGE_SISE
                 , response:
