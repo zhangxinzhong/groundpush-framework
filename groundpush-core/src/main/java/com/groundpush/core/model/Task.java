@@ -78,7 +78,7 @@ public class Task implements Serializable {
      * 任务类型
      */
     //TODO 未赋值检查是否删除
-    @NotNull(message = "任务类型不可为空 1:普通任务 2:特殊任务")
+    @NotNull(message = "任务类型不可为空 1:普通任务 2:特殊任务 3:不上传任务结果集")
     @JsonView(SimpleTaskView.class)
     private Integer type;
 

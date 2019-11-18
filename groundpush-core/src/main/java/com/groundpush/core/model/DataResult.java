@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Data
 @Builder
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataResult {
 

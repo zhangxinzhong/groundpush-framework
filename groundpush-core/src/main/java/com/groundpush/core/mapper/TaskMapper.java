@@ -25,7 +25,11 @@ public interface TaskMapper {
             "<script>",
             " select * from t_task where 1=1 ",
             " <if test='title != null'> and title like CONCAT('%',#{title},'%')  </if> ",
-            " <if test='type != null'> and type = #{type}  </if> ",
+            " <if test='type != null'>  ",
+                     //特殊处理 若任务type为1时则type同时查询出普通任务与无上传结果集  为3时则特殊任务
+                    " <if test='type = 1'> and type in (1,4)  </if> ",
+                    " <if test='type = 3'> and type = #{type}  </if> ",
+            " </if> ",
             " order by created_time desc ",
             "</script>"
     })
@@ -97,7 +101,7 @@ public interface TaskMapper {
      * @return
      */
     @Select(" select a.task_id,a.title from t_task a where a.type = #{type} and a.status = #{status}")
-    List<Task> queryAllTaskListByType(@Param("type") Integer type,@Param("status") Integer status);
+    List<Task> queryAllSpecialTaskList(@Param("type") Integer type,@Param("status") Integer status);
 
 
 
@@ -120,7 +124,7 @@ public interface TaskMapper {
             // 根据条件查出所有任务
             "(",
             " select t1.* ",
-            "  from t_task t1  where t1.status=1 and t1.type = 1 ",
+            "  from t_task t1  where t1.status=1 and t1.type != 3 ",
             " and (ISNULL(t1.location)=1 or LENGTH(trim(t1.location)) = 0 )",
             " <if test='title != null'> and t1.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='type != null and type != \"\"'> and t1.task_id in (select tb.task_id from t_task_label tb  where  tb.label_id = #{type})   </if> ",
@@ -129,7 +133,7 @@ public interface TaskMapper {
             " <if test='location != null and location != \"\" '>  ",
             " union ( ",
             " select t2.* ",
-            " from t_task t2 where t2.status=1 and t2.type = 1 ",
+            " from t_task t2 where t2.status=1 and t2.type != 3 ",
             " and t2.task_id in (select c.task_id from t_task_location c where c.location = #{location}) ",
             " <if test='title != null'> and t2.title like CONCAT('%',#{title},'%')  </if> ",
             " <if test='type != null and type != \"\"'> and t2.task_id in (select tb.task_id from t_task_label tb  where  tb.label_id = #{type}) </if> ",
@@ -159,12 +163,13 @@ public interface TaskMapper {
 
 
     /**
+     * TODO 用于任务同步数据 暂时预留
      * 通过任务type 查询所有特殊任务
      * @param type
      * @return
      */
     @Select(" select a.task_id,a.title from t_task a where a.type = #{type} ")
-    List<Task> queryTasksByType(@Param("type") Integer type);
+    List<Task> querySpecialTasks(@Param("type") Integer type);
 
 
     /**
@@ -174,6 +179,6 @@ public interface TaskMapper {
      * @return
      */
     @Select(" select count(*) from t_task a where a.title = #{title} and a.type = #{type} ")
-    Integer queryCountByTitleAndType(@Param("title") String title,@Param("type") Integer type);
+    Integer queryCountSpecialByTitleAndType(@Param("title") String title,@Param("type") Integer type);
 
 }

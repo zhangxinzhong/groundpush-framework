@@ -63,7 +63,7 @@ public interface TaskService {
      * @param status
      * @return
      */
-    List<Task> queryAllTaskList(Integer type,Integer status);
+    List<Task> queryAllSpecialTaskList(Integer type,Integer status);
 
     /**
      * 分页查询任务

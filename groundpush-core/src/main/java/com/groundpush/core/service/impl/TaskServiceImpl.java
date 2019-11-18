@@ -130,8 +130,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> queryAllTaskList(Integer type,Integer status) {
-        return taskMapper.queryAllTaskListByType(type,status);
+    public List<Task> queryAllSpecialTaskList(Integer type,Integer status) {
+        return taskMapper.queryAllSpecialTaskList(type,status);
     }
 
     @Override
@@ -214,11 +214,11 @@ public class TaskServiceImpl implements TaskService {
         if(optional.isPresent()){
             Task task = optional.get();
             if(StringUtils.isNotEmpty(task.getTitle())
-                    && taskMapper.queryCountByTitleAndType(task.getTitle(),Constants.TASK_SEPCAIL_TYPE_2) > 0){
+                    && taskMapper.queryCountSpecialByTitleAndType(task.getTitle(),Constants.TASK_SEPCAIL_TYPE_3) > 0){
                 throw new BusinessException(ExceptionEnum.TASK_SPECIAL_EXIST.getErrorCode(), ExceptionEnum.TASK_SPECIAL_EXIST.getErrorMessage());
             }
 
-            task.setType(Constants.TASK_SEPCAIL_TYPE_2);
+            task.setType(Constants.TASK_SEPCAIL_TYPE_3);
             task.setStatus(Constants.TASK_STATUS_0);
             if(specialTaskId == null){
                 taskMapper.createSingleTask(task);
@@ -276,9 +276,10 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    //TODO 用于任务同步数据 暂时预留
     @Override
     public List<Task> querySpecialTasks(Integer type) {
-        return taskMapper.queryTasksByType(type);
+        return taskMapper.querySpecialTasks(type);
     }
 
 

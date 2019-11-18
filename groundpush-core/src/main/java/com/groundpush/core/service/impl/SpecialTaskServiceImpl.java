@@ -75,7 +75,7 @@ public class SpecialTaskServiceImpl implements SpecialTaskService {
     @Override
     public Boolean whetherSpecialTask(Integer taskId) {
         Optional<Task> task = taskService.queryTaskByTaskId(taskId);
-        if(task.isPresent() && Constants.TASK_SEPCAIL_TYPE_2.equals(task.get().getType())){
+        if(task.isPresent() && Constants.TASK_SEPCAIL_TYPE_3.equals(task.get().getType())){
            return  Boolean.TRUE;
         }
         return Boolean.FALSE;

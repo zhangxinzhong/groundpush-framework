@@ -91,7 +91,7 @@ public interface SpecialTaskMapper {
                 " FROM ",
                 " (" ,
                         //location不为空时 查询所有未设置任务位置的任务
-                        " (SELECT	t1.*  FROM	t_task t1 where t1.status=1 and t1.type = 2 ",
+                        " (SELECT	t1.*  FROM	t_task t1 where t1.status=1 and t1.type = 3 ",
                         " and t1.task_id in  ",
                         " (select c.task_id from t_special_task c left join t_team_customer b on  c.team_id = b.team_id where c.status = 1 and b.customer_id in ",
                         " (#{customerId}<if test='parentId != null and parentId != \"\"'>,#{parentId}</if>))",
@@ -101,7 +101,7 @@ public interface SpecialTaskMapper {
                         //location不为空时 查询所有符合任务位置条件的任务
                         " <if test='location != null and location != \"\" '> ",
                         " union (",
-                        " select t2.* from  t_task t2  where t2.status=1 and t2.type = 2 ",
+                        " select t2.* from  t_task t2  where t2.status=1 and t2.type = 3 ",
                         " and t2.task_id in  ",
                         " (select c.task_id from t_special_task c left join t_team_customer b on  c.team_id = b.team_id where c.status = 1 and b.customer_id in ",
                         " (#{customerId}<if test='parentId != null and parentId != \"\"'>,#{parentId}</if>))",

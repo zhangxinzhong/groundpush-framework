@@ -411,7 +411,7 @@ public class Constants {
     /**
      * 特殊任务
      */
-    public static final Integer TASK_SEPCAIL_TYPE_2 = 2;
+    public static final Integer TASK_SEPCAIL_TYPE_3 = 3;
 
     /**
      * 任务推广

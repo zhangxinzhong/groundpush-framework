@@ -232,6 +232,10 @@ layui.use(['table', 'laytpl'], function () {
                 layer.close(index);
             });
         }else if (obj.event === 'export') {
+            if(data.successOrder == 0){
+                layer.msg("生效订单为0不可导出");
+                return false;
+            }
             layer.confirm('确认导出此任务关联的生效订单以及结果集word文档么', function (index) {
                 eventListener.exportWord({taskId:data.taskId,orderTime:layui.util.toDateString(data.createdTime, "yyyy-MM-dd HH:mm:ss")});
                 layer.close(index);

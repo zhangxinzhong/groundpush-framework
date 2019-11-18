@@ -456,8 +456,6 @@
                                 <form class="layui-form" action="" id="addTaskForm" lay-filter="addTaskForm">
                                     <input hidden type="text" name="taskId" id="taskId" lay-verify="taskId"
                                            class="layui-input">
-                                    <input hidden type="text" name="type" id="type" value="1"
-                                           class="layui-input">
                                     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
                                         <legend>&emsp;<span class="required_style">*</span>&emsp;缩&emsp;略&emsp;图
                                             (推荐尺寸：90*75)
@@ -675,6 +673,16 @@
                                         </div>
                                     </div>
 
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label col-md-2">任务类型:</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control col-lg-1" name="type" id="type">
+                                                <option value="1" selected>普通任务</option>
+                                                <option value="4">无结果集任务</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     <div class="layui-form-item">
                                         <label class="layui-form-label col-md-2">是否上传结果:</label>

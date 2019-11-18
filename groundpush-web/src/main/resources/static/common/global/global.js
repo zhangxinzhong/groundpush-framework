@@ -32,3 +32,10 @@ var Global = {
 	
 	DEFAULT_PIC : 'images/list-def-pic.jpg'
 }
+
+
+var TaskTypeGlobal = {
+	TASK_NORMAL_TYPE_1:1,
+	TASK_SEPCAIL_TYPE_3:3,
+	TASK_NONRESULT_TYPE_4:4
+}
