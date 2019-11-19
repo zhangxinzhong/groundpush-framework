@@ -2,6 +2,7 @@ package com.groundpush.utils;
 
 import com.groundpush.core.model.WordDataMap;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.utils.OssUtils;
 import freemarker.template.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

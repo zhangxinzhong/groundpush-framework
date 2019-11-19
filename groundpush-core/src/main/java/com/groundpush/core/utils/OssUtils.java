@@ -1,4 +1,4 @@
-package com.groundpush.utils;
+package com.groundpush.core.utils;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.Bucket;
