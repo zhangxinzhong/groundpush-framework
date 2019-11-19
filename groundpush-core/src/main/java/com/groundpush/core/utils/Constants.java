@@ -44,6 +44,11 @@ public class Constants {
      */
     public static final Integer TASK_ATTRIBUTE_RESULT = 3;
 
+    /**
+     * 任务推广链接类型
+     */
+    public static final Integer POP_TASK_ATTRIBUTE = 4;
+
 
     /**
      * 订单过期时间（订单24小时后无法删除）

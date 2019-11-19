@@ -174,6 +174,10 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             eventListener.showAddUpdateTaskDialog();
             $('#view').html('');
             $('#resultView').html('');
+            $('#popView').html('');
+            laytpl($('#taskPop').html()).render({}, function(html){
+                $('#popView').html(html);
+            });
             eventListener.clearHistory();
 
             //初始化标签
@@ -526,11 +530,12 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     //初始化回显公司
                     eventListener.initSource(data.source);
 
-                    //初始化回显我的任务与结果集 begin
+                    //初始化回显我的任务与结果集、推广 begin
                      let phaseJsonObjs = {'array':[]};
                      let resultJsonObjs = {'array':[]};
+                     let popJsonObj = {};
                      $.each(data.spreadTaskAttributes,function (index,object) {
-                         if(object.type == 2){
+                         if(object.type == 2){//任务结果
                              let pushArray = false;
                              $.each(phaseJsonObjs.array,function (i,o) {
                                  if(o.labelType == object.labelType){
@@ -544,19 +549,28 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                                  phaseJsonObj["list"] = [object];
                                  phaseJsonObjs.array.push(phaseJsonObj);
                              }
-                         }else {
+                         }else if (object.type == 3){ //任务结果
                              resultJsonObjs.array.push(object);
+                         }else {//任务推广
+                             popJsonObj["rowType"] = object.rowType;
+                             popJsonObj["content"] = object.content;
                          }
                      });
+                     //任务详情
                     $('#view').html("");
                     laytpl($('#phaseTableEcho').html()).render(phaseJsonObjs, function(html){
                         $('#view').html(html);
                     });
-
+                    //任务结果
                     $('#resultView').html("");
                     laytpl($('#resultUpdateEcho').html()).render(resultJsonObjs, function(html){
                         $('#resultView').html(html);
 
+                    });
+                    //任务推广
+                    $('#popView').html('');
+                    laytpl($('#taskPop').html()).render(popJsonObj, function(html){
+                        $('#popView').html(html);
                     });
                     //添加点击事件
                     eventListener.addClick();
@@ -806,6 +820,21 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             obj["type"] = 3;
             params.push(obj);
         });
+
+        //任务推广
+        let obj = {}
+        obj["seq"] = 1;
+        let rowType = $('#popView').find('.rowType').val();
+        obj["rowType"] = rowType;
+        let content = $('#popView').find('.content').val();
+        if (content == undefined || content == '') {
+            layer.msg('任务推广中推广链接不能为空');
+            removeDisableBtn();
+            return false;
+        }
+        obj["content"] = content;
+        obj["type"] = 4;
+        params.push(obj);
 
         if (!success) {
             removeDisableBtn();
