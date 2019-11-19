@@ -224,6 +224,7 @@ public class Task implements Serializable {
 
 
     @ApiModelProperty("任务推广链接")
+    @JsonView(DetailTaskView.class)
     private List<TaskAttribute> taskPopAttribute;
 
     /**

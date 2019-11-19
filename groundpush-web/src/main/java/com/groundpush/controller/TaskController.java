@@ -57,8 +57,12 @@ public class TaskController {
     @Value("${groundpush.app.spread}")
     private String spread;
 
+    @Value("${groundpush.app.domain}")
+    private String domain;
+
     @RequestMapping("/toTaskList")
     public String getTaskList(Model model) {
+        model.addAttribute("domain",domain);
         model.addAttribute("spread",spread);
         return "task/task";
     }

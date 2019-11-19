@@ -910,6 +910,13 @@ layui.use(['table', 'laytpl', 'upload'], function () {
        $(data.elem).parents('tr').find('.name').val(data.value==4?'保存二维码':(data.value==3?'打开链接':'下载APP'));
     });
 
+   //监听任务推广select
+   form.on('select(popRowType)',function (data) {
+       laytpl($('#taskPopInput').html()).render({'content':'','rowType':data.value}, function (html) {
+           $(data.elem).parent().next('div').html(html);
+       });
+   });
+
 
    let toolOn = function (obj) {
        let data = obj.data;

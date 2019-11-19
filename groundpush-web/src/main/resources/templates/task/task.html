@@ -15,7 +15,9 @@
 </head>
 <body>
 
+
 <input type="hidden" th:value="${spread}" name="spread" id="spread"/>
+<input type="hidden" th:value="${domain}" name="domain" id="domain"/>
 
 
 <!--******************************************用于我的任务编辑添加模板**begin***************************************************-->
@@ -352,23 +354,60 @@
 <!--******************************************用于我的任务编辑回显修改模板**end***************************************************-->
 
 
-<!--******************************************用于任务推广************************************************************************-->
+<!--******************************************用于任务推广***begin*********************************************************************-->
 <script type="text/html" id="taskPop">
+    {{#
+      var out = function(content,rowType){
+          if(content != '' && content != undefined){
+              return content;
+          }
+          let hrefs = $('#domain').val();
+          if(rowType == 2){
+            return hrefs+'/recruit';
+          }
+          if(rowType == 3){
+            return '';
+          }
+          return hrefs+'/spread';
+      }
+    }}
     <div class="layui-form-item">
         推广按钮：<div class="layui-inline" style="width: 10%">
-                    <select class="form-control col-lg-3 rowType" name="rowType">
+                    <select class="form-control col-lg-3 rowType" name="rowType" lay-filter="popRowType">
                         <option value="1"  {{ d.rowType==1?'selected':'' }} >推广</option>
                         <option value="2"  {{ d.rowType==2?'selected':'' }} >招募</option>
                         <option value="3"  {{ d.rowType==3?'selected':'' }} >自定义</option>
                     </select>
                 </div>
-        <div class="layui-inline" style="width: 65%">
-        <input type="text" name="content" class="form-control content"
-                       value="{{d.content != undefined?d.content:'' }}" placeholder="输入推广按钮链接">
-        </div>
+                <div class="layui-inline" style="width: 65%">
+                <input type="text" name="content" class="form-control content"
+                               value="{{ out(d.content,d.rowType) }}" placeholder="输入推广按钮链接"  {{ d.rowType !=3?'readonly':'' }} >
+                </div>
     </div>
 </script>
 
+<script type="text/html" id="taskPopInput">
+    {{#
+        var out = function(content,rowType){
+            if(content != '' && content != undefined){
+               return content;
+            }
+            let hrefs = $('#domain').val();
+            if(rowType == 2){
+               return hrefs+'/recruit';
+            }
+            if(rowType == 3){
+               return '';
+            }
+           return hrefs+'/spread';
+        }
+    }}
+
+    <input type="text" name="content" class="form-control content"
+           value="{{ out(d.content,d.rowType) }}" placeholder="输入推广按钮链接"  {{ d.rowType !=3?'readonly':'' }} >
+</script>
+
+<!--******************************************用于任务推广***end*********************************************************************-->
 
 
 <div class="layui-tab">
