@@ -1,4 +1,4 @@
-package com.groundpush.core.condition;
+package com.groundpush.vo;
 
 import com.groundpush.core.model.OrderLog;
 import io.swagger.annotations.ApiModel;
@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SpreadCreateCondition {
+public class SpreadOrderVo {
 
     @ApiModelProperty(value = "用户id")
     @NotNull(message="用户id不能为空")
@@ -32,7 +32,7 @@ public class SpreadCreateCondition {
     @NotNull(message="任务id不能为空")
     private Integer taskId;
 
-    @ApiModelProperty(value = "任务类型不可为空，实例：申请任务=1 推广任务=2")
+    @ApiModelProperty(value = "任务类型不可为空，实例：申请任务=1 推广任务=2 特殊任务=3")
     @NotNull(message="任务类型不能为空")
     private Integer type;
 
@@ -40,11 +40,13 @@ public class SpreadCreateCondition {
     @NotNull(message="任务URI编号")
     private Integer taskUriId;
 
+    @ApiModelProperty(value = "订单唯一标识")
+    @NotNull(message = "订单唯一标识不可为空")
+    private String uniqueCode;
+
     @NotNull(message = "任务结果集不可以为空")
     @ApiModelProperty(value = "任务结果")
     private List<OrderLog>  list;
 
-    @ApiModelProperty(value = "订单唯一标识")
-    @NotNull(message = "订单唯一标识不可为空")
-    private String uniqueCode;
+
 }

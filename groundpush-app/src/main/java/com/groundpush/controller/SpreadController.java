@@ -1,9 +1,8 @@
 package com.groundpush.controller;
 
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.core.condition.SpreadCreateCondition;
+import com.groundpush.vo.SpreadOrderVo;
 import com.groundpush.core.condition.SpreadQueryCondition;
-import com.groundpush.core.exception.ExceptionEnum;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.Task;
@@ -17,7 +16,6 @@ import com.groundpush.core.vo.TaskPopCountVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -88,23 +86,23 @@ public class SpreadController {
             model.addAttribute("taskUri", taskUriOptional.isPresent() ? taskUriOptional.get() : null);
         }
 
-        return "spread/spread";
+        return "error";
     }
 
     @PostMapping
     @ResponseBody
-    public JsonResp spread(@Valid SpreadCreateCondition spreadCreateCondition, BindingResult bindingResult) {
+    public JsonResp spread(@Valid SpreadOrderVo spreadOrderVo, BindingResult bindingResult) {
         try {
             if (bindingResult.hasErrors()) {
                 throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
             }
 
-            Optional<TaskUri> optionalTaskUri = taskUriService.getTaskUri(spreadCreateCondition.getTaskUriId());
+            Optional<TaskUri> optionalTaskUri = taskUriService.getTaskUri(spreadOrderVo.getTaskUriId());
 
             //1.是否是特殊任务 且 是否是改任务的特殊用户
             //  还需验证当前用户上级是否是特殊用户
-            Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadCreateCondition.getTaskId());
-            Order order = Order.builder().customerId(spreadCreateCondition.getCustomId()).type(spreadCreateCondition.getType()).taskId(spreadCreateCondition.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).isSpecial(isSpecialTask).build();
+            Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadOrderVo.getTaskId());
+            Order order = Order.builder().customerId(spreadOrderVo.getCustomId()).type(spreadOrderVo.getType()).taskId(spreadOrderVo.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).isSpecial(isSpecialTask).build();
 
             if(optionalTaskUri.isPresent()){
                 taskUriService.updateTaskUri(optionalTaskUri.get());
