@@ -35,7 +35,7 @@ public class SpreadQueryCondition implements Serializable {
     private Integer type;
 
     @ApiModelProperty(value = "二维码key")
-//    @NotNull(message="二维码key不能为空")
+    @NotNull(message="二维码key不能为空")
     private String key;
 
 
