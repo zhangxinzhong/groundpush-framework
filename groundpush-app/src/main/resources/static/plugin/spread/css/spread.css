@@ -82,7 +82,7 @@ b,
   width: 100%;
   height: 90%;
   overflow: scroll;
-  background-color: #f1f4fb;
+  background-color: #eef6ff;
   text-align: center;
 }
 .container .container_top::-webkit-scrollbar {

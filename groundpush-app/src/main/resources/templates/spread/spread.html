@@ -17,6 +17,8 @@
 <div class="container task-btn">
     <input type="hidden" class="taskCache" th:value="${task}">
     <input type="hidden" class="taskResultCache" th:value="${taskResult}">
+    <input type="hidden" class="spreadQueryCondition" th:value="${spreadQueryCondition}">
+    <input type="hidden" class="taskUriId" th:value="${taskUri.taskUriId}">
     <div class="container_top">
         <h3>
             <img th:src="@{/images/zsfz.png}"/>
@@ -89,7 +91,7 @@
             </div>
 
             <div class="bottom_div">
-                <h5 class="btn_h5" data-method="mask_cancel">取消</h5>
+                <h5 class="btn_h5 make_cancel" data-method="mask_cancel">取消</h5>
                 <h5 class="btn_h5" data-method="mask_enter">确定</h5>
             </div>
         </div>

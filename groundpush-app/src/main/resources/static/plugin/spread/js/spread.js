@@ -49,30 +49,37 @@ function initPage() {
 
     ulObj.after(taskStep);
 
-    if(taskCache.isResult==1){
-        let tashPushCount=taskCache.spreadTotal;
-        let upResultCount=taskCache.customPopCount;
+    // if(taskCache.isResult==1){
+        let tashPushCount=0;
+        let upResultCount=0;
         let isShowPhone=false;
         let isShowOrder=false;
         let isShowImg=false;
+        let phoneAttrId=0;
+        let orderAttrId=0;
+        let imgAttrId=0;
         let imgSrc=taskCache.exampleImg;
         $.each(taskResultCache,function (i,rs) {
-            if(rs.content.indexOf("手机") != -1){
+            if(rs.content.indexOf("手机号码") != -1){
                 isShowPhone=true;
-            }else if(rs.content.indexOf("订单") != -1){
+                phoneAttrId=rs.attributeId;
+            }else if(rs.content.indexOf("订单号码") != -1){
                 isShowOrder=true;
-            }else if(rs.content.indexOf("截图") != -1){
+                orderAttrId=rs.attributeId;
+            }else if(rs.content.indexOf("订单截图") != -1){
                 isShowImg=true;
+                imgAttrId=rs.attributeId;
             }
         });
 
         let contentDiv=$('.content_div');
         contentDiv.empty();
         contentDiv.append(formatResultHtml(tashPushCount,upResultCount,isShowPhone,
-            isShowOrder,isShowImg,imgSrc));
-    }else{
-        resMessage='没有未完成的订单！';
-    }
+            isShowOrder,isShowImg,imgSrc,phoneAttrId,orderAttrId,imgAttrId));
+    // }else{
+    //     hasOrderResult=false;
+    //     resMessage='没有未完成的订单！';
+    // }
 }
 
 /**
@@ -108,22 +115,30 @@ function formatStepHtml(index, title, qrCode, qrBtn, showImg,isShowQR) {
  * @param isShowOrder
  * @param isShowImg
  */
-function formatResultHtml(tashPushCount,upResultCount,isShowPhone,isShowOrder,isShowImg,imgSrc) {
-    let result='<span>任务推广数:{task_push_count}，已提交结果数：{up_rs_count}</span><br/>';
+function formatResultHtml(tashPushCount,upResultCount,isShowPhone,isShowOrder,isShowImg,imgSrc,phoneAttrId,orderAttrId,imgAttrId) {
+    let result='<span></span><br/>';//任务推广数:{task_push_count}，已提交结果数：{up_rs_count}
     if(isShowPhone){
-        result+='<input type="number" placeholder="请输入电话号码"/>';
-    }
-
-    if(isShowImg){
-        result+='<input type="number" placeholder="请输入订单号"/>';
+        result+='<input type="number" attr_id="{p_attr_id}" i_type="1" placeholder="请输入电话号码"/>';
     }
 
     if(isShowOrder){
-        result+='<div class="res_img_div"><p>我的订单截图</p><button>上传</button></div>';
+        result+='<input type="number" attr_id="{o_attr_id}" i_type="2" placeholder="请输入订单号"/>';
+    }
+
+    if(isShowImg){
+        result+='<div class="res_img_div"><input type="hidden" attr_id="{i_attr_id}" i_type="3"/>' +
+            '<p>我的订单截图</p><button data-method="up_load">上传</button></div>';
     }
     result+='<div class="example_img_div"><p style="">照片示范</p><img src="{img_src}" data-method="show_img"></div>';
 
-    return result.format({task_push_count:tashPushCount,up_rs_count:upResultCount,img_src:imgSrc});
+    return result.format({
+        task_push_count:tashPushCount,
+        up_rs_count:upResultCount,
+        img_src:imgSrc,
+        p_attr_id:phoneAttrId,
+        o_attr_id:orderAttrId,
+        i_attr_id:imgAttrId
+    });
 }
 
 /**
@@ -189,14 +204,95 @@ let activeEvent={
                     maxWidth:'100%'
                 });
         }
+    },
+    up_load:function () {
+        upLoad(this);
     }
 };
+
+/**
+ * 上传照片
+ */
+function upLoad(_this) {
+    $(_this).append('<input type="file" styple="display:none"/>');
+    let fileInput=$(_this).children('input');
+    fileInput.click();
+    let uploadResult=null;
+    //监听input文件选择并获取文件名
+    fileInput.on('change',function (e) {
+        let e=e||window.event;
+        let fileCount=e.target.files;
+        if(fileCount.length>0){
+            let tmpForm=new FormData();
+            tmpForm.append(fileCount[0]);
+            let result=callInterface('POST','/oss',tmpForm,false);
+            if(result.code==200){
+                uploadResult=result.data;
+            }
+        }
+    });
+
+    let message="上传失败";
+    if(uploadResult!=null){
+        fileInput.remove();
+        $('.res_img_div').find('input').val(uploadResult);
+        message='上传成功！';
+    }
+
+    alert(message);
+}
 
 /**
  * 提交结果
  */
 function maskEnter() {
+    let data={
+        type:2
+    };
 
+    let spreadQueryCondition=JSON.parse($('.spreadQueryCondition').val());
+    data.customId=spreadQueryCondition.customId;
+    data.taskId=spreadQueryCondition.taskId;
+    data.taskUriId=parseInt($('.taskUriId').val());
+
+    try{
+        let orderArray=[];
+        $.each($('.content_div input'),function (i,rs) {
+            let oKey=rs.getAttribute('attr_id');
+            let oVal=rs.value;
+            let inputType=rs.getAttribute('i_type');//input类型
+
+            if(i==0){
+                data.uniqueCode=rs.value;
+            }
+
+            if(oVal==''){
+                throw new Error('上传数据不能为空');
+            }
+
+            if(inputType==1){
+                if (!(/^1[3456789]\d{9}$/.test(oVal))) {
+                    throw new Error('请输入正确的手机号');
+                }
+            }
+
+            orderArray.push({
+                orderLogType:1,
+                orderResultType:1,
+                orderKey:oKey,
+                orderValue:oVal
+            })
+        });
+
+        data.list=orderArray;
+        let result=callInterface('POST','/spread',JSON.stringify(data),false,undefined,'application/json;charset=UTF-8');
+        if(result.code==200){
+            $('.make_cancel').click();
+            throw new Error('提交成功！');
+        }
+    }catch (e){
+        alert(e.message);
+    }
 }
 
 /**
@@ -254,9 +350,3 @@ $(function () {
         activeEvent[method] ? activeEvent[method].call(obj, othis) : '';
     });
 });
-
-// var mobileNo = $("#mobileNo").val();
-// if (!(/^1[3456789]\d{9}$/.test(mobileNo))) {
-//     alert("请输入正确的手机号");
-//     return false;
-// }

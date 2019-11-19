@@ -1,7 +1,7 @@
 package com.groundpush.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.groundpush.core.common.JsonResp;
-import com.groundpush.vo.SpreadOrderVo;
 import com.groundpush.core.condition.SpreadQueryCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.Order;
@@ -13,6 +13,7 @@ import com.groundpush.core.utils.AesUtils;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.RedisUtils;
 import com.groundpush.core.vo.TaskPopCountVo;
+import com.groundpush.vo.SpreadOrderVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -79,19 +80,20 @@ public class SpreadController {
         // 2. 查询任务结果集布局
         List<TaskAttribute> taskAttributeList = taskAttributeService.queryTaskAttributeListByTaskIdAndType(spreadQueryCondition.getTaskId(), Constants.TASK_ATTRIBUTE_RESULT);
         if (optionalTask.isPresent()) {
-            model.addAttribute("task", optionalTask.get());
-            model.addAttribute("taskResult", taskAttributeList);
+            model.addAttribute("task", JSONObject.toJSON(optionalTask.get()));
+            model.addAttribute("taskResult", JSONObject.toJSON(taskAttributeList));
+            model.addAttribute("spreadQueryCondition", JSONObject.toJSON(spreadQueryCondition));
             // 3. 通过任务查询任务所有推广链接
             Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(spreadQueryCondition.getTaskId());
             model.addAttribute("taskUri", taskUriOptional.isPresent() ? taskUriOptional.get() : null);
         }
 
-        return "error";
+        return "spread/spread";
     }
 
     @PostMapping
     @ResponseBody
-    public JsonResp spread(@Valid SpreadOrderVo spreadOrderVo, BindingResult bindingResult) {
+    public JsonResp spread(@Valid @RequestBody SpreadOrderVo spreadOrderVo, BindingResult bindingResult) {
         try {
             if (bindingResult.hasErrors()) {
                 throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
