@@ -1,6 +1,6 @@
 @main_bg_color:#eef6ff;@btn_color: #1481FF;@top_div_bg_color:#ffffff;@auxiliary_color:#cccccc;
 @div_angle:5px;@btn_angle:10px;@serial_number_angle:10px;
-@title_text_size:14pt;@content_text_size:12pt;@span_text_size:10pt;
+@title_text_size:12pt;@content_text_size:10pt;@span_text_size:8pt;
 @media_width:768px;
 
 .frame_angle(@angle){
@@ -15,9 +15,6 @@
     }
 
     .container_top {
-      .step_title{
-        width: 95%;
-      }
       h3 {
         font-size: 16pt;
 
@@ -51,10 +48,6 @@
     }
 
     .container_top{
-      .step_title{
-        width: 85%;
-      }
-
       h3 {
         font-size: @title_text_size;
         img {
@@ -102,8 +95,7 @@ b,.btn_h5{
   -webkit-flex-direction: column;
 
   .btn_h5{
-    width: 50%;
-    padding: 5px 1%;
+    padding: 8px 20%;
     color: white;
     text-align: center;
     margin: 0 auto;
@@ -132,7 +124,7 @@ b,.btn_h5{
       .frame_angle(30px);
       padding-top: 10px;
       padding-bottom: 10px;
-      li{list-style-type: none}
+      li{list-style-type: none;font-size: @span_text_size}
     }
 
     .div_step{
@@ -140,42 +132,54 @@ b,.btn_h5{
       background-color: @top_div_bg_color;
       border: 1px solid @btn_color;
       padding: 15px;
+      display: flex;
 
-      b{
-        padding: 4px 8px;
-        margin-top: 20px;
-        .frame_angle(90px);
-        border: 1px solid;
-      }
+      .ds_left{
+        width: 10%;
+        float: left;
+        padding-right: 10px;
 
-      .step_title{
-        float: right;
-        line-height: 20px;
-        font-weight: bold;
-      }
-
-      .QR_code_div{
-        text-align: center;
-        margin-top: 30px;
-
-        img{
-          width: 40%;
-          padding: 2px;
-          border: 1px solid @auxiliary_color;
-          .frame_angle(8px);
+        b{
+          float: right;
+          padding: 4px 10px;
+          .frame_angle(90px);
         }
       }
 
-      .show_img_div{
-        margin-top: 20px;
-        text-align: center;
-        img{
-          width: 40%;
-          height: 245px;
-          padding: 10px;
+      .ds_right{
+        width: 90%;
+        float: left;
+
+        .step_title{
+          width: 100%;
+          float: left;
+          font-weight: bold;
+          margin-bottom: 20px;
         }
-        img:first-child{
-          padding-left: 0px;
+
+        .QR_code_div{
+          text-align: center;
+          margin-top: 30px;
+
+          img{
+            width: 40%;
+            padding: 2px;
+            border: 1px solid @auxiliary_color;
+            .frame_angle(8px);
+          }
+        }
+
+        .show_img_div{
+          margin-top: 20px;
+          text-align: center;
+          img{
+            width: 40%;
+            height: 245px;
+            padding: 10px;
+          }
+          img:first-child{
+            padding-left: 0px;
+          }
         }
       }
     }
@@ -192,6 +196,7 @@ b,.btn_h5{
 
     h5{
       width: 40%;
+      padding: 5px 1%;
       background-color: #f97669
     }
 
@@ -303,6 +308,7 @@ b,.btn_h5{
 
         h5{
           width: 35%;
+          padding: 5px 1%;
           background-color: @btn_color;
         }
 

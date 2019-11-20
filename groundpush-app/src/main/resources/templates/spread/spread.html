@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="utf-8" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -23,7 +23,7 @@
     <div class="container_top">
         <h3>
             <img th:src="@{/images/zsfz.png}"/>
-            <span>注意事项</span>
+            <span class="test">注意事项</span>
             <img th:src="@{/images/zsfy.png}"/>
         </h3>
         <ul></ul>
@@ -37,16 +37,20 @@
         </div>
 
         <div class="div_step">
-            <b>2</b>
-            <div class="step_title">保存以下二维码，点击微信扫一扫，选择从相册选取二维码，选择二维码参加活动</div>
-            <div class="QR_code_div">
-                <img th:src="@{/images/qr_code.jpg}" alt="图片"/>
-                <h5 class="btn_h5">美团外卖二维码</h5>
+            <div class="ds_left">
+                <b>2</b>
             </div>
+            <div class="ds_right">
+                <div class="step_title">保存以下二维码，点击微信扫一扫，选择从相册选取二维码，选择二维码参加活动</div>
+                <div class="QR_code_div">
+                    <img th:src="@{/images/qr_code.jpg}" alt="图片"/>
+                    <h5 class="btn_h5">美团外卖二维码</h5>
+                </div>
 
-            <div class="show_img_div">
-                <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg" alt="图片">
-                <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg" alt="图片">
+                <div class="show_img_div">
+                    <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg" alt="图片">
+                    <img src="http://test.oss.zhongdi001.com/task/1572924274592.jpg" alt="图片">
+                </div>
             </div>
         </div>
 

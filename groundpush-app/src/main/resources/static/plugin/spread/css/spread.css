@@ -2,9 +2,6 @@
   .container .btn_h5 {
     font-size: 16pt;
   }
-  .container .container_top .step_title {
-    width: 95%;
-  }
   .container .container_top h3 {
     font-size: 16pt;
   }
@@ -26,11 +23,8 @@
     font-size: 8pt;
     margin-top: 2%;
   }
-  .container .container_top .step_title {
-    width: 85%;
-  }
   .container .container_top h3 {
-    font-size: 14pt;
+    font-size: 12pt;
   }
   .container .container_top h3 img {
     width: 10%;
@@ -49,7 +43,7 @@ body,
 div {
   width: auto;
   margin: 0 auto;
-  font-size: 12pt;
+  font-size: 10pt;
 }
 h3,
 ul,
@@ -69,8 +63,7 @@ b,
   -webkit-flex-direction: column;
 }
 .container .btn_h5 {
-  width: 50%;
-  padding: 5px 1%;
+  padding: 8px 20%;
   color: white;
   text-align: center;
   margin: 0 auto;
@@ -105,6 +98,7 @@ b,
 }
 .container .container_top ul li {
   list-style-type: none;
+  font-size: 8pt;
 }
 .container .container_top .div_step {
   border-radius: 5px;
@@ -113,25 +107,35 @@ b,
   background-color: #ffffff;
   border: 1px solid #1481FF;
   padding: 15px;
+  display: flex;
 }
-.container .container_top .div_step b {
-  padding: 4px 8px;
-  margin-top: 20px;
+.container .container_top .div_step .ds_left {
+  width: 10%;
+  float: left;
+  padding-right: 10px;
+}
+.container .container_top .div_step .ds_left b {
+  float: right;
+  padding: 4px 10px;
   border-radius: 90px;
   -moz-border-radius: 90px;
   /* Old Firefox */
-  border: 1px solid;
 }
-.container .container_top .div_step .step_title {
-  float: right;
-  line-height: 20px;
+.container .container_top .div_step .ds_right {
+  width: 90%;
+  float: left;
+}
+.container .container_top .div_step .ds_right .step_title {
+  width: 100%;
+  float: left;
   font-weight: bold;
+  margin-bottom: 20px;
 }
-.container .container_top .div_step .QR_code_div {
+.container .container_top .div_step .ds_right .QR_code_div {
   text-align: center;
   margin-top: 30px;
 }
-.container .container_top .div_step .QR_code_div img {
+.container .container_top .div_step .ds_right .QR_code_div img {
   width: 40%;
   padding: 2px;
   border: 1px solid #cccccc;
@@ -139,16 +143,16 @@ b,
   -moz-border-radius: 8px;
   /* Old Firefox */
 }
-.container .container_top .div_step .show_img_div {
+.container .container_top .div_step .ds_right .show_img_div {
   margin-top: 20px;
   text-align: center;
 }
-.container .container_top .div_step .show_img_div img {
+.container .container_top .div_step .ds_right .show_img_div img {
   width: 40%;
   height: 245px;
   padding: 10px;
 }
-.container .container_top .div_step .show_img_div img:first-child {
+.container .container_top .div_step .ds_right .show_img_div img:first-child {
   padding-left: 0px;
 }
 .container .container_bottom {
@@ -162,6 +166,7 @@ b,
 }
 .container .container_bottom h5 {
   width: 40%;
+  padding: 5px 1%;
   background-color: #f97669;
 }
 .container .container_bottom h5:first-child {
@@ -197,7 +202,7 @@ b,
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div {
   height: 78%;
-  font-size: 10pt;
+  font-size: 8pt;
   text-align: left;
   padding: 5px 10px;
 }
@@ -222,7 +227,7 @@ b,
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div .res_img_div p {
   width: 46%;
-  font-size: 10pt;
+  font-size: 8pt;
   padding: 6px;
   border: 1px solid #1481FF;
   text-align: center;
@@ -233,7 +238,7 @@ b,
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div .res_img_div button {
   width: 30%;
-  font-size: 10pt;
+  font-size: 8pt;
   color: #ffffff;
   background-color: #1481FF;
   border: 0px;
@@ -250,7 +255,7 @@ b,
 .container .upload_result_div_mask .upload_result_div_body .content_div .example_img_div p {
   clear: both;
   text-align: left;
-  font-size: 10pt;
+  font-size: 8pt;
   color: #1481FF;
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div .example_img_div img {
@@ -267,6 +272,7 @@ b,
 }
 .container .upload_result_div_mask .upload_result_div_body .bottom_div h5 {
   width: 35%;
+  padding: 5px 1%;
   background-color: #1481FF;
 }
 .container .upload_result_div_mask .upload_result_div_body .bottom_div h5:first-child {
