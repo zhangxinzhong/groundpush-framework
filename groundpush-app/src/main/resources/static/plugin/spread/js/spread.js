@@ -188,7 +188,13 @@ let activeEvent={
             if(data.lastIndexOf('.apk')!=-1){
                 window.open(data);
             }else{
-                window.open(data);
+                let spreadQueryCondition=JSON.parse($('.spreadQueryCondition').val());
+                window.open((data+'?taskId={task_id}&type={type}&customId={custom_id}&key={key}').format({
+                    task_id:spreadQueryCondition.taskId,
+                    type:spreadQueryCondition.type,
+                    custom_id:spreadQueryCondition.customId,
+                    key:spreadQueryCondition.key
+                }));
             }
         }
     },
