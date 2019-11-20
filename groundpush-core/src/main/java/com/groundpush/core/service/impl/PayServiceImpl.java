@@ -129,7 +129,7 @@ public class PayServiceImpl implements PayService {
         List<ChannelData> channelDatas = channelDataMapper.findAllDataByExistTaskId(orderPay.getTaskId(), orderPay.getOrderCreateDate());
         if (channelDatas != null && channelDatas.size() > 0) {
             for (ChannelData channelData : channelDatas) {
-                Order order = Order.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID).type(Constants.ORDER_TYPE_3)
+                Order order = Order.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID).type(Constants.ORDER_TYPE_9)
                         .taskId(orderPay.getTaskId()).status(Constants.ORDER_STATUS_SUCCESS).settlementStatus(Constants.ORDER_STATUS_SUCCESS)
                         .settlementAmount(channelData.getAmount()).uniqueCode(channelData.getUniqueCode()).build();
 

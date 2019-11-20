@@ -270,11 +270,15 @@ public class Constants {
      * 订单类型为推广任务 2
      */
     public static final Integer ORDER_TYPE_2 = 2;
-
     /**
-     * 订单类型为虚拟用户 3
+     * 订单类型为特殊订单 3
      */
     public static final Integer ORDER_TYPE_3 = 3;
+
+    /**
+     * 订单类型为虚拟用户 9
+     */
+    public static final Integer ORDER_TYPE_9 = 9;
 
     /**
      * 图像识别
