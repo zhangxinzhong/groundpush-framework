@@ -96,7 +96,7 @@ function formatStepHtml(index, title, qrCode, qrBtn, showImg,isShowQR) {
     if(qrCode!=undefined){
         result+='<div class="QR_code_div" data="{qr_code}">';
         if(isShowQR){
-            result+='<img src="/images/qr_code.jpg" alt="图片"/><div class="qrcode_data" style="display: none;"></div>';
+            result+='<img src="/images/qr_code.jpg" alt="图片"/><br/><div class="qrcode_data" style="display: none;"></div>';
         }
         result+='<span class="btn_h5" data-method="qrcode" is_open="'+isShowQR+'">{qr_btn}</span></div>';
     }

@@ -144,6 +144,7 @@ b,
 .container .container_top .div_step .ds_right .QR_code_div img {
   width: 40%;
   padding: 2px;
+  margin-bottom: 20px;
   border: 1px solid #cccccc;
   border-radius: 8px;
   -moz-border-radius: 8px;
@@ -152,6 +153,7 @@ b,
 .container .container_top .div_step .ds_right .show_img_div {
   margin-top: 20px;
   text-align: center;
+  margin-right: 15%;
 }
 .container .container_top .div_step .ds_right .show_img_div img {
   width: 40%;
