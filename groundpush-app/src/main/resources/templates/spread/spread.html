@@ -20,10 +20,15 @@
     <input type="hidden" class="taskResultCache" th:value="${taskResult}">
     <input type="hidden" class="spreadQueryCondition" th:value="${spreadQueryCondition}">
     <input type="hidden" class="taskUriId" th:value="${taskUri.taskUriId}">
+    <div class="container_bottom">
+        <h5 class="btn_h5" data-method="upload">上传结果</h5>
+        <h5 class="btn_h5" data-method="down_app">下载路客</h5>
+    </div>
+
     <div class="container_top">
         <h3>
             <img th:src="@{/images/zsfz.png}"/>
-            <span class="test">注意事项</span>
+            <span>注意事项</span>
             <img th:src="@{/images/zsfy.png}"/>
         </h3>
         <ul></ul>
@@ -68,11 +73,6 @@
             <div class="show_img_div">
             </div>
         </div>
-    </div>
-
-    <div class="container_bottom">
-        <h5 class="btn_h5" data-method="upload">上传结果</h5>
-        <h5 class="btn_h5" data-method="down_app">下载路客</h5>
     </div>
 
     <div class="upload_result_div_mask">

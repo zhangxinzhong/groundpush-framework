@@ -1,12 +1,15 @@
 @media screen and (min-width: 768px) {
   .container .btn_h5 {
-    font-size: 16pt;
+    font-size: 12pt;
   }
   .container .container_top h3 {
-    font-size: 16pt;
+    font-size: 14pt;
   }
   .container .container_top h3 img {
     width: 6%;
+  }
+  .container .container_top ul li {
+    font-size: 10pt;
   }
   .container .upload_result_div_mask .upload_result_div_body {
     margin-top: 6%;
@@ -29,6 +32,9 @@
   .container .container_top h3 img {
     width: 10%;
   }
+  .container .container_top ul li {
+    font-size: 8pt;
+  }
   .container .upload_result_div_mask .upload_result_div_body {
     margin-top: 12%;
   }
@@ -43,7 +49,7 @@ body,
 div {
   width: auto;
   margin: 0 auto;
-  font-size: 10pt;
+  font-size: 8pt;
 }
 h3,
 ul,
@@ -98,7 +104,6 @@ b,
 }
 .container .container_top ul li {
   list-style-type: none;
-  font-size: 8pt;
 }
 .container .container_top .div_step {
   border-radius: 5px;
@@ -116,7 +121,7 @@ b,
 }
 .container .container_top .div_step .ds_left b {
   float: right;
-  padding: 4px 10px;
+  padding: 4px 7px;
   border-radius: 90px;
   -moz-border-radius: 90px;
   /* Old Firefox */
@@ -203,7 +208,7 @@ b,
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div {
   height: 78%;
-  font-size: 8pt;
+  font-size: 10pt;
   text-align: left;
   padding: 5px 10px;
 }
@@ -228,7 +233,7 @@ b,
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div .res_img_div p {
   width: 46%;
-  font-size: 8pt;
+  font-size: 10pt;
   padding: 6px;
   border: 1px solid #1481FF;
   text-align: center;
@@ -239,7 +244,7 @@ b,
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div .res_img_div button {
   width: 30%;
-  font-size: 8pt;
+  font-size: 10pt;
   color: #ffffff;
   background-color: #1481FF;
   border: 0px;
@@ -256,7 +261,7 @@ b,
 .container .upload_result_div_mask .upload_result_div_body .content_div .example_img_div p {
   clear: both;
   text-align: left;
-  font-size: 8pt;
+  font-size: 10pt;
   color: #1481FF;
 }
 .container .upload_result_div_mask .upload_result_div_body .content_div .example_img_div img {

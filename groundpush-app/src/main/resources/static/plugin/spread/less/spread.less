@@ -1,6 +1,6 @@
 @main_bg_color:#eef6ff;@btn_color: #1481FF;@top_div_bg_color:#ffffff;@auxiliary_color:#cccccc;
 @div_angle:5px;@btn_angle:10px;@serial_number_angle:10px;
-@title_text_size:12pt;@content_text_size:10pt;@span_text_size:8pt;
+@font_size_14:14pt;@font_size_12:12pt;@font_size_10:10pt;@font_size_8:8pt;
 @media_width:768px;
 
 .frame_angle(@angle){
@@ -11,15 +11,21 @@
 @media screen and (min-width: @media_width) {
   .container{
     .btn_h5{
-      font-size: 16pt;
+      font-size: @font_size_12;
     }
 
     .container_top {
       h3 {
-        font-size: 16pt;
+        font-size: @font_size_14;
 
         img {
           width: 6%;
+        }
+      }
+
+      ul{
+        li{
+          font-size: @font_size_10;
         }
       }
     }
@@ -43,15 +49,21 @@
 @media screen and (max-width: @media_width) {
   .container{
     .btn_h5{
-      font-size: 8pt;
+      font-size: @font_size_8;
       margin-top: 2%;
     }
 
     .container_top{
       h3 {
-        font-size: @title_text_size;
+        font-size: @font_size_12;
         img {
           width: 10%;
+        }
+      }
+
+      ul{
+        li{
+          font-size: @font_size_8;
         }
       }
     }
@@ -75,7 +87,7 @@
 body,div{
   width: auto;
   margin: 0 auto;
-  font-size: @content_text_size;
+  font-size: @font_size_8;
 }
 
 h3,ul,.div_step{
@@ -124,7 +136,7 @@ b,.btn_h5{
       .frame_angle(30px);
       padding-top: 10px;
       padding-bottom: 10px;
-      li{list-style-type: none;font-size: @span_text_size}
+      li{list-style-type: none}
     }
 
     .div_step{
@@ -141,7 +153,7 @@ b,.btn_h5{
 
         b{
           float: right;
-          padding: 4px 10px;
+          padding: 4px 7px;
           .frame_angle(90px);
         }
       }
@@ -236,7 +248,7 @@ b,.btn_h5{
 
       .content_div{
         height: 78%;
-        font-size: @span_text_size;
+        font-size: @font_size_10;
         text-align: left;
         padding: 5px 10px;
 
@@ -261,7 +273,7 @@ b,.btn_h5{
 
           p{
             width: 46%;
-            font-size: @span_text_size;
+            font-size: @font_size_10;
             padding: 6px;
             border: 1px solid @btn_color;
             text-align: center;
@@ -271,7 +283,7 @@ b,.btn_h5{
 
           button{
             width: 30%;
-            font-size: @span_text_size;
+            font-size: @font_size_10;
             color: @top_div_bg_color;
             background-color: @btn_color;
             border: 0px;
@@ -288,7 +300,7 @@ b,.btn_h5{
           p{
             clear: both;
             text-align: left;
-            font-size:@span_text_size;
+            font-size:@font_size_10;
             color: @btn_color
           }
 
