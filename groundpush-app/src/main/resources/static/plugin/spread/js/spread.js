@@ -93,13 +93,11 @@ function initPage() {
 function formatStepHtml(index, title, qrCode, qrBtn, showImg,isShowQR) {
     let result = '<div class="div_step"><b>{index}</b><div class="step_title">{title}</div>';
     if(qrCode!=undefined){
-        result+='<div class="QR_code_div" data="qr_code">';
-        let isOpenApp=true;
+        result+='<div class="QR_code_div" data="{qr_code}">';
         if(isShowQR){
-            isOpenApp=false;
             result+='<img src="/images/qr_code.jpg" alt="图片"/><div class="qrcode_data" style="display: none;"></div>';
         }
-        result+='<h5 class="btn_h5" data-method="qrcode" is_open="'+isOpenApp+'">{qr_btn}</h5></div>';
+        result+='<h5 class="btn_h5" data-method="qrcode" is_open="'+isShowQR+'">{qr_btn}</h5></div>';
     }
 
     result += '<div class="show_img_div">{show_img}</div></div>';
@@ -127,7 +125,7 @@ function formatResultHtml(tashPushCount,upResultCount,isShowPhone,isShowOrder,is
 
     if(isShowImg){
         result+='<div class="res_img_div"><input type="hidden" attr_id="{i_attr_id}" i_type="3"/>' +
-            '<p>我的订单截图</p><button data-method="up_load">上传</button></div>';
+            '<p class="me_img" data-method="show_img">我的订单截图</p><button data-method="up_load">上传</button></div>';
     }
     result+='<div class="example_img_div"><p style="">照片示范</p><img src="{img_src}" data-method="show_img"></div>';
 
@@ -145,7 +143,7 @@ function formatResultHtml(tashPushCount,upResultCount,isShowPhone,isShowOrder,is
  * 保存图片到本地
  */
 function downloadIamge() {
-    let image=new Image();saveImageName
+    let image=new Image();
     image.setAttribute('crossOrigin', 'anonymous');
     let canvas = document.querySelector('canvas');
     let a = document.createElement('a')
@@ -179,14 +177,19 @@ let activeEvent={
         maskEnter();
     },
     qrcode:function () {
-        if($(this).attr('is_open')){
+        let data=$(this).parent().attr('data');
+        if($(this).attr('is_open')=='true'){
             let qrcodeDataDiv=$('.qrcode_data');
             qrcodeDataDiv.empty();
-            qrcodeDataDiv.qrcode("http://www.helloweba.net");
+            qrcodeDataDiv.qrcode(data);
 
             downloadIamge();
         }else{
-
+            if(data.lastIndexOf('.apk')!=-1){
+                window.open(data);
+            }else{
+                window.open(data);
+            }
         }
     },
     show_img:function () {
@@ -206,40 +209,54 @@ let activeEvent={
         }
     },
     up_load:function () {
-        upLoad(this);
+        upImgLoad();
     }
 };
 
 /**
  * 上传照片
  */
-function upLoad(_this) {
-    $(_this).append('<input type="file" styple="display:none"/>');
-    let fileInput=$(_this).children('input');
-    fileInput.click();
-    let uploadResult=null;
+function upImgLoad() {
+    let fileInput=$('<input />').attr('type','file').click();
     //监听input文件选择并获取文件名
     fileInput.on('change',function (e) {
-        let e=e||window.event;
-        let fileCount=e.target.files;
-        if(fileCount.length>0){
-            let tmpForm=new FormData();
-            tmpForm.append(fileCount[0]);
-            let result=callInterface('POST','/oss',tmpForm,false);
-            if(result.code==200){
-                uploadResult=result.data;
+        let ev=e||window.event;
+        let fileArray=ev.target.files;
+        if(fileArray.length>0){
+            let file=fileArray[0];
+            let message='请选择jpg或png的图片上传！';
+            if(isvalidatefile(file.name)){
+                let tmpForm=new FormData();
+                tmpForm.append('file',fileArray[0]);
+                let result=callInterface('POST','/oss/img',tmpForm,false,false);
+
+                if(result.code==200){
+                    $('.res_img_div').find('input').val(result.data);
+                    $('.me_img').text('已上传，点击查看').css('color','#1481FF').attr('src',result.data);
+                    message='上传成功！';
+                }else{
+                    message='上传失败';
+                }
             }
+
+            alert(message);
+            fileInput.remove();
         }
     });
+}
 
-    let message="上传失败";
-    if(uploadResult!=null){
-        fileInput.remove();
-        $('.res_img_div').find('input').val(uploadResult);
-        message='上传成功！';
+/**
+ * 验证图片名字
+ * @param obj
+ * @returns {boolean}
+ */
+function isvalidatefile(obj) {
+    var extend = obj.substring(obj.lastIndexOf(".") + 1);
+    if ((extend == "png" ) || (extend == "jpg")) {
+        return true;
     }
 
-    alert(message);
+    return false;
 }
 
 /**
@@ -340,7 +357,7 @@ function maskStyl(dplayFlag) {
 $(function () {
     initPage();
 
-    $('body .btn_h5,button,img,.show_img').on('click', function(){
+    $('body .btn_h5,button,img,.show_img,.me_img').on('click', function(){
         let obj=this;
         let othis=$(obj),method=othis.data('method');
         if(!method){
