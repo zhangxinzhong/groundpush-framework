@@ -66,6 +66,8 @@ public class TaskServiceImpl implements TaskService {
         Optional<Task> optionalTask = taskMapper.getTask(id);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
+            //获取 任务申请详情页面 或 任务推广页面 金额
+            task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
             //任务添加属性
             addTaskAttr(task);
             return Optional.of(task);
@@ -144,16 +146,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Optional<Task> getTask(Integer id, Integer taskType) {
-        Optional<Task> optionalTask = taskMapper.getTask(id);
-        if (optionalTask.isPresent()) {
-            Task task = optionalTask.get();
-            //获取 任务申请详情页面 或 任务推广页面 金额
-            task.setAppAmount(MathUtil.multiply(MathUtil.divide(task.getSpreadRatio(), Constants.PERCENTAGE_100), task.getAmount()).toPlainString());
-            //任务添加属性
-            addTaskAttr(task);
-            return Optional.of(task);
-        }
-        return Optional.empty();
+        return taskMapper.getTask(id);
     }
 
 
