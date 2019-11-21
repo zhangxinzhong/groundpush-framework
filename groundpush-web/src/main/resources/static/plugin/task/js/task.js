@@ -129,7 +129,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     , {
                         field: '', title: '任务类型', width: '6%',
                         templet: function (d) {
-                            return d.type == TaskTypeGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == TaskTypeGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无结果集任务");
+                            return d.type == TaskTypeGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == TaskTypeGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无唯一识别码任务");
                         }
                     }
                     , {field: '', title: '操作', toolbar: "#toolTask"}
@@ -896,7 +896,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         //任务id
         json["taskId"] = data.field.taskId;
 
-        //设置任务类型 1：普通任务 3：特殊任务 4:无结果集任务
+        //设置任务类型 1：普通任务 3：特殊任务 4:无唯一识别码任务
         json["type"] = data.field.type;
         eventListener.saveUpdateTask(JSON.stringify(json))
         //屏蔽表单提交
