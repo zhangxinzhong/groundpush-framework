@@ -948,7 +948,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     });
 
 
-    form.on('radio(createUri)',function (data) {
+     //TODO 预留生成监听代码
+    /*form.on('radio(createUri)',function (data) {
         $('#view div table tbody tr .createUri').each(function (i,o) {
             let content = $(o).parent('td').find('.content');
             if(content.attr("readonly") != undefined){
@@ -956,7 +957,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             }
         });
         $(data.elem).parent('td').find('.content').attr('readonly','readonly').val($("#spread").val());
-    });
+    });*/
 
     //监听task
     table.on('toolbar(task)', function (obj) {
