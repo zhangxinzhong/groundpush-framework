@@ -7,6 +7,7 @@ import com.groundpush.core.exception.SystemException;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.OssUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class OssController {
     @Resource
     private OssUtils ossUtils;
 
+    @PostMapping
     public JsonResp upload(@RequestParam MultipartFile file) {
         try {
             // 获取文件并上传

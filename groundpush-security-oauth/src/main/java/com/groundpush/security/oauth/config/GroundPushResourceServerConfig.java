@@ -56,6 +56,8 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
                 .antMatchers("/validate/codeSms").permitAll()
                 //二次跳转
                 .antMatchers("/spread").permitAll()
+                //文件上传
+                .antMatchers("/oss").permitAll()
                 // 协议及说明
                 .antMatchers("/appPage/*").permitAll()
                 // 招募地推员
