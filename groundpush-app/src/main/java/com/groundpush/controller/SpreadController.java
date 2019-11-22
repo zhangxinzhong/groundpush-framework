@@ -1,6 +1,8 @@
 package com.groundpush.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.SpreadQueryCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
@@ -38,12 +40,6 @@ import java.util.Optional;
 @Controller
 public class SpreadController {
     @Resource
-    private RedisUtils redisUtils;
-
-    @Resource
-    private AesUtils aesUtils;
-
-    @Resource
     private OrderService orderService;
 
     @Resource
@@ -58,6 +54,9 @@ public class SpreadController {
     @Resource
     private SpecialTaskService specialTaskService;
 
+    @Resource
+    private ObjectMapper objectMapper;
+
     @ApiOperation("页面跳转uri")
     @GetMapping
     public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
@@ -65,27 +64,32 @@ public class SpreadController {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
 
-        //获取每日推广剩余次数 每人每日推广剩余次数
-        Optional<TaskPopCountVo> optional = taskService.getSupTotalOrCustomCount(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
-        if (optional.isPresent()) {
-            log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}", optional.get().getSupTotal(), optional.get().getSupCustom());
-            if (optional.get().getSupCustom() <= Constants.ZROE || optional.get().getSupTotal() <= Constants.ZROE) {
-                log.error("今日推广次数已达上限");
-                return "error";
+        try {
+            //获取每日推广剩余次数 每人每日推广剩余次数
+            Optional<TaskPopCountVo> optional = taskService.getSupTotalOrCustomCount(spreadQueryCondition.getCustomId(), spreadQueryCondition.getTaskId());
+            if (optional.isPresent()) {
+                log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}", optional.get().getSupTotal(), optional.get().getSupCustom());
+                if (optional.get().getSupCustom() <= Constants.ZROE || optional.get().getSupTotal() <= Constants.ZROE) {
+                    log.error("今日推广次数已达上限");
+                    return "error";
+                }
             }
-        }
 
-        // 1. 通过任务编号查询任务
-        Optional<Task> optionalTask = taskService.getTask(spreadQueryCondition.getTaskId());
-        // 2. 查询任务结果集布局
-        List<TaskAttribute> taskAttributeList = taskAttributeService.queryTaskAttributeListByTaskIdAndType(spreadQueryCondition.getTaskId(), Constants.TASK_ATTRIBUTE_RESULT);
-        if (optionalTask.isPresent()) {
-            model.addAttribute("task", JSONObject.toJSON(optionalTask.get()));
-            model.addAttribute("taskResult", JSONObject.toJSON(taskAttributeList));
-            model.addAttribute("spreadQueryCondition", JSONObject.toJSON(spreadQueryCondition));
-            // 3. 通过任务查询任务所有推广链接
-            Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(spreadQueryCondition.getTaskId());
-            model.addAttribute("taskUri", taskUriOptional.isPresent() ? taskUriOptional.get() : null);
+            // 1. 通过任务编号查询任务
+            Optional<Task> optionalTask = taskService.getTask(spreadQueryCondition.getTaskId());
+            // 2. 查询任务结果集布局
+            List<TaskAttribute> taskAttributeList = taskAttributeService.queryTaskAttributeListByTaskIdAndType(spreadQueryCondition.getTaskId(), Constants.TASK_ATTRIBUTE_RESULT);
+            if (optionalTask.isPresent()) {
+                model.addAttribute("task",objectMapper.writeValueAsString(optionalTask.get()));
+                model.addAttribute("taskResult", objectMapper.writeValueAsString(taskAttributeList));
+                model.addAttribute("spreadQueryCondition", objectMapper.writeValueAsString(spreadQueryCondition));
+                // 3. 通过任务查询任务所有推广链接
+                Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(spreadQueryCondition.getTaskId());
+                model.addAttribute("taskUri", taskUriOptional.isPresent() ? objectMapper.writeValueAsString(taskUriOptional.get()) : null);
+            }
+        } catch (Exception e) {
+            log.error(e.toString(),e);
+
         }
 
         return "spread/spread";
