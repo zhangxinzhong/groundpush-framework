@@ -32,7 +32,7 @@ public class SpreadOrderVo {
     @NotNull(message="任务id不能为空")
     private Integer taskId;
 
-    @ApiModelProperty(value = "任务类型不可为空，实例：普通任务=1 特殊任务=3 无唯一编号=4")
+    @ApiModelProperty(value = "任务类型不可为空，实例：普通任务=1 特殊任务=3 无唯一识别码任务=4")
     @NotNull(message="任务类型不能为空")
     private Integer type;
 
