@@ -60,7 +60,7 @@ public interface OrderService {
      * 创建订单并生成分成
      * @param order
      */
-    void createOrderAndOrderBonus(Order order);
+    Order createOrderAndOrderBonus(Order order);
 
     /**
      * 删除订单

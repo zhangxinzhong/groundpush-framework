@@ -1,19 +1,12 @@
 package com.groundpush.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.condition.SpreadQueryCondition;
 import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
-import com.groundpush.core.model.Order;
-import com.groundpush.core.model.Task;
-import com.groundpush.core.model.TaskAttribute;
-import com.groundpush.core.model.TaskUri;
+import com.groundpush.core.model.*;
 import com.groundpush.core.service.*;
-import com.groundpush.core.utils.AesUtils;
 import com.groundpush.core.utils.Constants;
-import com.groundpush.core.utils.RedisUtils;
 import com.groundpush.core.vo.TaskPopCountVo;
 import com.groundpush.vo.SpreadOrderVo;
 import io.swagger.annotations.ApiModel;
@@ -57,6 +50,9 @@ public class SpreadController {
     @Resource
     private ObjectMapper objectMapper;
 
+    @Resource
+    private OrderLogService orderLogService;
+
     @ApiOperation("页面跳转uri")
     @GetMapping
     public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
@@ -80,7 +76,7 @@ public class SpreadController {
             // 2. 查询任务结果集布局
             List<TaskAttribute> taskAttributeList = taskAttributeService.queryTaskAttributeListByTaskIdAndType(spreadQueryCondition.getTaskId(), Constants.TASK_ATTRIBUTE_RESULT);
             if (optionalTask.isPresent()) {
-                model.addAttribute("task",objectMapper.writeValueAsString(optionalTask.get()));
+                model.addAttribute("task", objectMapper.writeValueAsString(optionalTask.get()));
                 model.addAttribute("taskResult", objectMapper.writeValueAsString(taskAttributeList));
                 model.addAttribute("spreadQueryCondition", objectMapper.writeValueAsString(spreadQueryCondition));
                 // 3. 通过任务查询任务所有推广链接
@@ -88,11 +84,12 @@ public class SpreadController {
                 model.addAttribute("taskUri", taskUriOptional.isPresent() ? objectMapper.writeValueAsString(taskUriOptional.get()) : null);
             }
         } catch (Exception e) {
-            log.error(e.toString(),e);
+            log.error(e.toString(), e);
 
         }
-
-        return "spread/spread";
+        model.addAttribute("erroMessage", "今日推广次数已达上限");
+        return "error";
+//        return "spread/spread";
     }
 
     @PostMapping
@@ -108,20 +105,30 @@ public class SpreadController {
             //1.是否是特殊任务 且 是否是改任务的特殊用户
             //  还需验证当前用户上级是否是特殊用户
             Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadOrderVo.getTaskId());
-            Order order = Order.builder().customerId(spreadOrderVo.getCustomId()).type(spreadOrderVo.getType()).taskId(spreadOrderVo.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).isSpecial(isSpecialTask).build();
+            Order order = Order.builder().customerId(spreadOrderVo.getCustomId()).type(spreadOrderVo.getType()).taskId(spreadOrderVo.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).isSpecial(isSpecialTask).uniqueCode(spreadOrderVo.getUniqueCode()).build();
 
-            if(optionalTaskUri.isPresent()){
+            if (optionalTaskUri.isPresent()) {
                 taskUriService.updateTaskUri(optionalTaskUri.get());
                 order.setChannelUri(optionalTaskUri.get().getUri());
             }
 
             //2.创建用户订单
-            orderService.createOrderAndOrderBonus(order);
+            Order createOrder = orderService.createOrderAndOrderBonus(order);
+
+            createOrderLog(createOrder, spreadOrderVo.getList());
+
 
             return JsonResp.success();
         } catch (Exception e) {
             return JsonResp.failure();
         }
+    }
+
+    private void createOrderLog(Order order, List<OrderLog> list) {
+        for (OrderLog orderLog : list) {
+            orderLog.setOrderId(order.getOrderId());
+        }
+        orderLogService.createOrderLog(list);
     }
 
 

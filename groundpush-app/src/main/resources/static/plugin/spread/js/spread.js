@@ -338,17 +338,21 @@ function maskStyl(dplayFlag) {
  * js入口主方法
  */
 $(function () {
-    initPage();
 
-    $('body .btn_h5,button,img,.show_img,.me_img').on('click', function () {
-        var obj = this;
-        var othis = $(obj), method = othis.data('method');
-        if (!method) {
-            method = obj.event;
-        }
+    if (activeEvent.is_mask()) {
+        $("#mask").show();
+    } else {
+        initPage();
+        $('body .btn_h5,button,img,.show_img,.me_img').on('click', function () {
+            var obj = this;
+            var othis = $(obj), method = othis.data('method');
+            if (!method) {
+                method = obj.event;
+            }
 
-        activeEvent[method] ? activeEvent[method].call(obj, othis) : '';
-    });
+            activeEvent[method] ? activeEvent[method].call(obj, othis) : '';
+        });
+    }
 });
 
 

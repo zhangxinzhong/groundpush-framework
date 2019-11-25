@@ -9,10 +9,23 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+    <script type="text/javascript" th:src="@{/common/plugin/jquery/jquery-3.4.1.js}"></script>
 </head>
 <style>
 
 </style>
 <body th:style="'background:url(' + @{'/images/500.png'} + ') no-repeat;height: 100%;width: 100%;background-size: cover;'">
+<p id="label" style="font-size: 18px;color: #ABB8BF;font-weight: bold;" th:text="${erroMessage}"></p>
 </body>
+<script>
+    window.onload = function () {
+        var middleHeight = $(window).height();
+        var middleWidth = $(window).width();
+        var inputMarginWidth = middleWidth / 6;
+        var inputMarginHeight = middleHeight / 3 * 2;
+        //添加样式
+        $("#label").css("margin-top", inputMarginHeight + "px");
+        $("#label").css("margin-left", inputMarginWidth + "px");
+    }
+</script>
 </html>

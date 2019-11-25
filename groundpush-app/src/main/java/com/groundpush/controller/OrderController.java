@@ -55,17 +55,11 @@ public class OrderController {
         // 检查用户是否存在此任务订单
         Optional<Order> orderOptional = orderService.checkOrderIsExistAndIsUploadResult(order.getCustomerId(), order.getTaskId(),order.getType());
         if (orderOptional.isPresent()) {
-            return JsonResp.success(new DataResult(orderOptional.get().getChannelUri()));
+            return JsonResp.success();
         }
-
-
-
-        //获取任务uri
-        Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(order.getTaskId());
         order.setIsSpecial(Constants.ORDER_TYPE_3.equals(order.getType())?Boolean.TRUE:Boolean.FALSE);
-        order.setChannelUri(taskUriOptional.isPresent() ? taskUriOptional.get().getUri() : null);
         orderService.createOrderAndOrderBonus(order);
-        return JsonResp.success(new DataResult(taskUriOptional.isPresent() ? taskUriOptional.get().getUri() : null));
+        return JsonResp.success();
     }
 
     @ApiOperation(value = "任务结果集、订单申诉")

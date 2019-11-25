@@ -106,10 +106,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void createOrderAndOrderBonus(Order order) {
+    public Order createOrderAndOrderBonus(Order order) {
         order = this.createOrder(order);
         //根据任务计算结果分成
         orderBonusService.generateOrderBonus(OrderBonusVo.builder().orderId(order.getOrderId()).customerId(order.getCustomerId()).taskId(order.getTaskId()).build());
+        return order;
     }
 
     @Transactional(rollbackFor = Exception.class)
