@@ -568,10 +568,11 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
                     });
                     //任务推广
-                    $('#popView').html('');
+                    $('#popView').html("");
                     laytpl($('#taskPop').html()).render(popJsonObj, function(html){
                         $('#popView').html(html);
                     });
+
                     //添加点击事件
                     eventListener.addClick();
                     eventListener.addButtonEvent();
@@ -758,14 +759,18 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 obj["seq"] = seq;
                 let rowType = $(object).find('select[name="rowType"]').val();
                 obj["rowType"] = rowType;
+                let checked = $(object).find(".createUri").is(':checked');
+
                 let content = $(object).find('.content').val();
-                if (content == undefined || content == '') {
+
+                if (!checked && (content == undefined || content == '')) {
                     let msg = '我的任务编辑：第' + labelType + '阶段:序号' + seq + '的类型值为空'
                     layer.msg(msg);
                     success = false;
                     removeDisableBtn();
                     return false;
                 }
+
                 if(rowType == 2 || rowType == 3 || rowType == 4){
                     let name = $(object).find('.name').val();
                     if(name == undefined || name == ''){
@@ -781,8 +786,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 obj["content"] = content;
                 let imgCode = $(object).find('.imgCode').val();
                 obj["imgCode"] = imgCode != undefined ? imgCode : '';
-                let createUri = $(object).find(".createUri");
-                obj["createUri"] = createUri.is(':checked') ? 1 : 0;
+                obj["createUri"] = checked ? 1 : 0;
                 params.push(obj);
             });
 
@@ -949,15 +953,15 @@ layui.use(['table', 'laytpl', 'upload'], function () {
 
 
      //TODO 预留生成监听代码
-    /*form.on('radio(createUri)',function (data) {
+    form.on('radio(createUri)',function (data) {
         $('#view div table tbody tr .createUri').each(function (i,o) {
             let content = $(o).parent('td').find('.content');
             if(content.attr("readonly") != undefined){
                 content.val('').removeAttr('readonly')
             }
         });
-        $(data.elem).parent('td').find('.content').attr('readonly','readonly').val($("#spread").val());
-    });*/
+        $(data.elem).parent('td').find('.content').attr('readonly','readonly').val("");
+    });
 
     //监听task
     table.on('toolbar(task)', function (obj) {
