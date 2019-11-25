@@ -87,7 +87,7 @@ public class SpreadController {
             log.error(e.toString(), e);
 
         }
-        model.addAttribute("erroMessage", "今日推广次数已达上限");
+        model.addAttribute("errorMessage", "今日推广次数已达上限");
         return "spread/spread";
     }
 
