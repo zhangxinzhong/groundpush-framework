@@ -12,6 +12,7 @@ import com.groundpush.core.mapper.*;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.TaskAttributeService;
 import com.groundpush.core.service.TaskService;
+import com.groundpush.core.service.TaskUriService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.vo.TaskPopCountVo;
@@ -49,6 +50,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private TaskUriMapper taskUriMapper;
+
+    @Resource
+    private TaskUriService taskUriService;
 
     @Override
     public Page<Task> queryTaskAllPC(TaskQueryCondition taskQueryCondition, Integer page, Integer limit) {
@@ -165,6 +169,7 @@ public class TaskServiceImpl implements TaskService {
             //获取任务推广按钮链接
             List<TaskAttribute> popTasks = taskAttributeService.queryTaskAttributeByTaskId(task.getTaskId(), Constants.POP_TASK_ATTRIBUTE);
             task.setTaskPopAttribute(popTasks);
+
         }
     }
 
@@ -172,6 +177,12 @@ public class TaskServiceImpl implements TaskService {
         if (taskAttr != null && taskAttr.size() > 0) {
             Map<Integer, List<TaskAttribute>> taskAttrMap = new LinkedHashMap<>();
             for (TaskAttribute taskAttribute : taskAttr) {
+                //为任务详情中createuri为true的获取任务uri
+                if(Constants.TASK_CREATE_URI_TRUE.equals(taskAttribute.getCreateUri())){
+                    Optional<TaskUri> taskUriOptional = taskUriService.queryTaskUriByTaskId(taskAttribute.getTaskId());
+                    taskAttribute.setContent(taskUriOptional.isPresent()?taskUriOptional.get().getUri():null);
+                }
+
                 Integer mapKey = taskAttribute.getLabelType();
                 if (taskAttrMap.containsKey(mapKey)) {
                     taskAttrMap.get(mapKey).add(taskAttribute);

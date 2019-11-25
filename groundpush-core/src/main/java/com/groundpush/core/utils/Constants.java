@@ -463,4 +463,6 @@ public class Constants {
      */
     public static final Integer ORDER_RESULT_TYPE_2 = 2;
 
+
+    public static final Integer TASK_CREATE_URI_TRUE = 1;
 }
