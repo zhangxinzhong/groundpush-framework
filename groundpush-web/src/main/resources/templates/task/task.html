@@ -319,7 +319,7 @@
                             <input type="text" name="name" class="form-control col-lg-1 name" maxlength="10" value="{{ item.name != undefined?item.name:(item.rowType == 4?'保存二维码':(item.rowType == 3?'打开链接':'下载APP')) }}" placeholder="输入按钮名称"
                                    style="width:20%;float:left;margin-right:2%;">
                             <input type="text" name="content" class="form-control col-lg-1 content"
-                                   value="{{ item.content != undefined?item.content:'' }}" placeholder="输入url" {{ item.createUri==1?'readonly="readonly"':'' }}
+                                   value="{{ item.content != undefined?item.content:'' }}"  {{ item.createUri==1?' readonly="readonly" placeholder="默认使用任务uri"':'placeholder="输入url链接"' }}
                                    style="width:60%;float:left;margin-right:3%;">
                             <input type="radio" name="createUri" class="form-control createUri" title="生成"
                                    style="float:left;" {{ item.createUri==1?'checked':'' }} lay-filter="createUri"/>

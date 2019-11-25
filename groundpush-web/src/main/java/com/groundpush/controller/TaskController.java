@@ -80,26 +80,13 @@ public class TaskController {
         }
     }
 
-
-    @PostMapping("/queryHasTaskUri")
-    @ResponseBody
-    public JsonResp queryHasTaskUri(@RequestBody Task task ) {
-        try {
-            //若发布任务则判断是否已上传任务uri
-            if(task.getTaskId() != null && taskUriService.queryCountByTaskId(task.getTaskId()) > 0){
-                return JsonResp.success();
-            }
-            return JsonResp.failure();
-        } catch (Exception e) {
-            log.error(e.toString(), e);
-            throw e;
-        }
-    }
-
     @PostMapping("/updateTaskStatus")
     @ResponseBody
     public JsonResp updateTaskStatus(@RequestBody Task task ) {
         try {
+            if(Constants.TASK_STATUS_1.equals(task.getStatus()) && taskUriService.queryCountByTaskId(task.getTaskId()) == 0){
+               throw new BusinessException(ExceptionEnum.TASK_NOT_PULISH_EXCEPTION.getErrorCode(),ExceptionEnum.TASK_NOT_PULISH_EXCEPTION.getErrorMessage());
+            }
             taskService.updateTask(task);
             return JsonResp.success();
         } catch (Exception e) {

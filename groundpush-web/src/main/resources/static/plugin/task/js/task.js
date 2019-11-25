@@ -116,8 +116,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     {field: 'title', title: '任务标题', width: '15%', sort: true}
                     , {field: 'amount', title: '单笔佣金', width: '6%'}
                     , {field: 'source', title: '所属公司', width: '6%'}
-                    , {field: 'spreadTotal', title: '每日推广任务总数', width: '10%'}
-                    , {field: 'handlerNum', title: '单人每日可做任务数', width: '10%'}
+                    , {field: 'spreadTotal', title: '每日推广任务总数', width: '9%'}
+                    , {field: 'handlerNum', title: '单人每日可做任务数', width: '9%'}
                     , {field: 'spreadRatio', title: '推广人分成比', width: '8%'}
                     , {field: 'leaderRatio', title: '推广领导分成比', width: '8%'}
                     , {
@@ -127,7 +127,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                         }
                     }
                     , {
-                        field: '', title: '任务类型', width: '6%',
+                        field: '', title: '任务类型', width: '8%',
                         templet: function (d) {
                             return d.type == TaskTypeGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == TaskTypeGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无唯一识别码任务");
                         }
@@ -609,21 +609,6 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 layer.msg(rep.message);
             });
         }
-        //发布时判断是否可发布
-        , queryHasTaskUri: function (data) {
-            Utils.postAjax("/task/queryHasTaskUri", JSON.stringify(data), function (rep) {
-                if (rep.code == '200') {
-                    eventListener.delOrPublishTask(data);
-                } else {
-                    layer.confirm('此任务没有对应的uri确定要发布么', function (index) {
-                        eventListener.delOrPublishTask(data);
-                        layer.close(index);
-                    });
-                }
-            }, function (rep) {
-                layer.msg(rep.message);
-            });
-        }
         //上传任务URL
         , initUploadURL: function (data) {
             //普通图片上传
@@ -927,7 +912,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
        if (obj.event === 'check') {
            eventListener.showData(data);
        } else if (obj.event === 'publish') {
-           eventListener.queryHasTaskUri({"taskId": data.taskId, "status": 1});
+           eventListener.delOrPublishTask({"taskId": data.taskId, "status": 1});
        } else if (obj.event === 'del') {
            eventListener.delOrPublishTask({"taskId": data.taskId, "status": 2});
        } else if(obj.event === 'sync') {
@@ -957,10 +942,10 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         $('#view div table tbody tr .createUri').each(function (i,o) {
             let content = $(o).parent('td').find('.content');
             if(content.attr("readonly") != undefined){
-                content.val('').removeAttr('readonly')
+                content.attr('placeholder','输入url').val('').removeAttr('readonly')
             }
         });
-        $(data.elem).parent('td').find('.content').attr('readonly','readonly').val("");
+        $(data.elem).parent('td').find('.content').attr('readonly','readonly').val("").attr('placeholder','默认使用任务uri');
     });
 
     //监听task
