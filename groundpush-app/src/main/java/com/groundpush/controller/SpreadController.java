@@ -67,6 +67,7 @@ public class SpreadController {
                 log.info("每日推广剩余次数：{} 每人每日推广剩余次数：{}", optional.get().getSupTotal(), optional.get().getSupCustom());
                 if (optional.get().getSupCustom() <= Constants.ZROE || optional.get().getSupTotal() <= Constants.ZROE) {
                     log.error("今日推广次数已达上限");
+                    model.addAttribute("errorMessage", "今日推广次数已达上限");
                     return "error";
                 }
             }
@@ -87,7 +88,6 @@ public class SpreadController {
             log.error(e.toString(), e);
 
         }
-        model.addAttribute("errorMessage", "今日推广次数已达上限");
         return "spread/spread";
     }
 
