@@ -88,8 +88,7 @@ public class SpreadController {
 
         }
         model.addAttribute("erroMessage", "今日推广次数已达上限");
-        return "error";
-//        return "spread/spread";
+        return "spread/spread";
     }
 
     @PostMapping
