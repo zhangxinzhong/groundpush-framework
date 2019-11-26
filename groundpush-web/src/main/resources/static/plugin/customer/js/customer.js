@@ -27,6 +27,12 @@ layui.use(['table', 'form', 'layer'], function () {
                     , {field: 'inviteCode', title: '邀请码'}
                     , {field: 'reputation', title: '信誉值'}
                     , {field: 'bonusAmount', title: '帐户余额'}
+                    , {
+                        field: '', title: '创建时间',
+                        templet: function (d) {
+                            return layui.util.toDateString(d.createdTime, "yyyy-MM-dd HH:mm:ss");
+                        }
+                      }
                     , {field: '', title: '操作',toolbar: "#toolbarCustomerOperationUpdate"}
                 ]]
                 ,page: true, curr: 1, limit: Global.PAGE_SISE

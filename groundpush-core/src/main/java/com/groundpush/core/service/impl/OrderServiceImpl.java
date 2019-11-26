@@ -83,6 +83,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Order order) {
         try {
+            //若订单状态为空 则默认为审核中
+            if (order.getStatus() == null) {
+                order.setStatus(Constants.ORDER_STATUS_REVIEW);
+            }
             //保存订单
             orderMapper.createOrder(order);
             Integer orderId = order.getOrderId();

@@ -88,6 +88,8 @@ layui.use('table', function () {
                     ,orderStatus:field.orderStatus
                     ,settlementStatus:field.settlementStatus
                     ,isSpecial:field.isSpecial
+                    ,isHasUniqueCode:field.isHasUniqueCode
+                    ,taskId:field.taskId
 
                 }
                 ,page: {
@@ -171,6 +173,8 @@ layui.use('table', function () {
                     ,orderStatus:field.orderStatus
                     ,settlementStatus:field.settlementStatus
                     ,isSpecial:field.isSpecial
+                    ,isHasUniqueCode:field.isHasUniqueCode
+                    ,taskId:field.taskId
 
                 }
                 ,page: {
@@ -184,6 +188,18 @@ layui.use('table', function () {
                     eventListener.hideEditOrderDialog();
                     eventListener.reloadOrderTable();
                     layer.msg('订单更新成功！');
+                }
+            },function (rep) {
+                layer.msg(rep.message);
+            });
+        }
+        //获取所有任务
+        ,queryAllTasks:function() {
+            Utils.getAjax("/task/queryAllTasks",{},function(rep) {
+                if(rep.code =='200'){
+                    for(let i in rep.data){
+                        $('#taskId').append('<option value="' + rep.data[i].taskId +'">'+ rep.data[i].title +'</option>')
+                    }
                 }
             },function (rep) {
                 layer.msg(rep.message);
@@ -285,10 +301,13 @@ layui.use('table', function () {
             $('#showOrderBonusModal').modal('show');
         }
     };
+    //填充任务名称select
+    eventListener.queryAllTasks();
     //渲染订单
     form.render();
     eventListener.initTable();
     eventListener.initOrderComplainTable();
+
 
     table.on('tool(order)', function (obj) {
         let data = obj.data;
@@ -310,6 +329,7 @@ layui.use('table', function () {
         //屏蔽表单提交
         return false;
     });
+
 
     form.on('submit(search)',function (data) {
         eventListener.reloadOrderComplainTable(data);

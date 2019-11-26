@@ -14,7 +14,7 @@
 
 </head>
 <body>
-<!--新增标签-->
+<!--订单查询-->
 <div>
     <fieldset class="layui-elem-field" style="width:99.9%">
         <div class="layui-field-box ">
@@ -56,12 +56,29 @@
                                 <option value="0">否</option>
                             </select>
                         </div>
+                        订单结果集:
+                        <div class="layui-inline" style="width: 10%;">
+                            <select class="col-lg-1" name="isHasUniqueCode" id="isHasUniqueCode" >
+                                <option value=""></option>
+                                <option value="1">有</option>
+                                <option value="2">无</option>
+                            </select>
+                        </div>
+
+                 </div>
+                <div class="layui-form-item">
+                    任务名称:
+                    <div class="layui-inline" style="width: 10%;">
+                        <select class="col-lg-1" name="taskId" id="taskId" lay-search=""  >
+                            <option value=""></option>
+                        </select>
+                    </div>
 
                     <div class="layui-inline">
-                            <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
-                            <button class="layui-btn layui-btn-danger" onclick="javascript:document.forms[0].reset();">重置</button>
+                        <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
+                        <button class="layui-btn layui-btn-danger" onclick="javascript:document.forms[0].reset();">重置</button>
                     </div>
-                 </div>
+                </div>
             </form>
 
         </div>

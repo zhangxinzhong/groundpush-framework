@@ -181,4 +181,11 @@ public interface TaskMapper {
     @Select(" select count(*) from t_task a where a.title = #{title} and a.type = #{type} ")
     Integer queryCountSpecialByTitleAndType(@Param("title") String title,@Param("type") Integer type);
 
+
+    /**
+     * 获取所有任务的任务名称与任务id
+     * @return
+     */
+    @Select(" select a.task_id,a.title from t_task a ")
+    List<Task> queryAllTasks();
 }

@@ -211,6 +211,20 @@ public class TaskController {
             log.error(e.toString(), e);
             throw e;
         }
+    }
 
+    /**
+     * 获取所有任务
+     * @return
+     */
+    @GetMapping("/queryAllTasks")
+    @ResponseBody
+    public JsonResp queryAllTasks(){
+        try {
+            return JsonResp.success(taskService.queryAllTasks());
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
     }
 }

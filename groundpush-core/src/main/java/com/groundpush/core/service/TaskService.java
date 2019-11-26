@@ -120,4 +120,11 @@ public interface TaskService {
      */
     List<Task>  querySpecialTasks(Integer type);
 
+
+    /**
+     * 获取所有任务
+     * @return
+     */
+    List<Task> queryAllTasks();
+
 }

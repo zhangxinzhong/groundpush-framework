@@ -92,6 +92,11 @@ public interface OrderMapper {
             " <if test='orderStatus != null and orderStatus !=\"\"'> and  a.status = #{orderStatus} </if>",
             " <if test='settlementStatus != null and settlementStatus !=\"\"'> and  a.settlement_status = #{settlementStatus} </if>",
             " <if test='isSpecial != null and isSpecial !=\"\"'> and  a.is_special = #{isSpecial} </if>",
+            " <if test='isHasUniqueCode != null and isHasUniqueCode !=\"\"'> " +
+                    " <if test='isHasUniqueCode == 1'> and  a.unique_code is not null  </if> ",
+                    " <if test='isHasUniqueCode == 2'> and  a.unique_code is null </if> ",
+            " </if>",
+            " <if test='taskId != null and taskId !=\"\"'> and  b.task_id = #{taskId} </if>",
             " order by a.created_time desc ",
             "</script>"
     })

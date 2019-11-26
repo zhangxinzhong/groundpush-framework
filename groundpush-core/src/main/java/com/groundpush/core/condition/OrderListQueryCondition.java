@@ -62,4 +62,7 @@ public class OrderListQueryCondition implements Serializable {
     @ApiModelProperty(value = "特殊任务")
     private Integer isSpecial;
 
+    @ApiModelProperty(value = "是否有误结果集")
+    private Integer isHasUniqueCode;
+
 }
