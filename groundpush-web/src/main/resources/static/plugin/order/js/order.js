@@ -53,7 +53,7 @@ layui.use('table', function () {
                             }
                        }
                     , {field: 'loginNo', title: '客户账号',width:'20%'}
-                    , {field: 'isSpecial', title: '订单类型',width:'10%',
+                    , {field: 'isSpecial', title: '订单类型',width:'11%',
                         templet: function(d){
                             return  d.isSpecial == 1?'特殊订单':'普通订单';
                         }
