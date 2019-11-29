@@ -38,9 +38,7 @@ public class ExportUtils {
 
     public void exportWord(String templateName,WordDataMap dataMap, OutputStream outputStream) throws Exception{
         Template template = null;
-        Writer out = null;
-        try {
-            out = new BufferedWriter(new OutputStreamWriter(outputStream));
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))){
             //获取freemarker中word模板
             template = config.getTemplate(templateName);
             //将模板输出到临时文件中
@@ -58,11 +56,6 @@ public class ExportUtils {
         } catch (IOException e) {
             log.info("IO读取时异常");
             e.printStackTrace();
-        }finally{
-            if(out != null){
-                out.close();
-                out = null;
-            }
         }
 
     }
@@ -70,23 +63,22 @@ public class ExportUtils {
 
 
     public String getByteArrayByImgUrl(String imgUrl) throws Exception {
-        ByteArrayOutputStream os = null;
-        try {
-
-            InputStream inputStream = ossUtils.getInputStreamOss(imgUrl);
-            os = new ByteArrayOutputStream();
+        byte[] bytes = null;
+        try (InputStream inputStream = ossUtils.getInputStreamOss(imgUrl);
+             ByteArrayOutputStream os = new ByteArrayOutputStream()){
             int len = 0;
             byte[] buff = new byte[inputStream.available()];
             while ((len = inputStream.read(buff)) != -1) {
                 os.write(buff, 0, len);
             }
+            bytes = os.toByteArray();
         }catch (Exception e){
              log.info("获取图片字节异常，图片url为{}",imgUrl);
              throw e;
         }
 
         BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(os.toByteArray());
+        return encoder.encode(bytes);
 
     }
 
