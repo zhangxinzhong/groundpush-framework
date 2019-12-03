@@ -10,7 +10,6 @@ import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.vo.OrderPayVo;
 import com.groundpush.core.vo.TaskOrderListVo;
-import com.groundpush.utils.ExportUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -51,8 +50,7 @@ public class PayManageController {
     @Resource
     private OrderService orderService;
 
-    @Resource
-    private ExportUtils exportUtils;
+
 
     @PostMapping
     @ResponseBody
@@ -105,7 +103,8 @@ public class PayManageController {
         }
     }
 
-    @RequestMapping(value = "/exportOrderWord",method = RequestMethod.GET)
+    //TODO 用于freemarkeer导出word 先注释 用于以后备用
+    /*@RequestMapping(value = "/exportOrderWord",method = RequestMethod.GET)
     public void exportOrderWord(@Valid ExportWordCondition condition, BindingResult bindingResult, HttpServletResponse response) throws Exception {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -136,7 +135,6 @@ public class PayManageController {
 
             exportUtils.exportWord(Constants.TEMPLATE_FTL,dataMap,response.getOutputStream());
         }
-
-    }
+    }*/
 
 }

@@ -172,7 +172,13 @@
                 <td>{{item.orderLogType==1?'任务结果集上传':'申诉上传' }}</td>
                 <td>{{item.orderResultType==2?'图片':'文本' }}</td>
                 <td>{{item.orderKey }}</td>
-                <td>{{ item.orderResultType==2?'<img title="点击打开新窗口查看"  onclick="window.open('+ item.orderValue +')"  src="'+item.orderValue+'" style="cusor:pointer;height:300px;max-width: 100%;"  >':item.orderValue }}</td>
+                <td>
+                {{# if(item.orderResultType==2){ }}
+                    <img title="点击打开新窗口查看"  onclick="window.open('{{item.orderValue}}')"  src="{{item.orderValue}}" style="cusor:pointer;height:300px;max-width: 100%;"  >
+                {{# }else{ }}
+                    {{item.orderValue}}
+                {{# } }}
+                </td>
             </tr>
             {{# }); }}
             </tbody>

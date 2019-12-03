@@ -12,13 +12,14 @@ import javax.annotation.Resource;
 import java.io.*;
 
 /**
+ * 用于导出word
  * ExportUtils
  *
  * @author hss
  * @date 2019/11/14 9:29
  */
 @Slf4j
-@Component
+/*@Component*/
 public class ExportUtils {
 
     @Resource
