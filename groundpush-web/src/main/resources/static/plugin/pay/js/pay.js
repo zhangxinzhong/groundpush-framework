@@ -206,6 +206,7 @@ layui.use(['table', 'laytpl','flow'], function () {
             flow.load({
                 elem: '#orderResultsUl' //流加载容器
                 ,scrollElem: '#orderResultsUl' //滚动条所在元素，一般不用填，此处只是演示需要。
+                ,end:'木有了!!!∑(ﾟДﾟノ)ノ'
                 ,done: function(page, next){ //执行下一页的回调
 
                     if((exist = eventListener.excludeOrder(total)).length > 0){
