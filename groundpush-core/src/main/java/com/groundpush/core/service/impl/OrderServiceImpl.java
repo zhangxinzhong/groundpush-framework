@@ -18,6 +18,7 @@ import com.groundpush.core.service.OrderService;
 import com.groundpush.core.service.PayService;
 import com.groundpush.core.utils.*;
 import com.groundpush.core.vo.OrderBonusVo;
+import com.groundpush.core.vo.OrderLogVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -335,5 +336,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<Order> queryOrderByOrderIdReturnOrder(Integer orderId) {
         return orderMapper.queryOrderByOrderId(orderId);
+    }
+
+    @Override
+    public List<OrderLogVo> queryOrderResultsByOrderIds(List<Integer> orderIds) {
+
+        return orderMapper.queryOrderResultsByOrderIds(orderIds);
     }
 }

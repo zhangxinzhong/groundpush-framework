@@ -1,8 +1,15 @@
-layui.use(['table', 'laytpl'], function () {
+layui.use(['table', 'laytpl','flow'], function () {
     let table = layui.table;
     let form = layui.form;
     let layer = layui.layer;
     let laytpl = layui.laytpl;
+    let flow = layui.flow;
+
+
+
+
+
+
     //自定义验证规则
     form.verify({
         auditOpinion: function (value) {
@@ -29,7 +36,12 @@ layui.use(['table', 'laytpl'], function () {
                 , totalRow: true
                 , cols: [[
                      {field: 'companyName',width:'15%',title: '渠道', sort: true}
-                    , {field: 'title',width:'15%', title: '任务名称'}
+                    , {
+                       field: '',width:'15%', title: '任务名称',
+                       templet:function (d) {
+                           return d.successOrder > 0?'<a class="layui-table-link" lay-event="viewOrderAllResults" title="点击查看全部有效订单结果集"  >'+ d.title +'</a>':d.title;
+                       }                   
+                    }
                     , {field: 'createdTime',width:'8%', title: '订单创建时间',templet: function(d){ return layui.util.toDateString(d.createdTime, "yyyy-MM-dd"); }}
                     , {field: '',width:'8%', title: '订单总数',templet: function(d){ return '<a class="layui-table-link" lay-event="viewAllOrderList">' + d.orderCount + "</a>"}}
                     , {field: 'orderAmount',width:'8%', title: '订单总金额'}
@@ -157,9 +169,9 @@ layui.use(['table', 'laytpl'], function () {
                         }
                     }
                     , {field: 'orderKey', title: '订单上传类型key',width:450}
-                    , {field: '', title: '订单上传类型value',width:500,
+                    , {field: '', title: '订单上传类型value',width:490,style:'padding:5px 5px 5px 5px;',
                         templet: function(d){
-                            return d.orderResultType==2?'<a href="#" onclick="javascript:window.open(\''+d.orderValue+'\')" download="" >'+d.orderValue+'</a>':d.orderValue;
+                            return d.orderResultType==2?'<img title="点击打开新窗口查看"  onclick="window.open(\''+ d.orderValue +'\')"  src="'+d.orderValue+'" style="cusor:pointer;height:300px;max-width: 100%;"  >':d.orderValue;
                         }
                     }
                 ]]
@@ -177,7 +189,55 @@ layui.use(['table', 'laytpl'], function () {
                         };
                     }
                 }
+                ,done:function (res,curr,count) {
+                    //加载img图片的高度
+                    $("#viewOrderResultDialog .layui-table .layui-table-cell").has("img").css({'height':'300px'});
+                }
             });
+        }
+        //展示所有订单结果集
+        ,showOrderAllResults:function (data) {
+            eventListener.showOrderAllResultsDiglog();
+            let index = 0;
+            $("#orderResultsUl").html("");
+            let total = data.validOrderIds.split(",");
+            let exist = [];
+
+            flow.load({
+                elem: '#orderResultsUl' //流加载容器
+                ,scrollElem: '#orderResultsUl' //滚动条所在元素，一般不用填，此处只是演示需要。
+                ,done: function(page, next){ //执行下一页的回调
+
+                    if((exist = eventListener.excludeOrder(total)).length > 0){
+                        Utils.getAjax('/order/queryOrderResultsByOrderIds',{orderIds:exist.toString()},
+                            function (res) {
+                                if(res.code == 200){
+                                    laytpl($('#orderAllResults').html()).render(res.data, function (html) {
+                                        next(html);
+                                    });
+                                    merge(res,['orderNo','uniqueCode','createTime'],[0,1,2],index++);
+                                }
+                            },function (rep) {
+                                layer.msg(rep.message);
+                            })
+                    }else{
+                        next('',false);
+                    }
+
+                }
+            });
+        }
+        //用于排除已显示的order
+        //total 现存订单orderId
+        ,excludeOrder:function (total) {
+            let exist = [];
+            let i = 0;
+            while(i < BusinessGlobal.PAY_MANAGE_ORDER_NUM && total.length > 0){
+                exist.push(total[0]);
+                total.splice(0,1)
+                i++;
+            }
+            return exist;
         }
         ,showAddAuditDialog: function(){
             $('#addAuditDialog').modal('show');
@@ -194,11 +254,47 @@ layui.use(['table', 'laytpl'], function () {
         ,showOrderResultDialog: function(){
             $('#viewOrderResultDialog').modal('show');
         }
+        //隐藏订单结果集
         ,hideOrderResultDialog: function(){
             $('#viewOrderResultDialog').modal('hide');
         }
+        //显示订单结果集列表
+        ,showOrderAllResultsDiglog:function () {
+           $('#viewOrderResultsDialog').modal('show');
+        }
 
     };
+
+    let merge = function (res,columsName,columsIndex,index) {
+        let data = res.data;
+        let mergeIndex = 0;//定位需要添加合并属性的行数
+        let mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
+
+        for (var k = 0; k < columsName.length; k++) { //这里循环所有要合并的列
+            var trArr = $(" ul#orderResultsUl li:eq(" + index + ")>.layui-table>tbody").find("tr");//所有行
+            for (var i = 1; i < res.data.length; i++) { //这里循环表格当前的数据
+                var tdCurArr = trArr.eq(i).find("td").eq(columsIndex[k]);//获取当前行的当前列
+                var tdPreArr = trArr.eq(mergeIndex).find("td").eq(columsIndex[k]);//获取相同列的第一列
+
+                if (data[i][columsName[k]] === data[i-1][columsName[k]]) { //后一行的值与前一行的值做比较，相同就需要合并
+                    mark += 1;
+                    tdPreArr.each(function () {//相同列的第一列增加rowspan属性
+                        $(this).attr("rowspan", mark);
+                    });
+                    tdCurArr.each(function () {//当前行隐藏
+                        $(this).css("display", "none");
+                    });
+                }else {
+                    mergeIndex = i;
+                    mark = 1;//一旦前后两行的值不一样了，那么需要合并的格子数mark就需要重新计算
+                }
+            }
+            mergeIndex = 0;
+            mark = 1;
+        }
+    }
+
+
 
     eventListener.initTable();
     table.on('tool(pay)', function (obj) {
@@ -240,6 +336,10 @@ layui.use(['table', 'laytpl'], function () {
                 eventListener.exportWord({taskId:data.taskId,orderTime:layui.util.toDateString(data.createdTime, "yyyy-MM-dd HH:mm:ss")});
                 layer.close(index);
             });
+        }else if(obj.event === 'viewOrderAllResults') {
+
+            eventListener.showOrderAllResults(data);
+
         }
     });
 

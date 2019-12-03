@@ -6,8 +6,10 @@ import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.condition.OrderQueryCondition;
 import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.model.Order;
+import com.groundpush.core.model.OrderLog;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
+import com.groundpush.core.vo.OrderLogVo;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -225,4 +227,13 @@ public interface OrderService {
      * @return
      */
     Optional<Order> queryOrderByOrderIdReturnOrder(Integer orderId);
+
+
+    /**
+     * 通过任务Id与当前时间 获取某个订单
+     * @param orderIds
+     *
+     * @return
+     */
+    List<OrderLogVo> queryOrderResultsByOrderIds(List<Integer> orderIds);
 }

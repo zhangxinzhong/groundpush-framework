@@ -9,6 +9,7 @@ import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
+import com.groundpush.core.vo.OrderLogVo;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -492,4 +493,26 @@ public interface OrderMapper {
      */
     @Select(" select o.*,t.img_uri from t_order o left join t_order_task_customer otc on otc.order_id = o.order_id left join t_task t on t.task_id = otc.task_id where o.order_id=#{orderId} ")
     Optional<Order> queryOrderByOrderId(@Param("orderId") Integer orderId);
+
+    /**
+     * 通过订单idlist 获取订单结果集
+     * @param orderIds
+     * @return
+     */
+    @Select({
+            "<script>",
+            " select ",
+            " b.order_no,",
+            " b.unique_code,",
+            " b.created_time,",
+            " a.order_result_type,",
+            " a.order_key,",
+            " a.order_value",
+            " from t_order_log a left join t_order b on a.order_id = b.order_id where b.order_id in ",
+            "<foreach collection='orderIds' item='orderId' open='(' separator=',' close=')'>",
+              "#{orderId}",
+            "</foreach>",
+            " </script>"
+    })
+    List<OrderLogVo> queryOrderResultsByOrderIds(@Param("orderIds") List<Integer> orderIds);
 }

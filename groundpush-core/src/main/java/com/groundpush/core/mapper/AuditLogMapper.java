@@ -2,7 +2,7 @@ package com.groundpush.core.mapper;
 
 import com.github.pagehelper.Page;
 import com.groundpush.core.model.AuditLog;
-import com.groundpush.core.model.TaskOrderList;
+import com.groundpush.core.vo.TaskOrderListVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -30,6 +30,7 @@ public interface AuditLogMapper {
             " d.task_id,",
             " d.title,",
             " d.created_time,",
+            " group_concat(d.valid_order_id) valid_order_ids,",
             " count(d.order_id) order_count,",
             " ifnull(sum(d.settlement_amount),0) order_amount, ",
             " sum(d.success_order) success_order,",
@@ -44,6 +45,7 @@ public interface AuditLogMapper {
             "       a.order_id,",
             "       c.settlement_amount,",
             "       if(c.settlement_status = 1,1,0) success_order,",
+            "       if(c.settlement_status = 1,a.order_id,null) valid_order_id,",
             "       if(c.settlement_status = 1,ifnull(c.settlement_amount,0),0) success_amount,",
             "       if(c.settlement_status is null or c.settlement_status &lt;&gt; 1,1,0) fail_order, ",
             "       if(c.settlement_status is null or c.settlement_status &lt;&gt; 1,ifnull(c.settlement_amount,0),0) fail_amount,",
@@ -60,7 +62,7 @@ public interface AuditLogMapper {
             "    order by d.created_time desc ",
             "</script>"
     })
-    Page<TaskOrderList> getAllPayTaskOrderList();
+    Page<TaskOrderListVo> getAllPayTaskOrderList();
 
 
     /**

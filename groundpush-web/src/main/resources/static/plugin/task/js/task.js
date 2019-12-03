@@ -109,7 +109,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                 , where:{
                     type:data.type
                 }
-                , toolbar: data.type != TaskTypeGlobal.TASK_SEPCAIL_TYPE_3?'#toolbarTask':true
+                , toolbar: data.type != BusinessGlobal.TASK_SEPCAIL_TYPE_3?'#toolbarTask':true
                 , title: 'task-data'
                 , totalRow: true
                 , cols: [[
@@ -129,7 +129,7 @@ layui.use(['table', 'laytpl', 'upload'], function () {
                     , {
                         field: '', title: '任务类型', width: '8%',
                         templet: function (d) {
-                            return d.type == TaskTypeGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == TaskTypeGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无唯一识别码任务");
+                            return d.type == BusinessGlobal.TASK_NORMAL_TYPE_1 ? "普通任务" : (d.type == BusinessGlobal.TASK_SEPCAIL_TYPE_3 ? "特殊任务" : "无唯一识别码任务");
                         }
                     }
                     , {field: '', title: '操作', toolbar: "#toolTask"}
@@ -455,8 +455,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
             Utils.postAjax("/task/save",data,function(rep) {
                 if(rep.code =='200'){
                     eventListener.hideAddUpdateTaskDialog();
-                    eventListener.reloadTaskTable({table:'task',type:TaskTypeGlobal.TASK_NORMAL_TYPE_1});
-                    eventListener.reloadTaskTable({table:'special',type:TaskTypeGlobal.TASK_SEPCAIL_TYPE_3});
+                    eventListener.reloadTaskTable({table:'task',type:BusinessGlobal.TASK_NORMAL_TYPE_1});
+                    eventListener.reloadTaskTable({table:'special',type:BusinessGlobal.TASK_SEPCAIL_TYPE_3});
                     layer.msg('任务保存成功');
                 }
             }, function (rep) {
@@ -599,8 +599,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         , delOrPublishTask: function (data) {
             Utils.postAjax("/task/updateTaskStatus", JSON.stringify(data), function (rep) {
                 if (rep.code == '200') {
-                    eventListener.reloadTaskTable({table:'task',type:TaskTypeGlobal.TASK_NORMAL_TYPE_1});
-                    eventListener.reloadTaskTable({table:'special',type:TaskTypeGlobal.TASK_SEPCAIL_TYPE_3});
+                    eventListener.reloadTaskTable({table:'task',type:BusinessGlobal.TASK_NORMAL_TYPE_1});
+                    eventListener.reloadTaskTable({table:'special',type:BusinessGlobal.TASK_SEPCAIL_TYPE_3});
                     layer.msg('任务发布成功');
                 } else {
                     layer.msg(rep.message);
@@ -647,8 +647,8 @@ layui.use(['table', 'laytpl', 'upload'], function () {
         , syncTask:function (data) {
             Utils.getAjax('/task/syncTask',{taskId:data.taskId,specialTaskId:data.specialTaskId},function(rep){
                 if (rep.code == '200') {
-                    eventListener.reloadTaskTable({table:'task',type:TaskTypeGlobal.TASK_NORMAL_TYPE_1});
-                    eventListener.reloadTaskTable({table:'special',type:TaskTypeGlobal.TASK_SEPCAIL_TYPE_3});
+                    eventListener.reloadTaskTable({table:'task',type:BusinessGlobal.TASK_NORMAL_TYPE_1});
+                    eventListener.reloadTaskTable({table:'special',type:BusinessGlobal.TASK_SEPCAIL_TYPE_3});
                     layer.msg('创建特殊成功');
                 }
             },function (rep) {
@@ -690,9 +690,9 @@ layui.use(['table', 'laytpl', 'upload'], function () {
     eventListener.initUploadImg({'id': '#imgCover', 'inputId': '#coverInput'});
 
     //初始化普通任务table列表
-    eventListener.initTable({'elem':'#task','type':TaskTypeGlobal.TASK_NORMAL_TYPE_1});
+    eventListener.initTable({'elem':'#task','type':BusinessGlobal.TASK_NORMAL_TYPE_1});
     //初始化特殊任务table列表
-    eventListener.initTable({'elem':'#special','type':TaskTypeGlobal.TASK_SEPCAIL_TYPE_3});
+    eventListener.initTable({'elem':'#special','type':BusinessGlobal.TASK_SEPCAIL_TYPE_3});
 
     //监听任务
     form.on('submit(syncTask)',function (data) {

@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.groundpush.core.condition.OrderListQueryCondition;
 import com.groundpush.core.model.AuditLog;
 import com.groundpush.core.model.OrderList;
-import com.groundpush.core.model.TaskOrderList;
+import com.groundpush.core.vo.TaskOrderListVo;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +17,11 @@ public interface AuditLogService {
 
     /**
      * 获取支付管理中 任务订单审核列表
+     * @param page 当前页数
+     * @param limit 每页条数
      * @return
      */
-    Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit);
+    Page<TaskOrderListVo> findAllPayTaskOrderList(Integer page, Integer limit);
 
     /**
      * 添加审核日志

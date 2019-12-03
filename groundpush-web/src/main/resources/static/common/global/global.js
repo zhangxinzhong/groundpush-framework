@@ -34,11 +34,13 @@ var Global = {
 }
 
 
-var TaskTypeGlobal = {
+var BusinessGlobal = {
 	//普通任务
 	TASK_NORMAL_TYPE_1:1,
 	//特殊任务
 	TASK_SEPCAIL_TYPE_3:3,
 	//无上传结果集任务
-	TASK_NONRESULT_TYPE_4:4
+	TASK_NONRESULT_TYPE_4:4,
+	//支付管理中查看所有有效订单结果集 一次显示需要展示的订单数
+	PAY_MANAGE_ORDER_NUM:5
 }

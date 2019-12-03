@@ -23,7 +23,7 @@
 
 <!-- pay tobar-->
 <script type="text/html" id="toolbarPay">
-    <a class="layui-btn layui-btn-xs" lay-event="export">导出</a>
+   <!-- <a class="layui-btn layui-btn-xs" lay-event="export">导出</a> -->
     <a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="payment">确认付款</a>
 </script>
@@ -137,6 +137,72 @@
     </div>
 </div>
 <!-- 订单列表模态框 end -->
+
+
+<!-- 订单结果集展示列表 -->
+<script type="text/html" id="orderAllResults">
+    <li>
+        <table class="layui-table" border="1" align="center" >
+            <colgroup>
+                <col width="200">
+                <col width="120">
+                <col width="180">
+                <col width="150">
+                <col width="100">
+                <col width="150">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <th>唯一编码</th>
+                <th>订单时间</th>
+                <th>订单日志类型</th>
+                <th>上传类型</th>
+                <th>订单上传类型key</th>
+                <th>订单上传类型value</th>
+            </tr>
+            </thead>
+            <tbody >
+            {{# layui.each(d, function(index, item){ }}
+            <tr>
+                <td>{{item.orderNo }}</td>
+                <td>{{item.uniqueCode }}</td>
+                <td>{{ layui.util.toDateString(item.createdTime, "yyyy-MM-dd HH:mm:ss") }}</td>
+                <td>{{item.orderLogType==1?'任务结果集上传':'申诉上传' }}</td>
+                <td>{{item.orderResultType==2?'图片':'文本' }}</td>
+                <td>{{item.orderKey }}</td>
+                <td>{{ item.orderResultType==2?'<img title="点击打开新窗口查看"  onclick="window.open('+ item.orderValue +')"  src="'+item.orderValue+'" style="cusor:pointer;height:300px;max-width: 100%;"  >':item.orderValue }}</td>
+            </tr>
+            {{# }); }}
+            </tbody>
+        </table>
+    </li>
+</script>
+
+<!-- 订单所有结果集展示 begin -->
+<div class="modal fade bs-example-modal-lg" id="viewOrderResultsDialog"  tabindex="-1" role="dialog" aria-labelledby="myModalView" aria-hidden="true"  data-backdrop="static" data-keyboard="false" >
+    <div class="modal-dialog modal-lg" style="width: 90%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="viewOrderResultsTitle">任务所有结果集列表</h4>
+            </div>
+            <div class="modal-body" >
+                <div class="modal-body-max no-padding">
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12" >
+                                <ul class="flow-default" id="orderResultsUl"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 订单所有结果集展示 end -->
 
 </body>
 </html>

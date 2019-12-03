@@ -12,10 +12,10 @@ import com.groundpush.core.mapper.AuditLogMapper;
 import com.groundpush.core.mapper.OrderMapper;
 import com.groundpush.core.model.AuditLog;
 import com.groundpush.core.model.OrderList;
-import com.groundpush.core.model.TaskOrderList;
 import com.groundpush.core.service.AuditLogService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.DateUtils;
+import com.groundpush.core.vo.TaskOrderListVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +42,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
 
     @Override
-    public Page<TaskOrderList> findAllPayTaskOrderList(Integer page, Integer limit) {
+    public Page<TaskOrderListVo> findAllPayTaskOrderList(Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
         return auditLogMapper.getAllPayTaskOrderList();
     }

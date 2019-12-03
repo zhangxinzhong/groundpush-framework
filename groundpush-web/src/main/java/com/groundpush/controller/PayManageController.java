@@ -9,6 +9,7 @@ import com.groundpush.core.model.*;
 import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.vo.OrderPayVo;
+import com.groundpush.core.vo.TaskOrderListVo;
 import com.groundpush.utils.ExportUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +79,7 @@ public class PayManageController {
     public JsonResp getTaskOrderlist(Integer page, Integer limit) {
 
         try {
-            Page<TaskOrderList> pageAudit = auditLogService.findAllPayTaskOrderList(page, limit);
+            Page<TaskOrderListVo> pageAudit = auditLogService.findAllPayTaskOrderList(page, limit);
             return JsonResp.success(new PageResult(pageAudit));
         } catch (Exception e) {
             log.error(e.toString(), e);

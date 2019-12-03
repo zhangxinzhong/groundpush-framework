@@ -11,6 +11,7 @@ import com.groundpush.core.model.PageResult;
 import com.groundpush.core.service.OrderBonusService;
 import com.groundpush.core.service.OrderLogService;
 import com.groundpush.core.service.OrderService;
+import com.groundpush.core.vo.OrderLogVo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -113,5 +115,15 @@ public class OrderController {
         }
     }
 
-
+    @ApiOperation("通过任务id和时间 获取订单以及所有结果集")
+    @GetMapping("/queryOrderResultsByOrderIds")
+    @ResponseBody
+    public JsonResp queryOrderResultsByOrderIds(@RequestParam(value = "orderIds") List<Integer> orderIds){
+        try {
+            return JsonResp.success(orderService.queryOrderResultsByOrderIds(orderIds));
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+            throw e;
+        }
+    }
 }
