@@ -112,12 +112,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     public static void main(String[] args) {
-        String pass = "manager";
+        String client_id = "groundpush";
+        String client_se = "groundpushSecret";
         BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
-        String hashPass = bcryptPasswordEncoder.encode(pass);
-        System.out.println(hashPass);
+        System.out.println(bcryptPasswordEncoder.encode(client_id));
 
-        boolean f = bcryptPasswordEncoder.matches("g",hashPass);
+        String pass = bcryptPasswordEncoder.encode(client_se);
+        System.out.println(pass);
+
+        boolean f = bcryptPasswordEncoder.matches(client_se,pass);
         System.out.println(f);
+
+
     }
 }
