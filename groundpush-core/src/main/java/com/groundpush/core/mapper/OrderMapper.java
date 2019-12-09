@@ -8,8 +8,8 @@ import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskListCount;
-import com.groundpush.core.model.TaskPopListCount;
 import com.groundpush.core.vo.OrderLogVo;
+import com.groundpush.core.vo.TaskPopListCountVo;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -335,7 +335,7 @@ public interface OrderMapper {
             " WHERE c.customer_id = #{customerId} AND b.task_id = #{taskId} ",
             "</script>"
     })
-    Page<TaskPopListCount> queryPopListByCustomerId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
+    Page<TaskPopListCountVo> queryPopListByCustomerId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
 
     /**
      * 通过客户id与任务id 获取推广任务中创建的订单数以及相关任务信息
@@ -357,7 +357,7 @@ public interface OrderMapper {
             " WHERE b.customer_id = #{customerId} and b.task_id = #{taskId} and DATE_FORMAT(d.created_time ,'%Y-%m-%d') = DATE_FORMAT(NOW() ,'%Y-%m-%d') ",
             "</script>"
     })
-    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
+    Optional<TaskPopListCountVo> queryPutResultByCustomerIdAndTaskId(@Param("customerId") Integer customerId, @Param("taskId") Integer taskId);
 
 
     /**

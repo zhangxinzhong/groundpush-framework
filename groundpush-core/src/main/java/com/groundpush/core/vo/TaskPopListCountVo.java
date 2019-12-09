@@ -1,4 +1,4 @@
-package com.groundpush.core.model;
+package com.groundpush.core.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskPopListCount implements Serializable {
+public class TaskPopListCountVo implements Serializable {
 
 
     //*************用于推广详情页中pop list*********************//

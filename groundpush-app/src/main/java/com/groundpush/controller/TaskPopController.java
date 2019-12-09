@@ -3,8 +3,8 @@ package com.groundpush.controller;
 import com.github.pagehelper.Page;
 import com.groundpush.core.common.JsonResp;
 import com.groundpush.core.model.PageResult;
-import com.groundpush.core.model.TaskPopListCount;
 import com.groundpush.core.service.OrderService;
+import com.groundpush.core.vo.TaskPopListCountVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class TaskPopController {
     @GetMapping
     public JsonResp getTaskPopCounts(@RequestParam(value = "customerId") Integer customerId,@RequestParam(value = "taskId") Integer taskId,@PageableDefault(page = 1,size =5)Pageable pageable) {
         log.info("推广任务详情列表 获取{}已推广list",customerId);
-        Page<TaskPopListCount> list = orderService.queryPopListByCustomerId(customerId,taskId,pageable);
+        Page<TaskPopListCountVo> list = orderService.queryPopListByCustomerId(customerId,taskId,pageable);
         return JsonResp.success(new PageResult(list));
     }
 }

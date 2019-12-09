@@ -19,6 +19,7 @@ import com.groundpush.core.service.PayService;
 import com.groundpush.core.utils.*;
 import com.groundpush.core.vo.OrderBonusVo;
 import com.groundpush.core.vo.OrderLogVo;
+import com.groundpush.core.vo.TaskPopListCountVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -222,13 +223,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId, Integer taskId, Pageable pageable) {
+    public Page<TaskPopListCountVo> queryPopListByCustomerId(Integer customerId, Integer taskId, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         return orderMapper.queryPopListByCustomerId(customerId, taskId);
     }
 
     @Override
-    public Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId) {
+    public Optional<TaskPopListCountVo> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId) {
         return orderMapper.queryPutResultByCustomerIdAndTaskId(customerId, taskId);
     }
 
