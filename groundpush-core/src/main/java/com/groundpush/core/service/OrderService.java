@@ -8,8 +8,8 @@ import com.groundpush.core.condition.OrderResultCondition;
 import com.groundpush.core.model.Order;
 import com.groundpush.core.model.OrderLog;
 import com.groundpush.core.model.TaskListCount;
-import com.groundpush.core.model.TaskPopListCount;
 import com.groundpush.core.vo.OrderLogVo;
+import com.groundpush.core.vo.TaskPopListCountVo;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -121,7 +121,7 @@ public interface OrderService {
      * @param customerId
      * @return
      */
-    Page<TaskPopListCount> queryPopListByCustomerId(Integer customerId,Integer taskId,Pageable pageable);
+    Page<TaskPopListCountVo> queryPopListByCustomerId(Integer customerId,Integer taskId,Pageable pageable);
 
 
     /**
@@ -130,7 +130,7 @@ public interface OrderService {
      * @param taskId
      * @return
      */
-    Optional<TaskPopListCount> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId);
+    Optional<TaskPopListCountVo> queryPutResultByCustomerIdAndTaskId(Integer customerId, Integer taskId);
 
     /**
      * 查询未上传结果的订单
