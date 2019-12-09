@@ -42,7 +42,7 @@ public class TaskCollectController {
      */
     @ApiOperation(value = "任务收藏")
     @JsonView(View.class)
-    @PostMapping
+    @PostMapping(headers = "X-API-Version=v1")
     public JsonResp createTaskCollect(@Valid @RequestBody TaskCollect taskCollect, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -53,7 +53,7 @@ public class TaskCollectController {
 
     @ApiOperation("取消任务收藏")
     @JsonView(View.class)
-    @DeleteMapping
+    @DeleteMapping(headers = "X-API-Version=v1")
     public JsonResp unTaskCollect(@Valid TaskCollect taskCollect, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -65,7 +65,7 @@ public class TaskCollectController {
 
     @ApiOperation("收藏任务列表")
     @JsonView(Task.DetailTaskView.class)
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp queryTaskCollect(@Valid TaskQueryCondition taskQueryCondition,
                                      @RequestParam(value = "pageNumber",required = false,defaultValue = "1") Integer pageNumber,
                                      @RequestParam(value = "pageSize",required = false,defaultValue = "20") Integer  pageSize, BindingResult bindingResult) {

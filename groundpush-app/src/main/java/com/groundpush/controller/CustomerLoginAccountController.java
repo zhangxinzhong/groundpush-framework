@@ -28,7 +28,7 @@ public class CustomerLoginAccountController {
     private CustomerLoginAccountService customerLoginAccountService;
 
     @ApiOperation(value = "修改手机号、昵称")
-    @PutMapping
+    @PutMapping(headers = "X-API-Version=v1")
     public JsonResp updateCustomerLoginAccount(@RequestBody CustomerLoginAccount customerLoginAccount) {
         customerLoginAccountService.updateCustomerLoginAccount(customerLoginAccount);
         return JsonResp.success();
@@ -36,7 +36,7 @@ public class CustomerLoginAccountController {
     }
 
     @ApiOperation(value = "绑定支付宝、微信")
-    @PostMapping
+    @PostMapping(headers = "X-API-Version=v1")
     public JsonResp createCustomerLoginAccount(@Valid @RequestBody CustomerLoginAccount customerLoginAccount, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());

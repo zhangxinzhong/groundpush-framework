@@ -36,7 +36,7 @@ public class TaskAttributeController {
 
     @ApiOperation("任务结果集属性列表")
     @JsonView(Task.DetailTaskView.class)
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp queryTaskCollect(@Valid TaskAttributeCondition condition, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());

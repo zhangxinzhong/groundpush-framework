@@ -29,7 +29,7 @@ public class OssController {
     @Resource
     private OssUtils ossUtils;
 
-    @PostMapping
+    @PostMapping(headers = "X-API-Version=v1")
     public JsonResp upload(@RequestParam MultipartFile file) {
         try {
             // 获取文件并上传

@@ -28,7 +28,7 @@ public class LabelController {
     @Resource
     private LabelService labelService;
 
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getLabelByType() {
         List<Label> list = labelService.getLabelByType(Constants.TYPE_ONE);
         return JsonResp.success(list);

@@ -34,7 +34,7 @@ public class CustomerInviteController {
     private CustomerService customerService;
 
     @ApiOperation(value = "邀请列表")
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp queryCustomer(@Valid CustomerQueryCondition customerQueryCondition, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());

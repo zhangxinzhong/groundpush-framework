@@ -42,7 +42,7 @@ public class GetKeyController {
 
 
     @ApiOperation("获取验证二维码key")
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp createKey() {
         String  key = uniqueCode.generRandomCodeKey();
         if(stringUtils.isNotBlank(key)){

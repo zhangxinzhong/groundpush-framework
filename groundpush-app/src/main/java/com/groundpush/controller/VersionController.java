@@ -33,7 +33,7 @@ public class VersionController {
 
 
     @ApiOperation("获取版本信息")
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getVersion(@RequestParam(value = "type") Integer type) {
         log.info("获取{}版本",type);
         List<Version> list = versionService.queryVersionsByVerIdAndType(type, Constants.VERSION_STATUS_1);

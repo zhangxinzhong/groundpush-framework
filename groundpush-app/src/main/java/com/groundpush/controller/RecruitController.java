@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/recruit")
 public class RecruitController {
 
-    @GetMapping("/{customerId:\\d+}")
+    @GetMapping(value = "/{customerId:\\d+}",headers = "X-API-Version=v1")
     public String toRecruit(@PathVariable("customerId") Integer customerId, Model model) {
         model.addAttribute("parentId", customerId);
         return "recruit/recruit";

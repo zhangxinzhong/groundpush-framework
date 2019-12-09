@@ -32,14 +32,14 @@ public class CustomerController {
 
     @ApiOperation(value = "获取客户")
     @JsonView(Customer.DetailCustomerView.class)
-    @GetMapping("/{customerId:\\d+}")
+    @GetMapping(value = "/{customerId:\\d+}",headers = "X-API-Version=v1")
     public JsonResp getCustomer(@PathVariable Integer customerId) {
         Optional<Customer> optionalCustomer = customerService.getCustomer(customerId);
         return JsonResp.success(optionalCustomer.isPresent() ? optionalCustomer.get() : null);
     }
 
     @ApiOperation(value = "更新客登录账号、头像及客户父子关系")
-    @PutMapping
+    @PutMapping(headers = "X-API-Version=v1")
     public JsonResp updateCustomer(@Valid @RequestBody CustomerVo customerVo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -51,7 +51,7 @@ public class CustomerController {
 
 
     @ApiOperation(value = "创建客户")
-    @PostMapping
+    @PostMapping(headers = "X-API-Version=v1")
     public JsonResp createCustomer(@Valid @RequestBody Customer customer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());

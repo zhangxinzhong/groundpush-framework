@@ -26,7 +26,7 @@ public class TaskPutResultCountsController {
     private OrderService orderService;
 
     @ApiOperation("任务结果上传(正常上传)：获取结果数")
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getTaskPopCounts(@RequestParam(value = "customerId") Integer customerId,@RequestParam(value = "taskId") Integer taskId) {
         return JsonResp.success(orderService.queryPutResultByCustomerIdAndTaskId(customerId,taskId));
     }

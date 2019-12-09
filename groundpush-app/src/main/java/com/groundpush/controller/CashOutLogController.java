@@ -24,7 +24,7 @@ public class CashOutLogController {
     @Resource
     private CashOutLogService cashOutLogService;
 
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp queryCashOutLog(CashOutLogQueryCondition cashOutLogQueryCondition){
         return JsonResp.success(new PageResult(cashOutLogService.queryCashOutLog(cashOutLogQueryCondition)));
     }

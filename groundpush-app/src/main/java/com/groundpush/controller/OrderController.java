@@ -47,7 +47,7 @@ public class OrderController {
 
 
     @ApiOperation(value = "创建订单")
-    @PostMapping
+    @PostMapping(headers = "X-API-Version=v1")
     public JsonResp createOrder(@Valid @RequestBody Order order, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -63,7 +63,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "任务结果集、订单申诉")
-    @PutMapping
+    @PutMapping(headers = "X-API-Version=v1")
     public JsonResp updateOrder(@Valid @RequestBody OrderResultCondition condition, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -72,7 +72,7 @@ public class OrderController {
         return JsonResp.success();
     }
 
-    @DeleteMapping
+    @DeleteMapping(headers = "X-API-Version=v1")
     public JsonResp deleteOrder(@Valid @NotNull(message = "订单号不可为空") Integer orderId, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -82,7 +82,7 @@ public class OrderController {
     }
 
     @ApiOperation(value = "查询订单")
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp queryOrder(OrderQueryCondition orderQueryCondition,
                                @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
                                @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
@@ -90,12 +90,12 @@ public class OrderController {
         return JsonResp.success(new PageResult(orders));
     }
 
-    @GetMapping("/{orderId:\\d+}/orderLog")
+    @GetMapping(value = "/{orderId:\\d+}/orderLog",headers = "X-API-Version=v1")
     public JsonResp queryOrderLog(@PathVariable Integer orderId) {
         return JsonResp.success(new DataResult(orderLogService.queryOrderLogByOrderId(orderId)));
     }
 
-    @GetMapping("/{orderId:\\d+}")
+    @GetMapping(value = "/{orderId:\\d+}",headers = "X-API-Version=v1")
     public JsonResp getOrder(@PathVariable Integer orderId) {
 
         Optional<Order> optionalOrder = orderService.queryOrderByOrderIdReturnOrder(orderId);

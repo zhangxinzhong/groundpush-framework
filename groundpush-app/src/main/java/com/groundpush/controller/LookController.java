@@ -34,7 +34,7 @@ public class LookController {
     @Resource
     private ObjectMapper objectMapper;
 
-    @GetMapping("/spread")
+    @GetMapping(value = "/spread",headers = "X-API-Version=v1")
     public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -50,7 +50,7 @@ public class LookController {
 
 
     @ApiOperation("提示页面")
-    @GetMapping("/prompt")
+    @GetMapping(value = "/prompt",headers = "X-API-Version=v1")
     public String toSpread() {
         return "prompt/prompt";
     }

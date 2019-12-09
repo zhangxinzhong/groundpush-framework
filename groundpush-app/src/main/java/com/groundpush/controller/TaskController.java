@@ -66,7 +66,7 @@ public class TaskController {
     @ResponseBody
     @ApiOperation("任务查询服务")
     @JsonView({Task.SimpleTaskView.class})
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp queryTask(TaskQueryCondition taskCondition,
                               @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
@@ -101,7 +101,7 @@ public class TaskController {
 
     @ApiOperation("获取任务")
     @ResponseBody
-    @GetMapping("/{id:\\d+}")
+    @GetMapping(value = "/{id:\\d+}",headers = "X-API-Version=v1")
     @JsonView(Task.DetailTaskView.class)
     public JsonResp getTask(@PathVariable Integer id, @RequestParam(value = "customerId") Integer customerId) {
         //获取任务数据

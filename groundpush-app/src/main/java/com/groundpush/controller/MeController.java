@@ -29,7 +29,7 @@ public class MeController {
     @Resource
     private OauthUtils oauthUtils;
 
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getCurrentUser() {
         try {
             Optional<CustomerDetail> customerDetailOptional = oauthUtils.getLogin();

@@ -30,7 +30,7 @@ public class TaskPopController {
     private OrderService orderService;
 
     @ApiOperation("推广任务详情Poplist")
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getTaskPopCounts(@RequestParam(value = "customerId") Integer customerId,@RequestParam(value = "taskId") Integer taskId,@PageableDefault(page = 1,size =5)Pageable pageable) {
         log.info("推广任务详情列表 获取{}已推广list",customerId);
         Page<TaskPopListCountVo> list = orderService.queryPopListByCustomerId(customerId,taskId,pageable);

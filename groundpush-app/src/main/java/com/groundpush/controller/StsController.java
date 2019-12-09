@@ -22,7 +22,7 @@ public class StsController {
     @Resource
     private AliYunStsUtils aliYunStsUtils;
 
-    @GetMapping
+    @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getAliSts() {
         return JsonResp.success(aliYunStsUtils.getSts());
     }

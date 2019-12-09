@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AppPageController {
 
     @ApiOperation("用户协议")
-    @GetMapping("/appPage/{type}")
+    @GetMapping(value = "/appPage/{type}",headers = "X-API-Version=v1")
     public String getUserProtocolPage(@PathVariable String type) {
         if (StringUtils.equalsIgnoreCase(type, Constants.CUSTOMER_PROTOCOL)) {
             return "/app/user_protocol";

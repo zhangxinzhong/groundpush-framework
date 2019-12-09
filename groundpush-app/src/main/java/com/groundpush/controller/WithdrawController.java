@@ -33,7 +33,7 @@ public class WithdrawController {
     @Resource
     private CashOutLogService cashOutLogService;
 
-    @PostMapping
+    @PostMapping(headers = "X-API-Version=v1")
     public JsonResp withdraw(@Valid @RequestBody WithdrawVo withdrawVo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
