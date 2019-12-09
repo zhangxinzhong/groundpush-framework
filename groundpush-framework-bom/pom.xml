@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     <groupId>com.groundpush</groupId>
     <artifactId>groundpush-framework-bom</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>groundPush Framework Bom</name>
     <description>groundPush Framework Bom project for Spring Boot</description>
 
@@ -28,13 +28,13 @@
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-io.version>1.3.2</commons-io.version>
         <commons-math3.version>3.6.1</commons-math3.version>
-        <groundpush-app.version>0.0.1-SNAPSHOT</groundpush-app.version>
-        <groundpush-core.version>0.0.1-SNAPSHOT</groundpush-core.version>
-        <groundpush-web.version>0.0.1-SNAPSHOT</groundpush-web.version>
-        <groundpush-security-browser.version>0.0.1-SNAPSHOT</groundpush-security-browser.version>
-        <groundpush-security-core.version>0.0.1-SNAPSHOT</groundpush-security-core.version>
-        <groundpush-security-oauth.version>0.0.1-SNAPSHOT</groundpush-security-oauth.version>
-        <groundpush-pay.version>0.0.1-SNAPSHOT</groundpush-pay.version>
+        <groundpush-app.version>1.0.0</groundpush-app.version>
+        <groundpush-core.version>1.0.0</groundpush-core.version>
+        <groundpush-web.version>1.0.0</groundpush-web.version>
+        <groundpush-security-browser.version>1.0.0</groundpush-security-browser.version>
+        <groundpush-security-core.version>1.0.0</groundpush-security-core.version>
+        <groundpush-security-oauth.version>1.0.0</groundpush-security-oauth.version>
+        <groundpush-pay.version>1.0.0</groundpush-pay.version>
         <alipay-sdk-java.version>4.6.0.ALL</alipay-sdk-java.version>
         <alibaba.druid.version>1.1.15</alibaba.druid.version>
         <apache.poi.version>3.9</apache.poi.version>

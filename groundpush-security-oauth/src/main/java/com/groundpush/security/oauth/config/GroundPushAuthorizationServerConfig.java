@@ -92,7 +92,7 @@ public class GroundPushAuthorizationServerConfig extends AuthorizationServerConf
                 //todo bCryptPasswordEncoder.encode(client.getClientSecret()) 去掉加密原因： 用户登录成功后比较时不相等，固在设置参数时去掉加密
                 builder
                         .withClient(client.getClientId())
-                        .secret(client.getClientSecret())
+                        .secret(bCryptPasswordEncoder.encode(client.getClientSecret()))
                         .accessTokenValiditySeconds(client.getAccessTokenValiditySeconds())
                         .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                         .scopes("all");

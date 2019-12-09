@@ -68,6 +68,8 @@ public class GroundPushResourceServerConfig extends ResourceServerConfigurerAdap
                 .antMatchers("/aliSts").permitAll()
                 // 不需要授权的controller
                 .antMatchers("/unAuthorize/**").permitAll()
+                // 权限
+                .antMatchers("/version").permitAll()
                 // 静态资源
                 .antMatchers("/plugin/**","/common/**","/images/**","/static/**","/favicon.ico").permitAll()
                 //swagger

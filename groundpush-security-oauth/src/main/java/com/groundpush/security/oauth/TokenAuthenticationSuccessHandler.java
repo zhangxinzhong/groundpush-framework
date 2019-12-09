@@ -52,7 +52,7 @@ public class TokenAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
         if (header != null && header.toLowerCase().startsWith(REQUEST_HEADER_BASIC)) {
             throw new UnapprovedClientAuthenticationException("请求头中无client信息");
         }
-        String[] tokens = extractAndDecodeHeader(header, request);
+        String[] tokens = extractAndDecodeHeader(header);
 
         assert tokens.length == 2;
 
@@ -62,7 +62,7 @@ public class TokenAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 
         if (clientDetails == null) {
             throw new UnapprovedClientAuthenticationException("clientId对应的配置信息不存在 clientId：" + clientId);
-        } else if (bCryptPasswordEncoder.matches(clientSecret, clientDetails.getClientSecret())) {
+        } else if (!bCryptPasswordEncoder.matches(clientSecret, clientDetails.getClientSecret())) {
             throw new UnapprovedClientAuthenticationException("clientSecret不匹配 clientId：" + clientId);
         }
 
@@ -77,7 +77,7 @@ public class TokenAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 
     }
 
-    private String[] extractAndDecodeHeader(String header, HttpServletRequest request) throws IOException {
+    private String[] extractAndDecodeHeader(String header) throws IOException {
         byte[] base64Token = header.substring(6).getBytes("UTF-8");
 
         byte[] decoded;
