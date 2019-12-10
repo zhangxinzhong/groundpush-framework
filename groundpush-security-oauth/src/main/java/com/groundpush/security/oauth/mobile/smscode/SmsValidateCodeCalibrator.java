@@ -5,7 +5,6 @@ import com.groundpush.security.core.exception.ValidateCodeException;
 import com.groundpush.security.core.properties.SecurityProperties;
 import com.groundpush.security.core.validatecode.ValidateCode;
 import com.groundpush.security.core.validatecode.ValidateCodeRepository;
-import com.groundpush.security.core.validatecode.ValidateCodeType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -34,7 +33,7 @@ public class SmsValidateCodeCalibrator {
         //验证码
         String valiCode = request.getParameter(securityProperties.getSms().getValidateCodeParamName()) == null ? request.getHeader(securityProperties.getSms().getValidateCodeParamName()) : request.getParameter(securityProperties.getSms().getValidateCodeParamName());
 
-        ValidateCode validateCode = validateCodeRepository.get(request, ValidateCodeType.SMS);
+        ValidateCode validateCode = validateCodeRepository.get(request);
         if (validateCode == null) {
             throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_EXISTS.getErrorMessage());
         }
@@ -58,7 +57,7 @@ public class SmsValidateCodeCalibrator {
         log.info("短信校验码通过，验证码: {}", valiCode);
 
         //删除图片验证码
-        validateCodeRepository.remove(request, ValidateCodeType.SMS);
+        validateCodeRepository.remove(request);
 
 
     }

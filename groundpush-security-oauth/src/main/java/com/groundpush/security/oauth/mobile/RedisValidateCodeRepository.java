@@ -4,7 +4,6 @@ import com.groundpush.core.utils.RedisUtils;
 import com.groundpush.security.core.properties.SecurityProperties;
 import com.groundpush.security.core.validatecode.ValidateCode;
 import com.groundpush.security.core.validatecode.ValidateCodeRepository;
-import com.groundpush.security.core.validatecode.ValidateCodeType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -28,29 +27,28 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository {
     private RedisUtils redisUtils;
 
     @Override
-    public void save(ServletWebRequest request, ValidateCode validateCode, ValidateCodeType validateCodeType) {
-        redisUtils.set(builKey(request.getRequest(), validateCodeType), validateCode, securityProperties.getSms().getCode().getExpireTime());
+    public void save(ServletWebRequest request, ValidateCode validateCode) {
+        redisUtils.set(builKey(request.getRequest()), validateCode, securityProperties.getSms().getCode().getExpireTime());
     }
 
     @Override
-    public ValidateCode get(ServletWebRequest request, ValidateCodeType validateCodeType) {
-        return (ValidateCode) redisUtils.get(builKey(request.getRequest(), validateCodeType));
+    public ValidateCode get(ServletWebRequest request) {
+        return (ValidateCode) redisUtils.get(builKey(request.getRequest()));
     }
 
     @Override
-    public void remove(ServletWebRequest request, ValidateCodeType validateCodeType) {
-        redisUtils.del(builKey(request.getRequest(), validateCodeType));
+    public void remove(ServletWebRequest request) {
+        redisUtils.del(builKey(request.getRequest()));
     }
 
-    private String builKey(HttpServletRequest request, ValidateCodeType validateCodeType) {
+    private String builKey(HttpServletRequest request) {
 
         StringBuffer sb = new StringBuffer();
         sb
                 .append("code:")
                 .append(request.getParameter(securityProperties.getSms().getDeviceParamName()) == null ? request.getHeader(securityProperties.getSms().getDeviceParamName()) : request.getParameter(securityProperties.getSms().getDeviceParamName()))
                 .append("mobile:")
-                .append(request.getParameter(securityProperties.getSms().getMobileNoParamName()) == null ? request.getHeader(securityProperties.getSms().getMobileNoParamName()) : request.getParameter(securityProperties.getSms().getMobileNoParamName()))
-                .append(":").append(validateCodeType);
+                .append(request.getParameter(securityProperties.getSms().getMobileNoParamName()) == null ? request.getHeader(securityProperties.getSms().getMobileNoParamName()) : request.getParameter(securityProperties.getSms().getMobileNoParamName()));
         log.info("redis sms key :{}", sb.toString());
         return sb.toString();
 

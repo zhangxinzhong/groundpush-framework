@@ -25,7 +25,6 @@ public class ImageValidateCodeGenerator implements ValidateCodeGenerator {
     public ValidateCode generate(ServletWebRequest request) {
         String verifyCode = validationCode.getVerifyCode(4);
         BufferedImage bufferedImage = validationCode.getVerifyImage(verifyCode);
-        //todo 重构时将参数取出
         return new ImageCode(verifyCode, LocalDateTime.now().plusSeconds(60),bufferedImage);
     }
 }

@@ -1,4 +1,4 @@
-package com.groundpush.security.oauth.mobile.smscode;
+package com.groundpush.security.oauth.mobile.generator;
 
 import com.groundpush.security.core.properties.SecurityProperties;
 import com.groundpush.security.core.validatecode.ValidateCode;

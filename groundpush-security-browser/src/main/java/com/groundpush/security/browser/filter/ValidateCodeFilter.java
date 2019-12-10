@@ -54,7 +54,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     }
 
     private void validateCode(HttpServletRequest request, HttpServletResponse response) throws ValidateCodeException {
-        ImageCode imageCode = (ImageCode) sessionValidateCodeRepository.get(new ServletWebRequest(request, response), ValidateCodeType.IMAGE);
+        ImageCode imageCode = (ImageCode) sessionValidateCodeRepository.get(new ServletWebRequest(request, response));
         String valiCode = request.getParameter("imageCode");
 
         if (imageCode == null) {
@@ -77,6 +77,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             throw new ValidateCodeException(ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorCode(), ExceptionEnum.VALIDATE_CODE_NOT_MATCH.getErrorMessage());
         }
         //删除图片验证码
-        sessionValidateCodeRepository.remove(new ServletWebRequest(request, response), ValidateCodeType.IMAGE);
+        sessionValidateCodeRepository.remove(new ServletWebRequest(request, response));
     }
 }
