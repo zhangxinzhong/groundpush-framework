@@ -15,6 +15,7 @@ import com.groundpush.core.service.OrderLogService;
 import com.groundpush.core.service.OrderService;
 import com.groundpush.core.service.TaskUriService;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.vo.OrderVo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -48,17 +49,17 @@ public class OrderController {
 
     @ApiOperation(value = "创建订单")
     @PostMapping(headers = "X-API-Version=v1")
-    public JsonResp createOrder(@Valid @RequestBody Order order, BindingResult bindingResult) {
+    public JsonResp createOrder(@Valid @RequestBody OrderVo orderVo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
         }
         // 检查用户是否存在此任务订单
-        Optional<Order> orderOptional = orderService.checkOrderIsExistAndIsUploadResult(order.getCustomerId(), order.getTaskId(),order.getType());
+        Optional<OrderVo> orderOptional = orderService.checkOrderIsExistAndIsUploadResult(orderVo.getCustomerId(), orderVo.getTaskId(),orderVo.getType());
         if (orderOptional.isPresent()) {
             return JsonResp.success();
         }
-        order.setIsSpecial(Constants.ORDER_TYPE_3.equals(order.getType())?Boolean.TRUE:Boolean.FALSE);
-        orderService.createOrderAndOrderBonus(order);
+        orderVo.setIsSpecial(Constants.ORDER_TYPE_3.equals(orderVo.getType())?Boolean.TRUE:Boolean.FALSE);
+        orderService.createOrderAndOrderBonus(orderVo);
         return JsonResp.success();
     }
 
@@ -86,7 +87,7 @@ public class OrderController {
     public JsonResp queryOrder(OrderQueryCondition orderQueryCondition,
                                @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
                                @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
-        Page<Order> orders = orderService.queryOrder(orderQueryCondition, pageNumber, pageSize);
+        Page<OrderVo> orders = orderService.queryOrder(orderQueryCondition, pageNumber, pageSize);
         return JsonResp.success(new PageResult(orders));
     }
 
@@ -98,7 +99,7 @@ public class OrderController {
     @GetMapping(value = "/{orderId:\\d+}",headers = "X-API-Version=v1")
     public JsonResp getOrder(@PathVariable Integer orderId) {
 
-        Optional<Order> optionalOrder = orderService.queryOrderByOrderIdReturnOrder(orderId);
+        Optional<OrderVo> optionalOrder = orderService.queryOrderByOrderIdReturnOrder(orderId);
         if (!optionalOrder.isPresent()) {
             throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }

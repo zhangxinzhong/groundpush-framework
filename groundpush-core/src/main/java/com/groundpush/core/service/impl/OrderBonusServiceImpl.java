@@ -14,6 +14,7 @@ import com.groundpush.core.service.OrderBonusService;
 import com.groundpush.core.utils.Constants;
 import com.groundpush.core.utils.MathUtil;
 import com.groundpush.core.vo.OrderBonusVo;
+import com.groundpush.core.vo.OrderVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,7 +78,7 @@ public class OrderBonusServiceImpl implements OrderBonusService {
             }
 
             //订单
-            Optional<Order> optionalOrder = orderMapper.getOrder(orderBonusVo.getOrderId());
+            Optional<OrderVo> optionalOrder = orderMapper.getOrder(orderBonusVo.getOrderId());
             if (!optionalOrder.isPresent()) {
                 throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
             }
@@ -112,7 +113,7 @@ public class OrderBonusServiceImpl implements OrderBonusService {
      * @param task         任务
      * @param order        订单
      */
-    private void CalculationOrderBonus(Customer taskOperCust, Task task, Order order) {
+    private void CalculationOrderBonus(Customer taskOperCust, Task task, OrderVo order) {
 
         try {
             Integer orderId = order.getOrderId();

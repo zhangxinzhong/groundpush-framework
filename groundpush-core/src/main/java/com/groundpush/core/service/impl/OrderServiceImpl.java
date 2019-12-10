@@ -20,7 +20,10 @@ import com.groundpush.core.utils.*;
 import com.groundpush.core.vo.OrderBonusVo;
 import com.groundpush.core.vo.OrderLogVo;
 import com.groundpush.core.vo.TaskPopListCountVo;
+import com.groundpush.core.vo.OrderVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanMap;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -83,23 +86,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Order createOrder(Order order) {
+    public Order createOrder(OrderVo orderVo) {
         try {
             //若订单状态为空 则默认为审核中
-            if (order.getStatus() == null) {
-                order.setStatus(Constants.ORDER_STATUS_REVIEW);
+            if (orderVo.getStatus() == null) {
+                orderVo.setStatus(Constants.ORDER_STATUS_REVIEW);
             }
+            Order order = Order.builder().orderId(orderVo.getOrderId()).orderNo(orderVo.getOrderNo()).channelUri(orderVo.getChannelUri()).status(orderVo.getStatus())
+                    .type(orderVo.getType()).uniqueCode(orderVo.getUniqueCode()).settlementAmount(orderVo.getSettlementAmount()).settlementStatus(orderVo.getSettlementStatus())
+                    .lastModifiedBy(orderVo.getLastModifiedBy()).createdTime(orderVo.getCreatedTime()).lastModifiedTime(orderVo.getLastModifiedTime()).remark(orderVo.getRemark()).isSpecial(orderVo.getIsSpecial()).build();
             //保存订单
             orderMapper.createOrder(order);
             Integer orderId = order.getOrderId();
-            if (orderId == null || order.getTaskId() == null || order.getCustomerId() == null) {
+            if (orderId == null || orderVo.getTaskId() == null || orderVo.getCustomerId() == null) {
                 throw new BusinessException(ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorCode(), ExceptionEnum.ORDER_CREATE_ORDER_FAIL.getErrorMessage());
             }
             //生成订单号 并更新订单
             order.setOrderNo(uniqueCode.generateUniqueCodeByPrimaryKey(orderId));
             orderMapper.updateOrderNoByOrderId(order);
             //保存客户任务订单关联关系
-            orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().orderId(orderId).taskId(order.getTaskId()).customerId(order.getCustomerId()).build());
+            orderTaskCustomerMapper.createOrderTaskCustomer(OrderTaskCustomer.builder().orderId(orderId).taskId(orderVo.getTaskId()).customerId(orderVo.getCustomerId()).build());
             return order;
         } catch (BusinessException e) {
             log.error(e.getCode(), e.getMessage(), e);
@@ -112,10 +118,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Order createOrderAndOrderBonus(Order order) {
-        order = this.createOrder(order);
+    public Order createOrderAndOrderBonus(OrderVo orderVo) {
+
+        Order order = this.createOrder(orderVo);
         //根据任务计算结果分成
-        orderBonusService.generateOrderBonus(OrderBonusVo.builder().orderId(order.getOrderId()).customerId(order.getCustomerId()).taskId(order.getTaskId()).build());
+        orderBonusService.generateOrderBonus(OrderBonusVo.builder().orderId(order.getOrderId()).customerId(orderVo.getCustomerId()).taskId(orderVo.getTaskId()).build());
         return order;
     }
 
@@ -123,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(Integer orderId) {
         //1.通过订单id获取订单
-        Optional<Order> optionalOrder = orderMapper.getOrder(orderId);
+        Optional<OrderVo> optionalOrder = orderMapper.getOrder(orderId);
         if (optionalOrder.isPresent()) {
             //通过验证订单创建时间 只可删除24小时内订单
             boolean isExpire = LocalDateTime.now().plusHours(Constants.ORDER_OVER_TIME).isBefore(LocalDateTime.now());
@@ -135,19 +142,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer pageSize) {
+    public Page<OrderVo> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber, pageSize);
-        Page<Order> orders = orderMapper.queryAppOrder(order);
+        Page<OrderVo> orders = orderMapper.queryAppOrder(order);
         return setOrderSurDay(orders);
     }
 
-    private Page<Order> setOrderSurDay(Page<Order> page) {
-        for (Order order : page) {
-            Long days = Constants.ORDER_STATUS_REVIEW.equals(order.getStatus()) && dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) > 0 ? dateUtils.getIntervalDays(order.getCreatedTime(), order.getAuditDuration()) : 0L;
-            order.setIntervalDays(days.intValue());
-            Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus()) ? dateUtils.plusMinutesTime(order.getCreatedTime()) : false;
-            order.setHasReUpload(reUpload);
-            order.setAppAmount(MathUtil.multiply(MathUtil.divide(order.getSpreadRatio(), Constants.PERCENTAGE_100), order.getAmount()).toPlainString());
+    private Page<OrderVo> setOrderSurDay(Page<OrderVo> page) {
+        for (OrderVo orderVo : page) {
+            Long days = Constants.ORDER_STATUS_REVIEW.equals(orderVo.getStatus()) && dateUtils.getIntervalDays(orderVo.getCreatedTime(), orderVo.getAuditDuration()) > 0 ? dateUtils.getIntervalDays(orderVo.getCreatedTime(), orderVo.getAuditDuration()) : 0L;
+            orderVo.setIntervalDays(days.intValue());
+            Boolean reUpload = Constants.ORDER_STATUS_EFFECT_REVIEW.equals(orderVo.getStatus()) ? dateUtils.plusMinutesTime(orderVo.getCreatedTime()) : false;
+            orderVo.setHasReUpload(reUpload);
+            orderVo.setAppAmount(MathUtil.multiply(MathUtil.divide(orderVo.getSpreadRatio(), Constants.PERCENTAGE_100), orderVo.getAmount()).toPlainString());
         }
         return page;
     }
@@ -156,7 +163,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateOrderUniqueCode(OrderResultCondition condition) {
-        Optional<Order> optionalOrder = null;
+        Optional<OrderVo> optionalOrder = null;
         if (condition.getTaskId() != null) {
             //通过任务类型、任务id和客户id获取未提交结果集的某一个订单 （只可上传当天的订单）
             optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreateTime(condition);
@@ -171,18 +178,18 @@ public class OrderServiceImpl implements OrderService {
         if (!optionalOrder.isPresent()) {
             throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }
-        Order order = optionalOrder.get();
+        OrderVo orderVo = optionalOrder.get();
         //订单列表中审核失败申诉上传任务结果集
-        if (Constants.ORDER_STATUS_REVIEW_FAIL.equals(order.getStatus())) {
+        if (Constants.ORDER_STATUS_REVIEW_FAIL.equals(orderVo.getStatus())) {
             //若订单审核失败申诉上传 则将状态改为申诉中
-            order.setStatus(Constants.ORDER_STATUS_COMPLAIIN);
+            orderVo.setStatus(Constants.ORDER_STATUS_COMPLAIIN);
         }
         for (OrderLog orderLog : condition.getList()) {
-            orderLog.setOrderId(order.getOrderId());
+            orderLog.setOrderId(orderVo.getOrderId());
         }
 
 
-        condition.setTaskId(order.getTaskId());
+        condition.setTaskId(orderVo.getTaskId());
         List<Order> orders = orderMapper.findOrderByUnqiuCode(condition);
         if (orders != null && orders.size() > 0) {
             throw new BusinessException(ExceptionEnum.ORDER_UNIQUECODE.getErrorCode(), ExceptionEnum.ORDER_UNIQUECODE.getErrorMessage());
@@ -190,15 +197,15 @@ public class OrderServiceImpl implements OrderService {
 
 
         //判断是否为任务结果集上传
-        if (Constants.ORDER_STATUS_EFFECT_REVIEW.equals(order.getStatus())) {
-            boolean bool = dateUtils.plusMinutesTime(order.getCreatedTime());
+        if (Constants.ORDER_STATUS_EFFECT_REVIEW.equals(orderVo.getStatus())) {
+            boolean bool = dateUtils.plusMinutesTime(orderVo.getCreatedTime());
             if (!bool) {
                 throw new BusinessException(ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorCode(), ExceptionEnum.ORDER_UPLOAD_RESULT.getErrorMessage());
             }
         }
-        order.setUniqueCode(condition.getUniqueCode());
+        orderVo.setUniqueCode(condition.getUniqueCode());
         orderLogService.createOrderLog(condition.getList());
-        orderMapper.updateOrderUniqueCode(order);
+        orderMapper.updateOrderUniqueCode(Order.builder().uniqueCode(orderVo.getUniqueCode()).orderId(orderVo.getOrderId()).status(orderVo.getStatus()).build());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -284,9 +291,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId, Integer type) {
+    public Optional<OrderVo> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId, Integer type) {
         // 1. 检查当天订单是否存在
-        Optional<Order> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(type).build());
+        Optional<OrderVo> optionalOrder = orderMapper.queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition.builder().customerId(customId).taskId(taskId).taskType(type).build());
         // 2. 查询订单是否上传结果集
         if (optionalOrder.isPresent() && StringUtils.isBlank(optionalOrder.get().getUniqueCode())) {
             return optionalOrder;
@@ -318,24 +325,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> queryOrderLogOfOrder(ExportWordCondition condition) {
+    public List<OrderVo> queryOrderLogOfOrder(ExportWordCondition condition) {
         condition.setStartDateTime(dateUtils.getMinOfDay(condition.getOrderTime()));
         condition.setEndDateTime(dateUtils.getMaxOfDay(condition.getOrderTime()));
         condition.setSettlementStatus(Constants.ORDER_STTLEMENT_STATUS_1);
-        List<Order> orders = orderMapper.queryOrderLogOfOrder(condition);
-        List<Integer> orderIds = new ArrayList<>(orders.size());
+        List<OrderVo> orderVos = orderMapper.queryOrderLogOfOrder(condition);
+        List<Integer> orderIds = new ArrayList<>(orderVos.size());
         //提出所有orderId list
-        orders.forEach(order -> orderIds.add(order.getOrderId()));
+        orderVos.forEach(order -> orderIds.add(order.getOrderId()));
         List<OrderLog> orderLogs = orderLogService.queryOrderLogByOrderIds(orderIds);
         //设置订单中订单记录list
-        orders.forEach(order -> {
-            order.setOrderLogs(orderLogs.stream().filter(orderLog -> order.getOrderId().equals(orderLog.getOrderId())).collect(Collectors.toList()));
+        orderVos.forEach(orderVo -> {
+            orderVo.setOrderLogs(orderLogs.stream().filter(orderLog -> orderVo.getOrderId().equals(orderLog.getOrderId())).collect(Collectors.toList()));
         });
-        return orders;
+        return orderVos;
     }
 
     @Override
-    public Optional<Order> queryOrderByOrderIdReturnOrder(Integer orderId) {
+    public Optional<OrderVo> queryOrderByOrderIdReturnOrder(Integer orderId) {
         return orderMapper.queryOrderByOrderId(orderId);
     }
 

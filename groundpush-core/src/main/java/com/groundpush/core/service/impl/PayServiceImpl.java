@@ -20,6 +20,7 @@ import com.groundpush.core.utils.DateUtils;
 import com.groundpush.core.utils.LoginUtils;
 import com.groundpush.core.utils.UniqueCode;
 import com.groundpush.core.vo.OrderPayVo;
+import com.groundpush.core.vo.OrderVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,12 +130,12 @@ public class PayServiceImpl implements PayService {
         List<ChannelData> channelDatas = channelDataMapper.findAllDataByExistTaskId(orderPay.getTaskId(), orderPay.getOrderCreateDate());
         if (channelDatas != null && channelDatas.size() > 0) {
             for (ChannelData channelData : channelDatas) {
-                Order order = Order.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID).type(Constants.ORDER_TYPE_9)
+                OrderVo orderVo = OrderVo.builder().customerId(Constants.VIRTUAL_CUSTOMER_ID).type(Constants.ORDER_TYPE_9)
                         .taskId(orderPay.getTaskId()).status(Constants.ORDER_STATUS_SUCCESS).settlementStatus(Constants.ORDER_STATUS_SUCCESS)
                         .settlementAmount(channelData.getAmount()).uniqueCode(channelData.getUniqueCode()).build();
 
                 //创建虚拟订单
-                order = orderService.createOrder(order);
+                Order order = orderService.createOrder(orderVo);
                 //创建虚拟订单分成记录
                 orderBonusMapper.createSimpleOrderBonus(OrderBonus.builder().orderId(order.getOrderId()).bonusAmount(channelData.getAmount())
                         .bonusType(Constants.TASK_VIRTUAL_CUSTOMER).customerId(Constants.VIRTUAL_CUSTOMER_ID).status(Constants.STATUS_VAILD).build());
