@@ -7,6 +7,7 @@ import com.groundpush.core.exception.GroundPushMethodArgumentNotValidException;
 import com.groundpush.core.model.*;
 import com.groundpush.core.service.*;
 import com.groundpush.core.utils.Constants;
+import com.groundpush.core.vo.OrderVo;
 import com.groundpush.core.vo.TaskPopCountVo;
 import com.groundpush.vo.SpreadOrderVo;
 import io.swagger.annotations.ApiModel;
@@ -104,15 +105,15 @@ public class SpreadController {
             //1.是否是特殊任务 且 是否是改任务的特殊用户
             //  还需验证当前用户上级是否是特殊用户
             Boolean isSpecialTask = specialTaskService.whetherSpecialTask(spreadOrderVo.getTaskId());
-            Order order = Order.builder().customerId(spreadOrderVo.getCustomId()).type(spreadOrderVo.getType()).taskId(spreadOrderVo.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).isSpecial(isSpecialTask).uniqueCode(spreadOrderVo.getUniqueCode()).build();
+            OrderVo orderVo = OrderVo.builder().customerId(spreadOrderVo.getCustomId()).type(spreadOrderVo.getType()).taskId(spreadOrderVo.getTaskId()).status(Constants.ORDER_STATUS_REVIEW).isSpecial(isSpecialTask).uniqueCode(spreadOrderVo.getUniqueCode()).build();
 
             if (optionalTaskUri.isPresent()) {
                 taskUriService.updateTaskUri(optionalTaskUri.get());
-                order.setChannelUri(optionalTaskUri.get().getUri());
+                orderVo.setChannelUri(optionalTaskUri.get().getUri());
             }
 
             //2.创建用户订单
-            Order createOrder = orderService.createOrderAndOrderBonus(order);
+            Order createOrder = orderService.createOrderAndOrderBonus(orderVo);
 
             createOrderLog(createOrder, spreadOrderVo.getList());
 

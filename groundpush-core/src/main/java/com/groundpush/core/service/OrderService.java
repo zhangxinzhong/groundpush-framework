@@ -10,6 +10,7 @@ import com.groundpush.core.model.OrderLog;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
 import com.groundpush.core.vo.OrderLogVo;
+import com.groundpush.core.vo.OrderVo;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -56,13 +57,13 @@ public interface OrderService {
      * @param order
      * @return
      */
-    Order createOrder(Order order);
+    Order createOrder(OrderVo order);
 
     /**
      * 创建订单并生成分成
-     * @param order
+     * @param orderVo
      */
-    Order createOrderAndOrderBonus(Order order);
+    Order createOrderAndOrderBonus(OrderVo orderVo);
 
     /**
      * 删除订单
@@ -77,7 +78,7 @@ public interface OrderService {
      * @param pageSize
      * @return
      */
-    Page<Order> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer  pageSize);
+    Page<OrderVo> queryOrder(OrderQueryCondition order, Integer pageNumber, Integer  pageSize);
 
     /**
      * 修改订单唯一编码（申请售后）
@@ -196,7 +197,7 @@ public interface OrderService {
      * @param type
      * @return
      */
-    Optional<Order> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId, Integer type);
+    Optional<OrderVo> checkOrderIsExistAndIsUploadResult(Integer customId, Integer taskId, Integer type);
 
     /**
      * 修改订单状态 及 支付此订单金额
@@ -219,7 +220,7 @@ public interface OrderService {
      * @param condition
      * @return
      */
-    List<Order> queryOrderLogOfOrder(ExportWordCondition condition);
+    List<OrderVo> queryOrderLogOfOrder(ExportWordCondition condition);
 
     /**
      *  通过订单编号查询订单

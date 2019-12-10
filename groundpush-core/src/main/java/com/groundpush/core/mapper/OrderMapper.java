@@ -10,6 +10,7 @@ import com.groundpush.core.model.OrderList;
 import com.groundpush.core.model.TaskListCount;
 import com.groundpush.core.model.TaskPopListCount;
 import com.groundpush.core.vo.OrderLogVo;
+import com.groundpush.core.vo.OrderVo;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -148,7 +149,7 @@ public interface OrderMapper {
      * @return
      */
     @Select(" select a.*,b.task_id from t_order a LEFT JOIN t_order_task_customer b ON a.order_id = b.order_id where a.order_id=#{orderId} ")
-    Optional<Order> getOrder(@Param("orderId") Integer orderId);
+    Optional<OrderVo> getOrder(@Param("orderId") Integer orderId);
 
     /**
      * 删除订单
@@ -186,7 +187,7 @@ public interface OrderMapper {
      */
     @Select({
             "<script>",
-            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title,c.audit_duration,c.amount,c.spread_ratio,c.brief_title,c.example_img from t_order o ",
+            " select o.*,otc.task_id,otc.customer_id,c.icon_uri,c.title,c.audit_duration,c.amount,c.spread_ratio,c.brief_title,c.example_img,c.type task_type from t_order o ",
             " left join t_order_task_customer otc on otc.order_id = o.order_id ",
             " left join t_task c on otc.task_id = c.task_id ",
             " where otc.customer_id = #{customerId}",
@@ -205,7 +206,7 @@ public interface OrderMapper {
             " order by o.created_time desc",
             "</script>"
     })
-    Page<Order> queryAppOrder(OrderQueryCondition order);
+    Page<OrderVo> queryAppOrder(OrderQueryCondition order);
 
     /**
      * 更新订单结果
@@ -395,7 +396,7 @@ public interface OrderMapper {
             " AND a.unique_code IS NULL AND DATE_FORMAT(a.created_time ,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d') LIMIT 0,1 ",
             "</script>"
     })
-    Optional<Order> queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition condition);
+    Optional<OrderVo> queryOrderByCustomerIdAndTaskIdAndCreateTime(OrderResultCondition condition);
 
     /**
      * 查询未上传结果集的订单
@@ -483,7 +484,7 @@ public interface OrderMapper {
      * @return
      */
     @Select(" select a.order_id,a.order_no,a.unique_code from t_order a left join t_order_task_customer b on a.order_id = b.order_id where b.task_id = #{taskId} and a.settlement_status = #{settlementStatus} and a.created_time between #{startDateTime} and #{endDateTime} order by a.order_id ")
-    List<Order> queryOrderLogOfOrder(ExportWordCondition condition);
+    List<OrderVo> queryOrderLogOfOrder(ExportWordCondition condition);
 
     /**
      * 通过订单编号查询订单
