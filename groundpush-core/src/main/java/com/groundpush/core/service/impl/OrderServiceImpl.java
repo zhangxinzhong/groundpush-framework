@@ -341,7 +341,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> queryOrderByOrderIdReturnOrder(Integer orderId) {
+    public Optional<OrderVo> queryOrderByOrderIdReturnOrder(Integer orderId) {
         return orderMapper.queryOrderByOrderId(orderId);
     }
 

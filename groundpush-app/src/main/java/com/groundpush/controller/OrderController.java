@@ -99,7 +99,7 @@ public class OrderController {
     @GetMapping("/{orderId:\\d+}")
     public JsonResp getOrder(@PathVariable Integer orderId) {
 
-        Optional<Order> optionalOrder = orderService.queryOrderByOrderIdReturnOrder(orderId);
+        Optional<OrderVo> optionalOrder = orderService.queryOrderByOrderIdReturnOrder(orderId);
         if (!optionalOrder.isPresent()) {
             throw new BusinessException(ExceptionEnum.ORDER_NOT_EXISTS.getErrorCode(), ExceptionEnum.ORDER_NOT_EXISTS.getErrorMessage());
         }

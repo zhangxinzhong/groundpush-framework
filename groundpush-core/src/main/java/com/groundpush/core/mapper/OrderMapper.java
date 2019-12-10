@@ -493,7 +493,7 @@ public interface OrderMapper {
      * @return
      */
     @Select(" select o.*,t.img_uri from t_order o left join t_order_task_customer otc on otc.order_id = o.order_id left join t_task t on t.task_id = otc.task_id where o.order_id=#{orderId} ")
-    Optional<Order> queryOrderByOrderId(@Param("orderId") Integer orderId);
+    Optional<OrderVo> queryOrderByOrderId(@Param("orderId") Integer orderId);
 
     /**
      * 通过订单idlist 获取订单结果集

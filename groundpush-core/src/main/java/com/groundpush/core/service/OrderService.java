@@ -227,7 +227,7 @@ public interface OrderService {
      * @param orderId
      * @return
      */
-    Optional<Order> queryOrderByOrderIdReturnOrder(Integer orderId);
+    Optional<OrderVo> queryOrderByOrderIdReturnOrder(Integer orderId);
 
 
     /**
