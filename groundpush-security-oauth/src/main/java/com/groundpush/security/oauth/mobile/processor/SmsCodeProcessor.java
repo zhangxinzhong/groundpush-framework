@@ -1,5 +1,9 @@
 package com.groundpush.security.oauth.mobile.processor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.groundpush.core.common.JsonResp;
+import com.groundpush.core.exception.ExceptionEnum;
+import com.groundpush.core.exception.SystemException;
 import com.groundpush.security.core.process.AbstractValidateCodeProcessor;
 import com.groundpush.security.core.properties.SecurityProperties;
 import com.groundpush.security.core.validatecode.SendSms;
@@ -23,10 +27,19 @@ public class SmsCodeProcessor extends AbstractValidateCodeProcessor {
     @Resource
     private SecurityProperties securityProperties;
 
+    @Resource
+    private ObjectMapper objectMapper;
+
 
     @Override
     protected void send(ServletWebRequest request, ValidateCode validateCode) {
-        sendSms.sendSms(validateCode.getCode(), getMobile(request));
+
+        try {
+            sendSms.sendSms(validateCode.getCode(), getMobile(request));
+            request.getResponse().getWriter().write(objectMapper.writeValueAsString(JsonResp.success()));
+        } catch (Exception e) {
+            throw new SystemException(ExceptionEnum.EXCEPTION.getErrorCode(), ExceptionEnum.EXCEPTION.getErrorMessage());
+        }
     }
 
     private String getMobile(ServletWebRequest request) {

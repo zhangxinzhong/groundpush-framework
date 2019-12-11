@@ -49,7 +49,7 @@ public class CustomerController {
     }
 
 
-
+    //此方法暂未调用
     @ApiOperation(value = "创建客户")
     @PostMapping(headers = "X-API-Version=v1")
     public JsonResp createCustomer(@Valid @RequestBody Customer customer, BindingResult bindingResult) {

@@ -54,8 +54,9 @@ public class SpreadController {
     @Resource
     private OrderLogService orderLogService;
 
+    //TODO app端只用于此链接的跳转 不加版本控制
     @ApiOperation("页面跳转uri")
-    @GetMapping(headers = "X-API-Version=v1")
+    @GetMapping
     public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -92,7 +93,8 @@ public class SpreadController {
         return "spread/spread";
     }
 
-    @PostMapping(headers = "X-API-Version=v1")
+    //TODO app端只用于此链接的跳转 不加版本控制
+    @PostMapping
     @ResponseBody
     public JsonResp spread(@Valid @RequestBody SpreadOrderVo spreadOrderVo, BindingResult bindingResult) {
         try {
