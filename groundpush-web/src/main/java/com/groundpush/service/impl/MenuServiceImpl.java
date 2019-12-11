@@ -9,6 +9,7 @@ import com.groundpush.core.utils.Constants;
 import com.groundpush.mapper.MenuMapper;
 import com.groundpush.service.MenuService;
 import com.groundpush.utils.SessionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,14 @@ import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @description: 菜单
  * @author: zhangxinzhong
  * @date: 2019-08-20 下午6:19
  */
+@Slf4j
 @Service
 public class MenuServiceImpl implements MenuService {
     @Resource
@@ -93,17 +96,16 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Menu> loadMenuByLoginUser() {
         Optional<LoginUserInfo> optional = sessionUtils.getLogin();
-
         if (optional.isPresent()) {
-            return menuMapper.queryMenuByLoginUser(optional.get().getUser().getUserId());
+            List<Menu> menuList = menuMapper.queryMenuByLoginUser(optional.get().getUser().getUserId());
+            return menuList.stream().distinct().collect(Collectors.toList());
         }
-
         return Collections.EMPTY_LIST;
     }
 
     @Override
-    public Boolean findRoleMenuByMenuId(Integer menuId){
-        return menuMapper.findRoleMenuByMenuId(menuId) > 0?true:false;
+    public Boolean findRoleMenuByMenuId(Integer menuId) {
+        return menuMapper.findRoleMenuByMenuId(menuId) > 0 ? true : false;
     }
 
 }
