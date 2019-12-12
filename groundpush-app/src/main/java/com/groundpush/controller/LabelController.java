@@ -28,6 +28,7 @@ public class LabelController {
     @Resource
     private LabelService labelService;
 
+    //TODO 方法暂未调用
     @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getLabelByType() {
         List<Label> list = labelService.getLabelByType(Constants.TYPE_ONE);

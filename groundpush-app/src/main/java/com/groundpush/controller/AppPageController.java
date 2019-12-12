@@ -24,8 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 @ApiModel(value = "app h5 页面")
 public class AppPageController {
 
+    //TODO 跳转请求头不加版本号
     @ApiOperation("用户协议")
-    @GetMapping(value = "/appPage/{type}",headers = "X-API-Version=v1")
+    @GetMapping(value = "/appPage/{type}")
     public String getUserProtocolPage(@PathVariable String type) {
         if (StringUtils.equalsIgnoreCase(type, Constants.CUSTOMER_PROTOCOL)) {
             return "app/user_protocol";

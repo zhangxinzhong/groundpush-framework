@@ -29,6 +29,7 @@ public class TaskPopController {
     @Resource
     private OrderService orderService;
 
+    //TODO 此接口APP未调用
     @ApiOperation("推广任务详情Poplist")
     @GetMapping(headers = "X-API-Version=v1")
     public JsonResp getTaskPopCounts(@RequestParam(value = "customerId") Integer customerId,@RequestParam(value = "taskId") Integer taskId,@PageableDefault(page = 1,size =5)Pageable pageable) {

@@ -73,6 +73,7 @@ public class OrderController {
         return JsonResp.success();
     }
 
+    //TODO 此接口APP未调用
     @DeleteMapping(headers = "X-API-Version=v1")
     public JsonResp deleteOrder(@Valid @NotNull(message = "订单号不可为空") Integer orderId, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -91,6 +92,7 @@ public class OrderController {
         return JsonResp.success(new PageResult(orders));
     }
 
+    //TODO 此接口APP未用到
     @GetMapping(value = "/{orderId:\\d+}/orderLog",headers = "X-API-Version=v1")
     public JsonResp queryOrderLog(@PathVariable Integer orderId) {
         return JsonResp.success(new DataResult(orderLogService.queryOrderLogByOrderId(orderId)));

@@ -32,8 +32,9 @@ public class VersionController {
     private VersionService versionService;
 
 
+    //TODO APP端 无法分割 版本控制不加
     @ApiOperation("获取版本信息")
-    @GetMapping(headers = "X-API-Version=v1")
+    @GetMapping
     public JsonResp getVersion(@RequestParam(value = "type") Integer type) {
         log.info("获取{}版本",type);
         List<Version> list = versionService.queryVersionsByVerIdAndType(type, Constants.VERSION_STATUS_1);

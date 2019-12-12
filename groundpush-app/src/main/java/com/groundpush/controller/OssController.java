@@ -29,6 +29,7 @@ public class OssController {
     @Resource
     private OssUtils ossUtils;
 
+    //TODO 此接口APP未调用
     @PostMapping(headers = "X-API-Version=v1")
     public JsonResp upload(@RequestParam MultipartFile file) {
         try {

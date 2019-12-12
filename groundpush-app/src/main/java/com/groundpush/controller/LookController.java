@@ -34,7 +34,8 @@ public class LookController {
     @Resource
     private ObjectMapper objectMapper;
 
-    @GetMapping(value = "/spread",headers = "X-API-Version=v1")
+    //TODO 跳转请求头不加版本号
+    @GetMapping(value = "/spread")
     public String toSpread(@Valid SpreadQueryCondition spreadQueryCondition, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             throw new GroundPushMethodArgumentNotValidException(bindingResult.getFieldErrors());
@@ -48,9 +49,9 @@ public class LookController {
         return "look/look";
     }
 
-
+    //TODO 跳转请求头不加版本号
     @ApiOperation("提示页面")
-    @GetMapping(value = "/prompt",headers = "X-API-Version=v1")
+    @GetMapping(value = "/prompt")
     public String toSpread() {
         return "prompt/prompt";
     }
