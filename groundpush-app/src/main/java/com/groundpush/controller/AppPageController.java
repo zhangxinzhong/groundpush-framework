@@ -29,9 +29,9 @@ public class AppPageController {
     @GetMapping(value = "/appPage/{type}")
     public String getUserProtocolPage(@PathVariable String type) {
         if (StringUtils.equalsIgnoreCase(type, Constants.CUSTOMER_PROTOCOL)) {
-            return "/app/user_protocol";
+            return "app/user_protocol";
         }else if(StringUtils.equalsIgnoreCase(type, Constants.CUSTOMER_PRIVACY)){
-            return "/app/user_privacy";
+            return "app/user_privacy";
         }
 
         return "error";
