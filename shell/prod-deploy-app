@@ -1,0 +1,59 @@
+#!/bin/bash
+CURRENT_DATE=`date +%Y%m%d%H%M%S`
+if [ $# -ne 1 ]
+then
+   echo "usage:$0 appVersion"
+   exit 1
+fi
+
+APP_VERSION=$1
+
+echo 'change jdk to 1.8'
+
+export JAVA_HOME=/data/install/jdk8
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+export PATH=$JAVA_HOME/bin:$PATH
+java -version
+
+
+echo 'mvn version :'
+mvn -version
+
+WORK_DIR=/data/workspace/groundpush-framework
+cd $WORK_DIR
+ls -l
+
+mvn clean package
+
+APP_JAR_DIR=$WORK_DIR/groundpush-app/target/groundpush-app-$APP_VERSION.jar
+
+REMOTE_APP_JAR_DIR=/app-deploy/groundpush-app-$APP_VERSION.jar
+
+START_APP_SHELL_JAR=/groundpush/deploy-shell/startApp
+
+echo '---------------------------------------------------------------------'
+echo 'APP_VERSION: '$APP_VERSION
+echo 'WORK_DIR: '$WORK_DIR
+echo 'APP_JAR_DIR: '$APP_JAR_DIR
+echo 'REMOTE_APP_JAR_DIR: '$REMOTE_APP_JAR_DIR
+echo 'START_APP_SHELL_DIR: '$START_APP_SHELL_DIR
+echo "BACK UP: ssh root@60.205.177.128  mv /app-deploy/groundpush-app-$APP_VERSION.jar /app_deploy/groundpush-app-$APP_VERSION-$CURRENT_DATE.jar "
+echo "COPY JAR: scp $APP_JAR_DIR root@60.205.177.128:$REMOTE_APP_JAR_DIR "
+echo "CALL BACK startApp: ssh root@60.205.177.128  $START_APP_SHELL_JAR $APP_VERSION  "
+echo '---------------------------------------------------------------------'
+
+echo -e "\033[41;37m is deploy app for product: \033[0m"
+prod="null"
+read prod
+sleep 1
+if [ $prod != "product" ]; then
+exit 0
+fi
+
+ssh root@60.205.177.128 " mv /app-deploy/groundpush-app-$APP_VERSION.jar /app-deploy/groundpush-app-$APP_VERSION-$CURRENT_DATE.jar "
+scp $APP_JAR_DIR root@60.205.177.128:$REMOTE_APP_JAR_DIR
+ssh root@60.205.177.128 " $START_APP_SHELL_JAR $APP_VERSION "
+
+
+

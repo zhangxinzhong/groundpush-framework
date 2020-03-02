@@ -1,0 +1,39 @@
+#!/bin/bash
+CURRENT_DATE=`date +%Y%m%d%H%M%S`
+if [ $# -ne 1 ]
+then
+   echo "usage:$0 webVersion"
+   exit 1
+fi
+
+WEB_VERSION=$1
+
+WORK_DIR=/data/workspace/groundpush-framework
+cd $WORK_DIR
+ls -l
+
+mvn clean package
+
+WEB_JAR_DIR=$WORK_DIR/groundpush-web/target/groundpush-web-$WEB_VERSION.jar
+
+REMOTE_WEB_JAR=/web-deploy/groundpush-web-$WEB_VERSION.jar
+
+START_WEB_SHELL_DIR=/root/shell/startWeb
+
+echo '---------------------------------------------------------------------'
+echo 'WEB_VERSION: '$WEB_VERSION
+echo 'WORK_DIR: '$WORK_DIR
+echo 'WEB_JAR_DIR: '$WEB_JAR_DIR
+echo 'REMOTE_WEB_JAR: '$REMOTE_WEB_JAR
+echo 'START_WEB_SHELL_DIR: '$START_WEB_SHELL_DIR
+echo "BACK UP: ssh -p 8022 root@106.2.172.227  mv /web-deploy/groundpush-web-$WEB_VERSION.jar /web-deploy/groundpush-web-$WEB_VERSION-$CURRENT_DATE.jar "
+echo "COPY JAR: scp -P 8022 $WEB_JAR_DIR root@106.2.172.227:$REMOTE_WEB_JAR "
+echo "CALL BACK startApp: ssh -p 8022 root@106.2.172.227 $START_WEB_SHELL_DIR $WEB_VERSION "
+echo '---------------------------------------------------------------------'
+
+ssh -p 8022 root@106.2.172.227 " mv /web-deploy/groundpush-web-$WEB_VERSION.jar /web-deploy/groundpush-web-$WEB_VERSION-$CURRENT_DATE.jar "
+scp -P 8022 $WEB_JAR_DIR root@106.2.172.227:$REMOTE_WEB_JAR
+ssh -p 8022 root@106.2.172.227 " $START_WEB_SHELL_DIR $WEB_VERSION "
+
+
+
