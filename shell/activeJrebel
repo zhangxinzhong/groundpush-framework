@@ -1,1 +1,0 @@
-exec /data/install/ReverseProxy_linux_amd64  >> /dev/null  2>&1 &
