@@ -1,0 +1,40 @@
+#!/bin/bash
+echo 'calback startWeb'
+
+CURRENT_DATE=`date +%Y%m%d%H%M%S`
+
+if [ $# -ne 1 ]
+then
+   echo "usage:$0 webVersion"
+   exit 1
+fi
+
+WEB_VERSION=$1
+WEB_PORT=8280
+WEB_LOG_DIR=/var/log/app/start-$APP_PORT-groundpush-$CURRENT_DATE.log
+
+pid=$(netstat -nlp | grep :$WEB_PORT | awk '{print $7}' | awk -F"/" '{print $1}');
+
+if [ -n  "$pid" ]; then
+    kill  -9  $pid;
+fi
+
+echo '-----------------------------------------------------------------'
+echo "web_version:$WEB_VERSION"
+echo "web_port:$WEB_PORT"
+echo "exec  java -jar /web-deploy/groundpush-web-$WEB_VERSION.jar --spring.profiles.active=prod --server.port=$WEB_PORT | head -n 1000 >> $WEB_LOG_DIR "
+echo "pid:$pid"
+echo '-----------------------------------------------------------------'
+
+
+echo '##############################startWeb######################################################'
+
+exec  java -jar /web-deploy/groundpush-web-$WEB_VERSION.jar --spring.profiles.active=prod --server.port=$WEB_PORT | head -n 1000 >> $WEB_LOG_DIR 2>&1 &
+
+sleep 3
+
+tail -f $WEB_LOG_DIR
+
+
+
+
