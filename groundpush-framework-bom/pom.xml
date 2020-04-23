@@ -23,7 +23,7 @@
         <aliyun-java-sdk-dypnsapi.version>1.0.3</aliyun-java-sdk-dypnsapi.version>
         <commons-pool2.version>2.0</commons-pool2.version>
         <spring-data-commons.version>2.1.10.RELEASE</spring-data-commons.version>
-        <jackson-databind.version>2.9.9</jackson-databind.version>
+        <jackson-databind.version>2.9.10.4</jackson-databind.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-io.version>1.3.2</commons-io.version>
